@@ -1,11 +1,16 @@
 <script lang="ts">
-  import type { ExerciseType } from '../types';
+  import type { ExerciseType, Discipline } from '../types';
   import { _ } from '../i18n.svelte';
-  import { getComplexity, updateProgress } from '../progress.svelte';
+  import { getComplexity, getDisciplineProgress, updateProgress } from '../progress.svelte';
   import { exerciseTypes } from '../data/exerciseTypes';
+  import { disciplines } from '../data/disciplines';
   import { pickExerciseTypeId } from '../exerciseSelection';
+  import ProgressBar from './ProgressBar.svelte';
 
   let { disciplineId, onBack }: { disciplineId: string; onBack: () => void } = $props();
+
+  let discipline = $derived(disciplines.find((d: Discipline) => d.id === disciplineId)!);
+  let disciplineProgress = $derived(getDisciplineProgress(discipline, exerciseTypes));
 
   function pickType(): ExerciseType {
     return exerciseTypes[pickExerciseTypeId(disciplineId)];
@@ -56,7 +61,10 @@
 <svelte:window onkeydown={handleKeydown} />
 
 <div class="exercise-screen">
-  <button class="back-btn" onclick={onBack}>{_('back')}</button>
+  <div class="top-bar">
+    <button class="back-btn" onclick={onBack}>{_('back')}</button>
+    <ProgressBar value={disciplineProgress} />
+  </div>
 
   <div class="exercise-card">
     <p class="prompt">{exercise.prompt}</p>
@@ -79,6 +87,12 @@
     flex-direction: column;
     align-items: center;
     gap: 20px;
+  }
+  .top-bar {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    align-self: stretch;
   }
   .back-btn {
     align-self: flex-start;
