@@ -44,7 +44,7 @@ export function updateProgress(typeId: string, correct: boolean, maxComplexity: 
 
 export function getDisciplineProgress(discipline: Discipline, types: Record<string, ExerciseType>): number {
   const vals = discipline.exerciseTypeIds.map((id) => {
-    const cur = progress[id] ?? 1;
+    const cur = progress[id] ?? 0;
     return cur / types[id].maxComplexity;
   });
   return vals.reduce((a, b) => a + b, 0) / vals.length;

@@ -1,17 +1,12 @@
 <script lang="ts">
   import { _ } from './lib/i18n.svelte';
   import { disciplines } from './lib/data/disciplines';
-  import { exerciseTypes } from './lib/data/exerciseTypes';
   import DisciplineCard from './lib/components/DisciplineCard.svelte';
   import ExerciseScreen from './lib/components/ExerciseScreen.svelte';
   import LanguageToggle from './lib/components/LanguageToggle.svelte';
 
   let screen = $state<'menu' | 'exercise'>('menu');
   let activeDisciplineId = $state<string | null>(null);
-
-  let activeExerciseType = $derived(
-    activeDisciplineId ? exerciseTypes[disciplines.find((d) => d.id === activeDisciplineId)!.exerciseTypeIds[0]] : null,
-  );
 
   function selectDiscipline(id: string) {
     activeDisciplineId = id;
@@ -39,8 +34,8 @@
         {/each}
       </div>
     </section>
-  {:else if activeExerciseType}
-    <ExerciseScreen exerciseType={activeExerciseType} onBack={backToMenu} />
+  {:else if activeDisciplineId}
+    <ExerciseScreen disciplineId={activeDisciplineId} onBack={backToMenu} />
   {/if}
 </main>
 

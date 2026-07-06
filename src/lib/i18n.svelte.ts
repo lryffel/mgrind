@@ -5,6 +5,8 @@ const dict = {
   'discipline.multiplication.name': { en: 'Multiplication Tables', de: 'Einmaleins' },
   'exercise.multiplication.name': { en: 'Multiplication Facts', de: 'Multiplikation' },
   'exercise.multiplication.desc': { en: 'Solve multiplication problems', de: 'Löse Multiplikationsaufgaben' },
+  'exercise.multiplicationMissingFactor.name': { en: 'Missing Factor', de: 'Fehlender Faktor' },
+  'exercise.multiplicationMissingFactor.desc': { en: 'Find the missing factor in a multiplication', de: 'Finde den fehlenden Faktor' },
   'answer.submit': { en: 'Submit', de: 'Bestätigen' },
   'answer.next': { en: 'Next', de: 'Weiter' },
   'feedback.correct': { en: 'Correct!', de: 'Richtig!' },

@@ -1,7 +1,7 @@
 import { describe, it, expect, beforeEach } from 'vitest';
 import { progress, initProgress, getComplexity, updateProgress, getDisciplineProgress } from './progress.svelte';
 import { exerciseTypes } from './data/exerciseTypes';
-import type { Discipline } from './types';
+import type { Discipline, ExerciseType } from './types';
 
 beforeEach(() => {
   for (const key in progress) {
@@ -77,28 +77,30 @@ describe('progress', () => {
     const discipline: Discipline = {
       id: 'multiplication',
       nameKey: 'discipline.multiplication.name',
-      exerciseTypeIds: ['multiplication'],
+      exerciseTypeIds: ['multiplication', 'multiplicationMissingFactor'],
     };
 
-    it('returns 0 when no progress is made (complexity 0 / maxComplexity 10 → 0/10)', () => {
-      // default complexity is 0 → getDisciplineProgress uses (0 + 1) / maxComplexity
-      // Wait, let me re-read the code:
-      // const cur = progress[id] ?? 1;  — if no progress, defaults to 1
-      // return cur / types[id].maxComplexity; → 1 / 10 = 0.1
-      delete progress['multiplication'];
+    it('returns 0 when no exercise type has progress', () => {
       const p = getDisciplineProgress(discipline, exerciseTypes);
-      expect(p).toBe(0.1);
+      expect(p).toBe(0);
+    });
+
+    it('returns 0 when one type is at 0 and the other is untouched', () => {
+      progress['multiplication'] = 0;
+      const p = getDisciplineProgress(discipline, exerciseTypes);
+      expect(p).toBe(0);
     });
 
     it('returns correct fraction when progress exists', () => {
       progress['multiplication'] = 5;
-      // (5) / 10 = 0.5
+      // (5/10 + 0/10) / 2 = 0.25
       const p = getDisciplineProgress(discipline, exerciseTypes);
-      expect(p).toBe(0.5);
+      expect(p).toBe(0.25);
     });
 
     it('returns 1 when fully progressed', () => {
       progress['multiplication'] = 10;
+      progress['multiplicationMissingFactor'] = 10;
       const p = getDisciplineProgress(discipline, exerciseTypes);
       expect(p).toBe(1);
     });

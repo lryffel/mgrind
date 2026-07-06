@@ -2,9 +2,16 @@
   import type { ExerciseType } from '../types';
   import { _ } from '../i18n.svelte';
   import { getComplexity, updateProgress } from '../progress.svelte';
+  import { exerciseTypes } from '../data/exerciseTypes';
+  import { pickExerciseTypeId } from '../exerciseSelection';
 
-  let { exerciseType, onBack }: { exerciseType: ExerciseType; onBack: () => void } = $props();
+  let { disciplineId, onBack }: { disciplineId: string; onBack: () => void } = $props();
 
+  function pickType(): ExerciseType {
+    return exerciseTypes[pickExerciseTypeId(disciplineId)];
+  }
+
+  let currentType = $state(pickType());
   let currentSeed = Date.now();
   let userAnswer = $state('');
   let feedback = $state<'correct' | 'incorrect' | null>(null);
@@ -12,7 +19,7 @@
   let exercise = $state(initExercise());
 
   function initExercise() {
-    return exerciseType.generate(currentSeed, getComplexity(exerciseType.id));
+    return currentType.generate(currentSeed, getComplexity(currentType.id));
   }
 
   $effect(() => {
@@ -22,14 +29,15 @@
   });
 
   function submit() {
-    const correct = exerciseType.validate(userAnswer, exercise);
-    updateProgress(exerciseType.id, correct, exerciseType.maxComplexity);
+    const correct = currentType.validate(userAnswer, exercise);
+    updateProgress(currentType.id, correct, currentType.maxComplexity);
     feedback = correct ? 'correct' : 'incorrect';
   }
 
   function next() {
+    currentType = pickType();
     currentSeed = Date.now();
-    exercise = exerciseType.generate(currentSeed, getComplexity(exerciseType.id));
+    exercise = currentType.generate(currentSeed, getComplexity(currentType.id));
     userAnswer = '';
     feedback = null;
   }
