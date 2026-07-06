@@ -9,8 +9,7 @@
   let userAnswer = $state('');
   let feedback = $state<'correct' | 'incorrect' | null>(null);
   let inputEl: HTMLInputElement | undefined = $state();
-
-  let exercise = $derived(exerciseType.generate(currentSeed, getComplexity(exerciseType.id)));
+  let exercise = $state(exerciseType.generate(currentSeed, getComplexity(exerciseType.id)));
 
   $effect(() => {
     if (feedback === null) {
@@ -26,6 +25,7 @@
 
   function next() {
     currentSeed = Date.now();
+    exercise = exerciseType.generate(currentSeed, getComplexity(exerciseType.id));
     userAnswer = '';
     feedback = null;
   }
