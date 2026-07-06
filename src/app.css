@@ -1,4 +1,6 @@
-*, *::before, *::after {
+*,
+*::before,
+*::after {
   box-sizing: border-box;
 }
 
@@ -19,5 +21,5 @@ body {
   margin: 0 auto;
   min-height: 100dvh;
   background: #fff;
-  box-shadow: 0 0 20px rgba(0,0,0,0.05);
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.05);
 }

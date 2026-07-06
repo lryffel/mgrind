@@ -9,7 +9,7 @@
   let progress = $derived(getDisciplineProgress(discipline, exerciseTypes));
 </script>
 
-<button class="card" onclick={onclick}>
+<button class="card" {onclick}>
   <h2>{_(discipline.nameKey)}</h2>
   <ProgressBar value={progress} />
   <p class="progress-label">{_('progress.percent', Math.round(progress * 100))}</p>
@@ -31,7 +31,7 @@
   }
   .card:hover {
     border-color: #999;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   }
   .card h2 {
     margin: 0 0 12px;

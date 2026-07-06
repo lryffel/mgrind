@@ -7,7 +7,9 @@ export const progress = $state<Record<string, number>>({});
 function persist() {
   try {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(progress));
-  } catch { /* ignore */ }
+  } catch {
+    /* ignore */
+  }
 }
 
 export function initProgress() {
@@ -19,7 +21,9 @@ export function initProgress() {
         progress[key] = parsed[key];
       }
     }
-  } catch { /* ignore */ }
+  } catch {
+    /* ignore */
+  }
 }
 
 export function getComplexity(typeId: string): number {
@@ -39,7 +43,7 @@ export function updateProgress(typeId: string, correct: boolean, maxComplexity: 
 }
 
 export function getDisciplineProgress(discipline: Discipline, types: Record<string, ExerciseType>): number {
-  const vals = discipline.exerciseTypeIds.map(id => {
+  const vals = discipline.exerciseTypeIds.map((id) => {
     const cur = progress[id] ?? 1;
     return cur / types[id].maxComplexity;
   });

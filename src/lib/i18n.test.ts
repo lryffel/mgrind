@@ -48,7 +48,9 @@ describe('i18n', () => {
 
   it('handles missing localStorage gracefully', () => {
     const orig = localStorage.getItem;
-    localStorage.getItem = () => { throw new Error('no access'); };
+    localStorage.getItem = () => {
+      throw new Error('no access');
+    };
     expect(() => initLang()).not.toThrow();
     expect(state.lang).toBe('en');
     localStorage.getItem = orig;

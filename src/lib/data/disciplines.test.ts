@@ -29,7 +29,7 @@ describe('disciplines', () => {
   });
 
   it('has unique discipline IDs', () => {
-    const ids = disciplines.map(d => d.id);
+    const ids = disciplines.map((d) => d.id);
     expect(new Set(ids).size).toBe(ids.length);
   });
 });

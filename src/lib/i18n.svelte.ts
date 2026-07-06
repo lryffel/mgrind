@@ -10,7 +10,7 @@ const dict = {
   'feedback.correct': { en: 'Correct!', de: 'Richtig!' },
   'feedback.incorrect': { en: 'Incorrect. The answer was {0}.', de: 'Falsch. Die Antwort war {0}.' },
   'progress.percent': { en: 'Progress: {0}%', de: 'Fortschritt: {0}%' },
-  'back': { en: 'Back', de: 'Zurück' },
+  back: { en: 'Back', de: 'Zurück' },
   'lang.switch': { en: 'DE', de: 'EN' },
   'select.discipline': { en: 'Select a discipline', de: 'Wähle eine Disziplin' },
 } satisfies Record<string, Record<Lang, string>>;
@@ -29,7 +29,9 @@ export function setLang(l: Lang) {
   state.lang = l;
   try {
     localStorage.setItem('mgrind-lang', l);
-  } catch { /* ignore */ }
+  } catch {
+    /* ignore */
+  }
 }
 
 export function initLang() {
@@ -38,5 +40,7 @@ export function initLang() {
     if (stored === 'en' || stored === 'de') {
       state.lang = stored;
     }
-  } catch { /* ignore */ }
+  } catch {
+    /* ignore */
+  }
 }

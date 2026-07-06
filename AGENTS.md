@@ -4,7 +4,12 @@ Don't infer design decisions.
 - `npm run build` — production build
 - `npm run preview` — preview production build
 - `npm run check` — typecheck (svelte-check + tsc)
-- No lint, no test, no formatter configured
+- `npm run test` — vitest; tests co-located as `*.test.ts` beside sources
+- `npm run format` — prettier --write
+- `npm run format:check` — prettier --check
+- `npm run lint` — eslint
+- `npm run lint:fix` — eslint --fix
+- `src/test-setup.ts` mocks `localStorage` globally for tests
 
 - Svelte 5 runes: `$state`, `$derived`, `$effect`, `$props`, `mount`
 - i18n: `_('key')` from `src/lib/i18n.svelte.ts`; lang persisted in localStorage

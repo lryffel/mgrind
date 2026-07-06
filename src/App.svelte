@@ -10,9 +10,7 @@
   let activeDisciplineId = $state<string | null>(null);
 
   let activeExerciseType = $derived(
-    activeDisciplineId
-      ? exerciseTypes[disciplines.find(d => d.id === activeDisciplineId)!.exerciseTypeIds[0]]
-      : null
+    activeDisciplineId ? exerciseTypes[disciplines.find((d) => d.id === activeDisciplineId)!.exerciseTypeIds[0]] : null,
   );
 
   function selectDiscipline(id: string) {

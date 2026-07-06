@@ -54,12 +54,7 @@
     <p class="prompt">{exercise.prompt}</p>
 
     {#if feedback === null}
-      <input
-        type="text"
-        class="answer-input"
-        bind:value={userAnswer}
-        bind:this={inputEl}
-      />
+      <input type="text" class="answer-input" bind:value={userAnswer} bind:this={inputEl} />
       <button class="action-btn" onclick={submit}>{_('answer.submit')}</button>
     {:else}
       <p class="feedback {feedback}">
