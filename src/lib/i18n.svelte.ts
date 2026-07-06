@@ -12,7 +12,7 @@ const dict = {
   'progress.percent': { en: 'Progress: {0}%', de: 'Fortschritt: {0}%' },
   'back': { en: 'Back', de: 'Zurück' },
   'lang.switch': { en: 'DE', de: 'EN' },
-  'select.discipline': { en: 'Select a discipline', de: 'Wähle ein Fach' },
+  'select.discipline': { en: 'Select a discipline', de: 'Wähle eine Disziplin' },
 } satisfies Record<string, Record<Lang, string>>;
 
 export const state = $state({ lang: 'en' as Lang });
