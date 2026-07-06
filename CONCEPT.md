@@ -14,6 +14,8 @@ There are multiple disciplines like
 
 Each discipline has multiple exercise types that need to be mastered for the discipline to be mastered.
 
+When a discipline is selected, a random exercise type in the discipline is chosen.
+
 ## Exercise Types
 
 Exercise types are programmed individually. Exercise types might belong to multiple disciplines. Example could be
