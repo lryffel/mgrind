@@ -7,8 +7,4 @@ import { initProgress } from './lib/progress.svelte'
 initLang()
 initProgress()
 
-const app = mount(App, {
-  target: document.getElementById('app')!,
-})
-
-export default app
+mount(App, { target: document.getElementById('app')! })
