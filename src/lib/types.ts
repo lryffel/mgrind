@@ -1,6 +1,11 @@
+export interface ExerciseField {
+  label: string;
+}
+
 export interface Exercise {
   prompt: string;
   answer: string;
+  fields?: ExerciseField[];
 }
 
 export interface ExerciseType {

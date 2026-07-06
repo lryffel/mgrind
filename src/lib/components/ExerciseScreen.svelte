@@ -1,5 +1,5 @@
 <script lang="ts">
-  import type { ExerciseType, Discipline } from '../types';
+  import type { ExerciseType, Discipline, Exercise } from '../types';
   import { _ } from '../i18n.svelte';
   import { getComplexity, getDisciplineProgress, updateProgress } from '../progress.svelte';
   import { exerciseTypes } from '../data/exerciseTypes';
@@ -19,30 +19,47 @@
   let currentType = $state(pickType());
   let currentSeed = Date.now();
   let userAnswer = $state('');
+  let userValues = $state<number[]>([]);
   let feedback = $state<'correct' | 'incorrect' | null>(null);
   let inputEl: HTMLInputElement | undefined = $state();
   let exercise = $state(initExercise());
 
   function initExercise() {
-    return currentType.generate(currentSeed, getComplexity(currentType.id));
+    const ex = currentType.generate(currentSeed, getComplexity(currentType.id));
+    if (ex.fields) userValues = ex.fields.map(() => 0);
+    return ex;
   }
 
   $effect(() => {
-    if (feedback === null) {
+    if (feedback === null && !exercise.fields) {
       inputEl?.focus();
     }
   });
 
   function submit() {
-    const correct = currentType.validate(userAnswer, exercise);
+    const answer = exercise.fields ? userValues.join(',') : userAnswer;
+    const correct = currentType.validate(answer, exercise);
     updateProgress(currentType.id, correct, currentType.maxComplexity);
     feedback = correct ? 'correct' : 'incorrect';
+  }
+
+  function formatAnswer(ex: Exercise): string {
+    if (ex.fields) {
+      const parts = ex.answer.split(',').map((e, i) => `${ex.fields![i].label}^${e}`);
+      return parts.join(' × ');
+    }
+    return ex.answer;
   }
 
   function next() {
     currentType = pickType();
     currentSeed = Date.now();
     exercise = currentType.generate(currentSeed, getComplexity(currentType.id));
+    if (exercise.fields) {
+      userValues = exercise.fields.map(() => 0);
+    } else {
+      userValues = [];
+    }
     userAnswer = '';
     feedback = null;
   }
@@ -67,14 +84,40 @@
   </div>
 
   <div class="exercise-card">
-    <p class="prompt">{exercise.prompt}</p>
+    <p class="prompt">
+      {#if exercise.fields}
+        {_('exercise.primeFactorisation.prompt')} {exercise.prompt}
+      {:else}
+        {exercise.prompt}
+      {/if}
+    </p>
 
     {#if feedback === null}
-      <input type="text" class="answer-input" bind:value={userAnswer} bind:this={inputEl} />
+      {#if exercise.fields}
+        <div class="factorisation">
+          <span class="eq-left">=</span>
+          {#each exercise.fields as field, i (field.label)}
+            {#if i > 0}
+              <span class="times"> × </span>
+            {/if}
+            <span class="prime-term">
+              {field.label}<span class="exp-sym">^</span><input
+                type="number"
+                class="exp-input"
+                bind:value={userValues[i]}
+                min={0}
+                max={9}
+              />
+            </span>
+          {/each}
+        </div>
+      {:else}
+        <input type="text" class="answer-input" bind:value={userAnswer} bind:this={inputEl} />
+      {/if}
       <button class="action-btn" onclick={submit}>{_('answer.submit')}</button>
     {:else}
       <p class="feedback {feedback}">
-        {feedback === 'correct' ? _('feedback.correct') : _('feedback.incorrect', exercise.answer)}
+        {feedback === 'correct' ? _('feedback.correct') : _('feedback.incorrect', formatAnswer(exercise))}
       </p>
       <button class="action-btn" onclick={next}>{_('answer.next')}</button>
     {/if}
@@ -121,6 +164,41 @@
     font-size: 28px;
     font-weight: 600;
     margin: 0;
+  }
+  .factorisation {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 24px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .eq-left {
+    font-size: 24px;
+  }
+  .times {
+    font-size: 20px;
+    color: #666;
+  }
+  .prime-term {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 1px;
+  }
+  .exp-sym {
+    font-size: 18px;
+  }
+  .exp-input {
+    width: 40px;
+    text-align: center;
+    font-size: 20px;
+    padding: 4px 2px;
+    border: 2px solid #4caf50;
+    border-radius: 4px;
+  }
+  .exp-input:focus {
+    outline: 2px solid #2196f3;
+    border-color: transparent;
   }
   .answer-input {
     font-size: 24px;

@@ -21,7 +21,7 @@ describe('exercise selection', () => {
   it('always returns a valid exercise type id', () => {
     for (let seed = 0; seed < 100; seed++) {
       const id = pickExerciseTypeId('multiplication', seed);
-      expect(['multiplication', 'multiplicationMissingFactor']).toContain(id);
+      expect(['multiplication', 'multiplicationMissingFactor', 'primeFactorisation']).toContain(id);
     }
   });
 
