@@ -31,11 +31,17 @@
   }
 
   function handleKeydown(e: KeyboardEvent) {
-    if (e.key === 'Enter' && feedback === null) {
-      submit();
+    if (e.key === 'Enter') {
+      if (feedback === null) {
+        submit();
+      } else {
+        next();
+      }
     }
   }
 </script>
+
+<svelte:window onkeydown={handleKeydown} />
 
 <div class="exercise-screen">
   <button class="back-btn" onclick={onBack}>{_('back')}</button>
@@ -48,7 +54,6 @@
         type="text"
         class="answer-input"
         bind:value={userAnswer}
-        onkeydown={handleKeydown}
         bind:this={inputEl}
       />
       <button class="action-btn" onclick={submit}>{_('answer.submit')}</button>
