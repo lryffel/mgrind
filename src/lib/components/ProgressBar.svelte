@@ -8,7 +8,7 @@
 
 <style>
   .progress-bar {
-    width: 100%;
+    width: 300px;
     height: 12px;
     background: #e5e4e7;
     border-radius: 6px;
@@ -16,7 +16,7 @@
   }
   .progress-fill {
     height: 100%;
-    background: #4caf50;
+    background: #ff88ff;
     border-radius: 6px;
     transition: width 0.3s ease;
   }
