@@ -1,1 +1,16 @@
 Don't infer design decisions.
+
+- `npm run dev` — dev server
+- `npm run build` — production build
+- `npm run preview` — preview production build
+- `npm run check` — typecheck (svelte-check + tsc)
+- No lint, no test, no formatter configured
+
+- Svelte 5 runes: `$state`, `$derived`, `$effect`, `$props`, `mount`
+- i18n: `_('key')` from `src/lib/i18n.svelte.ts`; lang persisted in localStorage
+- Progress: `src/lib/progress.svelte.ts`; persisted in localStorage
+- Exercise types: `{ generate(seed, complexity): Exercise, validate(answer, exercise): boolean }`
+  — register in `src/lib/data/exerciseTypes.ts`
+- Disciplines: array in `src/lib/data/disciplines.ts`
+- Exercises use deterministic PRNG (`mulberry32`); seed = `Date.now()`
+- `CONCEPT.md` describes the app design — use it for guidance, don't infer

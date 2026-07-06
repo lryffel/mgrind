@@ -5,11 +5,15 @@
 
   let { exerciseType, onBack }: { exerciseType: ExerciseType; onBack: () => void } = $props();
 
-  let currentSeed = $state(Date.now());
+  let currentSeed = Date.now();
   let userAnswer = $state('');
   let feedback = $state<'correct' | 'incorrect' | null>(null);
   let inputEl: HTMLInputElement | undefined = $state();
-  let exercise = $state(exerciseType.generate(currentSeed, getComplexity(exerciseType.id)));
+  let exercise = $state(initExercise());
+
+  function initExercise() {
+    return exerciseType.generate(currentSeed, getComplexity(exerciseType.id));
+  }
 
   $effect(() => {
     if (feedback === null) {
