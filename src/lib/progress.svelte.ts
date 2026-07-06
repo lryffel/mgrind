@@ -23,15 +23,15 @@ export function initProgress() {
 }
 
 export function getComplexity(typeId: string): number {
-  return progress[typeId] ?? 1;
+  return progress[typeId] ?? 0;
 }
 
 export function updateProgress(typeId: string, correct: boolean, maxComplexity: number): number {
-  let current = progress[typeId] ?? 1;
+  let current = progress[typeId] ?? 0;
   if (correct) {
     current = Math.min(current + 1, maxComplexity);
   } else {
-    current = Math.max(current - 1, 1);
+    current = Math.max(current - 1, 0);
   }
   progress[typeId] = current;
   persist();
