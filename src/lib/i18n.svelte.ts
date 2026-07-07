@@ -15,6 +15,16 @@ const dict = {
   'discipline.fractions.name': { en: 'Fractions', de: 'Bruchrechnen' },
   'exercise.simplifyFraction.name': { en: 'Simplify Fractions', de: 'Brüche kürzen' },
   'exercise.simplifyFraction.desc': { en: 'Simplify fractions to their lowest terms', de: 'Kürze Brüche vollständig' },
+  'exercise.additionFraction.name': { en: 'Adding Fractions', de: 'Brüche addieren' },
+  'exercise.additionFraction.desc': { en: 'Add fractions and simplify', de: 'Addiere und kürze Brüche' },
+  'exercise.additionFraction.prompt': { en: 'Add and simplify', de: 'Addiere und kürze' },
+  'exercise.subtractionFraction.name': { en: 'Subtracting Fractions', de: 'Brüche subtrahieren' },
+  'exercise.subtractionFraction.desc': { en: 'Subtract fractions and simplify', de: 'Subtrahiere und kürze Brüche' },
+  'exercise.subtractionFraction.prompt': { en: 'Subtract and simplify', de: 'Subtrahiere und kürze' },
+  'feedback.negativeDenominator': {
+    en: 'Signs should be put in the numerator if possible: {0}',
+    de: 'Vorzeichen sollten wenn möglich in den Zähler platziert werden: {0}',
+  },
   'exercise.simplifyFraction.prompt': { en: 'Simplify', de: 'Kürze' },
   'exercise.primeFactorisation.prompt': {
     en: 'Find the prime decomposition of',

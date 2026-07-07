@@ -9,6 +9,6 @@ export const disciplines: Discipline[] = [
   {
     id: 'fractions',
     nameKey: 'discipline.fractions.name',
-    exerciseTypeIds: ['simplifyFraction'],
+    exerciseTypeIds: ['simplifyFraction', 'additionFraction', 'subtractionFraction'],
   },
 ];
