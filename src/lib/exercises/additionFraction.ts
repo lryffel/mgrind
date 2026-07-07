@@ -37,7 +37,9 @@ export function generateAdditionFraction(seed: number, complexity: number): Exer
   for (let attempt = 0; attempt < 100; attempt++) {
     n1 = 1 + Math.floor(rng() * (totalNum - 2));
     n2 = totalNum - n1;
-    if (gcd(n1, commonDen) > 1 || gcd(n2, commonDen) > 1) break;
+    const g1 = gcd(n1, commonDen);
+    const g2 = gcd(n2, commonDen);
+    if ((g1 > 1 || g2 > 1) && (commonDen / g1) !== (commonDen / g2)) break;
   }
 
   const g1 = gcd(n1, commonDen);
