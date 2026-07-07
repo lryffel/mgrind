@@ -1,25 +1,52 @@
-*,
-*::before,
-*::after {
-  box-sizing: border-box;
+#app > header,
+#app > main,
+#app > footer {
+  --pico-spacing: 1rem;
 }
 
-:root {
-  font-family: system-ui, 'Segoe UI', Roboto, sans-serif;
-  font-size: 16px;
-  line-height: 1.5;
-  color: #333;
-  background: #f9f9f9;
+.factorisation {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 1.25rem;
+  flex-wrap: wrap;
+  justify-content: center;
 }
 
-body {
+.factorisation .eq-left {
+  font-size: 1.25rem;
+}
+
+.factorisation .times {
+  font-size: 1rem;
+  opacity: 0.6;
+}
+
+.factorisation .prime-term {
+  display: inline-flex;
+  align-items: center;
+  gap: 1px;
+}
+
+.factorisation .exp-sym {
+  font-size: 0.9rem;
+}
+
+.factorisation .exp-input {
+  width: 4rem;
+  text-align: center;
+}
+
+.feedback {
+  font-size: 1.125rem;
+  font-weight: 500;
   margin: 0;
 }
 
-#app {
-  max-width: 800px;
-  margin: 0 auto;
-  min-height: 100dvh;
-  background: #fff;
-  box-shadow: 0 0 20px rgba(0, 0, 0, 0.05);
+.feedback.correct {
+  color: var(--pico-ins-color);
+}
+
+.feedback.incorrect {
+  color: var(--pico-del-color);
 }
