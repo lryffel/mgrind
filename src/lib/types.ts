@@ -1,12 +1,10 @@
-export interface ExerciseField {
-  label: string;
-}
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export type ExerciseComponent = (...args: any[]) => any;
 
 export interface Exercise {
   prompt: string;
   answer: string;
-  fields?: ExerciseField[];
-  display?: 'fraction';
+  data?: Record<string, unknown>;
 }
 
 export interface ExerciseType {
@@ -16,6 +14,7 @@ export interface ExerciseType {
   maxComplexity: number;
   generate: (seed: number, complexity: number) => Exercise;
   validate: (answer: string, exercise: Exercise) => boolean;
+  component: ExerciseComponent;
 }
 
 export interface Discipline {

@@ -62,11 +62,11 @@ export function generatePrimeFactorisation(seed: number, complexity: number): Ex
       return {
         prompt: String(n),
         answer: exponents.join(','),
-        fields: primes.map((p) => ({ label: String(p) })),
+        data: { primes },
       };
     }
   }
 
   const exponents = primes.map(() => 0);
-  return { prompt: '0', answer: exponents.join(','), fields: primes.map((p) => ({ label: String(p) })) };
+  return { prompt: '0', answer: exponents.join(','), data: { primes } };
 }

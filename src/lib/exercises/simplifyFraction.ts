@@ -36,7 +36,5 @@ export function generateSimplifyFraction(seed: number, complexity: number): Exer
   return {
     prompt: `${numerator}/${denominator}`,
     answer: `${a},${b}`,
-    fields: [{ label: '' }, { label: '' }],
-    display: 'fraction',
   };
 }

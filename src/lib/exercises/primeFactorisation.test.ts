@@ -1,19 +1,22 @@
 import { describe, it, expect } from 'vitest';
 import { generatePrimeFactorisation } from './primeFactorisation';
 
-function computeProduct(ex: { prompt: string; answer: string; fields?: { label: string }[] }): number {
+function getPrimes(ex: { data?: Record<string, unknown> }): number[] {
+  return (ex.data?.primes as number[]) ?? [];
+}
+
+function computeProduct(ex: { prompt: string; answer: string; data?: Record<string, unknown> }): number {
   const exponents = ex.answer.split(',').map(Number);
-  const primes = ex.fields!.map((f) => Number(f.label));
+  const primes = getPrimes(ex);
   return primes.reduce((prod, p, i) => prod * Math.pow(p, exponents[i]), 1);
 }
 
 describe('generatePrimeFactorisation', () => {
-  it('returns a valid exercise with prompt, answer, and fields', () => {
+  it('returns a valid exercise with prompt, answer, and data.primes', () => {
     const ex = generatePrimeFactorisation(42, 0);
     expect(ex).toHaveProperty('prompt');
     expect(ex).toHaveProperty('answer');
-    expect(ex).toHaveProperty('fields');
-    expect(ex.fields).toHaveLength(3);
+    expect(ex.data?.primes).toHaveLength(3);
   });
 
   it('is deterministic for the same seed and complexity', () => {
@@ -58,7 +61,7 @@ describe('generatePrimeFactorisation', () => {
   it('complexity 0 uses primes 2, 3, 5 and result in [50, 100]', () => {
     for (let seed = 0; seed < 100; seed++) {
       const ex = generatePrimeFactorisation(seed, 0);
-      const labels = ex.fields!.map((f) => Number(f.label));
+      const labels = getPrimes(ex);
       const n = Number(ex.prompt);
       expect(labels).toEqual([2, 3, 5]);
       expect(n).toBeGreaterThanOrEqual(50);
@@ -78,7 +81,7 @@ describe('generatePrimeFactorisation', () => {
   it('complexity 2 uses primes 2,3,5,7 and result in [150, 300]', () => {
     for (let seed = 0; seed < 100; seed++) {
       const ex = generatePrimeFactorisation(seed, 2);
-      const labels = ex.fields!.map((f) => Number(f.label));
+      const labels = getPrimes(ex);
       const n = Number(ex.prompt);
       expect(labels).toEqual([2, 3, 5, 7]);
       expect(n).toBeGreaterThanOrEqual(150);
@@ -98,7 +101,7 @@ describe('generatePrimeFactorisation', () => {
   it('complexity 4 uses primes 2,3,5,7,11 and result in [250, 500]', () => {
     for (let seed = 0; seed < 100; seed++) {
       const ex = generatePrimeFactorisation(seed, 4);
-      const labels = ex.fields!.map((f) => Number(f.label));
+      const labels = getPrimes(ex);
       const n = Number(ex.prompt);
       expect(labels).toEqual([2, 3, 5, 7, 11]);
       expect(n).toBeGreaterThanOrEqual(250);
@@ -109,7 +112,7 @@ describe('generatePrimeFactorisation', () => {
   it('complexity 5 uses primes 2,3,5,7,11,13 and result in [300, 600]', () => {
     for (let seed = 0; seed < 100; seed++) {
       const ex = generatePrimeFactorisation(seed, 5);
-      const labels = ex.fields!.map((f) => Number(f.label));
+      const labels = getPrimes(ex);
       const n = Number(ex.prompt);
       expect(labels).toEqual([2, 3, 5, 7, 11, 13]);
       expect(n).toBeGreaterThanOrEqual(300);
@@ -156,7 +159,7 @@ describe('generatePrimeFactorisation', () => {
   it('complexity 10 uses primes 2,3,5,7,11,13,17 and result in [500, 1000]', () => {
     for (let seed = 0; seed < 100; seed++) {
       const ex = generatePrimeFactorisation(seed, 10);
-      const labels = ex.fields!.map((f) => Number(f.label));
+      const labels = getPrimes(ex);
       const n = Number(ex.prompt);
       expect(labels).toEqual([2, 3, 5, 7, 11, 13, 17]);
       expect(n).toBeGreaterThanOrEqual(500);
@@ -164,11 +167,11 @@ describe('generatePrimeFactorisation', () => {
     }
   });
 
-  it('answer format is comma-separated exponents matching field count', () => {
+  it('answer format is comma-separated exponents matching prime count', () => {
     for (let seed = 0; seed < 50; seed++) {
       const ex = generatePrimeFactorisation(seed, 6);
       const parts = ex.answer.split(',');
-      expect(parts).toHaveLength(ex.fields!.length);
+      expect(parts).toHaveLength(getPrimes(ex).length);
       parts.forEach((p) => {
         const n = Number(p);
         expect(Number.isInteger(n)).toBe(true);
@@ -193,6 +196,6 @@ describe('generatePrimeFactorisation', () => {
 
   it('handles complexity beyond 10 by clamping', () => {
     const ex = generatePrimeFactorisation(42, 20);
-    expect(ex.fields).toHaveLength(7);
+    expect(ex.data?.primes).toHaveLength(7);
   });
 });

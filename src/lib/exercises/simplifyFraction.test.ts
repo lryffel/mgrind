@@ -9,13 +9,10 @@ function gcd(a: number, b: number): number {
 }
 
 describe('generateSimplifyFraction', () => {
-  it('returns a valid exercise with prompt, answer, fields, and display', () => {
+  it('returns a valid exercise with prompt and answer', () => {
     const ex = generateSimplifyFraction(42, 0);
     expect(ex).toHaveProperty('prompt');
     expect(ex).toHaveProperty('answer');
-    expect(ex).toHaveProperty('fields');
-    expect(ex.fields).toHaveLength(2);
-    expect(ex.display).toBe('fraction');
   });
 
   it('is deterministic for the same seed and complexity', () => {
@@ -106,6 +103,6 @@ describe('generateSimplifyFraction', () => {
 
   it('handles complexity below 0 by clamping', () => {
     const ex = generateSimplifyFraction(42, -5);
-    expect(ex.display).toBe('fraction');
+    expect(ex.answer.split(',')).toHaveLength(2);
   });
 });
