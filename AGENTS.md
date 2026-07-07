@@ -21,3 +21,7 @@ Don't infer design decisions.
 - Disciplines: array in `src/lib/data/disciplines.ts`
 - Exercises use deterministic PRNG (`mulberry32`); seed = `Date.now()`
 - `CONCEPT.md` describes the app design — use it for guidance, don't infer
+
+- `@picocss/pico` v2 is the only dependency — drive visual design through Pico classes (`role="group"`, `outline`, `<progress>`) before writing custom CSS
+- `Exercise.fields` (optional `ExerciseField[]`) provides multi-input answer mode for prime factorisation; `null` → single text input, present → multiple number inputs
+- Interactive `<article>` cards use `<!-- svelte-ignore a11y_no_noninteractive_tabindex -->` and `a11y_no_noninteractive_element_interactions` comments to suppress Svelte a11y warnings
