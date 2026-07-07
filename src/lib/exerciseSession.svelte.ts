@@ -3,6 +3,7 @@ import { exerciseTypes } from './data/exerciseTypes';
 import { disciplines } from './data/disciplines';
 import { mulberry32 } from './prng';
 import { getComplexity, updateProgress } from './progress.svelte';
+import { getEnabledTypeIds } from './disabledTypes.svelte';
 
 export class ExerciseSession {
   disciplineId = $state('');
@@ -24,9 +25,14 @@ export class ExerciseSession {
 
   next() {
     const discipline = disciplines.find((d) => d.id === this.disciplineId)!;
-    const rng = mulberry32(Date.now());
-    const index = Math.floor(rng() * discipline.exerciseTypeIds.length);
-    this.currentType = exerciseTypes[discipline.exerciseTypeIds[index]];
+    const typeIds = getEnabledTypeIds(discipline);
+    if (typeIds.length === 0) {
+      this.currentType = exerciseTypes[discipline.exerciseTypeIds[0]];
+    } else {
+      const rng = mulberry32(Date.now());
+      const index = Math.floor(rng() * typeIds.length);
+      this.currentType = exerciseTypes[typeIds[index]];
+    }
     this.currentSeed = Date.now();
     this.exercise = this.currentType.generate(this.currentSeed, getComplexity(this.currentType.id));
     this.feedback = null;

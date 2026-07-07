@@ -41,6 +41,8 @@ const dict = {
   back: { en: 'Back', de: 'Zurück' },
   'lang.switch': { en: 'DE', de: 'EN' },
   'select.discipline': { en: 'Select a discipline', de: 'Wähle eine Disziplin' },
+  exerciseTypes: { en: 'Exercise Types', de: 'Übungstypen' },
+  'exerciseTypes.someDisabled': { en: 'Some disabled', de: 'Einige deaktiviert' },
 } satisfies Record<string, Record<Lang, string>>;
 
 export const state = $state({ lang: 'en' as Lang });
