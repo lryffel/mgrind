@@ -1,5 +1,6 @@
 <script lang="ts">
   import { _ } from '../../i18n.svelte';
+  import { tick } from 'svelte';
   import type { Exercise } from '../../types';
 
   let {
@@ -17,9 +18,18 @@
   let primes = $derived((exercise as any).data?.primes as number[] | undefined ?? []);
   // eslint-disable-next-line svelte/prefer-writable-derived
   let values = $state<number[]>([]);
+  let factorisationEl = $state<HTMLDivElement>();
 
   $effect(() => {
     values = primes.map(() => 0);
+  });
+
+  $effect(() => {
+    if (feedback === null) {
+      const el = factorisationEl?.querySelector<HTMLInputElement>('.exp-input');
+      el?.focus();
+      tick().then(() => el?.select());
+    }
   });
 
   function formatCorrectAnswer(): string {
@@ -45,7 +55,7 @@
 </p>
 
 {#if feedback === null}
-  <div class="factorisation">
+  <div class="factorisation" bind:this={factorisationEl}>
     <span>=</span>
     {#each primes as prime, i (prime)}
       {#if i > 0}

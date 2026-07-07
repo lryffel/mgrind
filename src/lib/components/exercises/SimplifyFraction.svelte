@@ -14,8 +14,8 @@
     feedback: 'correct' | 'incorrect' | null;
   } = $props();
 
-  let numInput = $state(0);
-  let denInput = $state(0);
+  let numInput = $state('');
+  let denInput = $state('');
   let numInputEl = $state<HTMLInputElement>();
 
   let numDen = $derived(exercise.prompt.split('/'));
@@ -51,14 +51,15 @@
     <span class="equals">=</span>
     <span class="fraction-answer-inline">
       <input
-        type="number"
+        type="text"
+        inputmode="numeric"
+        pattern="[0-9]*"
         class="fraction-num"
         bind:value={numInput}
-        min={1}
         bind:this={numInputEl}
       />
       <span class="fraction-bar"></span>
-      <input type="number" class="fraction-den" bind:value={denInput} min={1} />
+      <input type="text" inputmode="numeric" pattern="[0-9]*" class="fraction-den" bind:value={denInput} />
     </span>
   </p>
   <div class="submit-row">

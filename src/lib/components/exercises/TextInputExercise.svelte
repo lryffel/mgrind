@@ -15,6 +15,13 @@
   } = $props();
 
   let userInput = $state('');
+  let inputEl = $state<HTMLInputElement>();
+
+  $effect(() => {
+    if (feedback === null) {
+      inputEl?.focus();
+    }
+  });
 
   function handleKeydown(e: KeyboardEvent) {
     if (e.key === 'Enter') {
@@ -29,14 +36,34 @@
 
 <svelte:window onkeydown={handleKeydown} />
 
-<p class="prompt">{exercise.prompt}</p>
-
 {#if feedback === null}
-  <div role="group" class="answer-row">
-    <input type="text" class="answer-input" bind:value={userInput} />
-    <button onclick={() => onSubmit(userInput.trim())}>{_('answer.submit')}</button>
-  </div>
+  {#if exercise.prompt.includes('?')}
+    {@const parts = exercise.prompt.split('?')}
+    <p class="prompt">
+      {parts[0]}<input
+        type="text"
+        class="inline-input"
+        bind:value={userInput}
+        bind:this={inputEl}
+      />{parts[1]}
+    </p>
+    <div class="submit-row">
+      <button onclick={() => onSubmit(userInput.trim())}>{_('answer.submit')}</button>
+    </div>
+  {:else}
+    <p class="prompt">{exercise.prompt}</p>
+    <div role="group" class="answer-row">
+      <input type="text" class="answer-input" bind:value={userInput} bind:this={inputEl} />
+      <button onclick={() => onSubmit(userInput.trim())}>{_('answer.submit')}</button>
+    </div>
+  {/if}
 {:else}
+  {#if exercise.prompt.includes('?')}
+    {@const parts = exercise.prompt.split('?')}
+    <p class="prompt">{parts[0]}{userInput}{parts[1]}</p>
+  {:else}
+    <p class="prompt">{exercise.prompt}</p>
+  {/if}
   <div class="feedback-row">
     <p class="feedback {feedback}">
       {feedback === 'correct' ? _('feedback.correct') : _('feedback.incorrect', exercise.answer)}
@@ -61,6 +88,11 @@
 
   .answer-input {
     width: 150px;
+    text-align: center;
+  }
+
+  .inline-input {
+    width: 5rem;
     text-align: center;
   }
 
