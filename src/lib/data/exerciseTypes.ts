@@ -5,11 +5,13 @@ import { generatePrimeFactorisation } from '../exercises/primeFactorisation';
 import { generateAdditionFraction } from '../exercises/additionFraction';
 import { generateSimplifyFraction } from '../exercises/simplifyFraction';
 import { generateSubtractionFraction } from '../exercises/subtractionFraction';
+import { generateMultiplicationFraction } from '../exercises/multiplicationFraction';
 import TextInputExercise from '../components/exercises/TextInputExercise.svelte';
 import PrimeFactorisation from '../components/exercises/PrimeFactorisation.svelte';
 import SimplifyFraction from '../components/exercises/SimplifyFraction.svelte';
 import BinaryFractionExercise from '../components/exercises/BinaryFractionExercise.svelte';
 import SubtractionFraction from '../components/exercises/SubtractionFraction.svelte';
+import MultiplicationFraction from '../components/exercises/MultiplicationFraction.svelte';
 
 function trimCompare(answer: string, exercise: Exercise): boolean {
   return answer.trim() === exercise.answer;
@@ -79,5 +81,14 @@ export const exerciseTypes: Record<string, ExerciseType> = {
     generate: generateSubtractionFraction,
     validate: validateSubtractionFraction,
     component: SubtractionFraction,
+  },
+  multiplicationFraction: {
+    id: 'multiplicationFraction',
+    nameKey: 'exercise.multiplicationFraction.name',
+    descriptionKey: 'exercise.multiplicationFraction.desc',
+    maxComplexity: 10,
+    generate: generateMultiplicationFraction,
+    validate: trimCompare,
+    component: MultiplicationFraction,
   },
 };

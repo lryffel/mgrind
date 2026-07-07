@@ -21,6 +21,9 @@ const dict = {
   'exercise.subtractionFraction.name': { en: 'Subtracting Fractions', de: 'Brüche subtrahieren' },
   'exercise.subtractionFraction.desc': { en: 'Subtract fractions and simplify', de: 'Subtrahiere und kürze Brüche' },
   'exercise.subtractionFraction.prompt': { en: 'Subtract and simplify', de: 'Subtrahiere und kürze' },
+  'exercise.multiplicationFraction.name': { en: 'Multiplying Fractions', de: 'Brüche multiplizieren' },
+  'exercise.multiplicationFraction.desc': { en: 'Multiply fractions and simplify', de: 'Multipliziere und kürze Brüche' },
+  'exercise.multiplicationFraction.prompt': { en: 'Multiply and simplify', de: 'Multipliziere und kürze' },
   'feedback.negativeDenominator': {
     en: 'Signs should be put in the numerator if possible: {0}',
     de: 'Vorzeichen sollten wenn möglich in den Zähler platziert werden: {0}',
