@@ -1,75 +1,30 @@
 <script lang="ts">
-  import type { ExerciseType, Discipline, Exercise } from '../types';
+  import type { Discipline } from '../types';
   import { _ } from '../i18n.svelte';
-  import { getComplexity, getDisciplineProgress, updateProgress } from '../progress.svelte';
+  import { getDisciplineProgress } from '../progress.svelte';
   import { exerciseTypes } from '../data/exerciseTypes';
   import { disciplines } from '../data/disciplines';
-  import { pickExerciseTypeId } from '../exerciseSelection';
-  import ProgressBar from './ProgressBar.svelte';
+  import { ExerciseSession } from '../exerciseSession.svelte';
 
   let { disciplineId, onBack }: { disciplineId: string; onBack: () => void } = $props();
 
   let discipline = $derived(disciplines.find((d: Discipline) => d.id === disciplineId)!);
   let disciplineProgress = $derived(getDisciplineProgress(discipline, exerciseTypes));
-
-  function pickType(): ExerciseType {
-    return exerciseTypes[pickExerciseTypeId(disciplineId)];
-  }
-
-  let currentType = $state(pickType());
-  let currentSeed = Date.now();
-  let userAnswer = $state('');
-  let userValues = $state<number[]>([]);
-  let feedback = $state<'correct' | 'incorrect' | null>(null);
+  let session = $derived(new ExerciseSession(disciplineId));
   let inputEl: HTMLInputElement | undefined = $state();
-  let exercise = $state(initExercise());
-
-  function initExercise() {
-    const ex = currentType.generate(currentSeed, getComplexity(currentType.id));
-    if (ex.fields) userValues = ex.fields.map(() => 0);
-    return ex;
-  }
 
   $effect(() => {
-    if (feedback === null && !exercise.fields) {
+    if (session.feedback === null && !session.exercise.fields) {
       inputEl?.focus();
     }
   });
 
-  function submit() {
-    const answer = exercise.fields ? userValues.join(',') : userAnswer;
-    const correct = currentType.validate(answer, exercise);
-    updateProgress(currentType.id, correct, currentType.maxComplexity);
-    feedback = correct ? 'correct' : 'incorrect';
-  }
-
-  function formatAnswer(ex: Exercise): string {
-    if (ex.fields) {
-      const parts = ex.answer.split(',').map((e, i) => `${ex.fields![i].label}^${e}`);
-      return parts.join(' × ');
-    }
-    return ex.answer;
-  }
-
-  function next() {
-    currentType = pickType();
-    currentSeed = Date.now();
-    exercise = currentType.generate(currentSeed, getComplexity(currentType.id));
-    if (exercise.fields) {
-      userValues = exercise.fields.map(() => 0);
-    } else {
-      userValues = [];
-    }
-    userAnswer = '';
-    feedback = null;
-  }
-
   function handleKeydown(e: KeyboardEvent) {
     if (e.key === 'Enter') {
-      if (feedback === null) {
-        submit();
+      if (session.feedback === null) {
+        session.submit();
       } else {
-        next();
+        session.next();
       }
     }
   }
@@ -82,32 +37,32 @@
     <li><button class="outline" onclick={onBack}>{_('back')}</button></li>
   </ul>
   <ul>
-    <li><ProgressBar value={disciplineProgress} /></li>
+    <li><progress value={disciplineProgress} max={1}>{(disciplineProgress * 100).toFixed(0)}%</progress></li>
   </ul>
 </nav>
 
 <article>
   <p class="prompt">
-    {#if exercise.fields}
-      {_('exercise.primeFactorisation.prompt')} {exercise.prompt}
+    {#if session.exercise.fields}
+      {_('exercise.primeFactorisation.prompt')} {session.exercise.prompt}
     {:else}
-      {exercise.prompt}
+      {session.exercise.prompt}
     {/if}
   </p>
 
-  {#if feedback === null}
-    {#if exercise.fields}
+  {#if session.feedback === null}
+    {#if session.exercise.fields}
       <div class="factorisation">
-        <span class="eq-left">=</span>
-        {#each exercise.fields as field, i (field.label)}
+        <span>=</span>
+        {#each session.exercise.fields as field, i (field.label)}
           {#if i > 0}
-            <span class="times"> × </span>
+            <span class="times"> &times; </span>
           {/if}
           <span class="prime-term">
             {field.label}<span class="exp-sym">^</span><input
               type="number"
               class="exp-input"
-              bind:value={userValues[i]}
+              bind:value={session.userValues[i]}
               min={0}
               max={9}
             />
@@ -115,20 +70,20 @@
         {/each}
       </div>
       <div class="submit-row">
-        <button onclick={submit}>{_('answer.submit')}</button>
+        <button onclick={() => session.submit()}>{_('answer.submit')}</button>
       </div>
     {:else}
       <div role="group" class="answer-row">
-        <input type="text" class="answer-input" bind:value={userAnswer} bind:this={inputEl} />
-        <button onclick={submit}>{_('answer.submit')}</button>
+        <input type="text" class="answer-input" bind:value={session.userAnswer} bind:this={inputEl} />
+        <button onclick={() => session.submit()}>{_('answer.submit')}</button>
       </div>
     {/if}
   {:else}
     <div class="feedback-row">
-      <p class="feedback {feedback}">
-        {feedback === 'correct' ? _('feedback.correct') : _('feedback.incorrect', formatAnswer(exercise))}
+      <p class="feedback {session.feedback}">
+        {session.feedback === 'correct' ? _('feedback.correct') : _('feedback.incorrect', session.formatAnswer(session.exercise))}
       </p>
-      <button onclick={next}>{_('answer.next')}</button>
+      <button onclick={() => session.next()}>{_('answer.next')}</button>
     </div>
   {/if}
 </article>
@@ -155,5 +110,48 @@
   .answer-input {
     width: 150px;
     text-align: center;
+  }
+
+  .factorisation {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 1.25rem;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .factorisation .times {
+    font-size: 1rem;
+    opacity: 0.6;
+  }
+
+  .factorisation .prime-term {
+    display: inline-flex;
+    align-items: center;
+    gap: 1px;
+  }
+
+  .factorisation .exp-sym {
+    font-size: 0.9rem;
+  }
+
+  .factorisation .exp-input {
+    width: 4rem;
+    text-align: center;
+  }
+
+  .feedback {
+    font-size: 1.125rem;
+    font-weight: 500;
+    margin: 0;
+  }
+
+  .feedback.correct {
+    color: var(--pico-ins-color);
+  }
+
+  .feedback.incorrect {
+    color: var(--pico-del-color);
   }
 </style>

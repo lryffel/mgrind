@@ -1,7 +1,7 @@
 import { describe, it, expect, beforeEach } from 'vitest';
 import { progress, initProgress, getComplexity, updateProgress, getDisciplineProgress } from './progress.svelte';
 import { exerciseTypes } from './data/exerciseTypes';
-import type { Discipline, ExerciseType } from './types';
+import type { Discipline } from './types';
 
 beforeEach(() => {
   for (const key in progress) {

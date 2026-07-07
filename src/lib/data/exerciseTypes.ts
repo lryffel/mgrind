@@ -1,7 +1,11 @@
-import type { ExerciseType } from '../types';
+import type { Exercise, ExerciseType } from '../types';
 import { generateMultiplication } from '../exercises/multiplication';
 import { generateMultiplicationMissingFactor } from '../exercises/multiplicationMissingFactor';
 import { generatePrimeFactorisation } from '../exercises/primeFactorisation';
+
+function trimCompare(answer: string, exercise: Exercise): boolean {
+  return answer.trim() === exercise.answer;
+}
 
 export const exerciseTypes: Record<string, ExerciseType> = {
   multiplication: {
@@ -10,7 +14,7 @@ export const exerciseTypes: Record<string, ExerciseType> = {
     descriptionKey: 'exercise.multiplication.desc',
     maxComplexity: 10,
     generate: generateMultiplication,
-    validate: (answer, exercise) => answer.trim() === exercise.answer,
+    validate: trimCompare,
   },
   multiplicationMissingFactor: {
     id: 'multiplicationMissingFactor',
@@ -18,7 +22,7 @@ export const exerciseTypes: Record<string, ExerciseType> = {
     descriptionKey: 'exercise.multiplicationMissingFactor.desc',
     maxComplexity: 10,
     generate: generateMultiplicationMissingFactor,
-    validate: (answer, exercise) => answer.trim() === exercise.answer,
+    validate: trimCompare,
   },
   primeFactorisation: {
     id: 'primeFactorisation',
@@ -26,6 +30,6 @@ export const exerciseTypes: Record<string, ExerciseType> = {
     descriptionKey: 'exercise.primeFactorisation.desc',
     maxComplexity: 10,
     generate: generatePrimeFactorisation,
-    validate: (answer, exercise) => answer.trim() === exercise.answer,
+    validate: trimCompare,
   },
 };
