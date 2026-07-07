@@ -89,7 +89,7 @@
     gap: 0;
     padding: 0.5rem 0;
   }
-  .type-row {
+  .type-row[role="button"] {
     display: flex;
     align-items: center;
     gap: 0.5rem;
@@ -99,6 +99,7 @@
     text-align: left;
     background: none;
     border: none;
+    color: inherit;
   }
   .type-row:hover {
     background: var(--pico-table-row-stripped-background, rgba(0,0,0,0.03));
@@ -109,6 +110,7 @@
   }
   .type-name {
     flex: 0 0 10rem;
+    color: var(--pico-color);
   }
   .type-row progress {
     flex: 1;
