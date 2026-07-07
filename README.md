@@ -31,7 +31,7 @@ Opens a dev server with hot reload at `http://localhost:5173`.
 
 ## Deploy to GitHub Pages
 
-Every push to `main` triggers a [GitHub Actions](https://github.com/lryffel/mgrind/actions) workflow that builds the app and deploys it to GitHub Pages.
+Every push to `main` triggers a GitHub Actions workflow that builds the app and deploys it to GitHub Pages.
 
 ### One-time setup
 
@@ -39,7 +39,7 @@ Every push to `main` triggers a [GitHub Actions](https://github.com/lryffel/mgri
 2. Under **Source**, select **GitHub Actions**.
 3. Push to `main` — the workflow deploys automatically.
 
-The site will be available at `https://lryffel.github.io/mgrind/`.
+The site will be available at `https://(username).github.io/(reponame)`.
 
 ### Manual deploy
 
