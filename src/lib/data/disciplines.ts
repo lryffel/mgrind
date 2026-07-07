@@ -6,4 +6,9 @@ export const disciplines: Discipline[] = [
     nameKey: 'discipline.multiplication.name',
     exerciseTypeIds: ['multiplication', 'multiplicationMissingFactor', 'primeFactorisation'],
   },
+  {
+    id: 'fractions',
+    nameKey: 'discipline.fractions.name',
+    exerciseTypeIds: ['simplifyFraction'],
+  },
 ];

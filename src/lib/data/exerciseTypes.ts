@@ -2,6 +2,7 @@ import type { Exercise, ExerciseType } from '../types';
 import { generateMultiplication } from '../exercises/multiplication';
 import { generateMultiplicationMissingFactor } from '../exercises/multiplicationMissingFactor';
 import { generatePrimeFactorisation } from '../exercises/primeFactorisation';
+import { generateSimplifyFraction } from '../exercises/simplifyFraction';
 
 function trimCompare(answer: string, exercise: Exercise): boolean {
   return answer.trim() === exercise.answer;
@@ -30,6 +31,14 @@ export const exerciseTypes: Record<string, ExerciseType> = {
     descriptionKey: 'exercise.primeFactorisation.desc',
     maxComplexity: 10,
     generate: generatePrimeFactorisation,
+    validate: trimCompare,
+  },
+  simplifyFraction: {
+    id: 'simplifyFraction',
+    nameKey: 'exercise.simplifyFraction.name',
+    descriptionKey: 'exercise.simplifyFraction.desc',
+    maxComplexity: 10,
+    generate: generateSimplifyFraction,
     validate: trimCompare,
   },
 };

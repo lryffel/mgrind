@@ -12,6 +12,10 @@ const dict = {
   },
   'exercise.primeFactorisation.name': { en: 'Prime Factorisation', de: 'Primfaktorzerlegung' },
   'exercise.primeFactorisation.desc': { en: 'Find the prime decomposition', de: 'Bestimme die Primfaktorzerlegung' },
+  'discipline.fractions.name': { en: 'Fractions', de: 'Bruchrechnen' },
+  'exercise.simplifyFraction.name': { en: 'Simplify Fractions', de: 'Brüche kürzen' },
+  'exercise.simplifyFraction.desc': { en: 'Simplify fractions to their lowest terms', de: 'Kürze Brüche vollständig' },
+  'exercise.simplifyFraction.prompt': { en: 'Simplify', de: 'Kürze' },
   'exercise.primeFactorisation.prompt': {
     en: 'Find the prime decomposition of',
     de: 'Bestimme die Primfaktorzerlegung von',

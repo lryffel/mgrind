@@ -26,6 +26,10 @@ export class ExerciseSession {
   }
 
   formatAnswer(ex: Exercise): string {
+    if (ex.display === 'fraction') {
+      const [num, den] = ex.answer.split(',');
+      return `${num}/${den}`;
+    }
     if (ex.fields) {
       const parts = ex.answer.split(',').map((e, i) => `${ex.fields![i].label}^${e}`);
       return parts.join(' × ');

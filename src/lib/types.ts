@@ -6,6 +6,7 @@ export interface Exercise {
   prompt: string;
   answer: string;
   fields?: ExerciseField[];
+  display?: 'fraction';
 }
 
 export interface ExerciseType {
