@@ -19,9 +19,3 @@
   {theme === 'light' ? '☾' : '☀'}
 </button>
 
-<style>
-  button {
-    width: 2.5rem;
-    text-align: center;
-  }
-</style>

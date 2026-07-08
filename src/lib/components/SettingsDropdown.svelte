@@ -86,10 +86,9 @@
     margin-top: 0.25rem;
     padding: 0.25rem 0;
     list-style: none;
-    background: var(--pico-card-background-color, #fff);
-    border: 1px solid var(--pico-card-border-color, #ddd);
-    border-radius: var(--pico-border-radius, 0.5rem);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    background: var(--pico-card-background-color);
+    border: 1px solid var(--pico-card-border-color);
+    border-radius: var(--pico-border-radius);
   }
 
   .dropdown-menu li {
@@ -105,6 +104,6 @@
   }
 
   .dropdown-menu li button.danger {
-    color: var(--pico-del-color, #c0392b);
+    color: var(--pico-del-color);
   }
 </style>

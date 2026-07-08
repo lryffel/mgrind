@@ -228,7 +228,7 @@
   }
 
   .feedback.warning {
-    color: var(--pico-warning-color, #f0a000);
+    color: var(--pico-warning-color);
     font-size: 1rem;
   }
 </style>

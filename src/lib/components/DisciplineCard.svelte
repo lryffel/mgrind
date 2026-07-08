@@ -76,14 +76,13 @@
         {@const disabled = isDisabled(type.id)}
         {@const locked = !arePrerequisitesMet(type.id)}
         <div
-          class="type-row"
+          class="type-row outline"
           class:disabled={disabled && !locked}
           class:locked
           onclick={(e) => handleRowClick(e, type.id)}
           onkeydown={(e) => handleRowKeydown(e, type.id)}
           tabindex="0"
           role="button"
-          aria-pressed={!disabled && !locked}
         >
           <span class="type-name">{locked ? '🔒 ' : ''}{_(type.nameKey)}</span>
           <progress value={complexity / type.maxComplexity} max={1}></progress>
@@ -131,10 +130,10 @@
     cursor: pointer;
     padding: 0.25rem;
     line-height: 1;
-    color: var(--pico-muted-color, #888);
+    color: var(--pico-muted-color);
   }
   .gear-button.warning {
-    color: var(--pico-del-color, #c0392b);
+    color: var(--pico-del-color);
   }
   .card-footer {
     display: flex;
@@ -150,20 +149,17 @@
     gap: 0;
     padding: 0.5rem 0;
   }
-  .type-row[role='button'] {
+  .type-row {
     display: flex;
     align-items: center;
     gap: 0.5rem;
     padding: 0.25rem 0.5rem;
-    border-radius: var(--pico-border-radius, 0.25rem);
+    border-radius: var(--pico-border-radius);
     cursor: pointer;
-    text-align: left;
-    background: none;
-    border: none;
     color: inherit;
   }
   .type-row:hover {
-    background: var(--pico-table-row-stripped-background, rgba(0, 0, 0, 0.03));
+    background: var(--pico-table-row-stripped-background);
   }
   .type-row.disabled {
     opacity: 0.5;
@@ -183,10 +179,10 @@
     flex: 0 0 3rem;
     text-align: right;
     font-size: 0.8rem;
-    color: var(--pico-muted-color, #888);
+    color: var(--pico-muted-color);
   }
   .warning-text {
-    color: var(--pico-del-color, #c0392b);
+    color: var(--pico-del-color);
     font-size: 0.85rem;
   }
 </style>
