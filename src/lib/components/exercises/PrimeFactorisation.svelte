@@ -34,7 +34,11 @@
   });
 
   function formatCorrectAnswer(): string {
-    const parts = exercise.answer.split(',').map((e, i) => `${primes[i]}^{${e}}`);
+    const exponents = exercise.answer.split(',');
+    const parts = exponents
+      .map((e, i) => ({ prime: primes[i], exp: e }))
+      .filter(({ exp }) => exp !== '0')
+      .map(({ prime, exp }) => exp === '1' ? `${prime}` : `${prime}^{${exp}}`);
     return parts.join(' \\cdot ');
   }
 
@@ -77,10 +81,17 @@
   <div class="submit-row">
     <button onclick={() => onSubmit(values.join(','))}>{_('answer.submit')}</button>
   </div>
+{:else if feedback === 'correct'}
+  <div class="feedback-row">
+    <p class="feedback correct">
+      {_('feedback.correct.primeFactorisation')}<Math expression={formatCorrectAnswer()} />
+    </p>
+    <button onclick={onNext}>{_('answer.next')}</button>
+  </div>
 {:else}
   <div class="feedback-row">
-    <p class="feedback {feedback}">
-      {feedback === 'correct' ? _('feedback.correct') : _('feedback.incorrect', formatCorrectAnswer())}
+    <p class="feedback incorrect">
+      {_('feedback.incorrect.prefix')}<Math expression={formatCorrectAnswer()} />{_('feedback.incorrect.suffix')}
     </p>
     <button onclick={onNext}>{_('answer.next')}</button>
   </div>
