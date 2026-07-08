@@ -24,27 +24,10 @@ import { generateScientificNotation } from '../exercises/scientificNotation';
 import ScientificNotationExercise from '../components/exercises/ScientificNotationExercise.svelte';
 import { generateFactoringBinomialFormulas, validateFactoringBinomialFormulas } from '../exercises/factoringBinomialFormulas';
 import FactoringBinomialFormulas from '../components/exercises/FactoringBinomialFormulas.svelte';
-
-function trimCompare(answer: string, exercise: Exercise): boolean {
-  return answer.trim() === exercise.answer;
-}
+import { trimCompare, validateFractionAnswer } from '../validation';
 
 function validateSubtractionFraction(answer: string, exercise: Exercise): boolean {
-  const [userNum, userDen] = answer.split(',').map(Number);
-  const [correctNum, correctDen] = exercise.answer.split(',').map(Number);
-  let uNum = userNum,
-    uDen = userDen;
-  if (uDen < 0) {
-    uNum = -uNum;
-    uDen = -uDen;
-  }
-  let cNum = correctNum,
-    cDen = correctDen;
-  if (cDen < 0) {
-    cNum = -cNum;
-    cDen = -cDen;
-  }
-  return uNum === cNum && uDen === cDen;
+  return validateFractionAnswer(answer, exercise);
 }
 
 export const exerciseTypes: Record<string, ExerciseType> = {
@@ -104,7 +87,7 @@ export const exerciseTypes: Record<string, ExerciseType> = {
     descriptionKey: 'exercise.simplifyFraction.desc',
     maxComplexity: 10,
     generate: generateSimplifyFraction,
-    validate: trimCompare,
+    validate: validateFractionAnswer,
     component: SimplifyFraction,
   },
   additionFraction: {
@@ -113,7 +96,7 @@ export const exerciseTypes: Record<string, ExerciseType> = {
     descriptionKey: 'exercise.additionFraction.desc',
     maxComplexity: 10,
     generate: generateAdditionFraction,
-    validate: trimCompare,
+    validate: validateFractionAnswer,
     component: BinaryFractionExercise,
     prerequisites: [{ typeId: 'simplifyFraction', complexity: 5 }],
   },
@@ -133,7 +116,7 @@ export const exerciseTypes: Record<string, ExerciseType> = {
     descriptionKey: 'exercise.multiplicationFraction.desc',
     maxComplexity: 10,
     generate: generateMultiplicationFraction,
-    validate: trimCompare,
+    validate: validateFractionAnswer,
     component: MultiplicationFraction,
     prerequisites: [{ typeId: 'simplifyFraction', complexity: 5 }],
   },
