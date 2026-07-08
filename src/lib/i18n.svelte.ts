@@ -107,6 +107,23 @@ const dict = {
   },
   'settings.resetProgress.confirmButton': { en: 'Reset', de: 'Zurücksetzen' },
   'settings.cancel': { en: 'Cancel', de: 'Abbrechen' },
+  'exercise.factoringBinomialFormulas.name': { en: 'Factoring with Binomial Formulas', de: 'Faktorisieren mit binomischen Formeln' },
+  'exercise.factoringBinomialFormulas.desc': {
+    en: 'Factor expressions using binomial formulas',
+    de: 'Faktorisiere Terme mit binomischen Formeln',
+  },
+  'exercise.factoringBinomialFormulas.formula1': { en: '1. binomial formula', de: '1. binomische Formel' },
+  'exercise.factoringBinomialFormulas.formula2': { en: '2. binomial formula', de: '2. binomische Formel' },
+  'exercise.factoringBinomialFormulas.formula3': { en: '3. binomial formula', de: '3. binomische Formel' },
+  'exercise.factoringBinomialFormulas.noFormula': { en: 'no binomial formula', de: 'keine binomische Formel' },
+  'exercise.factoringBinomialFormulas.noFormulaHint': {
+    en: 'Select this if the expression does not match any binomial formula.',
+    de: 'Wähle dies, wenn der Term auf keine binomische Formel passt.',
+  },
+  'exercise.factoringBinomialFormulas.noFormulaFeedback': {
+    en: 'no binomial formula applies',
+    de: 'keine binomische Formel anwendbar',
+  },
 } satisfies Record<string, Record<Lang, string>>;
 
 export const state = $state({ lang: 'en' as Lang });

@@ -22,6 +22,8 @@ import { generateCollectingTerms, validateCollectingTerms } from '../exercises/c
 import CollectingTerms from '../components/exercises/CollectingTerms.svelte';
 import { generateScientificNotation } from '../exercises/scientificNotation';
 import ScientificNotationExercise from '../components/exercises/ScientificNotationExercise.svelte';
+import { generateFactoringBinomialFormulas, validateFactoringBinomialFormulas } from '../exercises/factoringBinomialFormulas';
+import FactoringBinomialFormulas from '../components/exercises/FactoringBinomialFormulas.svelte';
 
 function trimCompare(answer: string, exercise: Exercise): boolean {
   return answer.trim() === exercise.answer;
@@ -170,5 +172,14 @@ export const exerciseTypes: Record<string, ExerciseType> = {
     generate: generateScientificNotation,
     validate: trimCompare,
     component: ScientificNotationExercise,
+  },
+  factoringBinomialFormulas: {
+    id: 'factoringBinomialFormulas',
+    nameKey: 'exercise.factoringBinomialFormulas.name',
+    descriptionKey: 'exercise.factoringBinomialFormulas.desc',
+    maxComplexity: 10,
+    generate: generateFactoringBinomialFormulas,
+    validate: validateFactoringBinomialFormulas,
+    component: FactoringBinomialFormulas,
   },
 };
