@@ -70,7 +70,7 @@
     }}
     aria-label={_('exerciseTypes')}
   >
-    ⚙
+{open ? '⌄' : '⌃'}
   </button>
   {#if open}
     <div class="type-list">
