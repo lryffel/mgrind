@@ -4,6 +4,7 @@ import { disciplines } from './data/disciplines';
 import { mulberry32 } from './prng';
 import { getComplexity, updateProgress } from './progress.svelte';
 import { getEnabledTypeIds } from './disabledTypes.svelte';
+import { arePrerequisitesMet } from './prerequisites.svelte';
 
 export class ExerciseSession {
   disciplineId = $state('');
@@ -25,7 +26,7 @@ export class ExerciseSession {
 
   next() {
     const discipline = disciplines.find((d) => d.id === this.disciplineId)!;
-    const typeIds = getEnabledTypeIds(discipline);
+    const typeIds = getEnabledTypeIds(discipline).filter((id) => arePrerequisitesMet(id));
     if (typeIds.length === 0) {
       this.currentType = exerciseTypes[discipline.exerciseTypeIds[0]];
     } else {

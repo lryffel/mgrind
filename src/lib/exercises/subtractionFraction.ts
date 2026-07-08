@@ -16,14 +16,15 @@ export function generateSubtractionFraction(seed: number, complexity: number): E
   const clamped = Math.min(Math.max(complexity, 0), 10);
   const rng = mulberry32(seed);
 
-  const minFactor = 2 + Math.floor(clamped * 3 / 10);
-  const maxFactor = 5 + Math.floor(clamped * 45 / 10);
+  const minFactor = 2 + Math.floor((clamped * 3) / 10);
+  const maxFactor = 5 + Math.floor((clamped * 45) / 10);
   const factor = minFactor + Math.floor(rng() * (maxFactor - minFactor + 1));
 
-  const maxProduct = 50 + Math.floor(clamped * 450 / 10);
+  const maxProduct = 50 + Math.floor((clamped * 450) / 10);
   const maxBase = Math.max(3, Math.floor(maxProduct / factor));
 
-  let a = 0, b = 0;
+  let a = 0,
+    b = 0;
   for (let attempt = 0; attempt < 100; attempt++) {
     a = 2 + Math.floor(rng() * (maxBase - 1));
     b = 2 + Math.floor(rng() * (maxBase - 1));
@@ -37,14 +38,16 @@ export function generateSubtractionFraction(seed: number, complexity: number): E
   const totalNum = a * factor;
   const commonDen = b * factor;
 
-  let n1 = 0, n2 = 0;
+  let n1 = 0,
+    n2 = 0;
   if (totalNum > 0 && totalNum < commonDen) {
     const maxN2 = commonDen - totalNum - 1;
     for (let attempt = 0; attempt < 100; attempt++) {
       n2 = 1 + Math.floor(rng() * Math.max(1, maxN2));
       n1 = n2 + totalNum;
-      const g1 = gcd(n1, commonDen), g2 = gcd(n2, commonDen);
-      if ((g1 > 1 || g2 > 1) && (commonDen / g1) !== (commonDen / g2)) break;
+      const g1 = gcd(n1, commonDen),
+        g2 = gcd(n2, commonDen);
+      if ((g1 > 1 || g2 > 1) && commonDen / g1 !== commonDen / g2) break;
     }
   } else if (totalNum < 0 && -totalNum < commonDen) {
     const absTotal = -totalNum;
@@ -52,16 +55,18 @@ export function generateSubtractionFraction(seed: number, complexity: number): E
     for (let attempt = 0; attempt < 100; attempt++) {
       n1 = 1 + Math.floor(rng() * Math.max(1, maxN1));
       n2 = n1 + absTotal;
-      const g1 = gcd(n1, commonDen), g2 = gcd(n2, commonDen);
-      if ((g1 > 1 || g2 > 1) && (commonDen / g1) !== (commonDen / g2)) break;
+      const g1 = gcd(n1, commonDen),
+        g2 = gcd(n2, commonDen);
+      if ((g1 > 1 || g2 > 1) && commonDen / g1 !== commonDen / g2) break;
     }
   } else if (totalNum > 0) {
     const range = totalNum;
     for (let attempt = 0; attempt < 100; attempt++) {
       n2 = 1 + Math.floor(rng() * range);
       n1 = n2 + totalNum;
-      const g1 = gcd(n1, commonDen), g2 = gcd(n2, commonDen);
-      if ((g1 > 1 || g2 > 1) && (commonDen / g1) !== (commonDen / g2)) break;
+      const g1 = gcd(n1, commonDen),
+        g2 = gcd(n2, commonDen);
+      if ((g1 > 1 || g2 > 1) && commonDen / g1 !== commonDen / g2) break;
     }
   } else {
     const absTotal = -totalNum;
@@ -69,8 +74,9 @@ export function generateSubtractionFraction(seed: number, complexity: number): E
     for (let attempt = 0; attempt < 100; attempt++) {
       n1 = 1 + Math.floor(rng() * range);
       n2 = n1 + absTotal;
-      const g1 = gcd(n1, commonDen), g2 = gcd(n2, commonDen);
-      if ((g1 > 1 || g2 > 1) && (commonDen / g1) !== (commonDen / g2)) break;
+      const g1 = gcd(n1, commonDen),
+        g2 = gcd(n2, commonDen);
+      if ((g1 > 1 || g2 > 1) && commonDen / g1 !== commonDen / g2) break;
     }
   }
 

@@ -15,7 +15,7 @@
     feedback: 'correct' | 'incorrect' | null;
   } = $props();
 
-  let primes = $derived((exercise as any).data?.primes as number[] | undefined ?? []);
+  let primes = $derived(((exercise as any).data?.primes as number[] | undefined) ?? []);
   // eslint-disable-next-line svelte/prefer-writable-derived
   let values = $state<number[]>([]);
   let factorisationEl = $state<HTMLDivElement>();
@@ -51,7 +51,8 @@
 <svelte:window onkeydown={handleKeydown} />
 
 <p class="prompt">
-  {_('exercise.primeFactorisation.prompt')} {exercise.prompt}
+  {_('exercise.primeFactorisation.prompt')}
+  {exercise.prompt}
 </p>
 
 {#if feedback === null}

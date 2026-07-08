@@ -20,10 +20,18 @@ function trimCompare(answer: string, exercise: Exercise): boolean {
 function validateSubtractionFraction(answer: string, exercise: Exercise): boolean {
   const [userNum, userDen] = answer.split(',').map(Number);
   const [correctNum, correctDen] = exercise.answer.split(',').map(Number);
-  let uNum = userNum, uDen = userDen;
-  if (uDen < 0) { uNum = -uNum; uDen = -uDen; }
-  let cNum = correctNum, cDen = correctDen;
-  if (cDen < 0) { cNum = -cNum; cDen = -cDen; }
+  let uNum = userNum,
+    uDen = userDen;
+  if (uDen < 0) {
+    uNum = -uNum;
+    uDen = -uDen;
+  }
+  let cNum = correctNum,
+    cDen = correctDen;
+  if (cDen < 0) {
+    cNum = -cNum;
+    cDen = -cDen;
+  }
   return uNum === cNum && uDen === cDen;
 }
 
@@ -54,6 +62,10 @@ export const exerciseTypes: Record<string, ExerciseType> = {
     generate: generatePrimeFactorisation,
     validate: trimCompare,
     component: PrimeFactorisation,
+    prerequisites: [
+      { typeId: 'multiplication', complexity: 7 },
+      { typeId: 'multiplicationMissingFactor', complexity: 7 },
+    ],
   },
   simplifyFraction: {
     id: 'simplifyFraction',
@@ -72,6 +84,7 @@ export const exerciseTypes: Record<string, ExerciseType> = {
     generate: generateAdditionFraction,
     validate: trimCompare,
     component: BinaryFractionExercise,
+    prerequisites: [{ typeId: 'simplifyFraction', complexity: 5 }],
   },
   subtractionFraction: {
     id: 'subtractionFraction',
@@ -81,6 +94,7 @@ export const exerciseTypes: Record<string, ExerciseType> = {
     generate: generateSubtractionFraction,
     validate: validateSubtractionFraction,
     component: SubtractionFraction,
+    prerequisites: [{ typeId: 'simplifyFraction', complexity: 5 }],
   },
   multiplicationFraction: {
     id: 'multiplicationFraction',
@@ -90,5 +104,6 @@ export const exerciseTypes: Record<string, ExerciseType> = {
     generate: generateMultiplicationFraction,
     validate: trimCompare,
     component: MultiplicationFraction,
+    prerequisites: [{ typeId: 'simplifyFraction', complexity: 5 }],
   },
 };

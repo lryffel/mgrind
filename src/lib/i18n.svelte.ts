@@ -46,6 +46,17 @@ const dict = {
   'select.discipline': { en: 'Select a discipline', de: 'Wähle eine Disziplin' },
   exerciseTypes: { en: 'Exercise Types', de: 'Übungstypen' },
   'exerciseTypes.someDisabled': { en: 'Some disabled', de: 'Einige deaktiviert' },
+  'exercise.locked': { en: 'Locked', de: 'Gesperrt' },
+  'exercise.prerequisitesNotMet': { en: 'Prerequisites not met', de: 'Voraussetzungen nicht erfüllt' },
+  'exercise.prerequisiteLine': {
+    en: '{0} at level {1} (currently {2})',
+    de: '{0} auf Stufe {1} (aktuell {2})',
+  },
+  'exercise.enableNow': { en: 'Enable anyway', de: 'Trotzdem aktivieren' },
+  'exercise.enableNow.warning': {
+    en: 'This exercise can be enabled anyway. This will increase the progress of prerequisite exercises artificially.',
+    de: 'Diese Übung kann trotzdem aktiviert werden. Dadurch wird der Fortschritt der Voraussetzungen künstlich erhöht.',
+  },
 } satisfies Record<string, Record<Lang, string>>;
 
 export const state = $state({ lang: 'en' as Lang });

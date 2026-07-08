@@ -18,15 +18,15 @@ Opens a dev server with hot reload at `http://localhost:5173`.
 
 ## Scripts
 
-| Command             | Description                          |
-| ------------------- | ------------------------------------ |
-| `npm run dev`       | Start dev server                     |
-| `npm run build`     | Production build to `dist/`          |
-| `npm run preview`   | Preview production build locally     |
-| `npm run check`     | Typecheck (svelte-check + tsc)       |
-| `npm run test`      | Run vitest                           |
-| `npm run lint`      | Lint with eslint                     |
-| `npm run format`    | Format with prettier                 |
+| Command                | Description                      |
+| ---------------------- | -------------------------------- |
+| `npm run dev`          | Start dev server                 |
+| `npm run build`        | Production build to `dist/`      |
+| `npm run preview`      | Preview production build locally |
+| `npm run check`        | Typecheck (svelte-check + tsc)   |
+| `npm run test`         | Run vitest                       |
+| `npm run lint`         | Lint with eslint                 |
+| `npm run format`       | Format with prettier             |
 | `npm run format:check` | Check formatting                 |
 
 ## Deploy to GitHub Pages

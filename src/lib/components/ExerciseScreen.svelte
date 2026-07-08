@@ -33,12 +33,7 @@
     {@const s = session}
     {#key s.currentSeed}
       {@const Comp = s.currentType.component}
-      <Comp
-        exercise={s.exercise}
-        onSubmit={(a: string) => s.submit(a)}
-        onNext={() => s.next()}
-        feedback={s.feedback}
-      />
+      <Comp exercise={s.exercise} onSubmit={(a: string) => s.submit(a)} onNext={() => s.next()} feedback={s.feedback} />
     {/key}
   {/if}
 </article>

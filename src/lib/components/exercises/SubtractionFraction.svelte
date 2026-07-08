@@ -30,13 +30,9 @@
   const numVal = $derived(Number(numInput));
   const denVal = $derived(Number(denInput));
 
-  const hasNegativeDenominator = $derived(
-    feedback === 'correct' && (denVal < 0 || (numVal < 0 && denVal < 0))
-  );
+  const hasNegativeDenominator = $derived(feedback === 'correct' && (denVal < 0 || (numVal < 0 && denVal < 0)));
   const normalizedWarning = $derived(
-    hasNegativeDenominator
-      ? `${denVal < 0 ? -numVal : numVal}/${denVal < 0 ? -denVal : denVal}`
-      : ''
+    hasNegativeDenominator ? `${denVal < 0 ? -numVal : numVal}/${denVal < 0 ? -denVal : denVal}` : '',
   );
 
   function handleKeydown(e: KeyboardEvent) {
@@ -119,7 +115,9 @@
     </p>
   {:else}
     <p class="feedback {feedback}">
-      {feedback === 'correct' ? _('feedback.correct') : _('feedback.incorrect', `${correctNumDen[0]}/${correctNumDen[1]}`)}
+      {feedback === 'correct'
+        ? _('feedback.correct')
+        : _('feedback.incorrect', `${correctNumDen[0]}/${correctNumDen[1]}`)}
     </p>
   {/if}
   <div class="submit-row">

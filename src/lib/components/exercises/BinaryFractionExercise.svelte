@@ -99,7 +99,9 @@
     </span>
   </p>
   <p class="feedback {feedback}">
-    {feedback === 'correct' ? _('feedback.correct') : _('feedback.incorrect', `${correctNumDen[0]}/${correctNumDen[1]}`)}
+    {feedback === 'correct'
+      ? _('feedback.correct')
+      : _('feedback.incorrect', `${correctNumDen[0]}/${correctNumDen[1]}`)}
   </p>
   <div class="submit-row">
     <button onclick={onNext}>{_('answer.next')}</button>

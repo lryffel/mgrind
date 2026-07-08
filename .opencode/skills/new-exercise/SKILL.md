@@ -13,8 +13,8 @@ The `Exercise` interface:
 
 ```ts
 interface Exercise {
-  prompt: string;          // displayed to the user
-  answer: string;          // expected answer
+  prompt: string; // displayed to the user
+  answer: string; // expected answer
   data?: Record<string, unknown>; // optional type-specific payload
 }
 ```
@@ -50,10 +50,10 @@ Write a file at `src/lib/components/exercises/<Name>.svelte`. The component **mu
 
 ```ts
 let {
-  exercise,                    // : Exercise
-  onSubmit,                    // : (answer: string) => void
-  onNext,                      // : () => void
-  feedback,                    // : 'correct' | 'incorrect' | null
+  exercise, // : Exercise
+  onSubmit, // : (answer: string) => void
+  onNext, // : () => void
+  feedback, // : 'correct' | 'incorrect' | null
 } = $props();
 ```
 
@@ -71,11 +71,11 @@ For examples, see existing components: `SimplifyFraction.svelte`, `PrimeFactoris
 
 Edit `src/lib/i18n.svelte.ts` — add entries for:
 
-| Key                         | Purpose                    |
-| --------------------------- | -------------------------- |
-| `exercise.<id>.name`        | Display name               |
-| `exercise.<id>.desc`        | Short description          |
-| `exercise.<id>.prompt`      | (Optional) prompt label    |
+| Key                    | Purpose                 |
+| ---------------------- | ----------------------- |
+| `exercise.<id>.name`   | Display name            |
+| `exercise.<id>.desc`   | Short description       |
+| `exercise.<id>.prompt` | (Optional) prompt label |
 
 ## Step 4: Register in `exerciseTypes.ts`
 

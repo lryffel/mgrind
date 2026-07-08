@@ -43,6 +43,11 @@ export function toggleDisabled(typeId: string, discipline: Discipline): boolean 
   return true;
 }
 
+export function enableType(typeId: string) {
+  disabledTypes[typeId] = false;
+  persist();
+}
+
 export function getEnabledTypeIds(discipline: Discipline): string[] {
   return discipline.exerciseTypeIds.filter((id) => !(disabledTypes[id] ?? false));
 }

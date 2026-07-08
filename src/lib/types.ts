@@ -7,6 +7,11 @@ export interface Exercise {
   data?: Record<string, unknown>;
 }
 
+export interface Prerequisite {
+  typeId: string;
+  complexity: number;
+}
+
 export interface ExerciseType {
   id: string;
   nameKey: string;
@@ -15,6 +20,7 @@ export interface ExerciseType {
   generate: (seed: number, complexity: number) => Exercise;
   validate: (answer: string, exercise: Exercise) => boolean;
   component: ExerciseComponent;
+  prerequisites?: Prerequisite[];
 }
 
 export interface Discipline {

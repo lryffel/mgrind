@@ -4,7 +4,7 @@ const STORAGE_KEY = 'mgrind-progress';
 
 export const progress = $state<Record<string, number>>({});
 
-function persist() {
+export function persist() {
   try {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(progress));
   } catch {

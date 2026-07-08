@@ -25,7 +25,9 @@
   const num2 = $derived(Number(opMatch![4]));
   const den2 = $derived(Number(opMatch![5]));
   const correctNumDen = $derived(exercise.answer.split(','));
-  const promptKey = $derived((exercise.data?.promptKey as string | undefined) ?? 'exercise.multiplicationFraction.prompt');
+  const promptKey = $derived(
+    (exercise.data?.promptKey as string | undefined) ?? 'exercise.multiplicationFraction.prompt',
+  );
 
   function handleKeydown(e: KeyboardEvent) {
     if (e.key === 'Enter') {
@@ -99,7 +101,9 @@
     </span>
   </p>
   <p class="feedback {feedback}">
-    {feedback === 'correct' ? _('feedback.correct') : _('feedback.incorrect', `${correctNumDen[0]}/${correctNumDen[1]}`)}
+    {feedback === 'correct'
+      ? _('feedback.correct')
+      : _('feedback.incorrect', `${correctNumDen[0]}/${correctNumDen[1]}`)}
   </p>
   <div class="submit-row">
     <button onclick={onNext}>{_('answer.next')}</button>

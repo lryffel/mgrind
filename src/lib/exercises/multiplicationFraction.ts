@@ -27,7 +27,8 @@ export function generateMultiplicationFraction(seed: number, complexity: number)
       iter++;
     } while ((gcd(a2, d2) > 1 || a2 === d2) && iter < limit);
     if (iter >= limit) {
-      a2 = 1; d2 = 2;
+      a2 = 1;
+      d2 = 2;
     }
 
     a = a2 * f;
@@ -57,7 +58,8 @@ export function generateMultiplicationFraction(seed: number, complexity: number)
       iter++;
     } while ((gcd(c2, b2) > 1 || c2 === b2) && iter < limit);
     if (iter >= limit) {
-      c2 = 1; b2 = 2;
+      c2 = 1;
+      b2 = 2;
     }
 
     c = c2 * f;
