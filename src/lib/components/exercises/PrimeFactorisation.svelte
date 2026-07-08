@@ -140,7 +140,7 @@
   }
 
   .factorisation .exp-input {
-    width: 3.5rem;
+    width: 4rem;
     text-align: center;
   }
 
