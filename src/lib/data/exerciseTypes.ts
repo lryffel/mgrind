@@ -8,12 +8,14 @@ import { generateAdditionFraction } from '../exercises/additionFraction';
 import { generateSimplifyFraction } from '../exercises/simplifyFraction';
 import { generateSubtractionFraction } from '../exercises/subtractionFraction';
 import { generateMultiplicationFraction } from '../exercises/multiplicationFraction';
+import { generateSubstitution, validateSubstitution } from '../exercises/substitution';
 import TextInputExercise from '../components/exercises/TextInputExercise.svelte';
 import PrimeFactorisation from '../components/exercises/PrimeFactorisation.svelte';
 import SimplifyFraction from '../components/exercises/SimplifyFraction.svelte';
 import BinaryFractionExercise from '../components/exercises/BinaryFractionExercise.svelte';
 import SubtractionFraction from '../components/exercises/SubtractionFraction.svelte';
 import MultiplicationFraction from '../components/exercises/MultiplicationFraction.svelte';
+import SubstitutionExercise from '../components/exercises/SubstitutionExercise.svelte';
 
 function trimCompare(answer: string, exercise: Exercise): boolean {
   return answer.trim() === exercise.answer;
@@ -126,5 +128,14 @@ export const exerciseTypes: Record<string, ExerciseType> = {
     validate: trimCompare,
     component: MultiplicationFraction,
     prerequisites: [{ typeId: 'simplifyFraction', complexity: 5 }],
+  },
+  substitution: {
+    id: 'substitution',
+    nameKey: 'exercise.substitution.name',
+    descriptionKey: 'exercise.substitution.desc',
+    maxComplexity: 10,
+    generate: generateSubstitution,
+    validate: validateSubstitution,
+    component: SubstitutionExercise,
   },
 };

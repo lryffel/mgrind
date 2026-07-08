@@ -27,6 +27,24 @@ const dict = {
     de: 'Multipliziere und kürze Brüche',
   },
   'exercise.multiplicationFraction.prompt': { en: 'Multiply and simplify', de: 'Multipliziere und kürze' },
+  'exercise.substitution.name': { en: 'Substitution', de: 'Einsetzen' },
+  'exercise.substitution.desc': {
+    en: 'Substitute a value into an expression',
+    de: 'Setze einen Wert in einen Term ein',
+  },
+  'exercise.substitution.promptBefore': {
+    en: 'Substitute {0} = ',
+    de: 'Setze {0} = ',
+  },
+  'exercise.substitution.promptAfter': {
+    en: '',
+    de: ' ein',
+  },
+  'exercise.substitution.reduceHint': {
+    en: 'Enter the result as a reduced fraction',
+    de: 'Gib das Ergebnis als gekürzten Bruch ein',
+  },
+  'discipline.algebra.name': { en: 'Algebra', de: 'Algebra' },
   'exercise.squares.name': { en: 'Squares', de: 'Quadrate' },
   'exercise.squares.desc': { en: 'Compute squares of numbers', de: 'Berechne Quadrate von Zahlen' },
   'exercise.orderOfOperations.name': { en: 'Order of Operations', de: 'Rechenregeln' },

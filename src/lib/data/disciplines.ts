@@ -21,4 +21,9 @@ export const disciplines: Discipline[] = [
     nameKey: 'discipline.fractions.name',
     exerciseTypeIds: ['simplifyFraction', 'additionFraction', 'subtractionFraction', 'multiplicationFraction'],
   },
+  {
+    id: 'algebra',
+    nameKey: 'discipline.algebra.name',
+    exerciseTypeIds: ['substitution'],
+  },
 ];
