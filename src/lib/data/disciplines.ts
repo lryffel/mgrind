@@ -14,6 +14,7 @@ export const disciplines: Discipline[] = [
       'additionFraction',
       'subtractionFraction',
       'multiplicationFraction',
+      'scientificNotation',
     ],
   },
   {

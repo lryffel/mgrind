@@ -52,6 +52,11 @@ const dict = {
     de: 'Gib das Ergebnis als gekürzten Bruch ein',
   },
   'discipline.algebra.name': { en: 'Algebra', de: 'Algebra' },
+  'exercise.scientificNotation.name': { en: 'Scientific Notation', de: 'Wissenschaftliche Schreibweise' },
+  'exercise.scientificNotation.desc': {
+    en: 'Convert and compute with scientific notation',
+    de: 'Wandle in wissenschaftliche Schreibweise um und rechne damit',
+  },
   'exercise.squares.name': { en: 'Squares', de: 'Quadrate' },
   'exercise.squares.desc': { en: 'Compute squares of numbers', de: 'Berechne Quadrate von Zahlen' },
   'exercise.orderOfOperations.name': { en: 'Order of Operations', de: 'Rechenregeln' },
