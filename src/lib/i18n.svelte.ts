@@ -3,12 +3,12 @@ import type { Lang } from './types';
 const dict = {
   'app.title': { en: 'mgrind', de: 'mgrind' },
   'discipline.multiplication.name': { en: 'Multiplication Tables', de: 'Einmaleins' },
-  'exercise.multiplication.name': { en: 'Multiplication Facts', de: 'Multiplikation' },
+  'exercise.multiplication.name': { en: 'Multiplication', de: 'Multiplikation' },
   'exercise.multiplication.desc': { en: 'Solve multiplication problems', de: 'Löse Multiplikationsaufgaben' },
   'exercise.multiplicationMissingFactor.name': { en: 'Missing Factor', de: 'Fehlender Faktor' },
   'exercise.multiplicationMissingFactor.desc': {
-    en: 'Find the missing factor in a multiplication',
-    de: 'Finde den fehlenden Faktor',
+    en: 'Find the missing factor in a product',
+    de: 'Finde den fehlenden Faktor eines Produkts',
   },
   'exercise.primeFactorisation.name': { en: 'Prime Factorisation', de: 'Primfaktorzerlegung' },
   'exercise.primeFactorisation.desc': { en: 'Find the prime decomposition', de: 'Bestimme die Primfaktorzerlegung' },
@@ -22,7 +22,10 @@ const dict = {
   'exercise.subtractionFraction.desc': { en: 'Subtract fractions and simplify', de: 'Subtrahiere und kürze Brüche' },
   'exercise.subtractionFraction.prompt': { en: 'Subtract and simplify', de: 'Subtrahiere und kürze' },
   'exercise.multiplicationFraction.name': { en: 'Multiplying Fractions', de: 'Brüche multiplizieren' },
-  'exercise.multiplicationFraction.desc': { en: 'Multiply fractions and simplify', de: 'Multipliziere und kürze Brüche' },
+  'exercise.multiplicationFraction.desc': {
+    en: 'Multiply fractions and simplify',
+    de: 'Multipliziere und kürze Brüche',
+  },
   'exercise.multiplicationFraction.prompt': { en: 'Multiply and simplify', de: 'Multipliziere und kürze' },
   'feedback.negativeDenominator': {
     en: 'Signs should be put in the numerator if possible: {0}',
