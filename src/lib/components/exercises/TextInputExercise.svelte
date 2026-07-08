@@ -68,19 +68,6 @@
 {/if}
 
 <style>
-  .prompt {
-    font-size: 1.5rem;
-    font-weight: 600;
-    margin: 0;
-    text-align: center;
-  }
-
-  .feedback-row {
-    display: flex;
-    flex-direction: column;
-    gap: 0.75rem;
-  }
-
   .answer-input {
     width: 150px;
     text-align: center;
@@ -89,24 +76,5 @@
   .inline-input {
     width: 5rem;
     text-align: center;
-  }
-
-  .feedback {
-    font-size: 1.125rem;
-    font-weight: 500;
-    margin: 0;
-  }
-
-  .feedback.correct {
-    color: var(--pico-ins-color);
-  }
-
-  .feedback.incorrect {
-    color: var(--pico-del-color);
-  }
-
-  .submit-row {
-    display: flex;
-    justify-content: center;
   }
 </style>

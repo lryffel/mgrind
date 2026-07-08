@@ -86,13 +86,6 @@
 {/if}
 
 <style>
-  .prompt {
-    font-size: 1.5rem;
-    font-weight: 600;
-    margin: 0;
-    text-align: center;
-  }
-
   .factorisation {
     display: flex;
     align-items: center;
@@ -120,31 +113,5 @@
   .factorisation .exp-input {
     width: 4rem;
     text-align: center;
-  }
-
-  .submit-row {
-    display: flex;
-    justify-content: center;
-  }
-
-  .feedback-row {
-    display: flex;
-    flex-direction: column;
-    gap: 0.75rem;
-  }
-
-  .feedback {
-    font-size: 1.125rem;
-    font-weight: 500;
-    margin: 0;
-    text-align: center;
-  }
-
-  .feedback.correct {
-    color: var(--pico-ins-color);
-  }
-
-  .feedback.incorrect {
-    color: var(--pico-del-color);
   }
 </style>

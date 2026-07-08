@@ -12,18 +12,26 @@
 
   $effect(() => {
     if (show) {
+      document.documentElement.classList.add('modal-is-open');
       dialogEl?.showModal();
     } else {
+      document.documentElement.classList.remove('modal-is-open');
       dialogEl?.close();
     }
-  });
+  })
+
+  function handleBackdropClick(e: MouseEvent) {
+    if (e.target === dialogEl && show) {
+      onclose?.();
+    }
+  }
 
   function handleClose() {
     if (show) onclose?.();
   }
 </script>
 
-<dialog bind:this={dialogEl} onclose={handleClose}>
+<dialog bind:this={dialogEl} onclick={handleBackdropClick} onclose={handleClose}>
   <article>
     {@render children?.()}
     {#if footer}
