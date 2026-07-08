@@ -27,6 +27,8 @@ const dict = {
     de: 'Multipliziere und kürze Brüche',
   },
   'exercise.multiplicationFraction.prompt': { en: 'Multiply and simplify.', de: 'Multipliziere und kürze.' },
+  'exercise.binomialFormulas.name': { en: 'Binomial Formulas', de: 'Binomische Formeln' },
+  'exercise.binomialFormulas.desc': { en: 'Expand binomial formulas', de: 'Wende binomische Formeln an' },
   'exercise.substitution.name': { en: 'Substitution', de: 'Einsetzen' },
   'exercise.substitution.desc': {
     en: 'Substitute a value into an expression',
