@@ -32,13 +32,13 @@ function reduceFrac(num: number, den: number): string {
 function fracDisplay(num: number, den: number): string {
   if (den === 1) return String(num);
   if (num % den === 0) return String(num / den);
-  return `${num}/${den}`;
+  return `\\frac{${num}}{${den}}`;
 }
 
 function fracCoeffDisplay(num: number, den: number): string {
   if (den === 1) return String(num);
   if (num % den === 0) return String(num / den);
-  return `(${num}/${den})`;
+  return `\\frac{${num}}{${den}}`;
 }
 
 function randomFrac(rng: () => number): [number, number] {
@@ -121,7 +121,7 @@ function genAX2(input: GenInput): GenOutput {
     if (resultDen <= 20 && ansDen !== 0) {
       const answer = reduceFrac(ansNum, ansDen);
       return {
-        term: `${fracCoeffDisplay(coeffNum, coeffDen)}\u22C5${v}\u00B2`,
+        term: `${fracCoeffDisplay(coeffNum, coeffDen)}\\cdot ${v}^{2}`,
         answer,
         subValue: fracDisplay(subNum, subDen),
         hasFractionAnswer: answer.includes('/'),
@@ -132,7 +132,7 @@ function genAX2(input: GenInput): GenOutput {
   const s = randInt(rng, 0, 5);
   const c = randInt(rng, 1, 9);
   return {
-    term: `${c}\u22C5${v}\u00B2`,
+    term: `${c} \\cdot ${v}^{2}`,
     answer: String(c * s * s),
     subValue: String(s),
     hasFractionAnswer: false,
@@ -172,7 +172,7 @@ function genAMinusBX(input: GenInput): GenOutput {
     if (resultDen <= 20) {
       const answer = reduceFrac(ansNum, ansDen);
       return {
-        term: `${fracDisplay(aNum, aDen)} - ${fracCoeffDisplay(bNum, bDen)}\u22C5${v}`,
+        term: `${fracDisplay(aNum, aDen)} - ${fracCoeffDisplay(bNum, bDen)}\\cdot ${v}`,
         answer,
         subValue: fracDisplay(subNum, subDen),
         hasFractionAnswer: answer.includes('/'),
@@ -184,7 +184,7 @@ function genAMinusBX(input: GenInput): GenOutput {
   const a = randInt(rng, s + 1, Math.min(s + 10, 20));
   const b = randInt(rng, 1, 5);
   return {
-    term: `${a} - ${b}\u22C5${v}`,
+    term: `${a} - ${b}\\cdot ${v}`,
     answer: String(a - b * s),
     subValue: String(s),
     hasFractionAnswer: false,
@@ -221,7 +221,7 @@ function genX1MinusX(input: GenInput): GenOutput {
     if (resultDen <= 20) {
       const answer = reduceFrac(ansNum, ansDen);
       return {
-        term: `${v}\u22C5(1-${v})`,
+        term: `${v}\\cdot (1-${v})`,
         answer,
         subValue: fracDisplay(subNum, subDen),
         hasFractionAnswer: answer.includes('/'),
@@ -231,7 +231,7 @@ function genX1MinusX(input: GenInput): GenOutput {
 
   const s = randInt(rng, 0, 5);
   return {
-    term: `${v}\u22C5(1-${v})`,
+    term: `${v}\\cdot (1-${v})`,
     answer: String(s * (1 - s)),
     subValue: String(s),
     hasFractionAnswer: false,
@@ -244,7 +244,7 @@ function gen2PowXPlusA(input: GenInput): GenOutput {
   const a = randInt(rng, 0, total);
   const sub = total - a;
   return {
-    term: `2^(${v}+${a})`,
+    term: `2^{${v}+${a}}`,
     answer: String(Math.pow(2, total)),
     subValue: String(sub),
     hasFractionAnswer: false,
@@ -328,7 +328,7 @@ function gen1OverX(input: GenInput): GenOutput {
     if (resultDen <= 20) {
       const answer = reduceFrac(ansNum, ansDen);
       return {
-        term: `1/${v}`,
+        term: `\\frac{1}{${v}}`,
         answer,
         subValue: fracDisplay(subNum, subDen),
         hasFractionAnswer: answer.includes('/'),
@@ -339,7 +339,7 @@ function gen1OverX(input: GenInput): GenOutput {
   const subNum = randInt(rng, 2, 5);
   const subDen = subNum + randInt(rng, 1, 3);
   return {
-    term: `1/${v}`,
+    term: `\\frac{1}{${v}}`,
     answer: `${subDen}/${subNum}`,
     subValue: `${subNum}/${subDen}`,
     hasFractionAnswer: true,
@@ -351,7 +351,7 @@ function genNPlus1Over2(input: GenInput): GenOutput {
   const n = randInt(rng, 1, 20);
   const result = (n * (n + 1)) / 2;
   return {
-    term: `${v}(${v}+1)/2`,
+    term: `\\frac{${v}(${v}+1)}{2}`,
     answer: String(result),
     subValue: String(n),
     hasFractionAnswer: false,
@@ -363,14 +363,14 @@ function genSqrtA2PlusX2(input: GenInput): GenOutput {
   const [p, q, r] = pick(rng, ADD_TRIPLES);
   if (rng() > 0.5) {
     return {
-      term: `\u221A(${p}\u00B2 + ${v}\u00B2)`,
+      term: `\\sqrt{${p}^{2} + ${v}^{2}}`,
       answer: String(r),
       subValue: String(q),
       hasFractionAnswer: false,
     };
   }
   return {
-    term: `\u221A(${v}\u00B2 + ${q}\u00B2)`,
+    term: `\\sqrt{${v}^{2} + ${q}^{2}}`,
     answer: String(r),
     subValue: String(p),
     hasFractionAnswer: false,

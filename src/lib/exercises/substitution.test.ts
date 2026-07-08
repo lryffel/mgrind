@@ -97,13 +97,11 @@ describe('generateSubstitution', () => {
           variable === 'r' || variable === 's' || variable === 't' ||
           variable === 'u' || variable === 'v' || variable === 'w' ||
           variable === 'x' || variable === 'y' || variable === 'z') {
-        if (ex.prompt.startsWith('1/')) {
+        if (ex.prompt.startsWith('\\frac{1}{')) {
           const value = ex.data!.value as string;
-          if (!value.includes('/')) {
-            // This shouldn't happen for 1/x — skip or assert
-            // Actually at low complexity 1/x won't be picked, but at high complexity it should be a fraction
+          if (!value.includes('\\frac')) {
             if (ex.data!.complexity as number >= 5) {
-              expect(value).toContain('/');
+              expect(value).toContain('\\frac');
             }
           }
         }

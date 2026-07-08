@@ -1,14 +1,20 @@
 import { describe, it, expect } from 'vitest';
 import { generateMultiplicationFraction } from './multiplicationFraction';
 
-function gcd(a: number, b: number): number {
-  while (b) {
-    [a, b] = [b, a % b];
+  function gcd(a: number, b: number): number {
+    while (b) {
+      [a, b] = [b, a % b];
+    }
+    return a;
   }
-  return a;
-}
 
-describe('generateMultiplicationFraction', () => {
+  function parseFracs(prompt: string): number[] {
+    const match = prompt.match(/^\\frac\{(\d+)\}\{(\d+)\} \\cdot \\frac\{(\d+)\}\{(\d+)\}$/);
+    expect(match).not.toBeNull();
+    return [parseInt(match![1]), parseInt(match![2]), parseInt(match![3]), parseInt(match![4])];
+  }
+
+  describe('generateMultiplicationFraction', () => {
   it('returns a valid exercise with prompt and answer', () => {
     const ex = generateMultiplicationFraction(42, 0);
     expect(ex).toHaveProperty('prompt');
@@ -30,10 +36,10 @@ describe('generateMultiplicationFraction', () => {
     expect(seen.size).toBeGreaterThan(1);
   });
 
-  it('prompt has two fractions joined by *', () => {
+  it('prompt has two fractions joined by cdot', () => {
     for (let seed = 0; seed < 100; seed++) {
       const ex = generateMultiplicationFraction(seed, 4);
-      expect(ex.prompt).toMatch(/^\d+\/\d+\*\d+\/\d+$/);
+      expect(ex.prompt).toMatch(/^\\frac\{\d+\}\{\d+\} \\cdot \\frac\{\d+\}\{\d+\}$/);
     }
   });
 
@@ -61,7 +67,7 @@ describe('generateMultiplicationFraction', () => {
   it('the two fractions in the prompt are reduced', () => {
     for (let seed = 0; seed < 500; seed++) {
       const ex = generateMultiplicationFraction(seed, 4);
-      const [n1, d1, n2, d2] = ex.prompt.split(/[*/]/).map(Number);
+      const [n1, d1, n2, d2] = parseFracs(ex.prompt);
       expect(gcd(n1, d1)).toBe(1);
       expect(gcd(n2, d2)).toBe(1);
     }
@@ -70,7 +76,7 @@ describe('generateMultiplicationFraction', () => {
   it('multiplying the two fractions equals the answer', () => {
     for (let seed = 0; seed < 500; seed++) {
       const ex = generateMultiplicationFraction(seed, 6);
-      const [n1, d1, n2, d2] = ex.prompt.split(/[*/]/).map(Number);
+      const [n1, d1, n2, d2] = parseFracs(ex.prompt);
       const [num, den] = ex.answer.split(',').map(Number);
       const prodNum = n1 * n2;
       const prodDen = d1 * d2;
@@ -81,7 +87,7 @@ describe('generateMultiplicationFraction', () => {
   it('either gcd(n1, d2) > 1 or gcd(n2, d1) > 1 (or both)', () => {
     for (let seed = 0; seed < 500; seed++) {
       const ex = generateMultiplicationFraction(seed, 6);
-      const [n1, d1, n2, d2] = ex.prompt.split(/[*/]/).map(Number);
+      const [n1, d1, n2, d2] = parseFracs(ex.prompt);
       const g1 = gcd(n1, d2);
       const g2 = gcd(n2, d1);
       expect(g1 > 1 || g2 > 1).toBe(true);
@@ -91,12 +97,12 @@ describe('generateMultiplicationFraction', () => {
   it('values stay within bounds per complexity', () => {
     for (let seed = 0; seed < 200; seed++) {
       const ex = generateMultiplicationFraction(seed, 0);
-      const vals = ex.prompt.split(/[*/]/).map(Number);
+      const vals = parseFracs(ex.prompt);
       expect(Math.max(...vals)).toBeLessThanOrEqual(10);
     }
     for (let seed = 0; seed < 200; seed++) {
       const ex = generateMultiplicationFraction(seed, 10);
-      const vals = ex.prompt.split(/[*/]/).map(Number);
+      const vals = parseFracs(ex.prompt);
       expect(Math.max(...vals)).toBeLessThanOrEqual(20);
     }
   });

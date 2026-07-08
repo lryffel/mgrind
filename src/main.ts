@@ -1,4 +1,5 @@
 import '@picocss/pico/css/pico.min.css';
+import 'katex/dist/katex.min.css';
 import { mount } from 'svelte';
 import './app.css';
 import App from './App.svelte';

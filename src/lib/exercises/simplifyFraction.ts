@@ -35,7 +35,7 @@ export function generateSimplifyFraction(seed: number, complexity: number): Exer
   const denominator = b * factor;
 
   return {
-    prompt: `${numerator}/${denominator}`,
+    prompt: `\\frac{${numerator}}{${denominator}}`,
     answer: `${a},${b}`,
   };
 }

@@ -33,7 +33,7 @@ describe('generateAdditionFraction', () => {
   it('prompt has two fractions joined by +', () => {
     for (let seed = 0; seed < 100; seed++) {
       const ex = generateAdditionFraction(seed, 4);
-      expect(ex.prompt).toMatch(/^\d+\/\d+\+\d+\/\d+$/);
+      expect(ex.prompt).toMatch(/^\\frac\{\d+\}\{\d+\} \+ \\frac\{\d+\}\{\d+\}$/);
     }
   });
 
@@ -58,10 +58,16 @@ describe('generateAdditionFraction', () => {
     }
   });
 
+  function parseFracs(prompt: string): number[] {
+    const match = prompt.match(/^\\frac\{(\d+)\}\{(\d+)\} \+ \\frac\{(\d+)\}\{(\d+)\}$/);
+    expect(match).not.toBeNull();
+    return [parseInt(match![1]), parseInt(match![2]), parseInt(match![3]), parseInt(match![4])];
+  }
+
   it('adding the two fractions equals the answer', () => {
     for (let seed = 0; seed < 500; seed++) {
       const ex = generateAdditionFraction(seed, 6);
-      const [n1, d1, n2, d2] = ex.prompt.split(/[+/]/).map(Number);
+      const [n1, d1, n2, d2] = parseFracs(ex.prompt);
       const [a, b] = ex.answer.split(',').map(Number);
       const sumNum = n1 * d2 + n2 * d1;
       const sumDen = d1 * d2;
@@ -72,7 +78,7 @@ describe('generateAdditionFraction', () => {
   it('at least one addend shares a factor with the common denominator', () => {
     for (let seed = 0; seed < 500; seed++) {
       const ex = generateAdditionFraction(seed, 6);
-      const [n1, d1, n2, d2] = ex.prompt.split(/[+/]/).map(Number);
+      const [n1, d1, n2, d2] = parseFracs(ex.prompt);
       const totalNum = n1 * d2 + n2 * d1;
       const [a] = ex.answer.split(',').map(Number);
       const factor = totalNum / a;
@@ -83,13 +89,13 @@ describe('generateAdditionFraction', () => {
   it('numerator and denominator values stay within bounds per complexity', () => {
     for (let seed = 0; seed < 200; seed++) {
       const ex = generateAdditionFraction(seed, 0);
-      const [n1, d1, n2, d2] = ex.prompt.split(/[+/]/).map(Number);
-      expect(Math.max(n1, d1, n2, d2)).toBeLessThanOrEqual(50);
+      const vals = parseFracs(ex.prompt);
+      expect(Math.max(...vals)).toBeLessThanOrEqual(50);
     }
     for (let seed = 0; seed < 200; seed++) {
       const ex = generateAdditionFraction(seed, 10);
-      const [n1, d1, n2, d2] = ex.prompt.split(/[+/]/).map(Number);
-      expect(Math.max(n1, d1, n2, d2)).toBeLessThanOrEqual(500);
+      const vals = parseFracs(ex.prompt);
+      expect(Math.max(...vals)).toBeLessThanOrEqual(500);
     }
   });
 

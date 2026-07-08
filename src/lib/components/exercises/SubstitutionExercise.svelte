@@ -1,8 +1,7 @@
 <script lang="ts">
   import { _ } from '../../i18n.svelte';
   import type { Exercise } from '../../types';
-  import Fraction from './Fraction.svelte';
-  import Sqrt from './Sqrt.svelte';
+  import Math from '../Math.svelte';
 
   let {
     exercise,
@@ -27,18 +26,6 @@
   const complexity = $derived(exercise.data?.complexity as number | undefined ?? 0);
   const answerIsFraction = $derived(exercise.answer.includes('/'));
 
-  const valueFrac = $derived(parseValueFrac(value));
-
-  function parseValueFrac(s: string): { num: number; den: number } | null {
-    if (!s.includes('/')) return null;
-    const parts = s.split('/');
-    if (parts.length !== 2) return null;
-    const num = parseInt(parts[0], 10);
-    const den = parseInt(parts[1], 10);
-    if (isNaN(num) || isNaN(den) || den === 0) return null;
-    return { num, den };
-  }
-
   function handleKeydown(e: KeyboardEvent) {
     if (e.key === 'Enter') {
       if (feedback === null) {
@@ -61,83 +48,19 @@
       firstInput?.focus();
     }
   });
-
-  interface SupSeg {
-    type: 'sup';
-    base: string;
-    exp: string;
-  }
-  interface FracSeg {
-    type: 'frac';
-    num: number;
-    den: number | string;
-  }
-  interface SqrtSeg {
-    type: 'sqrt';
-    radicand: string;
-  }
-  interface TextSeg {
-    type: 'text';
-    text: string;
-  }
-  type Seg = SupSeg | FracSeg | SqrtSeg | TextSeg;
-
-  function splitTerm(text: string): Seg[] {
-    const segments: Seg[] = [];
-    const regex = /\((\d+)\/(\d+)\)|(\d+)\/(\d+)|(\d+)\/([a-z])|\u221A\(([^)]*)\)|(\w+)\^\(([^)]*)\)/g;
-    let lastIndex = 0;
-    let match: RegExpExecArray | null;
-    while ((match = regex.exec(text)) !== null) {
-      if (match.index > lastIndex) {
-        segments.push({ type: 'text', text: text.slice(lastIndex, match.index) });
-      }
-      if (match[1] !== undefined) {
-        segments.push({ type: 'frac', num: parseInt(match[1], 10), den: parseInt(match[2], 10) });
-      } else if (match[3] !== undefined) {
-        segments.push({ type: 'frac', num: parseInt(match[3], 10), den: parseInt(match[4], 10) });
-      } else if (match[5] !== undefined && match[6] !== undefined) {
-        segments.push({ type: 'frac', num: parseInt(match[5], 10), den: match[6] });
-      } else if (match[7] !== undefined) {
-        segments.push({ type: 'sqrt', radicand: match[7] });
-      } else {
-        segments.push({ type: 'sup', base: match[8], exp: match[9] });
-      }
-      lastIndex = match.index + match[0].length;
-    }
-    if (lastIndex < text.length) {
-      segments.push({ type: 'text', text: text.slice(lastIndex) });
-    }
-    return segments;
-  }
 </script>
 
 <svelte:window onkeydown={handleKeydown} />
 
 {#if feedback === null}
   <p class="prompt-label">
-    {_('exercise.substitution.promptBefore', variable)}
-    {#if valueFrac}
-      <Fraction num={valueFrac.num} den={valueFrac.den} />
-    {:else}
-      {value}
-    {/if}
-    {_('exercise.substitution.promptAfter')}
+    {_('exercise.substitution.promptBefore')}<Math expression={`${variable} = ${value}`} />{_('exercise.substitution.promptAfter')}
   </p>
   {#if complexity >= 5 && answerIsFraction}
     <p class="hint">{_('exercise.substitution.reduceHint')}</p>
   {/if}
   <p class="prompt fraction-prompt">
-    {#each splitTerm(term) as seg, i (i)}
-      {#if seg.type === 'frac'}
-        <Fraction num={seg.num} den={seg.den} />
-      {:else if seg.type === 'sqrt'}
-        <Sqrt radicand={seg.radicand} />
-      {:else if seg.type === 'sup'}
-        <span>{seg.base}<sup class="superscript">{seg.exp}</sup></span>
-      {:else}
-        {seg.text}
-      {/if}
-    {/each}
+    <Math expression={term} />
     <span class="equals"> = </span>
     {#if answerIsFraction}
       <span class="fraction-answer-inline">
@@ -154,32 +77,16 @@
   </div>
 {:else}
   <p class="prompt-label">
-    {_('exercise.substitution.promptBefore', variable)}
-    {#if valueFrac}
-      <Fraction num={valueFrac.num} den={valueFrac.den} />
-    {:else}
-      {value}
-    {/if}
-    {_('exercise.substitution.promptAfter')}
+    {_('exercise.substitution.promptBefore')}<Math expression={`${variable} = ${value}`} />{_('exercise.substitution.promptAfter')}
   </p>
   {#if complexity >= 5 && answerIsFraction}
     <p class="hint">{_('exercise.substitution.reduceHint')}</p>
   {/if}
   <p class="prompt fraction-prompt">
-    {#each splitTerm(term) as seg, i (i)}
-      {#if seg.type === 'frac'}
-        <Fraction num={seg.num} den={seg.den} />
-      {:else if seg.type === 'sqrt'}
-        <Sqrt radicand={seg.radicand} />
-      {:else if seg.type === 'sup'}
-        <span>{seg.base}<sup class="superscript">{seg.exp}</sup></span>
-      {:else}
-        {seg.text}
-      {/if}
-    {/each}
+    <Math expression={term} />
     <span class="equals"> = </span>
     {#if answerIsFraction}
-      <Fraction num={numInput || '0'} den={denInput || '1'} />
+      <Math expression={`\\frac{${numInput || '0'}}{${denInput || '1'}}`} />
     {:else}
       <span class="user-answer">{input || '\u00A0'}</span>
     {/if}
@@ -212,12 +119,6 @@
 
   .user-answer {
     font-size: 1.5rem;
-  }
-
-  .superscript {
-    font-size: 0.75em;
-    vertical-align: super;
-    line-height: 1;
   }
 
   .fraction-answer-inline {

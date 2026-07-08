@@ -2,6 +2,7 @@
   import { _ } from '../../i18n.svelte';
   import { tick } from 'svelte';
   import type { Exercise } from '../../types';
+  import Math from '../Math.svelte';
 
   let {
     exercise,
@@ -33,8 +34,8 @@
   });
 
   function formatCorrectAnswer(): string {
-    const parts = exercise.answer.split(',').map((e, i) => `${primes[i]}^${e}`);
-    return parts.join(' \u22C5 ');
+    const parts = exercise.answer.split(',').map((e, i) => `${primes[i]}^{${e}}`);
+    return parts.join(' \\cdot ');
   }
 
   function handleKeydown(e: KeyboardEvent) {
@@ -57,10 +58,10 @@
 
 {#if feedback === null}
   <div class="factorisation" bind:this={factorisationEl}>
-    <span>=</span>
+    <Math expression="=" />
     {#each primes as prime, i (prime)}
       {#if i > 0}
-        <span class="times"> · </span>
+        <Math expression={'\\cdot'} />
       {/if}
       <span class="prime-term">
         {prime}<span class="exp-sym">^</span><input
@@ -93,11 +94,6 @@
     font-size: 1.25rem;
     flex-wrap: wrap;
     justify-content: center;
-  }
-
-  .factorisation .times {
-    font-size: 1rem;
-    opacity: 0.6;
   }
 
   .factorisation .prime-term {

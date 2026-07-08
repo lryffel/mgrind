@@ -89,7 +89,7 @@ export function generateSubtractionFraction(seed: number, complexity: number): E
   const f2Den = commonDen / g2;
 
   return {
-    prompt: `${f1Num}/${f1Den}-${f2Num}/${f2Den}`,
+    prompt: `\\frac{${f1Num}}{${f1Den}} - \\frac{${f2Num}}{${f2Den}}`,
     answer: `${a},${b}`,
     data: { op: '-', promptKey: 'exercise.subtractionFraction.prompt' },
   };

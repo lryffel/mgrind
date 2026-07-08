@@ -1,7 +1,7 @@
 <script lang="ts">
   import { _ } from '../../i18n.svelte';
   import type { Exercise } from '../../types';
-  import Fraction from './Fraction.svelte';
+  import Math from '../Math.svelte';
   import FractionInput from './FractionInput.svelte';
 
   let {
@@ -20,7 +20,6 @@
   let denInput = $state('');
   let numInputEl = $state<HTMLInputElement | null>(null);
 
-  let numDen = $derived(exercise.prompt.split('/'));
   let correctNumDen = $derived(exercise.answer.split(','));
 
   function handleKeydown(e: KeyboardEvent) {
@@ -45,7 +44,7 @@
 {#if feedback === null}
   <p class="prompt-label">{_('exercise.simplifyFraction.prompt')}</p>
   <p class="prompt fraction-prompt">
-    <Fraction num={numDen[0]} den={numDen[1]} />
+    <Math expression={exercise.prompt} />
     <span class="equals">=</span>
     <FractionInput bind:num={numInput} bind:den={denInput} inputRef={(el) => (numInputEl = el)} />
   </p>
@@ -55,9 +54,9 @@
 {:else}
   <p class="prompt-label">{_('exercise.simplifyFraction.prompt')}</p>
   <p class="prompt fraction-prompt">
-    <Fraction num={numDen[0]} den={numDen[1]} />
+    <Math expression={exercise.prompt} />
     <span class="equals">=</span>
-    <Fraction num={numInput} den={denInput} />
+    <Math expression={numInput && denInput ? `\\frac{${numInput}}{${denInput}}` : '\\;'} />
   </p>
   <p class="feedback {feedback}">
     {feedback === 'correct'

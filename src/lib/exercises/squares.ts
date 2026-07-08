@@ -9,9 +9,9 @@ export function generateSquares(seed: number, complexity: number): Exercise {
   const variant = Math.floor(rng() * 3);
   const sq = a * a;
   switch (variant) {
-    case 0: return { prompt: `${a}\u00B2 = ?`, answer: String(sq) };
-    case 1: return { prompt: `(-${a})\u00B2 = ?`, answer: String(sq) };
-    case 2: return { prompt: `-${a}\u00B2 = ?`, answer: String(-sq) };
-    default: return { prompt: `${a}\u00B2 = ?`, answer: String(sq) };
+    case 0: return { prompt: `${a}^{2} = ?`, answer: String(sq) };
+    case 1: return { prompt: `(-${a})^{2} = ?`, answer: String(sq) };
+    case 2: return { prompt: `-${a}^{2} = ?`, answer: String(-sq) };
+    default: return { prompt: `${a}^{2} = ?`, answer: String(sq) };
   }
 }

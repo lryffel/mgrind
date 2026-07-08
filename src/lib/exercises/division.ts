@@ -12,7 +12,7 @@ export function generateDivision(seed: number, complexity: number): Exercise {
   }
   const b = a * c;
   const prompt = rng() < 0.5
-    ? `${a} \u22C5 ? = ${b}`
-    : `${b} / ${a} = ?`;
+    ? `${a} \\cdot ? = ${b}`
+    : `\\frac{${b}}{${a}} = ?`;
   return { prompt, answer: String(c) };
 }

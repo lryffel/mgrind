@@ -30,10 +30,10 @@ describe('generateSimplifyFraction', () => {
     expect(seen.size).toBeGreaterThan(1);
   });
 
-  it('prompt has a "/" separating numerator and denominator', () => {
+  it('prompt is a LaTeX fraction', () => {
     for (let seed = 0; seed < 100; seed++) {
       const ex = generateSimplifyFraction(seed, 4);
-      expect(ex.prompt).toMatch(/^\d+\/\d+$/);
+      expect(ex.prompt).toMatch(/^\\frac\{\d+\}\{\d+\}$/);
     }
   });
 
@@ -61,7 +61,10 @@ describe('generateSimplifyFraction', () => {
   it('the common factor is >= 2', () => {
     for (let seed = 0; seed < 500; seed++) {
       const ex = generateSimplifyFraction(seed, 4);
-      const [num, den] = ex.prompt.split('/').map(Number);
+      const match = ex.prompt.match(/^\\frac\{(\d+)\}\{(\d+)\}$/);
+      expect(match).not.toBeNull();
+      const num = parseInt(match![1]);
+      const den = parseInt(match![2]);
       const [a, b] = ex.answer.split(',').map(Number);
       const factorNum = num / a;
       const factorDen = den / b;
@@ -74,7 +77,10 @@ describe('generateSimplifyFraction', () => {
   it('the unreduced fraction equals the simplified fraction', () => {
     for (let seed = 0; seed < 500; seed++) {
       const ex = generateSimplifyFraction(seed, 6);
-      const [num, den] = ex.prompt.split('/').map(Number);
+      const match = ex.prompt.match(/^\\frac\{(\d+)\}\{(\d+)\}$/);
+      expect(match).not.toBeNull();
+      const num = parseInt(match![1]);
+      const den = parseInt(match![2]);
       const [a, b] = ex.answer.split(',').map(Number);
       expect(num * b).toBe(den * a);
     }
@@ -83,13 +89,19 @@ describe('generateSimplifyFraction', () => {
   it('numerator and denominator values stay within bounds per complexity', () => {
     for (let seed = 0; seed < 200; seed++) {
       const ex = generateSimplifyFraction(seed, 0);
-      const [num, den] = ex.prompt.split('/').map(Number);
+      const match = ex.prompt.match(/^\\frac\{(\d+)\}\{(\d+)\}$/);
+      expect(match).not.toBeNull();
+      const num = parseInt(match![1]);
+      const den = parseInt(match![2]);
       expect(num).toBeLessThanOrEqual(50);
       expect(den).toBeLessThanOrEqual(50);
     }
     for (let seed = 0; seed < 200; seed++) {
       const ex = generateSimplifyFraction(seed, 10);
-      const [num, den] = ex.prompt.split('/').map(Number);
+      const match = ex.prompt.match(/^\\frac\{(\d+)\}\{(\d+)\}$/);
+      expect(match).not.toBeNull();
+      const num = parseInt(match![1]);
+      const den = parseInt(match![2]);
       expect(num).toBeLessThanOrEqual(500);
       expect(den).toBeLessThanOrEqual(500);
     }

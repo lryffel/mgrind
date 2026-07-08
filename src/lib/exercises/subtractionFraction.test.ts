@@ -1,14 +1,20 @@
 import { describe, it, expect } from 'vitest';
 import { generateSubtractionFraction } from './subtractionFraction';
 
-function gcd(a: number, b: number): number {
-  while (b) {
-    [a, b] = [b, a % b];
+  function gcd(a: number, b: number): number {
+    while (b) {
+      [a, b] = [b, a % b];
+    }
+    return a;
   }
-  return a;
-}
 
-describe('generateSubtractionFraction', () => {
+  function parseFracs(prompt: string): number[] {
+    const match = prompt.match(/^\\frac\{(\d+)\}\{(\d+)\} - \\frac\{(\d+)\}\{(\d+)\}$/);
+    expect(match).not.toBeNull();
+    return [parseInt(match![1]), parseInt(match![2]), parseInt(match![3]), parseInt(match![4])];
+  }
+
+  describe('generateSubtractionFraction', () => {
   it('returns a valid exercise with prompt and answer', () => {
     const ex = generateSubtractionFraction(42, 0);
     expect(ex).toHaveProperty('prompt');
@@ -33,7 +39,7 @@ describe('generateSubtractionFraction', () => {
   it('prompt has two fractions joined by -', () => {
     for (let seed = 0; seed < 100; seed++) {
       const ex = generateSubtractionFraction(seed, 4);
-      expect(ex.prompt).toMatch(/^\d+\/\d+-\d+\/\d+$/);
+      expect(ex.prompt).toMatch(/^\\frac\{\d+\}\{\d+\} - \\frac\{\d+\}\{\d+\}$/);
     }
   });
 
@@ -68,7 +74,7 @@ describe('generateSubtractionFraction', () => {
   it('subtracting the two fractions equals the answer', () => {
     for (let seed = 0; seed < 500; seed++) {
       const ex = generateSubtractionFraction(seed, 6);
-      const [n1, d1, n2, d2] = ex.prompt.split(/[-/]/).map(Number);
+      const [n1, d1, n2, d2] = parseFracs(ex.prompt);
       const [a, b] = ex.answer.split(',').map(Number);
       const diffNum = n1 * d2 - n2 * d1;
       const diffDen = d1 * d2;
@@ -92,13 +98,13 @@ describe('generateSubtractionFraction', () => {
   it('produces prompt values reasonably bounded per complexity', () => {
     for (let seed = 0; seed < 200; seed++) {
       const ex = generateSubtractionFraction(seed, 0);
-      const [n1, d1, n2, d2] = ex.prompt.split(/[-/]/).map(Number);
-      expect(Math.max(n1, d1, n2, d2)).toBeLessThanOrEqual(100);
+      const vals = parseFracs(ex.prompt);
+      expect(Math.max(...vals)).toBeLessThanOrEqual(100);
     }
     for (let seed = 0; seed < 200; seed++) {
       const ex = generateSubtractionFraction(seed, 10);
-      const [n1, d1, n2, d2] = ex.prompt.split(/[-/]/).map(Number);
-      expect(Math.max(n1, d1, n2, d2)).toBeLessThanOrEqual(1000);
+      const vals = parseFracs(ex.prompt);
+      expect(Math.max(...vals)).toBeLessThanOrEqual(1000);
     }
   });
 

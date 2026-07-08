@@ -33,8 +33,8 @@ const dict = {
     de: 'Setze einen Wert in einen Term ein',
   },
   'exercise.substitution.promptBefore': {
-    en: 'Substitute {0} = ',
-    de: 'Setze {0} = ',
+    en: 'Substitute ',
+    de: 'Setze ',
   },
   'exercise.substitution.promptAfter': {
     en: '',

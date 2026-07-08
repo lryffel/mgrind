@@ -1,8 +1,8 @@
 import { describe, it, expect } from 'vitest';
 import { generateDivision } from './division';
 
-const MUL_RE = /^(\d+) \u22C5 \? = (\d+)$/;
-const DIV_RE = /^(\d+) \/ (\d+) = \?$/;
+const MUL_RE = /^(\d+) \\cdot \? = (\d+)$/;
+const DIV_RE = /^\\frac\{(\d+)\}\{(\d+)\} = \?$/;
 
 function parseAandC(prompt: string, answer: string): { a: number; c: number } {
   const mulMatch = prompt.match(MUL_RE);
@@ -21,7 +21,7 @@ describe('generateDivision', () => {
     const ex = generateDivision(42, 0);
     expect(ex).toHaveProperty('prompt');
     expect(ex).toHaveProperty('answer');
-    expect(ex.prompt).toMatch(/^\d+ \u22C5 \? = \d+$|^\d+ \/ \d+ = \?$/);
+    expect(ex.prompt).toMatch(/^\d+ \\cdot \? = \d+$|^\\frac\{\d+\}\{\d+\} = \?$/);
   });
 
   it('is deterministic for the same seed and complexity', () => {

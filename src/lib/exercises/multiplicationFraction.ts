@@ -85,7 +85,7 @@ export function generateMultiplicationFraction(seed: number, complexity: number)
   const g = gcd(prodNum, prodDen);
 
   return {
-    prompt: `${a}/${b}*${c}/${d}`,
+    prompt: `\\frac{${a}}{${b}} \\cdot \\frac{${c}}{${d}}`,
     answer: `${prodNum / g},${prodDen / g}`,
     data: { op: '*', promptKey: 'exercise.multiplicationFraction.prompt' },
   };

@@ -6,7 +6,7 @@ describe('generateMultiplication', () => {
     const ex = generateMultiplication(42, 0);
     expect(ex).toHaveProperty('prompt');
     expect(ex).toHaveProperty('answer');
-    expect(ex.prompt).toMatch(/^\d+ \u22C5 \d+ = \?$/);
+    expect(ex.prompt).toMatch(/^\d+ \\cdot \d+ = \?$/);
   });
 
   it('is deterministic for the same seed and complexity', () => {
@@ -24,7 +24,7 @@ describe('generateMultiplication', () => {
   it('produces correct multiplication results', () => {
     for (let seed = 0; seed < 100; seed++) {
       const ex = generateMultiplication(seed, 5);
-      const match = ex.prompt.match(/^(\d+) \u22C5 (\d+) = \?$/);
+      const match = ex.prompt.match(/^(\d+) \\cdot (\d+) = \?$/);
       expect(match).not.toBeNull();
       const a = parseInt(match![1]);
       const b = parseInt(match![2]);
@@ -35,7 +35,7 @@ describe('generateMultiplication', () => {
   it('uses factors >= 2', () => {
     for (let seed = 0; seed < 200; seed++) {
       const ex = generateMultiplication(seed, 0);
-      const match = ex.prompt.match(/^(\d+) \u22C5 (\d+) = \?$/);
+      const match = ex.prompt.match(/^(\d+) \\cdot (\d+) = \?$/);
       expect(match).not.toBeNull();
       const a = parseInt(match![1]);
       const b = parseInt(match![2]);
@@ -47,7 +47,7 @@ describe('generateMultiplication', () => {
   it('at complexity 0, max factor is 10', () => {
     for (let seed = 0; seed < 100; seed++) {
       const ex = generateMultiplication(seed, 0);
-      const match = ex.prompt.match(/^(\d+) \u22C5 (\d+) = \?$/);
+      const match = ex.prompt.match(/^(\d+) \\cdot (\d+) = \?$/);
       expect(match).not.toBeNull();
       const a = parseInt(match![1]);
       const b = parseInt(match![2]);
@@ -60,7 +60,7 @@ describe('generateMultiplication', () => {
     let foundHigh = false;
     for (let seed = 0; seed < 500; seed++) {
       const ex = generateMultiplication(seed, 9);
-      const match = ex.prompt.match(/^(\d+) \u22C5 (\d+) = \?$/);
+      const match = ex.prompt.match(/^(\d+) \\cdot (\d+) = \?$/);
       expect(match).not.toBeNull();
       const a = parseInt(match![1]);
       const b = parseInt(match![2]);

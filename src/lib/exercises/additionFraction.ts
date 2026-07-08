@@ -53,7 +53,7 @@ export function generateAdditionFraction(seed: number, complexity: number): Exer
   const f2Den = commonDen / g2;
 
   return {
-    prompt: `${f1Num}/${f1Den}+${f2Num}/${f2Den}`,
+    prompt: `\\frac{${f1Num}}{${f1Den}} + \\frac{${f2Num}}{${f2Den}}`,
     answer: `${a},${b}`,
     data: { op: '+' },
   };

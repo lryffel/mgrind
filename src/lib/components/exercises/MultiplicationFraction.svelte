@@ -1,7 +1,7 @@
 <script lang="ts">
   import { _ } from '../../i18n.svelte';
   import type { Exercise } from '../../types';
-  import Fraction from './Fraction.svelte';
+  import Math from '../Math.svelte';
   import FractionInput from './FractionInput.svelte';
 
   let {
@@ -20,12 +20,11 @@
   let denInput = $state('');
   let numInputEl = $state<HTMLInputElement | null>(null);
 
-  const opMatch = $derived(exercise.prompt.match(/^(\d+)\/(\d+)([+\-*/])(\d+)\/(\d+)$/));
+  const opMatch = $derived(exercise.prompt.match(/^\\frac\{(\d+)\}\{(\d+)\} \\cdot \\frac\{(\d+)\}\{(\d+)\}$/));
   const num1 = $derived(Number(opMatch![1]));
   const den1 = $derived(Number(opMatch![2]));
-  const op = $derived(opMatch![3] === '*' ? '\u22C5' : opMatch![3]);
-  const num2 = $derived(Number(opMatch![4]));
-  const den2 = $derived(Number(opMatch![5]));
+  const num2 = $derived(Number(opMatch![3]));
+  const den2 = $derived(Number(opMatch![4]));
   const correctNumDen = $derived(exercise.answer.split(','));
   const promptKey = $derived(
     (exercise.data?.promptKey as string | undefined) ?? 'exercise.multiplicationFraction.prompt',
@@ -53,9 +52,9 @@
 {#if feedback === null}
   <p class="prompt-label">{_(promptKey)}</p>
   <p class="prompt fraction-prompt">
-    <Fraction num={num1} den={den1} />
-    <span class="op">{op}</span>
-    <Fraction num={num2} den={den2} />
+    <Math expression={`\\frac{${num1}}{${den1}}`} />
+    <Math expression={'\\cdot'} />
+    <Math expression={`\\frac{${num2}}{${den2}}`} />
     <span class="equals">=</span>
     <FractionInput bind:num={numInput} bind:den={denInput} inputRef={(el) => (numInputEl = el)} />
   </p>
@@ -65,11 +64,11 @@
 {:else}
   <p class="prompt-label">{_(promptKey)}</p>
   <p class="prompt fraction-prompt">
-    <Fraction num={num1} den={den1} />
-    <span class="op">{op}</span>
-    <Fraction num={num2} den={den2} />
+    <Math expression={`\\frac{${num1}}{${den1}}`} />
+    <Math expression={'\\cdot'} />
+    <Math expression={`\\frac{${num2}}{${den2}}`} />
     <span class="equals">=</span>
-    <Fraction num={numInput} den={denInput} />
+    <Math expression={numInput && denInput ? `\\frac{${numInput}}{${denInput}}` : '\\;'} />
   </p>
   <p class="feedback {feedback}">
     {feedback === 'correct'

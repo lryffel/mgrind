@@ -2,11 +2,11 @@ import { describe, it, expect } from 'vitest';
 import { generateSquares } from './squares';
 
 function parsePrompt(prompt: string): { a: number; variant: number } {
-  const m1 = prompt.match(/^\((-?\d+)\)\u00B2 = \?$/);
+  const m1 = prompt.match(/^\((-?\d+)\)\^\{2\} = \?$/);
   if (m1) return { a: Math.abs(parseInt(m1[1])), variant: 1 };
-  const m2 = prompt.match(/^-(\d+)\u00B2 = \?$/);
+  const m2 = prompt.match(/^-(\d+)\^\{2\} = \?$/);
   if (m2) return { a: parseInt(m2[1]), variant: 2 };
-  const m3 = prompt.match(/^(\d+)\u00B2 = \?$/);
+  const m3 = prompt.match(/^(\d+)\^\{2\} = \?$/);
   if (m3) return { a: parseInt(m3[1]), variant: 0 };
   throw new Error(`Cannot parse prompt: ${prompt}`);
 }
@@ -16,7 +16,7 @@ describe('generateSquares', () => {
     const ex = generateSquares(42, 0);
     expect(ex).toHaveProperty('prompt');
     expect(ex).toHaveProperty('answer');
-    expect(ex.prompt).toMatch(/\u00B2 = \?$/);
+    expect(ex.prompt).toMatch(/\^\{2\} = \?$/);
   });
 
   it('is deterministic for the same seed and complexity', () => {
