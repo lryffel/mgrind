@@ -24,6 +24,6 @@ export const disciplines: Discipline[] = [
   {
     id: 'algebra',
     nameKey: 'discipline.algebra.name',
-    exerciseTypeIds: ['substitution', 'binomialFormulas'],
+    exerciseTypeIds: ['substitution', 'binomialFormulas', 'collectingTerms'],
   },
 ];

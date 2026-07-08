@@ -42,6 +42,11 @@ const dict = {
     en: '',
     de: ' ein',
   },
+  'exercise.collectingTerms.name': { en: 'Collecting terms', de: 'Terme zusammenfassen' },
+  'exercise.collectingTerms.desc': {
+    en: 'Collect like terms',
+    de: 'Fasse gleiche Terme zusammen',
+  },
   'exercise.substitution.reduceHint': {
     en: 'Enter the result as a reduced fraction',
     de: 'Gib das Ergebnis als gekürzten Bruch ein',

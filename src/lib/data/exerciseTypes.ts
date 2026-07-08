@@ -18,6 +18,8 @@ import MultiplicationFraction from '../components/exercises/MultiplicationFracti
 import SubstitutionExercise from '../components/exercises/SubstitutionExercise.svelte';
 import BinomialFormulas from '../components/exercises/BinomialFormulas.svelte';
 import { generateBinomialFormulas, validateBinomialFormulas } from '../exercises/binomialFormulas';
+import { generateCollectingTerms, validateCollectingTerms } from '../exercises/collectingTerms';
+import CollectingTerms from '../components/exercises/CollectingTerms.svelte';
 
 function trimCompare(answer: string, exercise: Exercise): boolean {
   return answer.trim() === exercise.answer;
@@ -139,6 +141,15 @@ export const exerciseTypes: Record<string, ExerciseType> = {
     generate: generateSubstitution,
     validate: validateSubstitution,
     component: SubstitutionExercise,
+  },
+  collectingTerms: {
+    id: 'collectingTerms',
+    nameKey: 'exercise.collectingTerms.name',
+    descriptionKey: 'exercise.collectingTerms.desc',
+    maxComplexity: 10,
+    generate: generateCollectingTerms,
+    validate: validateCollectingTerms,
+    component: CollectingTerms,
   },
   binomialFormulas: {
     id: 'binomialFormulas',
