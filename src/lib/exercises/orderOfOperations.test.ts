@@ -8,28 +8,28 @@ function computeExpected(prompt: string): number | null {
   const m2 = prompt.match(/^(\d+) - \((\d+) - (\d+)\) = \?$/);
   if (m2) return parseInt(m2[1]) - (parseInt(m2[2]) - parseInt(m2[3]));
 
-  const m3 = prompt.match(/^(\d+) × \((\d+) \+ (\d+)\) = \?$/);
+  const m3 = prompt.match(/^(\d+) \u22C5 \((\d+) \+ (\d+)\) = \?$/);
   if (m3) return parseInt(m3[1]) * (parseInt(m3[2]) + parseInt(m3[3]));
 
-  const m4 = prompt.match(/^(\d+) × \((\d+) - (\d+)\) = \?$/);
+  const m4 = prompt.match(/^(\d+) \u22C5 \((\d+) - (\d+)\) = \?$/);
   if (m4) return parseInt(m4[1]) * (parseInt(m4[2]) - parseInt(m4[3]));
 
-  const m5 = prompt.match(/^(\d+) \+ (\d+) × (\d+) = \?$/);
+  const m5 = prompt.match(/^(\d+) \+ (\d+) \u22C5 (\d+) = \?$/);
   if (m5) return parseInt(m5[1]) + parseInt(m5[2]) * parseInt(m5[3]);
 
-  const m6 = prompt.match(/^(\d+) - (\d+) × (\d+) = \?$/);
+  const m6 = prompt.match(/^(\d+) - (\d+) \u22C5 (\d+) = \?$/);
   if (m6) return parseInt(m6[1]) - parseInt(m6[2]) * parseInt(m6[3]);
 
-  const m7 = prompt.match(/^(\d+) \+ (\d+) × (\d+)² = \?$/);
+  const m7 = prompt.match(/^(\d+) \+ (\d+) \u22C5 (\d+)² = \?$/);
   if (m7) return parseInt(m7[1]) + parseInt(m7[2]) * (parseInt(m7[3]) * parseInt(m7[3]));
 
-  const m8 = prompt.match(/^(\d+) - (\d+) × (\d+)² = \?$/);
+  const m8 = prompt.match(/^(\d+) - (\d+) \u22C5 (\d+)² = \?$/);
   if (m8) return parseInt(m8[1]) - parseInt(m8[2]) * (parseInt(m8[3]) * parseInt(m8[3]));
 
-  const m9 = prompt.match(/^(\d+) \+ \((\d+) × (\d+)\)² = \?$/);
+  const m9 = prompt.match(/^(\d+) \+ \((\d+) \u22C5 (\d+)\)² = \?$/);
   if (m9) return parseInt(m9[1]) + Math.pow(parseInt(m9[2]) * parseInt(m9[3]), 2);
 
-  const m10 = prompt.match(/^(\d+) - \((\d+) × (\d+)\)² = \?$/);
+  const m10 = prompt.match(/^(\d+) - \((\d+) \u22C5 (\d+)\)² = \?$/);
   if (m10) return parseInt(m10[1]) - Math.pow(parseInt(m10[2]) * parseInt(m10[3]), 2);
 
   const m11 = prompt.match(/^(\d+) \+ \((\d+) \+ (\d+)\)² = \?$/);
@@ -92,13 +92,13 @@ function computeExpected(prompt: string): number | null {
     return d - parseInt(m22[3]);
   }
 
-  const m23 = prompt.match(/^(\d+) × √\((\d+)² \+ (\d+)²\) = \?$/);
+  const m23 = prompt.match(/^(\d+) \u22C5 √\((\d+)² \+ (\d+)²\) = \?$/);
   if (m23) {
     const d = Math.sqrt(parseInt(m23[2]) * parseInt(m23[2]) + parseInt(m23[3]) * parseInt(m23[3]));
     return parseInt(m23[1]) * d;
   }
 
-  const m24 = prompt.match(/^(\d+) × √\((\d+)² - (\d+)²\) = \?$/);
+  const m24 = prompt.match(/^(\d+) \u22C5 √\((\d+)² - (\d+)²\) = \?$/);
   if (m24) {
     const d = Math.sqrt(parseInt(m24[2]) * parseInt(m24[2]) - parseInt(m24[3]) * parseInt(m24[3]));
     return parseInt(m24[1]) * d;

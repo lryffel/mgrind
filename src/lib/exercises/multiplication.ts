@@ -10,5 +10,5 @@ export function generateMultiplication(seed: number, complexity: number): Exerci
     const rng2 = mulberry32(seed + 1);
     a = Math.floor(rng2() * (maxFactor - 10)) + 11;
   }
-  return { prompt: `${a} \u00D7 ${b} = ?`, answer: String(a * b) };
+  return { prompt: `${a} \u22C5 ${b} = ?`, answer: String(a * b) };
 }

@@ -34,7 +34,7 @@ export function generateMultiplication(seed: number, complexity: number): Exerci
   const rng = mulberry32(seed);
   const a = Math.floor(rng() * (maxFactor - 1)) + 2;
   const b = Math.floor(rng() * (maxFactor - 1)) + 2;
-  return { prompt: `${a} × ${b} = ?`, answer: String(a * b) };
+  return { prompt: `${a} · ${b} = ?`, answer: String(a * b) };
 }
 ```
 

@@ -6,7 +6,7 @@ describe('generateMultiplicationMissingFactor', () => {
     const ex = generateMultiplicationMissingFactor(42, 0);
     expect(ex).toHaveProperty('prompt');
     expect(ex).toHaveProperty('answer');
-    expect(ex.prompt).toMatch(/^\d+ × \? = \d+$/);
+    expect(ex.prompt).toMatch(/^\d+ \u22C5 \? = \d+$/);
   });
 
   it('is deterministic for the same seed and complexity', () => {
@@ -24,7 +24,7 @@ describe('generateMultiplicationMissingFactor', () => {
   it('produces correct missing-factor results', () => {
     for (let seed = 0; seed < 100; seed++) {
       const ex = generateMultiplicationMissingFactor(seed, 5);
-      const match = ex.prompt.match(/^(\d+) × \? = (\d+)$/);
+      const match = ex.prompt.match(/^(\d+) \u22C5 \? = (\d+)$/);
       expect(match).not.toBeNull();
       const a = parseInt(match![1]);
       const b = parseInt(match![2]);
@@ -36,7 +36,7 @@ describe('generateMultiplicationMissingFactor', () => {
   it('uses factors >= 2', () => {
     for (let seed = 0; seed < 200; seed++) {
       const ex = generateMultiplicationMissingFactor(seed, 0);
-      const match = ex.prompt.match(/^(\d+) × \? = (\d+)$/);
+      const match = ex.prompt.match(/^(\d+) \u22C5 \? = (\d+)$/);
       expect(match).not.toBeNull();
       const a = parseInt(match![1]);
       expect(a).toBeGreaterThanOrEqual(2);
@@ -48,7 +48,7 @@ describe('generateMultiplicationMissingFactor', () => {
   it('at complexity 0, max factor is 10', () => {
     for (let seed = 0; seed < 100; seed++) {
       const ex = generateMultiplicationMissingFactor(seed, 0);
-      const match = ex.prompt.match(/^(\d+) × \? = (\d+)$/);
+      const match = ex.prompt.match(/^(\d+) \u22C5 \? = (\d+)$/);
       expect(match).not.toBeNull();
       const a = parseInt(match![1]);
       expect(a).toBeLessThanOrEqual(10);
@@ -61,7 +61,7 @@ describe('generateMultiplicationMissingFactor', () => {
     let foundHigh = false;
     for (let seed = 0; seed < 500; seed++) {
       const ex = generateMultiplicationMissingFactor(seed, 9);
-      const match = ex.prompt.match(/^(\d+) × \? = (\d+)$/);
+      const match = ex.prompt.match(/^(\d+) \u22C5 \? = (\d+)$/);
       expect(match).not.toBeNull();
       const a = parseInt(match![1]);
       const c = parseInt(ex.answer);

@@ -69,14 +69,14 @@ function genATimesBPlusC(rng: () => number): Exercise {
   const a = randInt(rng, 2, 3);
   const b = randInt(rng, 1, 3);
   const c = randInt(rng, 1, 3);
-  return { prompt: `${a} \u00D7 (${b} + ${c}) = ?`, answer: String(a * (b + c)) };
+  return { prompt: `${a} \u22C5 (${b} + ${c}) = ?`, answer: String(a * (b + c)) };
 }
 
 function genATimesBMinusC(rng: () => number): Exercise {
   const a = randInt(rng, 2, 3);
   const b = randInt(rng, 2, 4);
   const c = randInt(rng, 1, b - 1);
-  return { prompt: `${a} \u00D7 (${b} - ${c}) = ?`, answer: String(a * (b - c)) };
+  return { prompt: `${a} \u22C5 (${b} - ${c}) = ?`, answer: String(a * (b - c)) };
 }
 
 function genAPlusBCTimes(rng: () => number): Exercise {
@@ -84,7 +84,7 @@ function genAPlusBCTimes(rng: () => number): Exercise {
   const c = randInt(rng, 2, 4);
   const prod = b * c;
   const a = randInt(rng, 1, 19 - prod);
-  return { prompt: `${a} + ${b} \u00D7 ${c} = ?`, answer: String(a + prod) };
+  return { prompt: `${a} + ${b} \u22C5 ${c} = ?`, answer: String(a + prod) };
 }
 
 function genAMinusBCTimes(rng: () => number): Exercise {
@@ -92,7 +92,7 @@ function genAMinusBCTimes(rng: () => number): Exercise {
   const c = randInt(rng, 2, 4);
   const prod = b * c;
   const a = randInt(rng, prod + 1, Math.min(prod + 5, 19));
-  return { prompt: `${a} - ${b} \u00D7 ${c} = ?`, answer: String(a - prod) };
+  return { prompt: `${a} - ${b} \u22C5 ${c} = ?`, answer: String(a - prod) };
 }
 
 const band0: SubGen[] = [
@@ -111,7 +111,7 @@ function genAPlusBC2(rng: () => number): Exercise {
   const b = randInt(rng, 2, bMax);
   const prod = b * c2;
   const a = randInt(rng, 1, 19 - prod);
-  return { prompt: `${a} + ${b} \u00D7 ${c}\u00B2 = ?`, answer: String(a + prod) };
+  return { prompt: `${a} + ${b} \u22C5 ${c}\u00B2 = ?`, answer: String(a + prod) };
 }
 
 function genAMinusBC2(rng: () => number): Exercise {
@@ -121,17 +121,17 @@ function genAMinusBC2(rng: () => number): Exercise {
   const b = randInt(rng, 2, bMax);
   const prod = b * c2;
   const a = randInt(rng, prod + 1, Math.min(prod + 5, 19));
-  return { prompt: `${a} - ${b} \u00D7 ${c}\u00B2 = ?`, answer: String(a - prod) };
+  return { prompt: `${a} - ${b} \u22C5 ${c}\u00B2 = ?`, answer: String(a - prod) };
 }
 
 function genAPlusBCSq(rng: () => number): Exercise {
   const a = randInt(rng, 1, 3);
-  return { prompt: `${a} + (2 \u00D7 2)\u00B2 = ?`, answer: String(a + 16) };
+  return { prompt: `${a} + (2 \u22C5 2)\u00B2 = ?`, answer: String(a + 16) };
 }
 
 function genAMinusBCSq(rng: () => number): Exercise {
   const a = randInt(rng, 17, 19);
-  return { prompt: `${a} - (2 \u00D7 2)\u00B2 = ?`, answer: String(a - 16) };
+  return { prompt: `${a} - (2 \u22C5 2)\u00B2 = ?`, answer: String(a - 16) };
 }
 
 function genAPlusBPlusCSq(rng: () => number): Exercise {
@@ -214,7 +214,7 @@ function genCTimesSqrtA2PmB2(rng: () => number): Exercise {
   const [a, b, d] = pick(rng, useAdd ? ADD_TRIPLES : SUB_TRIPLES);
   const c = randInt(rng, 2, 5);
   const inner = useAdd ? `${a}\u00B2 + ${b}\u00B2` : `${a}\u00B2 - ${b}\u00B2`;
-  return { prompt: `${c} \u00D7 \u221A(${inner}) = ?`, answer: String(c * d) };
+  return { prompt: `${c} \u22C5 \u221A(${inner}) = ?`, answer: String(c * d) };
 }
 
 const band7: SubGen[] = [

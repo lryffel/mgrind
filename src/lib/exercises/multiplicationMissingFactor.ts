@@ -11,5 +11,5 @@ export function generateMultiplicationMissingFactor(seed: number, complexity: nu
     a = Math.floor(rng2() * (maxFactor - 10)) + 11;
   }
   const b = a * c;
-  return { prompt: `${a} \u00D7 ? = ${b}`, answer: String(c) };
+  return { prompt: `${a} \u22C5 ? = ${b}`, answer: String(c) };
 }

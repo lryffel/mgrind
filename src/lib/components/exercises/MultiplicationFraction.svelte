@@ -23,7 +23,7 @@
   const opMatch = $derived(exercise.prompt.match(/^(\d+)\/(\d+)([+\-*/])(\d+)\/(\d+)$/));
   const num1 = $derived(Number(opMatch![1]));
   const den1 = $derived(Number(opMatch![2]));
-  const op = $derived(opMatch![3] === '*' ? '\u00D7' : opMatch![3]);
+  const op = $derived(opMatch![3] === '*' ? '\u22C5' : opMatch![3]);
   const num2 = $derived(Number(opMatch![4]));
   const den2 = $derived(Number(opMatch![5]));
   const correctNumDen = $derived(exercise.answer.split(','));

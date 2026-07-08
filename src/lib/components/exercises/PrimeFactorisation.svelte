@@ -34,7 +34,7 @@
 
   function formatCorrectAnswer(): string {
     const parts = exercise.answer.split(',').map((e, i) => `${primes[i]}^${e}`);
-    return parts.join(' \u00D7 ');
+    return parts.join(' \u22C5 ');
   }
 
   function handleKeydown(e: KeyboardEvent) {
@@ -60,7 +60,7 @@
     <span>=</span>
     {#each primes as prime, i (prime)}
       {#if i > 0}
-        <span class="times"> &times; </span>
+        <span class="times"> · </span>
       {/if}
       <span class="prime-term">
         {prime}<span class="exp-sym">^</span><input
