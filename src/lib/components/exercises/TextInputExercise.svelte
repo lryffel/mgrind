@@ -40,12 +40,7 @@
   {#if exercise.prompt.includes('?')}
     {@const parts = exercise.prompt.split('?')}
     <p class="prompt">
-      {parts[0]}<input
-        type="text"
-        class="inline-input"
-        bind:value={userInput}
-        bind:this={inputEl}
-      />{parts[1]}
+      {parts[0]}<input type="text" class="inline-input" bind:value={userInput} bind:this={inputEl} />{parts[1]}
     </p>
     <div class="submit-row">
       <button onclick={() => onSubmit(userInput.trim())}>{_('answer.submit')}</button>
@@ -108,5 +103,10 @@
 
   .feedback.incorrect {
     color: var(--pico-del-color);
+  }
+
+  .submit-row {
+    display: flex;
+    justify-content: center;
   }
 </style>
