@@ -73,7 +73,7 @@
           <Math expression={'\\cdot'} />
         {/if}
         <span class="prime-term">
-          <Math expression={`${prime}\\text{^}`} /><input
+          <Math expression={prime + '\\text{\\char`^}'} /><input
             type="number"
             class="exp-input"
             bind:value={values[i]}
