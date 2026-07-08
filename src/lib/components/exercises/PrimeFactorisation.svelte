@@ -51,9 +51,9 @@
 
 <svelte:window onkeydown={handleKeydown} />
 
+<p class="prompt-label">{_('exercise.primeFactorisation.prompt')}</p>
 <p class="prompt">
-  {_('exercise.primeFactorisation.prompt')}
-  {exercise.prompt}
+  <Math expression={exercise.prompt} />
 </p>
 
 {#if feedback === null}
