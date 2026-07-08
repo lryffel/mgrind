@@ -75,17 +75,9 @@ function shuffle<T>(rng: () => number, arr: T[]): T[] {
   return result;
 }
 
-function formatPromptTerm(absNum: number, den: number, varLatex: string): string {
-  if (den === 1) {
-    if (absNum === 1 && varLatex) return '';
-    return String(absNum);
-  }
-  if (absNum % den === 0) {
-    const n = absNum / den;
-    if (n === 1 && varLatex) return '';
-    return String(n);
-  }
-  return `\\frac{${absNum}}{${den}}`;
+function formatPromptTerm(absNum: number, varLatex: string): string {
+  if (absNum === 1 && varLatex) return '';
+  return String(absNum);
 }
 
 function formatTermBlock(
@@ -95,15 +87,14 @@ function formatTermBlock(
 
   const absNum = Math.abs(num);
   const sign = num < 0 ? '-' : (isFirst ? '' : '+');
-  const coeffDisplay = formatPromptTerm(absNum, den, varLatex);
+  const coeffDisplay = formatPromptTerm(absNum, varLatex);
 
   const prefix = isFirst ? (sign === '-' ? '-' : '') : ` ${sign} `;
   return `${prefix}${coeffDisplay}${varLatex}`;
 }
 
-function formatAnswerCoeff(num: number, den: number): string {
-  if (den === 1) return String(num);
-  return `${num}/${den}`;
+function formatAnswerCoeff(num: number): string {
+  return String(num);
 }
 
 export function formatCollectingAnswer(coeffStrs: string[], variableParts: string[]): string {
@@ -173,7 +164,6 @@ export function generateCollectingTerms(seed: number, complexity: number): Exerc
   const clamped = Math.min(Math.max(complexity, 0), 10);
 
   const maxDegree = clamped <= 2 ? 1 : clamped <= 5 ? 2 : 3;
-  const allowFrac = clamped >= 8;
   const numTypes = clamped <= 1 ? 2 : randInt(rng, 2, 4);
   const maxTermsPerType = clamped <= 4 ? 2 : clamped <= 7 ? 2 : 3;
 
@@ -182,11 +172,11 @@ export function generateCollectingTerms(seed: number, complexity: number): Exerc
   const selected = pickDistinct(rng, monomials, numTypes);
 
   for (let attempt = 0; attempt < 20; attempt++) {
-    const result = tryGenerate(rng, selected, allowFrac, maxTermsPerType, seed, attempt, monomials);
+    const result = tryGenerate(rng, selected, maxTermsPerType, seed, attempt, monomials);
     if (result) return result;
   }
 
-  const fallback = tryGenerate(rng, selected.slice(0, 2), false, 2, seed, 0, monomials);
+  const fallback = tryGenerate(rng, selected.slice(0, 2), 2, seed, 0, monomials);
   if (fallback) return fallback;
   const fallbackVar = varSet[0].latex;
   return { prompt: `${fallbackVar} + 2${fallbackVar}`, answer: '3', data: { fields: [{ variablePart: fallbackVar }] } };
@@ -195,7 +185,6 @@ export function generateCollectingTerms(seed: number, complexity: number): Exerc
 function tryGenerate(
   rng: () => number,
   selected: Monomial[],
-  allowFrac: boolean,
   maxTermsPerType: number,
   seed: number,
   attempt: number,
@@ -212,17 +201,9 @@ function tryGenerate(
     const numTerms = randInt(localRng, minTerms, maxTermsPerType);
 
     for (let i = 0; i < numTerms; i++) {
-      let num: number; let den: number;
-      if (allowFrac) {
-        den = randInt(localRng, 1, 5);
-        num = randInt(localRng, 1, 9);
-        if (localRng() > 0.5) num = -num;
-        [num, den] = reduceFrac(num, den);
-      } else {
-        num = randInt(localRng, 1, 9);
-        if (localRng() > 0.4) num = -num;
-        den = 1;
-      }
+      let num = randInt(localRng, 1, 9);
+      if (localRng() > 0.4) num = -num;
+      const den = 1;
       terms.push({ num, den, displayLatex: '', monomial });
     }
 
@@ -278,8 +259,8 @@ function tryGenerate(
   const answerParts: string[] = [];
   const fields: { variablePart: string }[] = [];
 
-  for (const [monomialLatex, [num, den]] of nonZero) {
-    answerParts.push(formatAnswerCoeff(num, den));
+  for (const [monomialLatex, [num]] of nonZero) {
+    answerParts.push(formatAnswerCoeff(num));
     fields.push({ variablePart: monomialLatex });
   }
 

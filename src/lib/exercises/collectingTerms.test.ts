@@ -70,20 +70,6 @@ describe('generateCollectingTerms', () => {
     }
   });
 
-  it('high complexity (8-10) produces some fraction coefficients', () => {
-    let sawFrac = false;
-    for (let seed = 0; seed < 200; seed++) {
-      for (let c = 8; c <= 10; c++) {
-        const ex = generateCollectingTerms(seed + c * 1000, c);
-        const parts = ex.answer.split(',');
-        for (const p of parts) {
-          if (p.includes('/')) sawFrac = true;
-        }
-      }
-    }
-    expect(sawFrac).toBe(true);
-  });
-
   it('prompt contains at least two terms', () => {
     for (let seed = 0; seed < 100; seed++) {
       const ex = generateCollectingTerms(seed, 5);

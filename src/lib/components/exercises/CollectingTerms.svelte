@@ -43,15 +43,18 @@
   }
 
   let userLatex = $derived(formatCollectingAnswer(values, variableParts));
-  let correctLatex = $derived(
-    formatCollectingAnswer(exercise.answer.split(','), variableParts),
-  );
+  let correctLatex = $derived(formatCollectingAnswer(exercise.answer.split(','), variableParts));
 </script>
 
 <svelte:window onkeydown={handleKeydown} />
 
 <!-- svelte-ignore a11y_click_events_have_key_events a11y_no_noninteractive_element_interactions -->
-<article class="card" onclick={(e) => { if (feedback === null && !(e.target instanceof HTMLInputElement)) inputEls[0]?.focus(); }}>
+<article
+  class="card"
+  onclick={(e) => {
+    if (feedback === null && !(e.target instanceof HTMLInputElement)) inputEls[0]?.focus();
+  }}
+>
   <p class="prompt">
     <Math expression={exercise.prompt} />
   </p>
@@ -64,13 +67,7 @@
           {#if i > 0}
             <span class="plus">+</span>
           {/if}
-          <input
-            type="text"
-            class="coeff-input"
-            bind:value={values[i]}
-            bind:this={inputEls[i]}
-            placeholder="?"
-          />
+          <input type="text" class="coeff-input" bind:value={values[i]} bind:this={inputEls[i]} placeholder="?" />
           {#if variablePart}
             <Math expression={variablePart} />
           {/if}
@@ -89,8 +86,7 @@
       <p class="feedback correct">{_('feedback.correct')}</p>
     {:else}
       <p class="feedback incorrect">
-        {_('feedback.incorrect.prefix')}<Math expression={correctLatex}
-        />{_('feedback.incorrect.suffix')}
+        {_('feedback.incorrect.prefix')}<Math expression={correctLatex} />{_('feedback.incorrect.suffix')}
       </p>
     {/if}
     <div class="submit-row">
@@ -137,7 +133,7 @@
   }
 
   .term {
-    white-space: nowrap;
+    flex-shrink: 0;
     display: inline-flex;
     align-items: center;
     gap: 0.4rem;
