@@ -1,4 +1,5 @@
-Don't infer design decisions.
+- Don't infer design decisions.
+- Always check whether you can use abstracted code. If you see an opportunity, ask whether you should abstract.
 
 - `STRUCTURE.md` describes the codebase architecture — read it first.
 
