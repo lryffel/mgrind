@@ -1,29 +1,19 @@
 <script lang="ts">
   import { _ } from '../../i18n.svelte';
-  import type { Exercise } from '../../types';
+  import type { ExerciseProps } from '../../types';
   import Math from '../Math.svelte';
 
-  let {
-    exercise,
-    onSubmit,
-    onNext,
-    feedback,
-  }: {
-    exercise: Exercise;
-    onSubmit: (answer: string) => void;
-    onNext: () => void;
-    feedback: 'correct' | 'incorrect' | null;
-  } = $props();
+  let { exercise, onSubmit, onNext, feedback }: ExerciseProps = $props();
 
   let input = $state('');
   let numInput = $state('');
   let denInput = $state('');
   let firstInput = $state<HTMLInputElement | null>(null);
 
-  const variable = $derived((exercise.data?.variable as string | undefined) ?? 'x');
-  const value = $derived((exercise.data?.value as string | undefined) ?? '');
-  const term = $derived((exercise.data?.term as string | undefined) ?? exercise.prompt);
-  const complexity = $derived((exercise.data?.complexity as number | undefined) ?? 0);
+  const variable = $derived(exercise.data?.variable ?? 'x');
+  const value = $derived(exercise.data?.value ?? '');
+  const term = $derived(exercise.data?.term ?? exercise.prompt);
+  const complexity = $derived(exercise.data?.complexity ?? 0);
   const answerIsFraction = $derived(exercise.answer.includes('/'));
 
   function handleKeydown(e: KeyboardEvent) {

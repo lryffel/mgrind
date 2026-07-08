@@ -1,11 +1,12 @@
 import { describe, it, expect } from 'vitest';
 import { generatePrimeFactorisation } from './primeFactorisation';
+import type { ExerciseData } from '../types';
 
-function getPrimes(ex: { data?: Record<string, unknown> }): number[] {
-  return (ex.data?.primes as number[]) ?? [];
+function getPrimes(ex: { data?: ExerciseData }): number[] {
+  return ex.data?.primes ?? [];
 }
 
-function computeProduct(ex: { prompt: string; answer: string; data?: Record<string, unknown> }): number {
+function computeProduct(ex: { prompt: string; answer: string; data?: ExerciseData }): number {
   const exponents = ex.answer.split(',').map(Number);
   const primes = getPrimes(ex);
   return primes.reduce((prod, p, i) => prod * Math.pow(p, exponents[i]), 1);

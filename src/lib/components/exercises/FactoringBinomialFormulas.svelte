@@ -1,24 +1,14 @@
 <script lang="ts">
   import { _ } from '../../i18n.svelte';
-  import type { Exercise } from '../../types';
+  import type { ExerciseProps } from '../../types';
   import Math from '../Math.svelte';
   import { formatFactoredLatex } from '../../exercises/factoringBinomialFormulas';
   import { parseFrac } from '../../math/fraction';
 
-  let {
-    exercise,
-    onSubmit,
-    onNext,
-    feedback,
-  }: {
-    exercise: Exercise;
-    onSubmit: (answer: string) => void;
-    onNext: () => void;
-    feedback: 'correct' | 'incorrect' | null;
-  } = $props();
+  let { exercise, onSubmit, onNext, feedback }: ExerciseProps = $props();
 
-  let varA = $derived((exercise.data?.varA as string | null) ?? null);
-  let varB = $derived((exercise.data?.varB as string) ?? '');
+  let varA = $derived(exercise.data?.varA ?? null);
+  let varB = $derived(exercise.data?.varB ?? '');
   let selectedFormula = $state<number | null>(null);
   let aVal = $state('');
   let bVal = $state('');

@@ -1,10 +1,35 @@
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export type ExerciseComponent = (...args: any[]) => any;
+import type { Component } from 'svelte';
+
+export type ExerciseFeedback = 'correct' | 'incorrect' | null;
+
+export interface ExerciseProps {
+  exercise: Exercise;
+  onSubmit: (answer: string) => void;
+  onNext: () => void;
+  feedback: ExerciseFeedback;
+}
+
+export type ExerciseComponent = Component<ExerciseProps>;
+
+export interface ExerciseData {
+  op?: string;
+  promptKey?: string;
+  fields?: { variablePart: string }[];
+  primes?: number[];
+  subType?: string;
+  variable?: string;
+  value?: string;
+  term?: string;
+  complexity?: number;
+  varA?: string | null;
+  varB?: string;
+  correctFormula?: number;
+}
 
 export interface Exercise {
   prompt: string;
   answer: string;
-  data?: Record<string, unknown>;
+  data?: ExerciseData;
 }
 
 export interface Prerequisite {

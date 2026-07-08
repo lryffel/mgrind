@@ -1,22 +1,12 @@
 <script lang="ts">
   import { _ } from '../../i18n.svelte';
   import { tick } from 'svelte';
-  import type { Exercise } from '../../types';
+  import type { ExerciseProps } from '../../types';
   import Math from '../Math.svelte';
 
-  let {
-    exercise,
-    onSubmit,
-    onNext,
-    feedback,
-  }: {
-    exercise: Exercise;
-    onSubmit: (answer: string) => void;
-    onNext: () => void;
-    feedback: 'correct' | 'incorrect' | null;
-  } = $props();
+  let { exercise, onSubmit, onNext, feedback }: ExerciseProps = $props();
 
-  let primes = $derived(((exercise as any).data?.primes as number[] | undefined) ?? []);
+  let primes = $derived(exercise.data?.primes ?? []);
   // eslint-disable-next-line svelte/prefer-writable-derived
   let values = $state<number[]>([]);
   let inputEls = $state<(HTMLInputElement | null)[]>([]);

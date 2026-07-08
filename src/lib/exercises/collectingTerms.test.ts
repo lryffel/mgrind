@@ -3,7 +3,7 @@ import type { Exercise } from '../types';
 import { generateCollectingTerms, validateCollectingTerms, formatCollectingAnswer } from './collectingTerms';
 
 function getFields(ex: Exercise): { variablePart: string }[] {
-  return (ex.data?.fields as unknown as { variablePart: string }[]) ?? [];
+  return ex.data?.fields ?? [];
 }
 
 describe('generateCollectingTerms', () => {

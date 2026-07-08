@@ -1,22 +1,12 @@
 <script lang="ts">
   import { _ } from '../../i18n.svelte';
-  import type { Exercise } from '../../types';
+  import type { ExerciseProps } from '../../types';
   import Math from '../Math.svelte';
   import { buildExpandedLatex } from '../../exercises/binomialFormulas';
 
-  let {
-    exercise,
-    onSubmit,
-    onNext,
-    feedback,
-  }: {
-    exercise: Exercise;
-    onSubmit: (answer: string) => void;
-    onNext: () => void;
-    feedback: 'correct' | 'incorrect' | null;
-  } = $props();
+  let { exercise, onSubmit, onNext, feedback }: ExerciseProps = $props();
 
-  let fields = $derived((exercise.data?.fields as { variablePart: string }[]) ?? []);
+  let fields = $derived(exercise.data?.fields ?? []);
   let variableParts = $derived(fields.map((f) => f.variablePart));
   // eslint-disable-next-line svelte/prefer-writable-derived
   let values = $state<string[]>([]);

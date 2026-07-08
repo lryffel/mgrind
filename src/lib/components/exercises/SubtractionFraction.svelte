@@ -1,20 +1,10 @@
 <script lang="ts">
   import { _ } from '../../i18n.svelte';
-  import type { Exercise } from '../../types';
+  import type { ExerciseProps } from '../../types';
   import Math from '../Math.svelte';
   import FractionInput from './FractionInput.svelte';
 
-  let {
-    exercise,
-    onSubmit,
-    onNext,
-    feedback,
-  }: {
-    exercise: Exercise;
-    onSubmit: (answer: string) => void;
-    onNext: () => void;
-    feedback: 'correct' | 'incorrect' | null;
-  } = $props();
+  let { exercise, onSubmit, onNext, feedback }: ExerciseProps = $props();
 
   let numInput = $state('');
   let denInput = $state('');
@@ -26,7 +16,7 @@
   const num2 = $derived(Number(opMatch![3]));
   const den2 = $derived(Number(opMatch![4]));
   const correctNumDen = $derived(exercise.answer.split(','));
-  const promptKey = $derived((exercise.data?.promptKey as string | undefined) ?? 'exercise.subtractionFraction.prompt');
+  const promptKey = $derived(exercise.data?.promptKey ?? 'exercise.subtractionFraction.prompt');
 
   const numVal = $derived(Number(numInput));
   const denVal = $derived(Number(denInput));
