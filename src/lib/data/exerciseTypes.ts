@@ -167,5 +167,6 @@ export const exerciseTypes: Record<string, ExerciseType> = {
     generate: generateFactoringBinomialFormulas,
     validate: validateFactoringBinomialFormulas,
     component: FactoringBinomialFormulas,
+    prerequisites: [{ typeId: 'binomialFormulas', complexity: 5 }],
   },
 };
