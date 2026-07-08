@@ -76,7 +76,7 @@ describe('progress', () => {
   describe('getDisciplineProgress', () => {
     const discipline: Discipline = {
       id: 'multiplication',
-      nameKey: 'discipline.multiplication.name',
+      nameKey: 'discipline.numbers.name',
       exerciseTypeIds: ['multiplication', 'multiplicationMissingFactor'],
     };
 

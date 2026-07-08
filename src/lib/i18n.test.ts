@@ -13,13 +13,13 @@ describe('i18n', () => {
 
   it('returns English text by default', () => {
     expect(_('app.title')).toBe('mgrind');
-    expect(_('discipline.multiplication.name')).toBe('Multiplication Tables');
+    expect(_('discipline.numbers.name')).toBe('Numbers');
   });
 
   it('returns German text after switching language', () => {
     setLang('de');
     expect(_('app.title')).toBe('mgrind');
-    expect(_('discipline.multiplication.name')).toBe('Einmaleins');
+    expect(_('discipline.numbers.name')).toBe('Zahlen');
     expect(_('select.discipline')).toBe('Wähle eine Disziplin');
   });
 

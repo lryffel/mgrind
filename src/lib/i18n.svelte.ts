@@ -2,7 +2,7 @@ import type { Lang } from './types';
 
 const dict = {
   'app.title': { en: 'mgrind', de: 'mgrind' },
-  'discipline.multiplication.name': { en: 'Multiplication Tables', de: 'Einmaleins' },
+  'discipline.numbers.name': { en: 'Numbers', de: 'Zahlen' },
   'exercise.multiplication.name': { en: 'Multiplication', de: 'Multiplikation' },
   'exercise.multiplication.desc': { en: 'Solve multiplication problems', de: 'Löse Multiplikationsaufgaben' },
   'exercise.multiplicationMissingFactor.name': { en: 'Missing Factor', de: 'Fehlender Faktor' },

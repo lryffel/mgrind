@@ -2,9 +2,17 @@ import type { Discipline } from '../types';
 
 export const disciplines: Discipline[] = [
   {
-    id: 'multiplication',
-    nameKey: 'discipline.multiplication.name',
-    exerciseTypeIds: ['multiplication', 'multiplicationMissingFactor', 'primeFactorisation'],
+    id: 'numbers',
+    nameKey: 'discipline.numbers.name',
+    exerciseTypeIds: [
+      'multiplication',
+      'multiplicationMissingFactor',
+      'primeFactorisation',
+      'simplifyFraction',
+      'additionFraction',
+      'subtractionFraction',
+      'multiplicationFraction',
+    ],
   },
   {
     id: 'fractions',
