@@ -1,6 +1,7 @@
 # Tier 4 — Shared exercise UI shell & feedback
 
 ## Goal
+
 Remove the ~60–80 lines of repeated boilerplate present in all 11 exercise components:
 the `<article class="card">` wrapper + click-to-focus + a11y comments, the `<svelte:window>`
 Enter handler, the focus `$effect`, and the Submit/Next buttons. Centralize all of it in a new
@@ -37,6 +38,7 @@ Read `plans/tier3-typed-contract.md` first. This tier assumes `ExerciseProps` ex
 ## Steps
 
 ### 4.1 Create `src/lib/components/ExerciseShell.svelte`
+
 A wrapper that owns the card, focus, Enter key, and Submit/Next buttons. API:
 
 ```svelte
@@ -47,9 +49,9 @@ A wrapper that owns the card, focus, Enter key, and Submit/Next buttons. API:
   let {
     exercise,
     feedback,
-    submitAnswer,   // leaf supplies this: reads its $state inputs, calls onSubmit(...)
+    submitAnswer, // leaf supplies this: reads its $state inputs, calls onSubmit(...)
     onNext,
-    card = true,    // set false for components that previously had no <article class="card">
+    card = true, // set false for components that previously had no <article class="card">
     children,
   }: {
     exercise: Exercise;
@@ -109,12 +111,14 @@ A wrapper that owns the card, focus, Enter key, and Submit/Next buttons. API:
   </div>
 {/if}
 ```
+
 - The `querySelector('input, select')` generalizes the previous per-component first-input ref
   (e.g. `numInputEl` in `SubtractionFraction.svelte:21`, `inputEls[0]` in `BinomialFormulas.svelte:23`).
 - Verify styling in `npm run dev`; if any component looked wrong without a card, pass `card={false}`
   (the click-to-focus is still harmless on a div).
 
 ### 4.2 Create `src/lib/components/Feedback.svelte`
+
 Renders the two feedback variants. API:
 
 ```svelte
@@ -125,8 +129,8 @@ Renders the two feedback variants. API:
 
   let {
     feedback,
-    correctLatex,   // Variant B: LaTeX of the correct answer
-    textAnswer,     // Variant A: plain-string correct answer (defaults to exercise.answer)
+    correctLatex, // Variant B: LaTeX of the correct answer
+    textAnswer, // Variant A: plain-string correct answer (defaults to exercise.answer)
   }: {
     feedback: ExerciseFeedback;
     correctLatex?: string;
@@ -146,31 +150,36 @@ Renders the two feedback variants. API:
   {/if}
 {/if}
 ```
+
 - Replace every inline feedback block (Variant A/B lists above) with `<Feedback {feedback} … />`.
 - For Variant B, pass `correctLatex` (the LaTeX string the component already computed, e.g.
   `BinomialFormulas.svelte:46` `correctLatex`, `SubtractionFraction.svelte:91` `\\frac{...}{...}`).
 - For Variant A, pass `textAnswer={exercise.answer}` (e.g. `TextInputExercise.svelte:75`).
 
 ### 4.3 Global CSS
+
 - Move `.card`/`.prompt`/`.feedback`/`.feedback.correct`/`.feedback.incorrect`/`.expansion`/`.coeff-input`/`.submit-row`
   into `src/lib/app.css` as utility classes (rename `.card` → `.exercise-card` to avoid clashing with Pico's `.card`).
 - Delete the now-duplicated `<style>` blocks from the 4 card components.
 
 ### 4.4 Migrate each of the 11 components
+
 For every component (`TextInputExercise`, `PrimeFactorisation`, `SimplifyFraction`, `BinaryFractionExercise`,
 `SubtractionFraction`, `MultiplicationFraction`, `SubstitutionExercise`, `BinomialFormulas`, `CollectingTerms`,
 `ScientificNotationExercise`, `FactoringBinomialFormulas`):
+
 1. Import `ExerciseShell` and `Feedback`. Replace the props block with `let { exercise, onSubmit, onNext, feedback }: ExerciseProps = $props();`
    (plus any local state the component already had).
 2. Wrap the body in `<ExerciseShell {exercise} {feedback} submitAnswer={() => onSubmit(<assembled answer>)} {onNext}> … </ExerciseShell>`.
    The `submitAnswer` closure must assemble the answer string exactly as the old Submit `onclick` did
    (e.g. `SubtractionFraction.svelte:42/68` → `onSubmit(\`${numInput},${denInput}\`)`;
-   `BinomialFormulas.svelte:38/76` → `onSubmit(values.join(','))`).
+`BinomialFormulas.svelte:38/76`→`onSubmit(values.join(','))`).
 3. Delete the component's own `<svelte:window>`, `handleKeydown`, focus `$effect`, and Submit/Next button markup.
 4. Replace the inline feedback block with `<Feedback … />`.
 5. Remove the now-unused `onNext` usage inside the body (it lives in the shell); keep `onSubmit` for `submitAnswer`.
 
 ### 4.5 Optional — fraction-exercise partial
+
 - `SimplifyFraction.svelte`, `BinaryFractionExercise.svelte`, `SubtractionFraction.svelte`, `MultiplicationFraction.svelte`
   share: prompt (`\frac{..}{..} op \frac{..}{..} =`), a `<FractionInput>`, and the same feedback shape.
 - After 4.4, extract a `<FractionExercise op promptKey>` partial that renders the prompt + `<FractionInput>` and wires
@@ -179,10 +188,12 @@ For every component (`TextInputExercise`, `PrimeFactorisation`, `SimplifyFractio
   `src/lib/components/exercises/FractionInput.svelte` — switch it to the shared `FractionInput`.
 
 ## Out of scope
+
 - Math/number helper extraction (Tier 1), validation semantics (Tier 2), `Exercise.data` typing (Tier 3),
   the misc cleanups in Tier 5 (except 4.5's `FractionInput` reuse which overlaps 5.x loosely — coordinate if run together).
 
 ## Verification
+
 - `npm run check` — ExerciseShell/Feedback type-check; ensure `submitAnswer` closures match old `onSubmit` argument shapes.
 - `npm run test` — behavior unchanged (exercise logic untouched; only UI wiring moved).
 - `npm run lint`.

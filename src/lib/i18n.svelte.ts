@@ -107,7 +107,10 @@ const dict = {
   },
   'settings.resetProgress.confirmButton': { en: 'Reset', de: 'Zurücksetzen' },
   'settings.cancel': { en: 'Cancel', de: 'Abbrechen' },
-  'exercise.factoringBinomialFormulas.name': { en: 'Factoring with Binomial Formulas', de: 'Faktorisieren mit binomischen Formeln' },
+  'exercise.factoringBinomialFormulas.name': {
+    en: 'Factoring with Binomial Formulas',
+    de: 'Faktorisieren mit binomischen Formeln',
+  },
   'exercise.factoringBinomialFormulas.desc': {
     en: 'Factor expressions using binomial formulas',
     de: 'Faktorisiere Terme mit binomischen Formeln',

@@ -1,6 +1,7 @@
 # Tier3 — Typed exercise component contract
 
 ## Goal
+
 Give the exercise component props a single, type-checked contract so `ExerciseScreen`
 can no longer pass props unchecked, and remove the 11× duplicated prop-type block.
 Also make `Exercise.data` typed to kill the `as any` / `as {…}` casts.
@@ -36,8 +37,8 @@ Depends conceptually on Tier 1/2 but is independent to implement.
    - Make `Exercise.data` typed. Options (pick the less invasive):
      - (a) Discriminated union keyed by `ExerciseType.id`, or
      - (b) Per-type `data` interfaces plus a typed accessor `getExerciseData(exercise, typeId)` returning the right shape.
-     At minimum, replace `Record<string, unknown>` with a concrete `ExerciseData` type covering the fields actually used
-     (`fields: { variablePart: string }[]`, `primes`, `op`, `promptKey`, etc.). Keep `data?` optional.
+       At minimum, replace `Record<string, unknown>` with a concrete `ExerciseData` type covering the fields actually used
+       (`fields: { variablePart: string }[]`, `primes`, `op`, `promptKey`, etc.). Keep `data?` optional.
 
 2. **`src/lib/components/ExerciseScreen.svelte:36`**
    - Pass props; with the typed `ExerciseComponent`, `svelte-check` now validates `<Comp … />` against `ExerciseProps`.
@@ -51,11 +52,13 @@ Depends conceptually on Tier 1/2 but is independent to implement.
    - Replace `as any` / `as {…}` casts on `exercise.data` with typed access per the new `ExerciseData` type.
 
 ## Out of scope
+
 - Extracting the shared shell/feedback UI (Tier 4). This tier only types the existing contract; it does NOT remove the
   repeated submit/keydown/focus boilerplate (that is Tier 4's job).
 - Validation semantics (Tier 2).
 
 ## Verification
+
 - `npm run check` — must pass with the new `ExerciseProps` contract; confirm `ExerciseScreen.svelte:36` is now type-checked.
 - `npm run test` and `npm run lint`.
 - Grep: no remaining `(exercise as any)`, no local `feedback: 'correct' | 'incorrect' | null` redeclarations in components.

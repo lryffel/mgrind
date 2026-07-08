@@ -38,6 +38,37 @@
   font-size: 1rem;
 }
 
+.feedback.incorrect :global(.Math) {
+  display: inline;
+}
+
+.exercise-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  text-align: center;
+  padding: 1rem;
+}
+
+.expansion {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 1.25rem;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.expansion :global(.Math) {
+  white-space: nowrap;
+}
+
+.coeff-input {
+  width: 5rem;
+  text-align: center;
+}
+
 .feedback-row {
   display: flex;
   flex-direction: column;

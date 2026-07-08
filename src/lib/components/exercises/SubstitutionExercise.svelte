@@ -2,13 +2,15 @@
   import { _ } from '../../i18n.svelte';
   import type { ExerciseProps } from '../../types';
   import Math from '../Math.svelte';
+  import ExerciseShell from '../ExerciseShell.svelte';
+  import Feedback from '../Feedback.svelte';
+  import FractionInput from './FractionInput.svelte';
 
   let { exercise, onSubmit, onNext, feedback }: ExerciseProps = $props();
 
   let input = $state('');
   let numInput = $state('');
   let denInput = $state('');
-  let firstInput = $state<HTMLInputElement | null>(null);
 
   const variable = $derived(exercise.data?.variable ?? 'x');
   const value = $derived(exercise.data?.value ?? '');
@@ -16,31 +18,21 @@
   const complexity = $derived(exercise.data?.complexity ?? 0);
   const answerIsFraction = $derived(exercise.answer.includes('/'));
 
-  function handleKeydown(e: KeyboardEvent) {
-    if (e.key === 'Enter') {
-      if (feedback === null) {
-        submitAnswer();
-      } else {
-        onNext();
-      }
-    }
-  }
-
   function submitAnswer() {
     const answer = answerIsFraction ? `${numInput.trim()}/${denInput.trim()}` : input.trim();
     onSubmit(answer);
   }
 
-  $effect(() => {
-    if (feedback === null) {
-      firstInput?.focus();
-    }
+  const correctLatex = $derived.by(() => {
+    if (!answerIsFraction) return undefined;
+    const parts = exercise.answer.split('/');
+    return `\\frac{${parts[0]}}{${parts[1]}}`;
   });
+
+  const textAnswer = $derived(answerIsFraction ? undefined : exercise.answer);
 </script>
 
-<svelte:window onkeydown={handleKeydown} />
-
-{#if feedback === null}
+<ExerciseShell {exercise} {feedback} {submitAnswer} {onNext} card={false}>
   <p class="prompt-label">
     {_('exercise.substitution.promptBefore')}<Math expression={`${variable} = ${value}`} />{_(
       'exercise.substitution.promptAfter',
@@ -49,62 +41,31 @@
   {#if complexity >= 5 && answerIsFraction}
     <p class="hint">{_('exercise.substitution.reduceHint')}</p>
   {/if}
-  <p class="prompt fraction-prompt">
-    <Math expression={term} />
-    <Math expression="=" />
-    {#if answerIsFraction}
-      <span class="fraction-answer-inline">
-        <input type="text" bind:value={numInput} bind:this={firstInput} />
-        <span class="fraction-bar"></span>
-        <input type="text" bind:value={denInput} />
-      </span>
-    {:else}
-      <input type="text" bind:value={input} bind:this={firstInput} class="user-answer-input" />
-    {/if}
-  </p>
-  <div class="submit-row">
-    <button onclick={submitAnswer}>{_('answer.submit')}</button>
-  </div>
-{:else}
-  <p class="prompt-label">
-    {_('exercise.substitution.promptBefore')}<Math expression={`${variable} = ${value}`} />{_(
-      'exercise.substitution.promptAfter',
-    )}
-  </p>
-  {#if complexity >= 5 && answerIsFraction}
-    <p class="hint">{_('exercise.substitution.reduceHint')}</p>
-  {/if}
-  <p class="prompt fraction-prompt">
-    <Math expression={term} />
-    <Math expression="=" />
-    {#if answerIsFraction}
-      <Math expression={`\\frac{${numInput || '0'}}{${denInput || '1'}}`} />
-    {:else}
-      <span class="user-answer">{input || '\u00A0'}</span>
-    {/if}
-  </p>
-  <div class="feedback-row">
-    <p class="feedback {feedback}">
-      {#if feedback === 'correct'}
-        {_('feedback.correct')}
-      {:else if answerIsFraction}
-        {@const parts = exercise.answer.split('/')}
-        {_('feedback.incorrect.prefix')}<Math expression={`\\frac{${parts[0]}}{${parts[1]}}`} />{_(
-          'feedback.incorrect.suffix',
-        )}
+  {#if feedback === null}
+    <p class="prompt fraction-prompt">
+      <Math expression={term} />
+      <Math expression="=" />
+      {#if answerIsFraction}
+        <FractionInput bind:num={numInput} bind:den={denInput} />
       {:else}
-        {_('feedback.incorrect', exercise.answer)}
+        <input type="text" bind:value={input} class="user-answer-input" />
       {/if}
     </p>
-    <button onclick={onNext}>{_('answer.next')}</button>
-  </div>
-{/if}
+  {:else}
+    <p class="prompt fraction-prompt">
+      <Math expression={term} />
+      <Math expression="=" />
+      {#if answerIsFraction}
+        <Math expression={`\\frac{${numInput || '0'}}{${denInput || '1'}}`} />
+      {:else}
+        <span class="user-answer">{input || '\u00A0'}</span>
+      {/if}
+    </p>
+    <Feedback {feedback} {correctLatex} {textAnswer} />
+  {/if}
+</ExerciseShell>
 
 <style>
-  .prompt-label {
-    margin-bottom: 0.5rem;
-  }
-
   .hint {
     font-size: 0.85rem;
     color: var(--pico-muted-color, #777);
@@ -114,26 +75,6 @@
 
   .user-answer {
     font-size: 1.5rem;
-  }
-
-  .fraction-answer-inline {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 2px;
-  }
-
-  .fraction-answer-inline input {
-    width: 5rem;
-    text-align: center;
-  }
-
-  .fraction-answer-inline .fraction-bar {
-    display: block;
-    width: 100%;
-    height: 2px;
-    background: currentColor;
-    min-width: 4rem;
   }
 
   .user-answer-input {

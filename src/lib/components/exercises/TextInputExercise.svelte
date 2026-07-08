@@ -2,71 +2,47 @@
   import { _ } from '../../i18n.svelte';
   import type { ExerciseProps } from '../../types';
   import Math from '../Math.svelte';
+  import ExerciseShell from '../ExerciseShell.svelte';
+  import Feedback from '../Feedback.svelte';
 
   let { exercise, onSubmit, onNext, feedback }: ExerciseProps = $props();
 
   let userInput = $state('');
-  let inputEl = $state<HTMLInputElement>();
-
-  $effect(() => {
-    if (feedback === null) {
-      inputEl?.focus();
-    }
-  });
-
-  function handleKeydown(e: KeyboardEvent) {
-    if (e.key === 'Enter') {
-      if (feedback === null) {
-        onSubmit(userInput.trim());
-      } else {
-        onNext();
-      }
-    }
-  }
 </script>
 
-<svelte:window onkeydown={handleKeydown} />
-
-{#if feedback === null}
-  {#if exercise.prompt.includes('?')}
-    {@const parts = exercise.prompt.split('?')}
-    <p class="prompt">
-      <Math expression={parts[0]} />
-      <input type="text" class="inline-input" bind:value={userInput} bind:this={inputEl} />
-      <Math expression={parts[1] ?? ''} />
-    </p>
-    <div class="submit-row">
-      <button onclick={() => onSubmit(userInput.trim())}>{_('answer.submit')}</button>
-    </div>
+<ExerciseShell {exercise} {feedback} submitAnswer={() => onSubmit(userInput.trim())} {onNext} card={false}>
+  {#if feedback === null}
+    {#if exercise.prompt.includes('?')}
+      {@const parts = exercise.prompt.split('?')}
+      <p class="prompt">
+        <Math expression={parts[0]} />
+        <input type="text" class="inline-input" bind:value={userInput} />
+        <Math expression={parts[1] ?? ''} />
+      </p>
+    {:else}
+      <p class="prompt">
+        <Math expression={exercise.prompt} />
+      </p>
+      <div role="group" class="answer-row">
+        <input type="text" class="answer-input" bind:value={userInput} />
+      </div>
+    {/if}
   {:else}
-    <p class="prompt">
-      <Math expression={exercise.prompt} />
-    </p>
-    <div role="group" class="answer-row">
-      <input type="text" class="answer-input" bind:value={userInput} bind:this={inputEl} />
-      <button onclick={() => onSubmit(userInput.trim())}>{_('answer.submit')}</button>
-    </div>
+    {#if exercise.prompt.includes('?')}
+      {@const parts = exercise.prompt.split('?')}
+      <p class="prompt">
+        <Math expression={parts[0]} />
+        {userInput}
+        <Math expression={parts[1] ?? ''} />
+      </p>
+    {:else}
+      <p class="prompt">
+        <Math expression={exercise.prompt} />
+      </p>
+    {/if}
+    <Feedback {feedback} textAnswer={exercise.answer} />
   {/if}
-{:else}
-  {#if exercise.prompt.includes('?')}
-    {@const parts = exercise.prompt.split('?')}
-    <p class="prompt">
-      <Math expression={parts[0]} />
-      {userInput}
-      <Math expression={parts[1] ?? ''} />
-    </p>
-  {:else}
-    <p class="prompt">
-      <Math expression={exercise.prompt} />
-    </p>
-  {/if}
-  <div class="feedback-row">
-    <p class="feedback {feedback}">
-      {feedback === 'correct' ? _('feedback.correct') : _('feedback.incorrect', exercise.answer)}
-    </p>
-    <button onclick={onNext}>{_('answer.next')}</button>
-  </div>
-{/if}
+</ExerciseShell>
 
 <style>
   .answer-input {

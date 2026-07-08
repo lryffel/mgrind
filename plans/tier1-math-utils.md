@@ -1,6 +1,7 @@
 # Tier1 — Extract shared math/number utilities
 
 ## Goal
+
 Eliminate duplicated low-level math/number/RNG helpers by creating three shared modules.
 No behavior change; pure extraction. Lowest-risk, high-value.
 
@@ -9,26 +10,31 @@ No behavior change; pure extraction. Lowest-risk, high-value.
 There is no shared math module. The following are redefined locally in many files:
 
 ### `gcd` — 8 production copies + 4 test copies
+
 - Production: `src/lib/exercises/additionFraction.ts:4`, `subtractionFraction.ts:4`, `simplifyFraction.ts:4`, `multiplicationFraction.ts:4`, `binomialFormulas.ts:4`, `collectingTerms.ts:50`, `substitution.ts:12`, `factoringBinomialFormulas.ts:4`
 - Tests: `simplifyFraction.test.ts:4`, `additionFraction.test.ts:4`, `subtractionFraction.test.ts:4`, `multiplicationFraction.test.ts:4`
 - **Inconsistency:** `collectingTerms.ts:54` returns `Math.abs(a)`; every other copy returns `a` (may be negative). `binomialFormulas.ts:20` calls `gcd(Math.abs(num), Math.abs(den))` to compensate. Unify to always return `|a|`.
 
 ### `reduceFrac` — 4 divergent copies
+
 - `substitution.ts:19` → returns `string` (`'num/den'`, `'num'`, or `'0'`)
 - `collectingTerms.ts:57` → returns `[num, den]`, normalizes to positive denom, zero → `[0,1]`
 - `binomialFormulas.ts:19` → returns `[num, den]`, negates BOTH if `den<0`
 - `factoringBinomialFormulas.ts:11` → returns `[num, den]`, normalizes to positive denom, zero → `[0,1]`
 
 ### `parseFrac` — 5 copies, two failure contracts
+
 - `collectingTerms.ts:131`, `binomialFormulas.ts:261`, `factoringBinomialFormulas.ts:111` → `[number,number] | null`
 - `FactoringBinomialFormulas.svelte:76` → exact dup of `factoringBinomialFormulas.ts:111`
 - `substitution.ts:465` → returns `[0,0]` on failure instead of `null` (divergent; should become `null`)
 
 ### `fracEqual` — 3 identical copies
+
 - `collectingTerms.ts:277`, `binomialFormulas.ts:254`, `factoringBinomialFormulas.ts:126`
 - (functionally same as inline cross-multiply in `substitution.ts:462`)
 
 ### RNG helpers built on `mulberry32` (`src/lib/prng.ts`)
+
 - `randInt(rng, min, max)`: `orderOfOperations.ts:4`, `substitution.ts:4`, `binomialFormulas.ts:11`, `collectingTerms.ts:67`, `factoringBinomialFormulas.ts:21`, `scientificNotation.ts:4`
 - `pick(rng, arr)`: `orderOfOperations.ts:8`, `substitution.ts:8`, `binomialFormulas.ts:15`, `collectingTerms.ts:151`, `factoringBinomialFormulas.ts:25`
 - `randCoeff(rng, allowFrac)`: `binomialFormulas.ts:53` and `factoringBinomialFormulas.ts:100` (byte-identical)
@@ -37,9 +43,11 @@ There is no shared math module. The following are redefined locally in many file
 - `pickExclude`: `factoringBinomialFormulas.ts:29`
 
 ### "generate two coprime integers" loop — 3 copies
+
 - `additionFraction.ts:26-32`, `subtractionFraction.ts:26-32`, `simplifyFraction.ts:26-32` (same `areCoprime(a,b) && a !== b` break; `subtractionFraction` negates `a` afterward at `:34-36`)
 
 ### `mulberry32` re-seed patterns
+
 - `multiplication.ts:10` and `division.ts:10` — byte-identical one-shot re-seed: `mulberry32(seed + 1)` to force a larger factor when `complexity ≥ 5` and both operands are ≤ 10.
 - `primeFactorisation.ts:56` — conceptually similar (re-seeds with `mulberry32(seed + attempt)`) but structurally different: a retry loop (up to 1000 attempts) searching for a number whose prime factors all belong to an allowed set. **Not a candidate for unification with the one-shot pattern.**
 
@@ -73,11 +81,13 @@ There is no shared math module. The following are redefined locally in many file
 5. **Update test files** that redefine `gcd` to import from `number.ts`.
 
 ## Out of scope
+
 - Validation semantics (see Tier 2).
 - UI component changes beyond removing the duplicated `parseFrac` in `FactoringBinomialFormulas.svelte`.
 - `Exercise.data` typing (see Tier 3).
 
 ## Verification
+
 - `npm run test` (all existing `*.test.ts` must still pass — outputs unchanged).
 - `npm run check` (svelte-check + tsc).
 - `npm run lint`.

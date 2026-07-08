@@ -2,34 +2,18 @@
   import { _ } from '../../i18n.svelte';
   import type { ExerciseProps } from '../../types';
   import Math from '../Math.svelte';
+  import ExerciseShell from '../ExerciseShell.svelte';
+  import Feedback from '../Feedback.svelte';
 
   let { exercise, onSubmit, onNext, feedback }: ExerciseProps = $props();
 
   let userInput = $state('');
   let coeffInput = $state('');
   let expInput = $state('');
-  let inputEl = $state<HTMLInputElement>();
-  let coeffInputEl = $state<HTMLInputElement>();
 
   const cdot = '\\cdot';
   const subType = $derived(exercise.data?.subType);
   const isMultiInput = $derived(subType !== 'sciToDec');
-
-  $effect(() => {
-    if (feedback === null) {
-      (isMultiInput ? coeffInputEl : inputEl)?.focus();
-    }
-  });
-
-  function handleKeydown(e: KeyboardEvent) {
-    if (e.key === 'Enter') {
-      if (feedback === null) {
-        handleSubmit();
-      } else {
-        onNext();
-      }
-    }
-  }
 
   function handleSubmit() {
     if (isMultiInput) {
@@ -38,64 +22,48 @@
       onSubmit(userInput.trim());
     }
   }
+
+  const correctLatex = $derived.by(() => {
+    if (!isMultiInput) return undefined;
+    const parts = exercise.answer.split(',');
+    return `${parts[0]} \\cdot 10^{${parts[1]}}`;
+  });
+
+  const textAnswer = $derived(isMultiInput ? undefined : exercise.answer);
 </script>
 
-<svelte:window onkeydown={handleKeydown} />
-
-{#if feedback === null}
-  <p class="prompt">
-    <Math expression={exercise.prompt} />
-  </p>
-  {#if isMultiInput}
-    <div class="sci-row">
-      <input type="text" class="coeff-input" bind:value={coeffInput} bind:this={coeffInputEl} placeholder="…" />
-      <Math expression={cdot} />
-      <Math expression="10" /><sup><input type="text" class="exp-input" bind:value={expInput} placeholder="…" /></sup>
-    </div>
-    <div class="submit-row">
-      <button onclick={handleSubmit}>{_('answer.submit')}</button>
-    </div>
-  {:else}
-    <div role="group" class="answer-row">
-      <input type="text" class="answer-input" bind:value={userInput} bind:this={inputEl} />
-      <button onclick={handleSubmit}>{_('answer.submit')}</button>
-    </div>
-  {/if}
-{:else}
-  <p class="prompt">
-    <Math expression={exercise.prompt} />
-  </p>
-  {#if isMultiInput}
-    <p class="user-answer">
-      <Math expression={`${coeffInput || '?'} \\cdot 10^{${expInput || '?'}}`} />
+<ExerciseShell {exercise} {feedback} submitAnswer={handleSubmit} {onNext} card={false}>
+  {#if feedback === null}
+    <p class="prompt">
+      <Math expression={exercise.prompt} />
     </p>
-  {:else}
-    <p class="user-answer">
-      <Math expression={userInput || '?'} />
-    </p>
-  {/if}
-  {#if isMultiInput}
-    {@const parts = exercise.answer.split(',')}
-    {#if feedback === 'correct'}
-      <p class="feedback correct">{_('feedback.correct')}</p>
+    {#if isMultiInput}
+      <div class="sci-row">
+        <input type="text" class="coeff-input" bind:value={coeffInput} placeholder="…" />
+        <Math expression={cdot} />
+        <Math expression="10" /><sup><input type="text" class="exp-input" bind:value={expInput} placeholder="…" /></sup>
+      </div>
     {:else}
-      <p class="feedback incorrect">
-        {_('feedback.incorrect.prefix')}<Math expression={`${parts[0]} \\cdot 10^{${parts[1]}}`} />{_(
-          'feedback.incorrect.suffix',
-        )}
+      <div role="group" class="answer-row">
+        <input type="text" class="answer-input" bind:value={userInput} />
+      </div>
+    {/if}
+  {:else}
+    <p class="prompt">
+      <Math expression={exercise.prompt} />
+    </p>
+    {#if isMultiInput}
+      <p class="user-answer">
+        <Math expression={`${coeffInput || '?'} \\cdot 10^{${expInput || '?'}}`} />
+      </p>
+    {:else}
+      <p class="user-answer">
+        <Math expression={userInput || '?'} />
       </p>
     {/if}
-  {:else}
-    {#if feedback === 'correct'}
-      <p class="feedback correct">{_('feedback.correct')}</p>
-    {:else}
-      <p class="feedback incorrect">{_('feedback.incorrect', exercise.answer)}</p>
-    {/if}
+    <Feedback {feedback} {correctLatex} {textAnswer} />
   {/if}
-  <div class="submit-row">
-    <button onclick={onNext}>{_('answer.next')}</button>
-  </div>
-{/if}
+</ExerciseShell>
 
 <style>
   .sci-row {
@@ -105,11 +73,6 @@
     gap: 6px;
     font-size: 1.25rem;
     margin: 1rem 0;
-  }
-
-  .coeff-input {
-    width: 5rem;
-    text-align: center;
   }
 
   .exp-input {

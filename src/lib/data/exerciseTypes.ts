@@ -22,7 +22,10 @@ import { generateCollectingTerms, validateCollectingTerms } from '../exercises/c
 import CollectingTerms from '../components/exercises/CollectingTerms.svelte';
 import { generateScientificNotation } from '../exercises/scientificNotation';
 import ScientificNotationExercise from '../components/exercises/ScientificNotationExercise.svelte';
-import { generateFactoringBinomialFormulas, validateFactoringBinomialFormulas } from '../exercises/factoringBinomialFormulas';
+import {
+  generateFactoringBinomialFormulas,
+  validateFactoringBinomialFormulas,
+} from '../exercises/factoringBinomialFormulas';
 import FactoringBinomialFormulas from '../components/exercises/FactoringBinomialFormulas.svelte';
 import { trimCompare, validateFractionAnswer } from '../validation';
 

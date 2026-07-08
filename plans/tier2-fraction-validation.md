@@ -1,6 +1,7 @@
 # Tier2 — Unify fraction validation
 
 ## Goal
+
 Make fraction answers compared by mathematical equivalence (not exact string match),
 fixing an inconsistency where `multiplicationFraction` rejects correct-but-unreduced
 answers. Introduce a single validation module. This tier depends on Tier 1 (`fracEqual` /
@@ -16,6 +17,7 @@ Exercise answers use two incompatible fraction encodings and two validation stra
 - **primeFactorisation**: `exponents.join(',')` (`primeFactorisation.ts:64`).
 
 Validation today:
+
 - `multiplicationFraction` is validated by `trimCompare` (exact string match, `exerciseTypes.ts:136`), so `2/4` is **rejected** even though it equals `1/2`.
 - `binomialFormulas` / `collectingTerms` / `factoringBinomialFormulas` use `fracEqual` and accept any equivalent fraction.
 - `subtractionFraction` has a dedicated `validateSubtractionFraction` (`exerciseTypes.ts:32-48`) that is **semantic** (sign-normalizes, cross-checks) — but `additionFraction`/`simplifyFraction` use plain `trimCompare`, so the user must type the exact generator string.
@@ -46,11 +48,13 @@ Validation today:
    - Verify `multiplicationFraction.test.ts` still passes; add a case proving an unreduced but equivalent answer now passes.
 
 ## Out of scope
+
 - Changing generator output formats (keep current encodings; only the comparison becomes equivalence-based).
 - UI component changes (Tier 4).
 - `Exercise.data` typing (Tier 3).
 
 ## Verification
+
 - `npm run test` — all `*.test.ts` pass, including new `validation.test.ts`.
 - `npm run check` and `npm run lint`.
 - Manual: in dev (`npm run dev`), for an addition/multiplication fraction exercise, enter an unreduced equivalent fraction → should now be marked correct.

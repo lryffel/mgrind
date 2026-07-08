@@ -111,7 +111,14 @@ describe('exercise type validation integration', () => {
   });
 
   it('trimCompare-based types still trim whitespace', () => {
-    const types = ['multiplication', 'division', 'squares', 'orderOfOperations', 'primeFactorisation', 'scientificNotation'] as const;
+    const types = [
+      'multiplication',
+      'division',
+      'squares',
+      'orderOfOperations',
+      'primeFactorisation',
+      'scientificNotation',
+    ] as const;
     for (const id of types) {
       const type = exerciseTypes[id];
       const ex = type.generate(42, 0);
