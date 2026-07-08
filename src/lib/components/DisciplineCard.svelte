@@ -158,6 +158,9 @@
     cursor: pointer;
     color: inherit;
   }
+  .type-row.outline {
+    border: none;
+  }
   .type-row:hover {
     background: var(--pico-table-row-stripped-background);
   }
@@ -169,8 +172,9 @@
     opacity: 0.5;
   }
   .type-name {
-    flex: 0 0 10rem;
+    flex: 0 0 11rem;
     color: var(--pico-color);
+    text-align: left;
   }
   .type-row progress {
     flex: 1;
