@@ -1,5 +1,6 @@
 - Don't infer design decisions.
 - Always check whether you can use abstracted code. If you see an opportunity, ask whether you should abstract.
+- Write tests for everything you implement, unless the user agrees that it is unnecessary.
 
 - `STRUCTURE.md` describes the codebase architecture — read it first.
 
