@@ -42,6 +42,13 @@ export function updateProgress(typeId: string, correct: boolean, maxComplexity: 
   return current;
 }
 
+export function resetProgress() {
+  for (const key in progress) {
+    progress[key] = 0;
+  }
+  persist();
+}
+
 export function getDisciplineProgress(discipline: Discipline, types: Record<string, ExerciseType>): number {
   const vals = discipline.exerciseTypeIds.map((id) => {
     const cur = progress[id] ?? 0;

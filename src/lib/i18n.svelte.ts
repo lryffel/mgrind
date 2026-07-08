@@ -57,6 +57,13 @@ const dict = {
     en: 'This exercise can be enabled anyway. This will increase the progress of prerequisite exercises artificially.',
     de: 'Diese Übung kann trotzdem aktiviert werden. Dadurch wird der Fortschritt der Voraussetzungen künstlich erhöht.',
   },
+  'settings.resetProgress': { en: 'Reset progress', de: 'Fortschritt zurücksetzen' },
+  'settings.resetProgress.confirm': {
+    en: 'Are you sure you want to reset all progress? This cannot be undone.',
+    de: 'Bist du sicher, dass du den gesamten Fortschritt zurücksetzen möchtest? Dies kann nicht rückgängig gemacht werden.',
+  },
+  'settings.resetProgress.confirmButton': { en: 'Reset', de: 'Zurücksetzen' },
+  'settings.cancel': { en: 'Cancel', de: 'Abbrechen' },
 } satisfies Record<string, Record<Lang, string>>;
 
 export const state = $state({ lang: 'en' as Lang });

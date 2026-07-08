@@ -5,6 +5,7 @@
   import { exerciseTypes } from '../data/exerciseTypes';
   import { isDisabled, toggleDisabled, enableType } from '../disabledTypes.svelte';
   import { arePrerequisitesMet, getUnmetPrerequisites, enablePrerequisites } from '../prerequisites.svelte';
+  import Modal from './Modal.svelte';
 
   let { discipline, onclick }: { discipline: Discipline; onclick: () => void } = $props();
   let progress = $derived(getDisciplineProgress(discipline, exerciseTypes));
@@ -12,7 +13,6 @@
   let anyDisabled = $derived(types.some((t) => isDisabled(t.id)));
   let open = $state(false);
   let lockedTypeId = $state<string | null>(null);
-  let dialogEl = $state<HTMLDialogElement>();
 
   let lockedType = $derived(lockedTypeId ? exerciseTypes[lockedTypeId] : null);
   let unmet = $derived(lockedTypeId ? getUnmetPrerequisites(lockedTypeId) : []);
@@ -21,7 +21,6 @@
     e.stopPropagation();
     if (!arePrerequisitesMet(typeId)) {
       lockedTypeId = typeId;
-      dialogEl?.showModal();
     } else {
       toggleDisabled(typeId, discipline);
     }
@@ -32,7 +31,6 @@
     if (e.key === 'Enter') {
       if (!arePrerequisitesMet(typeId)) {
         lockedTypeId = typeId;
-        dialogEl?.showModal();
       } else {
         toggleDisabled(typeId, discipline);
       }
@@ -44,12 +42,11 @@
       enablePrerequisites(lockedTypeId);
       enableType(lockedTypeId);
     }
-    closeDialog();
+    lockedTypeId = null;
   }
 
   function closeDialog() {
     lockedTypeId = null;
-    dialogEl?.close();
   }
 </script>
 
@@ -100,26 +97,24 @@
   </div>
 </article>
 
-<dialog bind:this={dialogEl}>
-  <article>
-    <header>
-      <h3>{_('exercise.prerequisitesNotMet')}</h3>
-    </header>
-    {#if lockedType}
-      <p><strong>{_(lockedType.nameKey)}</strong></p>
-      <ul>
-        {#each unmet as u (u.typeId)}
-          <li>{_('exercise.prerequisiteLine', _(u.nameKey), u.complexity, u.current)}</li>
-        {/each}
-      </ul>
-      <p class="warning-text">{_('exercise.enableNow.warning')}</p>
-    {/if}
-    <footer>
-      <button class="outline" onclick={closeDialog}>{_('back')}</button>
-      <button class="danger" onclick={handleEnableNow}>{_('exercise.enableNow')}</button>
-    </footer>
-  </article>
-</dialog>
+<Modal show={lockedTypeId !== null} onclose={closeDialog}>
+  {#snippet footer()}
+    <button class="outline" onclick={closeDialog}>{_('back')}</button>
+    <button class="danger" onclick={handleEnableNow}>{_('exercise.enableNow')}</button>
+  {/snippet}
+  <header>
+    <h3>{_('exercise.prerequisitesNotMet')}</h3>
+  </header>
+  {#if lockedType}
+    <p><strong>{_(lockedType.nameKey)}</strong></p>
+    <ul>
+      {#each unmet as u (u.typeId)}
+        <li>{_('exercise.prerequisiteLine', _(u.nameKey), u.complexity, u.current)}</li>
+      {/each}
+    </ul>
+    <p class="warning-text">{_('exercise.enableNow.warning')}</p>
+  {/if}
+</Modal>
 
 <style>
   article.discipline-card {
@@ -193,14 +188,5 @@
   .warning-text {
     color: var(--pico-del-color, #c0392b);
     font-size: 0.85rem;
-  }
-  .danger {
-    --pico-background-color: var(--pico-del-color, #c0392b);
-    --pico-border-color: var(--pico-del-color, #c0392b);
-    --pico-color: var(--pico-color-light, #fff);
-  }
-  .danger:hover {
-    --pico-background-color: var(--pico-del-color, #e74c3c);
-    --pico-border-color: var(--pico-del-color, #e74c3c);
   }
 </style>

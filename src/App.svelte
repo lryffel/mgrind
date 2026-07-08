@@ -5,6 +5,7 @@
   import ExerciseScreen from './lib/components/ExerciseScreen.svelte';
   import LanguageToggle from './lib/components/LanguageToggle.svelte';
   import ThemeToggle from './lib/components/ThemeToggle.svelte';
+  import SettingsDropdown from './lib/components/SettingsDropdown.svelte';
 
   let screen = $state<'menu' | 'exercise'>('menu');
   let activeDisciplineId = $state<string | null>(null);
@@ -28,6 +29,7 @@
     <ul>
       <li><ThemeToggle /></li>
       <li><LanguageToggle /></li>
+      <li><SettingsDropdown /></li>
     </ul>
   </nav>
 </header>
