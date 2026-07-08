@@ -17,6 +17,7 @@ function formatCoeff(num: number, den: number): string {
 }
 
 function promptTerm(num: number, den: number, varName: string): string {
+  if (varName === '') return formatCoeff(num, den);
   if (den === 1) {
     if (num === 1) return varName;
     if (num === -1) return `-${varName}`;
