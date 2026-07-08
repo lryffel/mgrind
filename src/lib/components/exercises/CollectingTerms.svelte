@@ -17,11 +17,12 @@
     values = fields.map(() => '');
   });
 
-  let userLatex = $derived(formatCollectingAnswer(values, variableParts));
+  let normValues = $derived(values.map((v) => v.trim() || '1'));
+  let userLatex = $derived(formatCollectingAnswer(normValues, variableParts));
   let correctLatex = $derived(formatCollectingAnswer(exercise.answer.split(','), variableParts));
 </script>
 
-<ExerciseShell {exercise} {feedback} submitAnswer={() => onSubmit(values.join(','))} {onNext}>
+<ExerciseShell {exercise} {feedback} submitAnswer={() => onSubmit(normValues.join(','))} {onNext}>
   <p class="prompt">
     <Math expression={exercise.prompt} />
   </p>
@@ -30,10 +31,10 @@
     <div class="expansion" role="group">
       <Math expression="=" />
       {#each fields as { variablePart }, i (i)}
+        {#if i > 0}
+          <Math expression="+" />
+        {/if}
         <span class="term">
-          {#if i > 0}
-            <Math expression="+" />
-          {/if}
           <input type="text" class="coeff-input" bind:value={values[i]} placeholder="?" />
           {#if variablePart}
             <Math expression={variablePart} />
@@ -49,3 +50,4 @@
     <Feedback {feedback} {correctLatex} />
   {/if}
 </ExerciseShell>
+

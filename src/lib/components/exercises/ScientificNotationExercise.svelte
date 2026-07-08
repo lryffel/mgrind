@@ -80,11 +80,6 @@
     text-align: center;
   }
 
-  .answer-input {
-    width: 150px;
-    text-align: center;
-  }
-
   .user-answer {
     text-align: center;
     font-size: 1.25rem;

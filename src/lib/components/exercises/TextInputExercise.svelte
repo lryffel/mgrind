@@ -45,11 +45,6 @@
 </ExerciseShell>
 
 <style>
-  .answer-input {
-    width: 150px;
-    text-align: center;
-  }
-
   .inline-input {
     width: 5rem;
     text-align: center;

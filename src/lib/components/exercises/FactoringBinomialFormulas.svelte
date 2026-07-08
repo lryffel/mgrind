@@ -14,19 +14,26 @@
   let aVal = $state('');
   let bVal = $state('');
 
+  function normVal(s: string): string {
+    return s.trim() || '1';
+  }
+
+  let normA = $derived(normVal(aVal));
+  let normB = $derived(normVal(bVal));
+
   function submitAnswer() {
     if (selectedFormula === null) return;
     if (selectedFormula === 0) {
       onSubmit('0');
     } else {
-      onSubmit(`${selectedFormula},${aVal},${bVal}`);
+      onSubmit(`${selectedFormula},${normA},${normB}`);
     }
   }
 
   let userLatex = $derived.by(() => {
     if (selectedFormula === null || selectedFormula === 0) return '';
-    const aParsed = parseFrac(aVal);
-    const bParsed = parseFrac(bVal);
+    const aParsed = parseFrac(normA);
+    const bParsed = parseFrac(normB);
     if (!aParsed || !bParsed) return '';
     return formatFactoredLatex(selectedFormula, aParsed[0], aParsed[1], bParsed[0], bParsed[1], varA, varB);
   });
@@ -60,37 +67,49 @@
       <div class="expansion" role="group">
         {#if selectedFormula === 1 || selectedFormula === 2}
           <Math expression="(" />
-          <input type="text" class="coeff-input" bind:value={aVal} placeholder="?" />
-          {#if varA}
-            <Math expression={varA} />
-          {/if}
+          <span class="term">
+            <input type="text" class="coeff-input" bind:value={aVal} placeholder="?" />
+            {#if varA}
+              <Math expression={varA} />
+            {/if}
+          </span>
           <Math expression={selectedFormula === 1 ? '+' : '-'} />
-          <input type="text" class="coeff-input" bind:value={bVal} placeholder="?" />
-          {#if varB}
-            <Math expression={varB} />
-          {/if}
+          <span class="term">
+            <input type="text" class="coeff-input" bind:value={bVal} placeholder="?" />
+            {#if varB}
+              <Math expression={varB} />
+            {/if}
+          </span>
           <Math expression=")^{2}" />
         {:else if selectedFormula === 3}
           <Math expression="(" />
-          <input type="text" class="coeff-input" bind:value={aVal} placeholder="?" />
-          {#if varA}
-            <Math expression={varA} />
-          {/if}
+          <span class="term">
+            <input type="text" class="coeff-input" bind:value={aVal} placeholder="?" />
+            {#if varA}
+              <Math expression={varA} />
+            {/if}
+          </span>
           <Math expression="+" />
-          <input type="text" class="coeff-input" bind:value={bVal} placeholder="?" />
-          {#if varB}
-            <Math expression={varB} />
-          {/if}
+          <span class="term">
+            <input type="text" class="coeff-input" bind:value={bVal} placeholder="?" />
+            {#if varB}
+              <Math expression={varB} />
+            {/if}
+          </span>
           <Math expression=")(" />
-          <input type="text" class="coeff-input linked" value={aVal} readonly />
-          {#if varA}
-            <Math expression={varA} />
-          {/if}
+          <span class="term">
+            <input type="text" class="coeff-input linked" value={aVal} readonly />
+            {#if varA}
+              <Math expression={varA} />
+            {/if}
+          </span>
           <Math expression="-" />
-          <input type="text" class="coeff-input linked" value={bVal} readonly />
-          {#if varB}
-            <Math expression={varB} />
-          {/if}
+          <span class="term">
+            <input type="text" class="coeff-input linked" value={bVal} readonly />
+            {#if varB}
+              <Math expression={varB} />
+            {/if}
+          </span>
           <Math expression=")" />
         {/if}
       </div>
