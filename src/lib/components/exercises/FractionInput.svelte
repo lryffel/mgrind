@@ -2,29 +2,14 @@
   let {
     num = $bindable(''),
     den = $bindable(''),
-    inputRef,
   }: {
     num?: string;
     den?: string;
-    inputRef?: (el: HTMLInputElement | null) => void;
   } = $props();
-
-  let firstInput = $state<HTMLInputElement | null>(null);
-
-  $effect(() => {
-    inputRef?.(firstInput);
-  });
 </script>
 
 <span class="fraction-answer-inline">
-  <input
-    type="text"
-    inputmode="numeric"
-    pattern="[0-9]*"
-    class="fraction-num"
-    bind:value={num}
-    bind:this={firstInput}
-  />
+  <input type="text" inputmode="numeric" pattern="[0-9]*" class="fraction-num" bind:value={num} />
   <span class="fraction-bar"></span>
   <input type="text" inputmode="numeric" pattern="[0-9]*" class="fraction-den" bind:value={den} />
 </span>
