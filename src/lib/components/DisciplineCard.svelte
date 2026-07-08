@@ -17,23 +17,12 @@
   let lockedType = $derived(lockedTypeId ? exerciseTypes[lockedTypeId] : null);
   let unmet = $derived(lockedTypeId ? getUnmetPrerequisites(lockedTypeId) : []);
 
-  function handleRowClick(e: MouseEvent, typeId: string) {
+  function handleRow(typeId: string, e: Event) {
     e.stopPropagation();
     if (!arePrerequisitesMet(typeId)) {
       lockedTypeId = typeId;
     } else {
       toggleDisabled(typeId, discipline);
-    }
-  }
-
-  function handleRowKeydown(e: KeyboardEvent, typeId: string) {
-    e.stopPropagation();
-    if (e.key === 'Enter') {
-      if (!arePrerequisitesMet(typeId)) {
-        lockedTypeId = typeId;
-      } else {
-        toggleDisabled(typeId, discipline);
-      }
     }
   }
 
@@ -79,8 +68,8 @@
           class="type-row outline"
           class:disabled={disabled && !locked}
           class:locked
-          onclick={(e) => handleRowClick(e, type.id)}
-          onkeydown={(e) => handleRowKeydown(e, type.id)}
+          onclick={(e) => handleRow(type.id, e)}
+          onkeydown={(e) => e.key === 'Enter' && handleRow(type.id, e)}
           tabindex="0"
           role="button"
         >

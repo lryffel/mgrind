@@ -1,6 +1,7 @@
 import type { Prerequisite } from './types';
 import { exerciseTypes } from './data/exerciseTypes';
-import { getComplexity, progress, persist } from './progress.svelte';
+import { getComplexity, progress } from './progress.svelte';
+import { saveStored } from './storage';
 
 export interface UnmetPrerequisite extends Prerequisite {
   nameKey: string;
@@ -36,5 +37,5 @@ export function enablePrerequisites(typeId: string) {
       progress[p.typeId] = p.complexity;
     }
   }
-  persist();
+  saveStored('mgrind-progress', progress);
 }

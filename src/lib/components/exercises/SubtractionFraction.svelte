@@ -4,27 +4,29 @@
   import Math from '../Math.svelte';
   import ExerciseShell from '../ExerciseShell.svelte';
   import FractionInput from './FractionInput.svelte';
+  import { normalizeFraction } from '../../math/fraction';
 
   let { exercise, onSubmit, onNext, feedback }: ExerciseProps = $props();
 
   let numInput = $state('');
   let denInput = $state('');
 
-  const opMatch = $derived(exercise.prompt.match(/^\\frac\{(\d+)\}\{(\d+)\} - \\frac\{(\d+)\}\{(\d+)\}$/));
-  const num1 = $derived(Number(opMatch![1]));
-  const den1 = $derived(Number(opMatch![2]));
-  const num2 = $derived(Number(opMatch![3]));
-  const den2 = $derived(Number(opMatch![4]));
+  const num1 = $derived(exercise.data?.num1 ?? 0);
+  const den1 = $derived(exercise.data?.den1 ?? 1);
+  const num2 = $derived(exercise.data?.num2 ?? 0);
+  const den2 = $derived(exercise.data?.den2 ?? 1);
   const correctNumDen = $derived(exercise.answer.split(','));
   const promptKey = $derived(exercise.data?.promptKey ?? 'exercise.subtractionFraction.prompt');
 
   const numVal = $derived(Number(numInput));
   const denVal = $derived(Number(denInput));
 
-  const hasNegativeDenominator = $derived(feedback === 'correct' && (denVal < 0 || (numVal < 0 && denVal < 0)));
-  const normalizedWarningLatex = $derived(
-    hasNegativeDenominator ? `\\frac{${denVal < 0 ? -numVal : numVal}}{${denVal < 0 ? -denVal : denVal}}` : '',
-  );
+  const hasNegativeDenominator = $derived(feedback === 'correct' && denVal < 0);
+  const normalizedWarningLatex = $derived.by(() => {
+    if (!hasNegativeDenominator) return '';
+    const [n, d] = normalizeFraction(numVal, denVal);
+    return `\\frac{${n}}{${d}}`;
+  });
 </script>
 
 <ExerciseShell {exercise} {feedback} submitAnswer={() => onSubmit(`${numInput},${denInput}`)} {onNext} card={false}>

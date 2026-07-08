@@ -39,6 +39,6 @@ export function generateAdditionFraction(seed: number, complexity: number): Exer
   return {
     prompt: `\\frac{${f1Num}}{${f1Den}} + \\frac{${f2Num}}{${f2Den}}`,
     answer: `${a},${b}`,
-    data: { op: '+' },
+    data: { num1: f1Num, den1: f1Den, num2: f2Num, den2: f2Den, op: '+' },
   };
 }

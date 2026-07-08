@@ -26,5 +26,5 @@ Don't infer design decisions.
   - ⚠️ Svelte static attributes (`expression="\\cdot"`) treat backslashes literally → produces `\\cdot` (double backslash) at runtime, which KaTeX misparses. Always use JS expressions: `expression={'\\cdot'}`
   - ⚠️ No math symbol (+, -, =, /, ^, ·, etc.) may ever appear outside KaTeX — all must be rendered through `<Math>`
 - `@picocss/pico` v2 is the only dependency — drive visual design through Pico classes (`role="group"`, `outline`, `<progress>`) before writing custom CSS
-- `Exercise.fields` (optional `ExerciseField[]`) provides multi-input answer mode for prime factorisation; `null` → single text input, present → multiple number inputs
+- `Exercise.data.fields` (optional `{ variablePart: string }[]`) provides multi-input answer mode (e.g. for collecting terms, binomial formulas); `null` or `undefined` → single text input, present → multiple inputs
 - Interactive `<article>` cards use `<!-- svelte-ignore a11y_no_noninteractive_tabindex -->` and `a11y_no_noninteractive_element_interactions` comments to suppress Svelte a11y warnings

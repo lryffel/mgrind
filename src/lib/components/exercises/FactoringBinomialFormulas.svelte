@@ -23,13 +23,6 @@
     }
   }
 
-  $effect(() => {
-    exercise.prompt;
-    aVal = '';
-    bVal = '';
-    selectedFormula = null;
-  });
-
   let userLatex = $derived.by(() => {
     if (selectedFormula === null || selectedFormula === 0) return '';
     const aParsed = parseFrac(aVal);

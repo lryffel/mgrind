@@ -81,6 +81,6 @@ export function generateMultiplicationFraction(seed: number, complexity: number)
   return {
     prompt: `\\frac{${a}}{${b}} \\cdot \\frac{${c}}{${d}}`,
     answer: `${prodNum / g},${prodDen / g}`,
-    data: { op: '*', promptKey: 'exercise.multiplicationFraction.prompt' },
+    data: { num1: a, den1: b, num2: c, den2: d, op: '*', promptKey: 'exercise.multiplicationFraction.prompt' },
   };
 }

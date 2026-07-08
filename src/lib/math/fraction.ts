@@ -2,11 +2,16 @@ import { gcd } from './number';
 
 export type Fraction = [number, number];
 
-export function reduceFrac(num: number, den: number): Fraction {
+export function normalizeFraction(num: number, den: number): Fraction {
   if (den < 0) {
     num = -num;
     den = -den;
   }
+  return [num, den];
+}
+
+export function reduceFrac(num: number, den: number): Fraction {
+  [num, den] = normalizeFraction(num, den);
   if (num === 0) return [0, 1];
   const g = gcd(Math.abs(num), den);
   return [num / g, den / g];

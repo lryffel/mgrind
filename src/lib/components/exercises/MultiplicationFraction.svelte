@@ -11,11 +11,10 @@
   let numInput = $state('');
   let denInput = $state('');
 
-  const opMatch = $derived(exercise.prompt.match(/^\\frac\{(\d+)\}\{(\d+)\} \\cdot \\frac\{(\d+)\}\{(\d+)\}$/));
-  const num1 = $derived(Number(opMatch![1]));
-  const den1 = $derived(Number(opMatch![2]));
-  const num2 = $derived(Number(opMatch![3]));
-  const den2 = $derived(Number(opMatch![4]));
+  const num1 = $derived(exercise.data?.num1 ?? 0);
+  const den1 = $derived(exercise.data?.den1 ?? 1);
+  const num2 = $derived(exercise.data?.num2 ?? 0);
+  const den2 = $derived(exercise.data?.den2 ?? 1);
   const correctNumDen = $derived(exercise.answer.split(','));
   const promptKey = $derived(exercise.data?.promptKey ?? 'exercise.multiplicationFraction.prompt');
   const correctLatex = $derived(`\\frac{${correctNumDen[0]}}{${correctNumDen[1]}}`);

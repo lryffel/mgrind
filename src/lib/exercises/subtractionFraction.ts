@@ -76,6 +76,6 @@ export function generateSubtractionFraction(seed: number, complexity: number): E
   return {
     prompt: `\\frac{${f1Num}}{${f1Den}} - \\frac{${f2Num}}{${f2Den}}`,
     answer: `${a},${b}`,
-    data: { op: '-', promptKey: 'exercise.subtractionFraction.prompt' },
+    data: { num1: f1Num, den1: f1Den, num2: f2Num, den2: f2Den, op: '-', promptKey: 'exercise.subtractionFraction.prompt' },
   };
 }

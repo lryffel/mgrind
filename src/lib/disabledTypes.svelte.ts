@@ -1,28 +1,16 @@
 import type { Discipline } from './types';
+import { loadStored, saveStored } from './storage';
 
 const STORAGE_KEY = 'mgrind-disabled';
 
 export const disabledTypes = $state<Record<string, boolean>>({});
 
-function persist() {
-  try {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(disabledTypes));
-  } catch {
-    /* ignore */
-  }
-}
-
 export function initDisabledTypes() {
-  try {
-    const raw = localStorage.getItem(STORAGE_KEY);
-    if (raw) {
-      const parsed = JSON.parse(raw);
-      for (const key in parsed) {
-        disabledTypes[key] = parsed[key];
-      }
+  const stored = loadStored<Record<string, boolean>>(STORAGE_KEY);
+  if (stored) {
+    for (const key in stored) {
+      disabledTypes[key] = stored[key];
     }
-  } catch {
-    /* ignore */
   }
 }
 
@@ -39,13 +27,13 @@ export function toggleDisabled(typeId: string, discipline: Discipline): boolean 
     }
   }
   disabledTypes[typeId] = !currentlyDisabled;
-  persist();
+  saveStored(STORAGE_KEY, disabledTypes);
   return true;
 }
 
 export function enableType(typeId: string) {
   disabledTypes[typeId] = false;
-  persist();
+  saveStored(STORAGE_KEY, disabledTypes);
 }
 
 export function getEnabledTypeIds(discipline: Discipline): string[] {

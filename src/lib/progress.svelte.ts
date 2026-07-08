@@ -1,28 +1,16 @@
 import type { Discipline, ExerciseType } from './types';
+import { loadStored, saveStored } from './storage';
 
 const STORAGE_KEY = 'mgrind-progress';
 
 export const progress = $state<Record<string, number>>({});
 
-export function persist() {
-  try {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(progress));
-  } catch {
-    /* ignore */
-  }
-}
-
 export function initProgress() {
-  try {
-    const raw = localStorage.getItem(STORAGE_KEY);
-    if (raw) {
-      const parsed = JSON.parse(raw);
-      for (const key in parsed) {
-        progress[key] = parsed[key];
-      }
+  const stored = loadStored<Record<string, number>>(STORAGE_KEY);
+  if (stored) {
+    for (const key in stored) {
+      progress[key] = stored[key];
     }
-  } catch {
-    /* ignore */
   }
 }
 
@@ -38,7 +26,7 @@ export function updateProgress(typeId: string, correct: boolean, maxComplexity: 
     current = Math.max(current - 1, 0);
   }
   progress[typeId] = current;
-  persist();
+  saveStored(STORAGE_KEY, progress);
   return current;
 }
 
@@ -46,7 +34,7 @@ export function resetProgress() {
   for (const key in progress) {
     progress[key] = 0;
   }
-  persist();
+  saveStored(STORAGE_KEY, progress);
 }
 
 export function getDisciplineProgress(discipline: Discipline, types: Record<string, ExerciseType>): number {

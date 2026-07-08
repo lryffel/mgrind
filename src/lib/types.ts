@@ -12,6 +12,10 @@ export interface ExerciseProps {
 export type ExerciseComponent = Component<ExerciseProps>;
 
 export interface ExerciseData {
+  num1?: number;
+  den1?: number;
+  num2?: number;
+  den2?: number;
   op?: string;
   promptKey?: string;
   fields?: { variablePart: string }[];

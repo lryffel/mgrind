@@ -12,7 +12,7 @@ import { generateSubstitution, validateSubstitution } from '../exercises/substit
 import TextInputExercise from '../components/exercises/TextInputExercise.svelte';
 import PrimeFactorisation from '../components/exercises/PrimeFactorisation.svelte';
 import SimplifyFraction from '../components/exercises/SimplifyFraction.svelte';
-import BinaryFractionExercise from '../components/exercises/BinaryFractionExercise.svelte';
+import AdditionFraction from '../components/exercises/AdditionFraction.svelte';
 import SubtractionFraction from '../components/exercises/SubtractionFraction.svelte';
 import MultiplicationFraction from '../components/exercises/MultiplicationFraction.svelte';
 import SubstitutionExercise from '../components/exercises/SubstitutionExercise.svelte';
@@ -100,7 +100,7 @@ export const exerciseTypes: Record<string, ExerciseType> = {
     maxComplexity: 10,
     generate: generateAdditionFraction,
     validate: validateFractionAnswer,
-    component: BinaryFractionExercise,
+    component: AdditionFraction,
     prerequisites: [{ typeId: 'simplifyFraction', complexity: 5 }],
   },
   subtractionFraction: {
