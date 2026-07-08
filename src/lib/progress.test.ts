@@ -77,7 +77,7 @@ describe('progress', () => {
     const discipline: Discipline = {
       id: 'multiplication',
       nameKey: 'discipline.numbers.name',
-      exerciseTypeIds: ['multiplication', 'multiplicationMissingFactor'],
+      exerciseTypeIds: ['multiplication', 'division'],
     };
 
     it('returns 0 when no exercise type has progress', () => {
@@ -100,7 +100,7 @@ describe('progress', () => {
 
     it('returns 1 when fully progressed', () => {
       progress['multiplication'] = 10;
-      progress['multiplicationMissingFactor'] = 10;
+      progress['division'] = 10;
       const p = getDisciplineProgress(discipline, exerciseTypes);
       expect(p).toBe(1);
     });

@@ -123,7 +123,7 @@
     {/if}
     {_('exercise.substitution.promptAfter')}
   </p>
-  {#if complexity >= 5}
+  {#if complexity >= 5 && answerIsFraction}
     <p class="hint">{_('exercise.substitution.reduceHint')}</p>
   {/if}
   <p class="prompt fraction-prompt">
@@ -162,7 +162,7 @@
     {/if}
     {_('exercise.substitution.promptAfter')}
   </p>
-  {#if complexity >= 5}
+  {#if complexity >= 5 && answerIsFraction}
     <p class="hint">{_('exercise.substitution.reduceHint')}</p>
   {/if}
   <p class="prompt fraction-prompt">

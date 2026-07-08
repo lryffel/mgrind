@@ -24,7 +24,7 @@ describe('prerequisites', () => {
       const prereqs = getPrerequisites('primeFactorisation');
       expect(prereqs).toEqual([
         { typeId: 'multiplication', complexity: 7 },
-        { typeId: 'multiplicationMissingFactor', complexity: 7 },
+        { typeId: 'division', complexity: 7 },
       ]);
     });
 
@@ -50,19 +50,19 @@ describe('prerequisites', () => {
 
     it('returns true when all prerequisites are met', () => {
       progress['multiplication'] = 7;
-      progress['multiplicationMissingFactor'] = 8;
+      progress['division'] = 8;
       expect(arePrerequisitesMet('primeFactorisation')).toBe(true);
     });
 
     it('returns true when prerequisite is exactly at required level', () => {
       progress['multiplication'] = 7;
-      progress['multiplicationMissingFactor'] = 7;
+      progress['division'] = 7;
       expect(arePrerequisitesMet('primeFactorisation')).toBe(true);
     });
 
     it('returns false when one prerequisite is met but another is not', () => {
       progress['multiplication'] = 7;
-      progress['multiplicationMissingFactor'] = 3;
+      progress['division'] = 3;
       expect(arePrerequisitesMet('primeFactorisation')).toBe(false);
     });
   });
@@ -70,7 +70,7 @@ describe('prerequisites', () => {
   describe('getUnmetPrerequisites', () => {
     it('returns empty array when all prerequisites are met', () => {
       progress['multiplication'] = 7;
-      progress['multiplicationMissingFactor'] = 7;
+      progress['division'] = 7;
       expect(getUnmetPrerequisites('primeFactorisation')).toEqual([]);
     });
 
@@ -79,9 +79,9 @@ describe('prerequisites', () => {
       expect(unmet).toEqual([
         { typeId: 'multiplication', complexity: 7, nameKey: 'exercise.multiplication.name', current: 0 },
         {
-          typeId: 'multiplicationMissingFactor',
+          typeId: 'division',
           complexity: 7,
-          nameKey: 'exercise.multiplicationMissingFactor.name',
+          nameKey: 'exercise.division.name',
           current: 0,
         },
       ]);
@@ -92,9 +92,9 @@ describe('prerequisites', () => {
       const unmet = getUnmetPrerequisites('primeFactorisation');
       expect(unmet).toEqual([
         {
-          typeId: 'multiplicationMissingFactor',
+          typeId: 'division',
           complexity: 7,
-          nameKey: 'exercise.multiplicationMissingFactor.name',
+          nameKey: 'exercise.division.name',
           current: 0,
         },
       ]);
@@ -109,21 +109,21 @@ describe('prerequisites', () => {
     it('bumps each prerequisite to required level', () => {
       enablePrerequisites('primeFactorisation');
       expect(progress['multiplication']).toBe(7);
-      expect(progress['multiplicationMissingFactor']).toBe(7);
+      expect(progress['division']).toBe(7);
     });
 
     it('does not decrease a prerequisite that is already above required level', () => {
       progress['multiplication'] = 10;
-      progress['multiplicationMissingFactor'] = 3;
+      progress['division'] = 3;
       enablePrerequisites('primeFactorisation');
       expect(progress['multiplication']).toBe(10);
-      expect(progress['multiplicationMissingFactor']).toBe(7);
+      expect(progress['division']).toBe(7);
     });
 
     it('persists to localStorage', () => {
       enablePrerequisites('primeFactorisation');
       const stored = JSON.parse(localStorage.getItem('mgrind-progress')!);
-      expect(stored).toEqual({ multiplication: 7, multiplicationMissingFactor: 7 });
+      expect(stored).toEqual({ multiplication: 7, division: 7 });
     });
 
     it('does nothing for type with no prerequisites', () => {

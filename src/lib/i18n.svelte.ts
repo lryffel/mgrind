@@ -5,10 +5,10 @@ const dict = {
   'discipline.numbers.name': { en: 'Numbers', de: 'Zahlen' },
   'exercise.multiplication.name': { en: 'Multiplication', de: 'Multiplikation' },
   'exercise.multiplication.desc': { en: 'Solve multiplication problems', de: 'Löse Multiplikationsaufgaben' },
-  'exercise.multiplicationMissingFactor.name': { en: 'Missing Factor', de: 'Fehlender Faktor' },
-  'exercise.multiplicationMissingFactor.desc': {
-    en: 'Find the missing factor in a product',
-    de: 'Finde den fehlenden Faktor eines Produkts',
+  'exercise.division.name': { en: 'Division', de: 'Division' },
+  'exercise.division.desc': {
+    en: 'Solve division problems',
+    de: 'Löse Divisionsaufgaben',
   },
   'exercise.primeFactorisation.name': { en: 'Prime Factorisation', de: 'Primfaktorzerlegung' },
   'exercise.primeFactorisation.desc': { en: 'Find the prime decomposition', de: 'Bestimme die Primfaktorzerlegung' },

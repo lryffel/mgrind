@@ -1,6 +1,6 @@
 import type { Exercise, ExerciseType } from '../types';
 import { generateMultiplication } from '../exercises/multiplication';
-import { generateMultiplicationMissingFactor } from '../exercises/multiplicationMissingFactor';
+import { generateDivision } from '../exercises/division';
 import { generatePrimeFactorisation } from '../exercises/primeFactorisation';
 import { generateSquares } from '../exercises/squares';
 import { generateOrderOfOperations } from '../exercises/orderOfOperations';
@@ -49,12 +49,12 @@ export const exerciseTypes: Record<string, ExerciseType> = {
     validate: trimCompare,
     component: TextInputExercise,
   },
-  multiplicationMissingFactor: {
-    id: 'multiplicationMissingFactor',
-    nameKey: 'exercise.multiplicationMissingFactor.name',
-    descriptionKey: 'exercise.multiplicationMissingFactor.desc',
+  division: {
+    id: 'division',
+    nameKey: 'exercise.division.name',
+    descriptionKey: 'exercise.division.desc',
     maxComplexity: 10,
-    generate: generateMultiplicationMissingFactor,
+    generate: generateDivision,
     validate: trimCompare,
     component: TextInputExercise,
   },
@@ -87,7 +87,7 @@ export const exerciseTypes: Record<string, ExerciseType> = {
     component: PrimeFactorisation,
     prerequisites: [
       { typeId: 'multiplication', complexity: 7 },
-      { typeId: 'multiplicationMissingFactor', complexity: 7 },
+      { typeId: 'division', complexity: 7 },
     ],
   },
   simplifyFraction: {
