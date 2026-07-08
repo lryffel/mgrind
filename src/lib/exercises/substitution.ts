@@ -1,33 +1,8 @@
 import type { Exercise } from '../types';
 import { mulberry32 } from '../prng';
-
-function randInt(rng: () => number, min: number, max: number): number {
-  return Math.floor(rng() * (max - min + 1)) + min;
-}
-
-function pick<T>(rng: () => number, arr: T[]): T {
-  return arr[Math.floor(rng() * arr.length)];
-}
-
-function gcd(a: number, b: number): number {
-  while (b) {
-    [a, b] = [b, a % b];
-  }
-  return a;
-}
-
-function reduceFrac(num: number, den: number): string {
-  if (den < 0) {
-    num = -num;
-    den = -den;
-  }
-  if (num === 0) return '0';
-  const g = gcd(Math.abs(num), den);
-  num /= g;
-  den /= g;
-  if (den === 1) return String(num);
-  return `${num}/${den}`;
-}
+import { randInt, pick } from '../math/rng';
+import { reduceFrac, parseFrac } from '../math/fraction';
+import { gcd } from '../math/number';
 
 function fracDisplay(num: number, den: number): string {
   if (den === 1) return String(num);
@@ -122,9 +97,9 @@ function genAX2(input: GenInput): GenOutput {
       const answer = reduceFrac(ansNum, ansDen);
       return {
         term: `${fracCoeffDisplay(coeffNum, coeffDen)}\\cdot ${v}^{2}`,
-        answer,
+        answer: [answer[0], answer[1]].join('/').replace(/\/1$/, ''),
         subValue: fracDisplay(subNum, subDen),
-        hasFractionAnswer: answer.includes('/'),
+        hasFractionAnswer: answer[1] > 1,
       };
     }
   }
@@ -173,9 +148,9 @@ function genAMinusBX(input: GenInput): GenOutput {
       const answer = reduceFrac(ansNum, ansDen);
       return {
         term: `${fracDisplay(aNum, aDen)} - ${fracCoeffDisplay(bNum, bDen)}\\cdot ${v}`,
-        answer,
+        answer: [answer[0], answer[1]].join('/').replace(/\/1$/, ''),
         subValue: fracDisplay(subNum, subDen),
-        hasFractionAnswer: answer.includes('/'),
+        hasFractionAnswer: answer[1] > 1,
       };
     }
   }
@@ -222,9 +197,9 @@ function genX1MinusX(input: GenInput): GenOutput {
       const answer = reduceFrac(ansNum, ansDen);
       return {
         term: `${v}\\cdot (1-${v})`,
-        answer,
+        answer: [answer[0], answer[1]].join('/').replace(/\/1$/, ''),
         subValue: fracDisplay(subNum, subDen),
-        hasFractionAnswer: answer.includes('/'),
+        hasFractionAnswer: answer[1] > 1,
       };
     }
   }
@@ -292,9 +267,9 @@ function genAMinusBMinusX(input: GenInput): GenOutput {
       const answer = reduceFrac(ansNum, ansDen);
       return {
         term: `${fracDisplay(aNum, aDen)} - (${fracDisplay(bNum, bDen)} - ${v})`,
-        answer,
+        answer: [answer[0], answer[1]].join('/').replace(/\/1$/, ''),
         subValue: fracDisplay(subNum, subDen),
-        hasFractionAnswer: answer.includes('/'),
+        hasFractionAnswer: answer[1] > 1,
       };
     }
   }
@@ -329,9 +304,9 @@ function gen1OverX(input: GenInput): GenOutput {
       const answer = reduceFrac(ansNum, ansDen);
       return {
         term: `\\frac{1}{${v}}`,
-        answer,
+        answer: [answer[0], answer[1]].join('/').replace(/\/1$/, ''),
         subValue: fracDisplay(subNum, subDen),
-        hasFractionAnswer: answer.includes('/'),
+        hasFractionAnswer: answer[1] > 1,
       };
     }
   }
@@ -454,27 +429,10 @@ export function validateSubstitution(answer: string, exercise: Exercise): boolea
 
   if (a === expected) return true;
 
-  const [aNum, aDen] = parseFrac(a);
-  const [eNum, eDen] = parseFrac(expected);
+  const aParsed = parseFrac(a);
+  const eParsed = parseFrac(expected);
 
-  if (aDen === 0 || eDen === 0) return false;
+  if (aParsed === null || eParsed === null) return false;
 
-  return aNum * eDen === eNum * aDen;
-}
-
-function parseFrac(s: string): [number, number] {
-  const trimmed = s.trim();
-  const parts = trimmed.split('/');
-  if (parts.length === 2) {
-    const num = parseInt(parts[0], 10);
-    const den = parseInt(parts[1], 10);
-    if (!isNaN(num) && !isNaN(den) && den !== 0) {
-      return [num, den];
-    }
-    return [0, 0];
-  }
-  if (/^-?\d+$/.test(trimmed)) {
-    return [parseInt(trimmed, 10), 1];
-  }
-  return [0, 0];
+  return aParsed[0] * eParsed[1] === eParsed[0] * aParsed[1];
 }

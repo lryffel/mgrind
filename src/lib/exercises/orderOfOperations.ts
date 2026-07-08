@@ -1,13 +1,6 @@
 import type { Exercise } from '../types';
 import { mulberry32 } from '../prng';
-
-function randInt(rng: () => number, min: number, max: number): number {
-  return Math.floor(rng() * (max - min + 1)) + min;
-}
-
-function pick<T>(rng: () => number, arr: T[]): T {
-  return arr[Math.floor(rng() * arr.length)];
-}
+import { randInt, pick } from '../math/rng';
 
 const ADD_TRIPLES: [number, number, number][] = [
   [3, 4, 5],

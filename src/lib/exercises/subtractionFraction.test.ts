@@ -1,12 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import { generateSubtractionFraction } from './subtractionFraction';
-
-function gcd(a: number, b: number): number {
-  while (b) {
-    [a, b] = [b, a % b];
-  }
-  return a;
-}
+import { gcd } from '../math/number';
 
 function parseFracs(prompt: string): number[] {
   const match = prompt.match(/^\\frac\{(\d+)\}\{(\d+)\} - \\frac\{(\d+)\}\{(\d+)\}$/);

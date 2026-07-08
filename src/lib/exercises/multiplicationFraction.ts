@@ -1,12 +1,6 @@
 import type { Exercise } from '../types';
 import { mulberry32 } from '../prng';
-
-function gcd(a: number, b: number): number {
-  while (b) {
-    [a, b] = [b, a % b];
-  }
-  return a;
-}
+import { gcd } from '../math/number';
 
 export function generateMultiplicationFraction(seed: number, complexity: number): Exercise {
   const rng = mulberry32(seed);

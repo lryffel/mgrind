@@ -3,6 +3,7 @@
   import type { Exercise } from '../../types';
   import Math from '../Math.svelte';
   import { formatFactoredLatex } from '../../exercises/factoringBinomialFormulas';
+  import { parseFrac } from '../../math/fraction';
 
   let {
     exercise,
@@ -73,20 +74,6 @@
     return formatFactoredLatex(formula, aParsed[0], aParsed[1], bParsed[0], bParsed[1], varA, varB);
   });
 
-  function parseFrac(s: string): [number, number] | null {
-    s = s.trim();
-    if (!s) return null;
-    const parts = s.split('/');
-    if (parts.length === 2) {
-      const num = parseInt(parts[0], 10);
-      const den = parseInt(parts[1], 10);
-      if (isNaN(num) || isNaN(den) || den === 0) return null;
-      return [num, den];
-    }
-    const num = parseInt(s, 10);
-    if (isNaN(num)) return null;
-    return [num, 1];
-  }
 </script>
 
 <svelte:window onkeydown={handleKeydown} />

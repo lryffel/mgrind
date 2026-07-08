@@ -1,12 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import { generateSimplifyFraction } from './simplifyFraction';
-
-function gcd(a: number, b: number): number {
-  while (b) {
-    [a, b] = [b, a % b];
-  }
-  return a;
-}
+import { gcd } from '../math/number';
 
 describe('generateSimplifyFraction', () => {
   it('returns a valid exercise with prompt and answer', () => {

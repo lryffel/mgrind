@@ -1,9 +1,6 @@
 import type { Exercise } from '../types';
 import { mulberry32 } from '../prng';
-
-function randInt(rng: () => number, min: number, max: number): number {
-  return Math.floor(rng() * (max - min + 1)) + min;
-}
+import { randInt } from '../math/rng';
 
 function formatDecimal(tenths: number, exponent: number): string {
   const shift = exponent - 1;

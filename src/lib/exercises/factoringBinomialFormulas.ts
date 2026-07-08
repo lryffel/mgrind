@@ -1,35 +1,7 @@
 import type { Exercise } from '../types';
 import { mulberry32 } from '../prng';
-
-function gcd(a: number, b: number): number {
-  while (b) {
-    [a, b] = [b, a % b];
-  }
-  return a;
-}
-
-function reduceFrac(num: number, den: number): [number, number] {
-  if (den < 0) {
-    num = -num;
-    den = -den;
-  }
-  if (num === 0) return [0, 1];
-  const g = gcd(Math.abs(num), den);
-  return [num / g, den / g];
-}
-
-function randInt(rng: () => number, min: number, max: number): number {
-  return Math.floor(rng() * (max - min + 1)) + min;
-}
-
-function pick<T>(rng: () => number, arr: T[]): T {
-  return arr[Math.floor(rng() * arr.length)];
-}
-
-function pickExclude<T>(rng: () => number, arr: T[], exclude: T[]): T {
-  const filtered = arr.filter((x) => !exclude.includes(x));
-  return filtered[Math.floor(rng() * filtered.length)];
-}
+import { randInt, pick, pickExclude, randCoeff } from '../math/rng';
+import { reduceFrac, fracEqual } from '../math/fraction';
 
 function cmd(s: string): string {
   return s.startsWith('\\') ? s + '{}' : s;
@@ -97,38 +69,7 @@ function buildPrompt(
   return `${coeffLatex(a2[0], a2[1], aVarPart)} - ${coeffLatex(ab[0], ab[1], abVarPart)} + ${coeffLatex(b2[0], b2[1], bVarPart)}`;
 }
 
-function randCoeff(rng: () => number, allowFrac: boolean): [number, number] {
-  if (allowFrac && rng() > 0.35) {
-    const den = randInt(rng, 2, 5);
-    const num = randInt(rng, 1, 8);
-    return reduceFrac(num, den);
-  }
-  return [randInt(rng, 1, 5), 1];
-}
-
 const VAR_NAMES = ['a', 'b', 'c', 'd', 'k', '\\ell', 'm', 'n', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w'];
-
-function parseFrac(s: string): [number, number] | null {
-  s = s.trim();
-  if (!s) return null;
-  const parts = s.split('/');
-  if (parts.length === 2) {
-    const num = parseInt(parts[0], 10);
-    const den = parseInt(parts[1], 10);
-    if (isNaN(num) || isNaN(den) || den === 0) return null;
-    return [num, den];
-  }
-  const num = parseInt(s, 10);
-  if (isNaN(num)) return null;
-  return [num, 1];
-}
-
-function fracEqual(a: string, b: string): boolean {
-  const aParsed = parseFrac(a);
-  const bParsed = parseFrac(b);
-  if (aParsed === null || bParsed === null) return false;
-  return aParsed[0] * bParsed[1] === bParsed[0] * aParsed[1];
-}
 
 function generateTrap(rng: () => number, allowFrac: boolean, aMayHaveVar: boolean): Exercise {
   const trapType = Math.floor(rng() * 3);

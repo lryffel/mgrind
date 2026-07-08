@@ -1,5 +1,7 @@
 import type { Exercise } from '../types';
 import { mulberry32 } from '../prng';
+import { reduceFrac, parseFrac, fracEqual } from '../math/fraction';
+import { randInt, pick, pickDistinct, shuffle } from '../math/rng';
 
 interface Monomial {
   latex: string;
@@ -46,36 +48,6 @@ const VAR_SETS: Monomial[][] = [
   makeVarSet('r', 's', 't'),
   makeVarSet('u', 'v', 'w'),
 ];
-
-function gcd(a: number, b: number): number {
-  while (b) {
-    [a, b] = [b, a % b];
-  }
-  return Math.abs(a);
-}
-
-function reduceFrac(num: number, den: number): [number, number] {
-  if (den < 0) {
-    num = -num;
-    den = -den;
-  }
-  if (num === 0) return [0, 1];
-  const g = gcd(Math.abs(num), den);
-  return [num / g, den / g];
-}
-
-function randInt(rng: () => number, min: number, max: number): number {
-  return Math.floor(rng() * (max - min + 1)) + min;
-}
-
-function shuffle<T>(rng: () => number, arr: T[]): T[] {
-  const result = [...arr];
-  for (let i = result.length - 1; i > 0; i--) {
-    const j = Math.floor(rng() * (i + 1));
-    [result[i], result[j]] = [result[j], result[i]];
-  }
-  return result;
-}
 
 function formatPromptTerm(absNum: number, varLatex: string): string {
   if (absNum === 1 && varLatex) return '';
@@ -126,30 +98,6 @@ export function formatCollectingAnswer(coeffStrs: string[], variableParts: strin
   }
 
   return displayTerms.join('') || '0';
-}
-
-function parseFrac(s: string): [number, number] | null {
-  s = s.trim();
-  if (!s) return null;
-  const parts = s.split('/');
-  if (parts.length === 2) {
-    const num = parseInt(parts[0], 10);
-    const den = parseInt(parts[1], 10);
-    if (isNaN(num) || isNaN(den) || den === 0) return null;
-    return [num, den];
-  }
-  const num = parseInt(s, 10);
-  if (isNaN(num)) return null;
-  return [num, 1];
-}
-
-function pickDistinct<T>(rng: () => number, arr: T[], count: number): T[] {
-  const shuffled = shuffle(rng, arr);
-  return shuffled.slice(0, Math.min(count, shuffled.length));
-}
-
-function pick<T>(rng: () => number, arr: T[]): T {
-  return arr[Math.floor(rng() * arr.length)];
 }
 
 export function generateCollectingTerms(seed: number, complexity: number): Exercise {
@@ -272,11 +220,4 @@ export function validateCollectingTerms(answer: string, exercise: Exercise): boo
     if (!fracEqual(userParts[i], correctParts[i])) return false;
   }
   return true;
-}
-
-function fracEqual(a: string, b: string): boolean {
-  const aParsed = parseFrac(a);
-  const bParsed = parseFrac(b);
-  if (aParsed === null || bParsed === null) return false;
-  return aParsed[0] * bParsed[1] === bParsed[0] * aParsed[1];
 }

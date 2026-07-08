@@ -1,26 +1,7 @@
 import type { Exercise } from '../types';
 import { mulberry32 } from '../prng';
-
-function gcd(a: number, b: number): number {
-  while (b) {
-    [a, b] = [b, a % b];
-  }
-  return a;
-}
-
-function randInt(rng: () => number, min: number, max: number): number {
-  return Math.floor(rng() * (max - min + 1)) + min;
-}
-
-function pick<T>(rng: () => number, arr: T[]): T {
-  return arr[Math.floor(rng() * arr.length)];
-}
-
-function reduceFrac(num: number, den: number): [number, number] {
-  const g = gcd(Math.abs(num), Math.abs(den));
-  if (den < 0) return [-num / g, -den / g];
-  return [num / g, den / g];
-}
+import { randInt, pick, randCoeff } from '../math/rng';
+import { reduceFrac } from '../math/fraction';
 
 function mulCoeff(a: [number, number], b: [number, number]): [number, number] {
   return reduceFrac(a[0] * b[0], a[1] * b[1]);
@@ -48,15 +29,6 @@ function promptTerm(num: number, den: number, varName: string): string {
     return `${n}${varName}`;
   }
   return `\\frac{${num}}{${den}}${varName}`;
-}
-
-function randCoeff(rng: () => number, allowFrac: boolean): [number, number] {
-  if (allowFrac && rng() > 0.35) {
-    const den = randInt(rng, 2, 5);
-    const num = randInt(rng, 1, 8);
-    return reduceFrac(num, den);
-  }
-  return [randInt(rng, 1, 5), 1];
 }
 
 const SINGLE_VARS = ['x', 'n', 't', 'a', 'b', 'm', 'p', 'q', 'r', 's', 'u', 'v'];
@@ -251,27 +223,7 @@ export function validateBinomialFormulas(answer: string, exercise: Exercise): bo
   return true;
 }
 
-function fracEqual(a: string, b: string): boolean {
-  const aParsed = parseFrac(a);
-  const bParsed = parseFrac(b);
-  if (aParsed === null || bParsed === null) return false;
-  return aParsed[0] * bParsed[1] === bParsed[0] * aParsed[1];
-}
-
-function parseFrac(s: string): [number, number] | null {
-  s = s.trim();
-  if (!s) return null;
-  const parts = s.split('/');
-  if (parts.length === 2) {
-    const num = parseInt(parts[0], 10);
-    const den = parseInt(parts[1], 10);
-    if (isNaN(num) || isNaN(den) || den === 0) return null;
-    return [num, den];
-  }
-  const num = parseInt(s, 10);
-  if (isNaN(num)) return null;
-  return [num, 1];
-}
+import { parseFrac, fracEqual } from '../math/fraction';
 
 export function buildExpandedLatex(coeffStrs: string[], variableParts: string[]): string {
   const displayTerms: string[] = [];
