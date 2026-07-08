@@ -27,6 +27,13 @@ const dict = {
     de: 'Multipliziere und kürze Brüche',
   },
   'exercise.multiplicationFraction.prompt': { en: 'Multiply and simplify', de: 'Multipliziere und kürze' },
+  'exercise.squares.name': { en: 'Squares', de: 'Quadrate' },
+  'exercise.squares.desc': { en: 'Compute squares of numbers', de: 'Berechne Quadrate von Zahlen' },
+  'exercise.orderOfOperations.name': { en: 'Order of Operations', de: 'Rechenregeln' },
+  'exercise.orderOfOperations.desc': {
+    en: 'Apply the order of operations',
+    de: 'Wende die Rechenregeln an',
+  },
   'feedback.negativeDenominator': {
     en: 'Signs should be put in the numerator if possible: {0}',
     de: 'Vorzeichen sollten wenn möglich in den Zähler platziert werden: {0}',

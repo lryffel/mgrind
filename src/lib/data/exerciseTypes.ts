@@ -2,6 +2,8 @@ import type { Exercise, ExerciseType } from '../types';
 import { generateMultiplication } from '../exercises/multiplication';
 import { generateMultiplicationMissingFactor } from '../exercises/multiplicationMissingFactor';
 import { generatePrimeFactorisation } from '../exercises/primeFactorisation';
+import { generateSquares } from '../exercises/squares';
+import { generateOrderOfOperations } from '../exercises/orderOfOperations';
 import { generateAdditionFraction } from '../exercises/additionFraction';
 import { generateSimplifyFraction } from '../exercises/simplifyFraction';
 import { generateSubtractionFraction } from '../exercises/subtractionFraction';
@@ -53,6 +55,25 @@ export const exerciseTypes: Record<string, ExerciseType> = {
     generate: generateMultiplicationMissingFactor,
     validate: trimCompare,
     component: TextInputExercise,
+  },
+  squares: {
+    id: 'squares',
+    nameKey: 'exercise.squares.name',
+    descriptionKey: 'exercise.squares.desc',
+    maxComplexity: 10,
+    generate: generateSquares,
+    validate: trimCompare,
+    component: TextInputExercise,
+  },
+  orderOfOperations: {
+    id: 'orderOfOperations',
+    nameKey: 'exercise.orderOfOperations.name',
+    descriptionKey: 'exercise.orderOfOperations.desc',
+    maxComplexity: 10,
+    generate: generateOrderOfOperations,
+    validate: trimCompare,
+    component: TextInputExercise,
+    prerequisites: [{ typeId: 'squares', complexity: 5 }],
   },
   primeFactorisation: {
     id: 'primeFactorisation',

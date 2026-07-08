@@ -7,6 +7,8 @@ export const disciplines: Discipline[] = [
     exerciseTypeIds: [
       'multiplication',
       'multiplicationMissingFactor',
+      'squares',
+      'orderOfOperations',
       'primeFactorisation',
       'simplifyFraction',
       'additionFraction',
