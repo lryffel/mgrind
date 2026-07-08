@@ -18,4 +18,3 @@
 <button class="outline" onclick={toggle} aria-label="Toggle theme">
   {theme === 'light' ? '☾' : '☀'}
 </button>
-

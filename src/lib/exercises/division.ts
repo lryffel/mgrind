@@ -11,8 +11,6 @@ export function generateDivision(seed: number, complexity: number): Exercise {
     a = Math.floor(rng2() * (maxFactor - 10)) + 11;
   }
   const b = a * c;
-  const prompt = rng() < 0.5
-    ? `${a} \\cdot ? = ${b}`
-    : `\\frac{${b}}{${a}} = ?`;
+  const prompt = rng() < 0.5 ? `${a} \\cdot ? = ${b}` : `\\frac{${b}}{${a}} = ?`;
   return { prompt, answer: String(c) };
 }

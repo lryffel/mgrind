@@ -58,15 +58,9 @@
   </p>
   {#if isMultiInput}
     <div class="sci-row">
-      <input
-        type="text"
-        class="coeff-input"
-        bind:value={coeffInput}
-        bind:this={coeffInputEl}
-        placeholder="…"
-      />
+      <input type="text" class="coeff-input" bind:value={coeffInput} bind:this={coeffInputEl} placeholder="…" />
       <Math expression={cdot} />
-      10<sup><input type="text" class="exp-input" bind:value={expInput} placeholder="…" /></sup>
+      <Math expression="10" /><sup><input type="text" class="exp-input" bind:value={expInput} placeholder="…" /></sup>
     </div>
     <div class="submit-row">
       <button onclick={handleSubmit}>{_('answer.submit')}</button>
@@ -96,7 +90,9 @@
       <p class="feedback correct">{_('feedback.correct')}</p>
     {:else}
       <p class="feedback incorrect">
-        {_('feedback.incorrect.prefix')}<Math expression={`${parts[0]} \\cdot 10^{${parts[1]}}`} />{_('feedback.incorrect.suffix')}
+        {_('feedback.incorrect.prefix')}<Math expression={`${parts[0]} \\cdot 10^{${parts[1]}}`} />{_(
+          'feedback.incorrect.suffix',
+        )}
       </p>
     {/if}
   {:else}

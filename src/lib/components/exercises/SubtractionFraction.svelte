@@ -32,8 +32,8 @@
   const denVal = $derived(Number(denInput));
 
   const hasNegativeDenominator = $derived(feedback === 'correct' && (denVal < 0 || (numVal < 0 && denVal < 0)));
-  const normalizedWarning = $derived(
-    hasNegativeDenominator ? `${denVal < 0 ? -numVal : numVal}/${denVal < 0 ? -denVal : denVal}` : '',
+  const normalizedWarningLatex = $derived(
+    hasNegativeDenominator ? `\\frac{${denVal < 0 ? -numVal : numVal}}{${denVal < 0 ? -denVal : denVal}}` : '',
   );
 
   function handleKeydown(e: KeyboardEvent) {
@@ -59,9 +59,9 @@
   <p class="prompt-label">{_(promptKey)}</p>
   <p class="prompt fraction-prompt">
     <Math expression={`\\frac{${num1}}{${den1}}`} />
-    <span class="op">-</span>
+    <Math expression="-" />
     <Math expression={`\\frac{${num2}}{${den2}}`} />
-    <span class="equals">=</span>
+    <Math expression="=" />
     <FractionInput bind:num={numInput} bind:den={denInput} inputRef={(el) => (numInputEl = el)} />
   </p>
   <div class="submit-row">
@@ -71,9 +71,9 @@
   <p class="prompt-label">{_(promptKey)}</p>
   <p class="prompt fraction-prompt">
     <Math expression={`\\frac{${num1}}{${den1}}`} />
-    <span class="op">-</span>
+    <Math expression="-" />
     <Math expression={`\\frac{${num2}}{${den2}}`} />
-    <span class="equals">=</span>
+    <Math expression="=" />
     <Math expression={numInput && denInput ? `\\frac{${numInput}}{${denInput}}` : '\\;'} />
   </p>
   {#if hasNegativeDenominator}
@@ -81,13 +81,15 @@
       {_('feedback.correct')}
     </p>
     <p class="feedback warning">
-      {_('feedback.negativeDenominator', normalizedWarning)}
+      {_('feedback.negativeDenominator.prefix')}<Math expression={normalizedWarningLatex} />{_(
+        'feedback.incorrect.suffix',
+      )}
     </p>
   {:else}
     <p class="feedback {feedback}">
-      {feedback === 'correct'
-        ? _('feedback.correct')
-        : _('feedback.incorrect', `${correctNumDen[0]}/${correctNumDen[1]}`)}
+      {feedback === 'correct' ? _('feedback.correct') : _('feedback.incorrect.prefix')}<Math
+        expression={`\\frac{${correctNumDen[0]}}{${correctNumDen[1]}}`}
+      />{_('feedback.incorrect.suffix')}
     </p>
   {/if}
   <div class="submit-row">

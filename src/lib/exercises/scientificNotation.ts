@@ -85,8 +85,14 @@ function generateMultiply(rng: () => number): Exercise {
   let coeff = a * c;
   let exp = exp1 + exp2;
 
-  while (coeff >= 10) { coeff /= 10; exp += 1; }
-  while (coeff < 1) { coeff *= 10; exp -= 1; }
+  while (coeff >= 10) {
+    coeff /= 10;
+    exp += 1;
+  }
+  while (coeff < 1) {
+    coeff *= 10;
+    exp -= 1;
+  }
 
   coeff = Math.round(coeff * 1e12) / 1e12;
 
@@ -110,13 +116,19 @@ function generateAdd(rng: () => number): Exercise {
   const [bigger10, smaller10] = exp1 >= exp2 ? [a10, c10] : [c10, a10];
 
   const shift = b - d;
-  const sumUnit = bigger10 * (10 ** shift) + smaller10;
+  const sumUnit = bigger10 * 10 ** shift + smaller10;
 
   let coeff = sumUnit;
   let exp = d - 1;
 
-  while (coeff >= 10) { coeff /= 10; exp += 1; }
-  while (coeff < 1) { coeff *= 10; exp -= 1; }
+  while (coeff >= 10) {
+    coeff /= 10;
+    exp += 1;
+  }
+  while (coeff < 1) {
+    coeff *= 10;
+    exp -= 1;
+  }
 
   coeff = Math.round(coeff * 1e12) / 1e12;
 

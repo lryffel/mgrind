@@ -105,7 +105,10 @@ describe('generateBinomialFormulas', () => {
         const ex = generateBinomialFormulas(seed + c * 1000, c);
         const parts = ex.answer.split(',');
         const fields = getFields(ex);
-        const latex = buildExpandedLatex(parts, fields.map((f) => f.variablePart));
+        const latex = buildExpandedLatex(
+          parts,
+          fields.map((f) => f.variablePart),
+        );
         expect(latex).not.toBe('');
         expect(latex).not.toBe('0');
       }
@@ -113,7 +116,11 @@ describe('generateBinomialFormulas', () => {
   });
 
   it('validateBinomialFormulas matches equivalent fractions', () => {
-    const ex: Exercise = { prompt: '', answer: '1/2,3/4', data: { fields: [{ variablePart: 'x' }, { variablePart: '' }] } };
+    const ex: Exercise = {
+      prompt: '',
+      answer: '1/2,3/4',
+      data: { fields: [{ variablePart: 'x' }, { variablePart: '' }] },
+    };
     expect(validateBinomialFormulas('2/4,3/4', ex)).toBe(true);
     expect(validateBinomialFormulas('1/2,6/8', ex)).toBe(true);
     expect(validateBinomialFormulas('1/3,3/4', ex)).toBe(false);

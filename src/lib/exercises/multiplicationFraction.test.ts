@@ -1,20 +1,20 @@
 import { describe, it, expect } from 'vitest';
 import { generateMultiplicationFraction } from './multiplicationFraction';
 
-  function gcd(a: number, b: number): number {
-    while (b) {
-      [a, b] = [b, a % b];
-    }
-    return a;
+function gcd(a: number, b: number): number {
+  while (b) {
+    [a, b] = [b, a % b];
   }
+  return a;
+}
 
-  function parseFracs(prompt: string): number[] {
-    const match = prompt.match(/^\\frac\{(\d+)\}\{(\d+)\} \\cdot \\frac\{(\d+)\}\{(\d+)\}$/);
-    expect(match).not.toBeNull();
-    return [parseInt(match![1]), parseInt(match![2]), parseInt(match![3]), parseInt(match![4])];
-  }
+function parseFracs(prompt: string): number[] {
+  const match = prompt.match(/^\\frac\{(\d+)\}\{(\d+)\} \\cdot \\frac\{(\d+)\}\{(\d+)\}$/);
+  expect(match).not.toBeNull();
+  return [parseInt(match![1]), parseInt(match![2]), parseInt(match![3]), parseInt(match![4])];
+}
 
-  describe('generateMultiplicationFraction', () => {
+describe('generateMultiplicationFraction', () => {
   it('returns a valid exercise with prompt and answer', () => {
     const ex = generateMultiplicationFraction(42, 0);
     expect(ex).toHaveProperty('prompt');

@@ -1,7 +1,12 @@
 <script lang="ts">
   import type { Snippet } from 'svelte';
 
-  let { show, onclose, children, footer }: {
+  let {
+    show,
+    onclose,
+    children,
+    footer,
+  }: {
     show: boolean;
     onclose?: () => void;
     children?: Snippet;
@@ -18,7 +23,7 @@
       document.documentElement.classList.remove('modal-is-open');
       dialogEl?.close();
     }
-  })
+  });
 
   function handleBackdropClick(e: MouseEvent) {
     if (e.target === dialogEl && show) {

@@ -93,14 +93,24 @@ describe('generateSubstitution', () => {
     for (let seed = 0; seed < 100; seed++) {
       const ex = generateSubstitution(seed, 7);
       const variable = ex.data!.variable as string;
-      if (variable === 'a' || variable === 'b' || variable === 'c' ||
-          variable === 'r' || variable === 's' || variable === 't' ||
-          variable === 'u' || variable === 'v' || variable === 'w' ||
-          variable === 'x' || variable === 'y' || variable === 'z') {
+      if (
+        variable === 'a' ||
+        variable === 'b' ||
+        variable === 'c' ||
+        variable === 'r' ||
+        variable === 's' ||
+        variable === 't' ||
+        variable === 'u' ||
+        variable === 'v' ||
+        variable === 'w' ||
+        variable === 'x' ||
+        variable === 'y' ||
+        variable === 'z'
+      ) {
         if (ex.prompt.startsWith('\\frac{1}{')) {
           const value = ex.data!.value as string;
           if (!value.includes('\\frac')) {
-            if (ex.data!.complexity as number >= 5) {
+            if ((ex.data!.complexity as number) >= 5) {
               expect(value).toContain('\\frac');
             }
           }

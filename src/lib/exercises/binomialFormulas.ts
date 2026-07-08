@@ -61,7 +61,12 @@ function randCoeff(rng: () => number, allowFrac: boolean): [number, number] {
 
 const SINGLE_VARS = ['x', 'n', 't', 'a', 'b', 'm', 'p', 'q', 'r', 's', 'u', 'v'];
 const VAR_PAIRS: [string, string][] = [
-  ['x', 'y'], ['n', 'm'], ['a', 'b'], ['p', 'q'], ['s', 't'], ['u', 'v'],
+  ['x', 'y'],
+  ['n', 'm'],
+  ['a', 'b'],
+  ['p', 'q'],
+  ['s', 't'],
+  ['u', 'v'],
 ];
 
 interface FormulaResult {
@@ -70,9 +75,7 @@ interface FormulaResult {
   fields: { variablePart: string }[];
 }
 
-function genSquareSum(
-  anum: number, aden: number, bnum: number, bden: number, v: string
-): FormulaResult {
+function genSquareSum(anum: number, aden: number, bnum: number, bden: number, v: string): FormulaResult {
   const a2 = squareCoeff([anum, aden]);
   const ab2 = mulCoeff([2, 1], mulCoeff([anum, aden], [bnum, bden]));
   const b2 = squareCoeff([bnum, bden]);
@@ -83,9 +86,7 @@ function genSquareSum(
   };
 }
 
-function genSquareDiff(
-  anum: number, aden: number, bnum: number, bden: number, v: string
-): FormulaResult {
+function genSquareDiff(anum: number, aden: number, bnum: number, bden: number, v: string): FormulaResult {
   const a2 = squareCoeff([anum, aden]);
   const ab2 = mulCoeff([2, 1], mulCoeff([anum, aden], [bnum, bden]));
   const b2 = squareCoeff([bnum, bden]);
@@ -97,9 +98,7 @@ function genSquareDiff(
   };
 }
 
-function genConjugate(
-  anum: number, aden: number, bnum: number, bden: number, v: string
-): FormulaResult {
+function genConjugate(anum: number, aden: number, bnum: number, bden: number, v: string): FormulaResult {
   const a2 = squareCoeff([anum, aden]);
   const b2 = squareCoeff([bnum, bden]);
   const negB2: [number, number] = [-b2[0], b2[1]];
@@ -110,26 +109,18 @@ function genConjugate(
   };
 }
 
-function genSquareSum2(
-  anum: number, aden: number, bnum: number, bden: number, v1: string, v2: string
-): FormulaResult {
+function genSquareSum2(anum: number, aden: number, bnum: number, bden: number, v1: string, v2: string): FormulaResult {
   const a2 = squareCoeff([anum, aden]);
   const ab2 = mulCoeff([2, 1], mulCoeff([anum, aden], [bnum, bden]));
   const b2 = squareCoeff([bnum, bden]);
   return {
     prompt: `(${promptTerm(anum, aden, v1)} + ${promptTerm(bnum, bden, v2)})^{2}`,
     answer: [formatCoeff(...a2), formatCoeff(...ab2), formatCoeff(...b2)].join(','),
-    fields: [
-      { variablePart: `${v1}^{2}` },
-      { variablePart: `${v1}${v2}` },
-      { variablePart: `${v2}^{2}` },
-    ],
+    fields: [{ variablePart: `${v1}^{2}` }, { variablePart: `${v1}${v2}` }, { variablePart: `${v2}^{2}` }],
   };
 }
 
-function genSquareDiff2(
-  anum: number, aden: number, bnum: number, bden: number, v1: string, v2: string
-): FormulaResult {
+function genSquareDiff2(anum: number, aden: number, bnum: number, bden: number, v1: string, v2: string): FormulaResult {
   const a2 = squareCoeff([anum, aden]);
   const ab2 = mulCoeff([2, 1], mulCoeff([anum, aden], [bnum, bden]));
   const b2 = squareCoeff([bnum, bden]);
@@ -137,17 +128,11 @@ function genSquareDiff2(
   return {
     prompt: `(${promptTerm(anum, aden, v1)} - ${promptTerm(bnum, bden, v2)})^{2}`,
     answer: [formatCoeff(...a2), formatCoeff(...negAb2), formatCoeff(...b2)].join(','),
-    fields: [
-      { variablePart: `${v1}^{2}` },
-      { variablePart: `${v1}${v2}` },
-      { variablePart: `${v2}^{2}` },
-    ],
+    fields: [{ variablePart: `${v1}^{2}` }, { variablePart: `${v1}${v2}` }, { variablePart: `${v2}^{2}` }],
   };
 }
 
-function genConjugate2(
-  anum: number, aden: number, bnum: number, bden: number, v1: string, v2: string
-): FormulaResult {
+function genConjugate2(anum: number, aden: number, bnum: number, bden: number, v1: string, v2: string): FormulaResult {
   const a2 = squareCoeff([anum, aden]);
   const b2 = squareCoeff([bnum, bden]);
   const negB2: [number, number] = [-b2[0], b2[1]];
@@ -158,19 +143,14 @@ function genConjugate2(
   };
 }
 
-function genMixed(
-  anum: number, aden: number, bnum: number, bden: number, v1: string, v2: string
-): FormulaResult {
+function genMixed(anum: number, aden: number, bnum: number, bden: number, v1: string, v2: string): FormulaResult {
   const a2 = squareCoeff([anum, aden]);
   const b2 = squareCoeff([bnum, bden]);
   const negA2: [number, number] = [-a2[0], a2[1]];
   return {
     prompt: `(${promptTerm(anum, aden, v1)} + ${promptTerm(bnum, bden, v2)})(${promptTerm(bnum, bden, v2)} - ${promptTerm(anum, aden, v1)})`,
     answer: [formatCoeff(...negA2), formatCoeff(...b2)].join(','),
-    fields: [
-      { variablePart: `${v1}^{2}` },
-      { variablePart: `${v2}^{2}` },
-    ],
+    fields: [{ variablePart: `${v1}^{2}` }, { variablePart: `${v2}^{2}` }],
   };
 }
 
@@ -188,10 +168,14 @@ export function generateBinomialFormulas(seed: number, complexity: number): Exer
 
       const result: FormulaResult = (() => {
         switch (variant) {
-          case 0: return genSquareSum2(aCoeff[0], aCoeff[1], bCoeff[0], bCoeff[1], v1, v2);
-          case 1: return genSquareDiff2(aCoeff[0], aCoeff[1], bCoeff[0], bCoeff[1], v1, v2);
-          case 2: return genConjugate2(aCoeff[0], aCoeff[1], bCoeff[0], bCoeff[1], v1, v2);
-          default: return genMixed(aCoeff[0], aCoeff[1], bCoeff[0], bCoeff[1], v1, v2);
+          case 0:
+            return genSquareSum2(aCoeff[0], aCoeff[1], bCoeff[0], bCoeff[1], v1, v2);
+          case 1:
+            return genSquareDiff2(aCoeff[0], aCoeff[1], bCoeff[0], bCoeff[1], v1, v2);
+          case 2:
+            return genConjugate2(aCoeff[0], aCoeff[1], bCoeff[0], bCoeff[1], v1, v2);
+          default:
+            return genMixed(aCoeff[0], aCoeff[1], bCoeff[0], bCoeff[1], v1, v2);
         }
       })();
 
@@ -222,9 +206,12 @@ export function generateBinomialFormulas(seed: number, complexity: number): Exer
 
       const result: FormulaResult = (() => {
         switch (variant) {
-          case 0: return genSquareSum(aCoeff[0], aCoeff[1], bCoeff[0], bCoeff[1], v);
-          case 1: return genSquareDiff(aCoeff[0], aCoeff[1], bCoeff[0], bCoeff[1], v);
-          default: return genConjugate(aCoeff[0], aCoeff[1], bCoeff[0], bCoeff[1], v);
+          case 0:
+            return genSquareSum(aCoeff[0], aCoeff[1], bCoeff[0], bCoeff[1], v);
+          case 1:
+            return genSquareDiff(aCoeff[0], aCoeff[1], bCoeff[0], bCoeff[1], v);
+          default:
+            return genConjugate(aCoeff[0], aCoeff[1], bCoeff[0], bCoeff[1], v);
         }
       })();
 
@@ -309,14 +296,7 @@ export function buildExpandedLatex(coeffStrs: string[], variableParts: string[])
     }
 
     const termBody = coeffDisplay + varPart;
-    const sign =
-      num < 0
-        ? displayTerms.length === 0
-          ? '-'
-          : ' - '
-        : displayTerms.length === 0
-          ? ''
-          : ' + ';
+    const sign = num < 0 ? (displayTerms.length === 0 ? '-' : ' - ') : displayTerms.length === 0 ? '' : ' + ';
 
     displayTerms.push(sign + termBody);
   }

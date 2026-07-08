@@ -1,10 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import type { Exercise } from '../types';
-import {
-  generateCollectingTerms,
-  validateCollectingTerms,
-  formatCollectingAnswer,
-} from './collectingTerms';
+import { generateCollectingTerms, validateCollectingTerms, formatCollectingAnswer } from './collectingTerms';
 
 function getFields(ex: Exercise): { variablePart: string }[] {
   return (ex.data?.fields as unknown as { variablePart: string }[]) ?? [];
@@ -47,7 +43,27 @@ describe('generateCollectingTerms', () => {
   });
 
   it('low complexity (0-2) produces only constant or degree-1 monomials', () => {
-    const degree1Vars = new Set(['', 'a', 'b', 'c', '\\ell', 'm', 'n', 'x', 'y', 'z', 'i', 'j', 'k', 'r', 's', 't', 'u', 'v', 'w']);
+    const degree1Vars = new Set([
+      '',
+      'a',
+      'b',
+      'c',
+      '\\ell',
+      'm',
+      'n',
+      'x',
+      'y',
+      'z',
+      'i',
+      'j',
+      'k',
+      'r',
+      's',
+      't',
+      'u',
+      'v',
+      'w',
+    ]);
     for (let seed = 0; seed < 100; seed++) {
       for (let c = 0; c <= 2; c++) {
         const ex = generateCollectingTerms(seed + c * 1000, c);

@@ -61,11 +61,11 @@
 
   {#if feedback === null}
     <div class="expansion" role="group">
-      <span class="equals">=</span>
+      <Math expression="=" />
       {#each fields as { variablePart }, i (i)}
         <span class="term">
           {#if i > 0}
-            <span class="plus">+</span>
+            <Math expression="+" />
           {/if}
           <input type="text" class="coeff-input" bind:value={values[i]} bind:this={inputEls[i]} placeholder="?" />
           {#if variablePart}
@@ -79,7 +79,7 @@
     </div>
   {:else}
     <div class="expansion">
-      <span class="equals">=</span>
+      <Math expression="=" />
       <Math expression={userLatex} />
     </div>
     {#if feedback === 'correct'}
@@ -117,14 +117,6 @@
     font-size: 1.25rem;
     flex-wrap: wrap;
     justify-content: center;
-  }
-
-  .equals {
-    margin-right: 0.2rem;
-  }
-
-  .plus {
-    color: var(--pico-muted-color, #888);
   }
 
   .coeff-input {

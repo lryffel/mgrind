@@ -11,8 +11,10 @@ interface Monomial {
 const CONSTANT: Monomial = { latex: '', degree: 0, key: '_' };
 
 function makeVarSet(v1: string, v2: string, v3: string): Monomial[] {
-  const cmd = (s: string) => s.startsWith('\\') ? s + '{}' : s;
-  const a = cmd(v1), b = cmd(v2), c = cmd(v3);
+  const cmd = (s: string) => (s.startsWith('\\') ? s + '{}' : s);
+  const a = cmd(v1),
+    b = cmd(v2),
+    c = cmd(v3);
   return [
     { latex: v1, degree: 1, key: 'k0' },
     { latex: v2, degree: 1, key: 'k1' },
@@ -80,13 +82,11 @@ function formatPromptTerm(absNum: number, varLatex: string): string {
   return String(absNum);
 }
 
-function formatTermBlock(
-  num: number, den: number, varLatex: string, isFirst: boolean,
-): string {
+function formatTermBlock(num: number, den: number, varLatex: string, isFirst: boolean): string {
   if (num === 0) return '';
 
   const absNum = Math.abs(num);
-  const sign = num < 0 ? '-' : (isFirst ? '' : '+');
+  const sign = num < 0 ? '-' : isFirst ? '' : '+';
   const coeffDisplay = formatPromptTerm(absNum, varLatex);
 
   const prefix = isFirst ? (sign === '-' ? '-' : '') : ` ${sign} `;
@@ -120,14 +120,7 @@ export function formatCollectingAnswer(coeffStrs: string[], variableParts: strin
     }
 
     const termBody = coeffDisplay + varPart;
-    const sign =
-      num < 0
-        ? displayTerms.length === 0
-          ? '-'
-          : ' - '
-        : displayTerms.length === 0
-          ? ''
-          : ' + ';
+    const sign = num < 0 ? (displayTerms.length === 0 ? '-' : ' - ') : displayTerms.length === 0 ? '' : ' + ';
 
     displayTerms.push(sign + termBody);
   }
@@ -216,9 +209,7 @@ function tryGenerate(
       }
     } else {
       for (const term of terms) {
-        term.displayLatex = monomial.altLatex && localRng() > 0.5
-          ? monomial.altLatex
-          : monomial.latex;
+        term.displayLatex = monomial.altLatex && localRng() > 0.5 ? monomial.altLatex : monomial.latex;
       }
     }
 

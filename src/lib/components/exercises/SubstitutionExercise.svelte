@@ -20,10 +20,10 @@
   let denInput = $state('');
   let firstInput = $state<HTMLInputElement | null>(null);
 
-  const variable = $derived(exercise.data?.variable as string | undefined ?? 'x');
-  const value = $derived(exercise.data?.value as string | undefined ?? '');
-  const term = $derived(exercise.data?.term as string | undefined ?? exercise.prompt);
-  const complexity = $derived(exercise.data?.complexity as number | undefined ?? 0);
+  const variable = $derived((exercise.data?.variable as string | undefined) ?? 'x');
+  const value = $derived((exercise.data?.value as string | undefined) ?? '');
+  const term = $derived((exercise.data?.term as string | undefined) ?? exercise.prompt);
+  const complexity = $derived((exercise.data?.complexity as number | undefined) ?? 0);
   const answerIsFraction = $derived(exercise.answer.includes('/'));
 
   function handleKeydown(e: KeyboardEvent) {
@@ -37,9 +37,7 @@
   }
 
   function submitAnswer() {
-    const answer = answerIsFraction
-      ? `${numInput.trim()}/${denInput.trim()}`
-      : input.trim();
+    const answer = answerIsFraction ? `${numInput.trim()}/${denInput.trim()}` : input.trim();
     onSubmit(answer);
   }
 
@@ -54,14 +52,16 @@
 
 {#if feedback === null}
   <p class="prompt-label">
-    {_('exercise.substitution.promptBefore')}<Math expression={`${variable} = ${value}`} />{_('exercise.substitution.promptAfter')}
+    {_('exercise.substitution.promptBefore')}<Math expression={`${variable} = ${value}`} />{_(
+      'exercise.substitution.promptAfter',
+    )}
   </p>
   {#if complexity >= 5 && answerIsFraction}
     <p class="hint">{_('exercise.substitution.reduceHint')}</p>
   {/if}
   <p class="prompt fraction-prompt">
     <Math expression={term} />
-    <span class="equals"> = </span>
+    <Math expression="=" />
     {#if answerIsFraction}
       <span class="fraction-answer-inline">
         <input type="text" bind:value={numInput} bind:this={firstInput} />
@@ -77,14 +77,16 @@
   </div>
 {:else}
   <p class="prompt-label">
-    {_('exercise.substitution.promptBefore')}<Math expression={`${variable} = ${value}`} />{_('exercise.substitution.promptAfter')}
+    {_('exercise.substitution.promptBefore')}<Math expression={`${variable} = ${value}`} />{_(
+      'exercise.substitution.promptAfter',
+    )}
   </p>
   {#if complexity >= 5 && answerIsFraction}
     <p class="hint">{_('exercise.substitution.reduceHint')}</p>
   {/if}
   <p class="prompt fraction-prompt">
     <Math expression={term} />
-    <span class="equals"> = </span>
+    <Math expression="=" />
     {#if answerIsFraction}
       <Math expression={`\\frac{${numInput || '0'}}{${denInput || '1'}}`} />
     {:else}
@@ -93,9 +95,16 @@
   </p>
   <div class="feedback-row">
     <p class="feedback {feedback}">
-      {feedback === 'correct'
-        ? _('feedback.correct')
-        : _('feedback.incorrect', exercise.answer)}
+      {#if feedback === 'correct'}
+        {_('feedback.correct')}
+      {:else if answerIsFraction}
+        {@const parts = exercise.answer.split('/')}
+        {_('feedback.incorrect.prefix')}<Math expression={`\\frac{${parts[0]}}{${parts[1]}}`} />{_(
+          'feedback.incorrect.suffix',
+        )}
+      {:else}
+        {_('feedback.incorrect', exercise.answer)}
+      {/if}
     </p>
     <button onclick={onNext}>{_('answer.next')}</button>
   </div>
@@ -111,10 +120,6 @@
     color: var(--pico-muted-color, #777);
     margin-bottom: 0.5rem;
     text-align: center;
-  }
-
-  .equals {
-    font-size: 1.5rem;
   }
 
   .user-answer {

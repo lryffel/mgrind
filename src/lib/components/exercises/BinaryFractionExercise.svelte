@@ -52,9 +52,9 @@
   <p class="prompt-label">{_(promptKey)}</p>
   <p class="prompt fraction-prompt">
     <Math expression={`\\frac{${num1}}{${den1}}`} />
-    <span class="op">{op}</span>
+    <Math expression={op} />
     <Math expression={`\\frac{${num2}}{${den2}}`} />
-    <span class="equals">=</span>
+    <Math expression="=" />
     <FractionInput bind:num={numInput} bind:den={denInput} inputRef={(el) => (numInputEl = el)} />
   </p>
   <div class="submit-row">
@@ -64,15 +64,15 @@
   <p class="prompt-label">{_(promptKey)}</p>
   <p class="prompt fraction-prompt">
     <Math expression={`\\frac{${num1}}{${den1}}`} />
-    <span class="op">{op}</span>
+    <Math expression={op} />
     <Math expression={`\\frac{${num2}}{${den2}}`} />
-    <span class="equals">=</span>
+    <Math expression="=" />
     <Math expression={numInput && denInput ? `\\frac{${numInput}}{${denInput}}` : '\\;'} />
   </p>
   <p class="feedback {feedback}">
-    {feedback === 'correct'
-      ? _('feedback.correct')
-      : _('feedback.incorrect', `${correctNumDen[0]}/${correctNumDen[1]}`)}
+    {feedback === 'correct' ? _('feedback.correct') : _('feedback.incorrect.prefix')}<Math
+      expression={`\\frac{${correctNumDen[0]}}{${correctNumDen[1]}}`}
+    />{_('feedback.incorrect.suffix')}
   </p>
   <div class="submit-row">
     <button onclick={onNext}>{_('answer.next')}</button>

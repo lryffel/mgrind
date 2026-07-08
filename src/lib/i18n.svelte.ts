@@ -64,9 +64,9 @@ const dict = {
     en: 'Apply the order of operations',
     de: 'Wende die Rechenregeln an',
   },
-  'feedback.negativeDenominator': {
-    en: 'Signs should be put in the numerator if possible: {0}',
-    de: 'Vorzeichen sollten wenn möglich in den Zähler platziert werden: {0}',
+  'feedback.negativeDenominator.prefix': {
+    en: 'Signs should be put in the numerator if possible: ',
+    de: 'Vorzeichen sollten wenn möglich in den Zähler platziert werden: ',
   },
   'exercise.simplifyFraction.prompt': { en: 'Simplify.', de: 'Kürze.' },
   'exercise.primeFactorisation.prompt': {
@@ -76,7 +76,10 @@ const dict = {
   'answer.submit': { en: 'Submit', de: 'Bestätigen' },
   'answer.next': { en: 'Next', de: 'Weiter' },
   'feedback.correct': { en: 'Correct!', de: 'Richtig!' },
-  'feedback.correct.primeFactorisation': { en: 'Correct! The prime factorisation is ', de: 'Richtig! Die Primfaktorzerlegung ist ' },
+  'feedback.correct.primeFactorisation': {
+    en: 'Correct! The prime factorisation is ',
+    de: 'Richtig! Die Primfaktorzerlegung ist ',
+  },
   'feedback.incorrect': { en: 'Incorrect. The answer was {0}.', de: 'Falsch. Die Antwort war {0}.' },
   'feedback.incorrect.prefix': { en: 'Incorrect. The answer was ', de: 'Falsch. Die Antwort war ' },
   'feedback.incorrect.suffix': { en: '.', de: '.' },

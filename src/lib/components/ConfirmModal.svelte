@@ -2,7 +2,13 @@
   import { _ } from '../i18n.svelte';
   import Modal from './Modal.svelte';
 
-  let { messageKey, confirmKey, show, onConfirm, onCancel }: {
+  let {
+    messageKey,
+    confirmKey,
+    show,
+    onConfirm,
+    onCancel,
+  }: {
     messageKey: string;
     confirmKey: string;
     show: boolean;
