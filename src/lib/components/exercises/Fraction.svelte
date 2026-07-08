@@ -2,11 +2,15 @@
   let { num, den }: { num: number | string; den: number | string } = $props();
 </script>
 
-<span class="fraction">
-  <span class="num">{num}</span>
-  <span class="fraction-bar"></span>
-  <span class="den">{den}</span>
-</span>
+{#if den === 1 || den === '1'}
+  <span class="whole-number">{num}</span>
+{:else}
+  <span class="fraction">
+    <span class="num">{num}</span>
+    <span class="fraction-bar"></span>
+    <span class="den">{den}</span>
+  </span>
+{/if}
 
 <style>
   .fraction {
