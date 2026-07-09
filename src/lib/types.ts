@@ -30,6 +30,8 @@ export interface ExerciseData {
   correctFormula?: number;
   numSolutions?: number;
   questions?: { latex: string; needsParens: boolean }[];
+  sides?: number;
+  angles?: { value: number; isMissing: boolean }[];
 }
 
 export interface Exercise {

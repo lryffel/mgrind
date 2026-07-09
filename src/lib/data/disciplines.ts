@@ -43,4 +43,9 @@ export const disciplines: Discipline[] = [
     nameKey: 'discipline.equations.name',
     exerciseTypeIds: ['linearEquations', 'factorEquations'],
   },
+  {
+    id: 'geometry',
+    nameKey: 'discipline.geometry.name',
+    exerciseTypeIds: ['interiorAngles'],
+  },
 ];

@@ -229,6 +229,13 @@ const dict = {
   help: { en: 'Help', de: 'Hilfe' },
   'theme.toggle': { en: 'Toggle theme', de: 'Theme wechseln' },
   settings: { en: 'Settings', de: 'Einstellungen' },
+  'discipline.geometry.name': { en: 'Geometry', de: 'Geometrie' },
+  'exercise.interiorAngles.name': { en: 'Interior Angles', de: 'Innenwinkel' },
+  'exercise.interiorAngles.desc': {
+    en: 'Find the missing interior angle of a polygon',
+    de: 'Bestimme den fehlenden Innenwinkel eines Vielecks',
+  },
+  'exercise.interiorAngles.prompt': { en: 'Find the missing angle.', de: 'Bestimme den fehlenden Winkel.' },
 } satisfies Record<string, Record<Lang, string>>;
 
 export const state = $state({ lang: 'en' as Lang });

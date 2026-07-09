@@ -60,6 +60,8 @@ import { generateExpand, validateExpand } from '../exercises/expand';
 import { generateExpandAndCollect, validateExpandAndCollect } from '../exercises/expandAndCollect';
 import { generateLinearEquations, validateLinearEquations } from '../exercises/linearEquations';
 import LinearEquationsExercise from '../components/exercises/LinearEquationsExercise.svelte';
+import { generateInteriorAngles } from '../exercises/interiorAngles';
+import InteriorAngles from '../components/exercises/InteriorAngles.svelte';
 import { trimCompare, validateFractionAnswer } from '../validation';
 
 function validateSubtractionFraction(answer: string, exercise: Exercise): boolean {
@@ -293,5 +295,14 @@ export const exerciseTypes: Record<string, ExerciseType> = {
     generate: generateNecessityOfParentheses,
     validate: validateNecessityOfParentheses,
     component: NecessityOfParentheses,
+  },
+  interiorAngles: {
+    id: 'interiorAngles',
+    nameKey: 'exercise.interiorAngles.name',
+    descriptionKey: 'exercise.interiorAngles.desc',
+    maxComplexity: 9,
+    generate: generateInteriorAngles,
+    validate: trimCompare,
+    component: InteriorAngles,
   },
 };
