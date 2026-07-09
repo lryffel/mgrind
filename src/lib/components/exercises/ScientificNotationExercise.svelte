@@ -15,6 +15,7 @@
   const cdot = '\\cdot';
   const subType = $derived(exercise.data?.subType);
   const isMultiInput = $derived(subType !== 'sciToDec');
+  const promptKey = $derived(exercise.data?.promptKey ?? null);
 
   function handleSubmit() {
     if (isMultiInput) {
@@ -35,6 +36,9 @@
 
 <ExerciseShell {exercise} {feedback} submitAnswer={handleSubmit} {onNext} card={false}>
   {#if feedback === null}
+    {#if promptKey}
+      <p class="prompt-label">{_(promptKey)}</p>
+    {/if}
     <p class="prompt">
       <Math expression={exercise.prompt} />
     </p>
@@ -60,6 +64,9 @@
       </div>
     {/if}
   {:else}
+    {#if promptKey}
+      <p class="prompt-label">{_(promptKey)}</p>
+    {/if}
     <p class="prompt">
       <Math expression={exercise.prompt} />
     </p>

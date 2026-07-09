@@ -11,6 +11,7 @@
   let { exercise, onSubmit, onNext, feedback }: ExerciseProps = $props();
 
   let fields = $derived(exercise.data?.fields ?? []);
+  let promptKey = $derived(exercise.data?.promptKey ?? null);
   let variableParts = $derived(fields.map((f) => f.variablePart));
   // eslint-disable-next-line svelte/prefer-writable-derived
   let values = $state<string[]>([]);
@@ -25,6 +26,9 @@
 </script>
 
 <ExerciseShell {exercise} {feedback} submitAnswer={() => onSubmit(normValues.join(','))} {onNext}>
+  {#if promptKey}
+    <p class="prompt-label">{_(promptKey)}</p>
+  {/if}
   <p class="prompt">
     <Math expression={exercise.prompt} />
   </p>

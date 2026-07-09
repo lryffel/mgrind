@@ -120,7 +120,11 @@ export function generateCollectingTerms(seed: number, complexity: number): Exerc
   const fallback = tryGenerate(rng, selected.slice(0, 2), 2, seed, 0, monomials);
   if (fallback) return fallback;
   const fallbackVar = varSet[0].latex;
-  return { prompt: `${fallbackVar} + 2${fallbackVar}`, answer: '3', data: { fields: [{ variablePart: fallbackVar }] } };
+  return {
+    prompt: `${fallbackVar} + 2${fallbackVar}`,
+    answer: '3',
+    data: { fields: [{ variablePart: fallbackVar }], promptKey: 'exercise.collectingTerms.prompt' },
+  };
 }
 
 function tryGenerate(
@@ -206,7 +210,7 @@ function tryGenerate(
   return {
     prompt,
     answer: answerParts.join(','),
-    data: { fields },
+    data: { fields, promptKey: 'exercise.collectingTerms.prompt' },
   };
 }
 

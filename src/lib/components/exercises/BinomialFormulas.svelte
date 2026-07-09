@@ -25,6 +25,7 @@
 </script>
 
 <ExerciseShell {exercise} {feedback} submitAnswer={() => onSubmit(normValues.join(','))} {onNext}>
+  <p class="prompt-label">{_('exercise.binomialFormulas.prompt')}</p>
   <p class="prompt">
     <Math expression={exercise.prompt} />
   </p>

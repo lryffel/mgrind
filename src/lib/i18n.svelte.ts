@@ -29,6 +29,7 @@ const dict = {
   'exercise.multiplicationFraction.prompt': { en: 'Multiply and simplify.', de: 'Multipliziere und kürze.' },
   'exercise.binomialFormulas.name': { en: 'Binomial Formulas', de: 'Binomische Formeln' },
   'exercise.binomialFormulas.desc': { en: 'Expand binomial formulas', de: 'Wende binomische Formeln an' },
+  'exercise.binomialFormulas.prompt': { en: 'Expand.', de: 'Multipliziere aus.' },
   'exercise.substitution.name': { en: 'Substitution', de: 'Einsetzen' },
   'exercise.substitution.desc': {
     en: 'Substitute a value into an expression',
@@ -47,6 +48,7 @@ const dict = {
     en: 'Collect like terms',
     de: 'Fasse gleiche Terme zusammen',
   },
+  'exercise.collectingTerms.prompt': { en: 'Collect terms.', de: 'Fasse zusammen.' },
   'exercise.substitution.reduceHint': {
     en: 'Enter the result as a reduced fraction',
     de: 'Gib das Ergebnis als gekürzten Bruch ein',
@@ -61,6 +63,22 @@ const dict = {
   'exercise.scientificNotation.desc': {
     en: 'Convert and compute with scientific notation',
     de: 'Wandle in wissenschaftliche Schreibweise um und rechne damit',
+  },
+  'exercise.scientificNotation.prompt.sciToDec': {
+    en: 'Write in decimal notation.',
+    de: 'Schreibe in Dezimalschreibweise.',
+  },
+  'exercise.scientificNotation.prompt.decToSci': {
+    en: 'Write in scientific notation.',
+    de: 'Schreibe in wissenschaftlicher Schreibweise.',
+  },
+  'exercise.scientificNotation.prompt.multiply': {
+    en: 'Multiply. Write the result in scientific notation.',
+    de: 'Multipliziere. Schreibe das Ergebnis in wissenschaftlicher Schreibweise.',
+  },
+  'exercise.scientificNotation.prompt.add': {
+    en: 'Add. Write the result in scientific notation.',
+    de: 'Addiere. Schreibe das Ergebnis in wissenschaftlicher Schreibweise.',
   },
   'exercise.squares.name': { en: 'Squares', de: 'Quadrate' },
   'exercise.squares.desc': { en: 'Compute squares of numbers', de: 'Berechne Quadrate von Zahlen' },
@@ -128,6 +146,7 @@ const dict = {
     en: 'Select this if the expression does not match any binomial formula.',
     de: 'Wähle dies, wenn der Term auf keine binomische Formel passt.',
   },
+  'exercise.factoringBinomialFormulas.prompt': { en: 'Factor.', de: 'Faktorisiere.' },
   'exercise.factoringBinomialFormulas.noFormulaFeedback': {
     en: 'no binomial formula applies',
     de: 'keine binomische Formel anwendbar',
@@ -137,10 +156,15 @@ const dict = {
     en: 'Expand products of algebraic expressions',
     de: 'Multipliziere Produkte von Termen aus',
   },
+  'exercise.expand.prompt': { en: 'Expand.', de: 'Multipliziere aus.' },
   'exercise.expandAndCollect.name': { en: 'Expand and Collect', de: 'Ausmultiplizieren & Zusammenfassen' },
   'exercise.expandAndCollect.desc': {
     en: 'Expand products and collect like terms',
     de: 'Multipliziere aus und fasse gleiche Terme zusammen',
+  },
+  'exercise.expandAndCollect.prompt': {
+    en: 'Expand the products and collect the terms.',
+    de: 'Multipliziere aus und fasse zusammen.',
   },
   'exercise.factoringOut.name': { en: 'Factoring Out', de: 'Ausklammern' },
   'exercise.factoringOut.desc': {
@@ -163,6 +187,10 @@ const dict = {
   'exercise.factoringOutAndBinomial.afterFactoring': {
     en: 'After factoring out:',
     de: 'Nach Ausklammern:',
+  },
+  'exercise.factoringOutAndBinomial.prompt': {
+    en: 'Factor as much as possible.',
+    de: 'Faktorisiere so weit wie möglich.',
   },
   'exercise.factoringOutAndBinomial.commonFactor': {
     en: 'Common factor:',

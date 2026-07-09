@@ -84,7 +84,7 @@ function buildResult(terms: Term[], prompt: string): Exercise {
     variablePart: varMapLatex(t.vars),
   }));
   const answer = terms.map((t) => String(t.coeff)).join(',');
-  return { prompt, answer, data: { fields } };
+  return { prompt, answer, data: { fields, promptKey: 'exercise.expand.prompt' } };
 }
 
 function ensureTwoDistinct(terms: Term[], v: string): void {

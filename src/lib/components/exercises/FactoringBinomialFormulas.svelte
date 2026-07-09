@@ -52,6 +52,7 @@
 </script>
 
 <ExerciseShell {exercise} {feedback} {submitAnswer} {onNext}>
+  <p class="prompt-label">{_('exercise.factoringBinomialFormulas.prompt')}</p>
   <p class="prompt">
     <Math expression={exercise.prompt} />
   </p>

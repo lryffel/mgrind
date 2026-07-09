@@ -311,7 +311,7 @@ function buildResult(parts: ExprPart[]): Exercise {
   }
   const prompt = displayParts.join('');
 
-  return { prompt, answer, data: { fields } };
+  return { prompt, answer, data: { fields, promptKey: 'exercise.expandAndCollect.prompt' } };
 }
 
 export function generateExpandAndCollect(seed: number, complexity: number): Exercise {
@@ -348,7 +348,7 @@ export function generateExpandAndCollect(seed: number, complexity: number): Exer
   return {
     prompt: `${v}(${v}+1) + 2${v}(${v}-1)`,
     answer: '3,-1',
-    data: { fields: [{ variablePart: `${v}^{2}` }, { variablePart: v }] },
+    data: { fields: [{ variablePart: `${v}^{2}` }, { variablePart: v }], promptKey: 'exercise.expandAndCollect.prompt' },
   };
 }
 
