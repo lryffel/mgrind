@@ -127,6 +127,36 @@ const dict = {
     en: 'no binomial formula applies',
     de: 'keine binomische Formel anwendbar',
   },
+  'exercise.factoringOut.name': { en: 'Factoring Out', de: 'Ausklammern' },
+  'exercise.factoringOut.desc': {
+    en: 'Factor out common monomials',
+    de: 'Klammere gemeinsame Faktoren aus',
+  },
+  'exercise.factoringOut.noFactor': { en: 'No common factor', de: 'Kein gemeinsamer Faktor' },
+  'exercise.factoringOut.prompt': {
+    en: 'Factor out as much as possible.',
+    de: 'Klammere so viel wie möglich aus.',
+  },
+  'exercise.factoringOutAndBinomial.name': {
+    en: 'Factoring Out & Binomial Formulas',
+    de: 'Ausklammern & Binomische Formeln',
+  },
+  'exercise.factoringOutAndBinomial.desc': {
+    en: 'Factor out a common monomial and apply a binomial formula',
+    de: 'Klammere aus und wende eine binomische Formel an',
+  },
+  'exercise.factoringOutAndBinomial.afterFactoring': {
+    en: 'After factoring out:',
+    de: 'Nach Ausklammern:',
+  },
+  'exercise.factoringOutAndBinomial.commonFactor': {
+    en: 'Common factor:',
+    de: 'Gemeinsamer Faktor:',
+  },
+  'exercise.factoringOutAndBinomial.formula': {
+    en: 'Formula:',
+    de: 'Formel:',
+  },
 } satisfies Record<string, Record<Lang, string>>;
 
 export const state = $state({ lang: 'en' as Lang });

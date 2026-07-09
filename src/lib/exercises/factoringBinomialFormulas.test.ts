@@ -185,12 +185,12 @@ describe('validateFactoringBinomialFormulas', () => {
 describe('formatFactoredLatex', () => {
   it('formats (a+b)² — a has no variable, b has variable', () => {
     const result = formatFactoredLatex(1, 2, 1, 3, 1, null, 'x');
-    expect(result).toBe('(2 + 3x)^{2}');
+    expect(result).toBe('(3x + 2)^{2}');
   });
 
   it('formats (a-b)² — a has no variable, b has variable', () => {
     const result = formatFactoredLatex(2, 5, 1, 2, 1, null, 'y');
-    expect(result).toBe('(5 - 2y)^{2}');
+    expect(result).toBe('(2y - 5)^{2}');
   });
 
   it('formats (a+b)(a-b) — a has no variable, b has variable', () => {

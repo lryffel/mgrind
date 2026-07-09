@@ -27,6 +27,13 @@ import {
   validateFactoringBinomialFormulas,
 } from '../exercises/factoringBinomialFormulas';
 import FactoringBinomialFormulas from '../components/exercises/FactoringBinomialFormulas.svelte';
+import { generateFactoringOut, validateFactoringOut } from '../exercises/factoringOut';
+import FactoringOut from '../components/exercises/FactoringOut.svelte';
+import {
+  generateFactoringOutAndBinomial,
+  validateFactoringOutAndBinomial,
+} from '../exercises/factoringOutAndBinomial';
+import FactoringOutAndBinomial from '../components/exercises/FactoringOutAndBinomial.svelte';
 import { trimCompare, validateFractionAnswer } from '../validation';
 
 function validateSubtractionFraction(answer: string, exercise: Exercise): boolean {
@@ -168,5 +175,27 @@ export const exerciseTypes: Record<string, ExerciseType> = {
     validate: validateFactoringBinomialFormulas,
     component: FactoringBinomialFormulas,
     prerequisites: [{ typeId: 'binomialFormulas', complexity: 5 }],
+  },
+  factoringOut: {
+    id: 'factoringOut',
+    nameKey: 'exercise.factoringOut.name',
+    descriptionKey: 'exercise.factoringOut.desc',
+    maxComplexity: 10,
+    generate: generateFactoringOut,
+    validate: validateFactoringOut,
+    component: FactoringOut,
+  },
+  factoringOutAndBinomial: {
+    id: 'factoringOutAndBinomial',
+    nameKey: 'exercise.factoringOutAndBinomial.name',
+    descriptionKey: 'exercise.factoringOutAndBinomial.desc',
+    maxComplexity: 10,
+    generate: generateFactoringOutAndBinomial,
+    validate: validateFactoringOutAndBinomial,
+    component: FactoringOutAndBinomial,
+    prerequisites: [
+      { typeId: 'factoringOut', complexity: 3 },
+      { typeId: 'binomialFormulas', complexity: 3 },
+    ],
   },
 };

@@ -2,25 +2,7 @@ import type { Exercise } from '../types';
 import { mulberry32 } from '../prng';
 import { randInt, pick, pickExclude, randCoeff } from '../math/rng';
 import { reduceFrac, fracEqual } from '../math/fraction';
-
-function cmd(s: string): string {
-  return s.startsWith('\\') ? s + '{}' : s;
-}
-
-function coeffLatex(num: number, den: number, varPart: string): string {
-  if (num === 0) return '0';
-  const absNum = Math.abs(num);
-  const sign = num < 0 ? '-' : '';
-
-  let coeffStr: string;
-  if (den === 1) {
-    coeffStr = absNum === 1 && varPart ? '' : String(absNum);
-  } else {
-    coeffStr = `\\frac{${absNum}}{${den}}`;
-  }
-
-  return `${sign}${coeffStr}${varPart}`;
-}
+import { cmd, coeffLatex } from '../math/latex';
 
 export function formatFactoredLatex(
   formulaType: number,
@@ -34,6 +16,10 @@ export function formatFactoredLatex(
   const aStr = coeffLatex(aNum, aDen, varA ? cmd(varA) : '');
   const bStr = coeffLatex(bNum, bDen, cmd(varB));
 
+  if (!varA) {
+    if (formulaType === 1) return `(${bStr} + ${aStr})^{2}`;
+    if (formulaType === 2) return `(${bStr} - ${aStr})^{2}`;
+  }
   if (formulaType === 1) return `(${aStr} + ${bStr})^{2}`;
   if (formulaType === 2) return `(${aStr} - ${bStr})^{2}`;
   return `(${aStr} + ${bStr})(${aStr} - ${bStr})`;
