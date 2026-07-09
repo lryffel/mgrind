@@ -17,7 +17,9 @@
 <ExerciseShell {exercise} {feedback} submitAnswer={() => onSubmit(userInput.trim())} {onNext} card={false}>
   {#if feedback === null}
     <p class="prompt-label">
-      {_('exercise.linearEquations.promptBefore')}<Math expression={variable} />{_('exercise.linearEquations.promptAfter')}
+      {_('exercise.linearEquations.promptBefore')}<Math expression={variable} />{_(
+        'exercise.linearEquations.promptAfter',
+      )}
     </p>
     <p class="prompt">
       <Math expression={exercise.prompt} />
@@ -28,7 +30,9 @@
     </p>
   {:else}
     <p class="prompt-label">
-      {_('exercise.linearEquations.promptBefore')}<Math expression={variable} />{_('exercise.linearEquations.promptAfter')}
+      {_('exercise.linearEquations.promptBefore')}<Math expression={variable} />{_(
+        'exercise.linearEquations.promptAfter',
+      )}
     </p>
     <p class="prompt">
       <Math expression={exercise.prompt} />

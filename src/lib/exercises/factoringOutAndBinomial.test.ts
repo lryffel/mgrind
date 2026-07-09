@@ -337,9 +337,7 @@ describe('prompt term order', () => {
       const data = d(ex);
       if (data.isTrap || data.formulaType !== 1 || !data.varA) continue;
 
-      expect(ex.prompt.indexOf(`${cmd(data.varA)}^{2}`)).toBeLessThan(
-        ex.prompt.indexOf(`${cmd(data.varB)}^{2}`),
-      );
+      expect(ex.prompt.indexOf(`${cmd(data.varA)}^{2}`)).toBeLessThan(ex.prompt.indexOf(`${cmd(data.varB)}^{2}`));
     }
   });
 
@@ -349,9 +347,7 @@ describe('prompt term order', () => {
       const data = d(ex);
       if (data.isTrap || data.formulaType !== 2 || !data.varA) continue;
 
-      expect(ex.prompt.indexOf(`${cmd(data.varA)}^{2}`)).toBeLessThan(
-        ex.prompt.indexOf(`${cmd(data.varB)}^{2}`),
-      );
+      expect(ex.prompt.indexOf(`${cmd(data.varA)}^{2}`)).toBeLessThan(ex.prompt.indexOf(`${cmd(data.varB)}^{2}`));
     }
   });
 
@@ -361,9 +357,7 @@ describe('prompt term order', () => {
       const data = d(ex);
       if (data.isTrap || data.formulaType !== 3 || !data.varA) continue;
 
-      expect(ex.prompt.indexOf(`${cmd(data.varA)}^{2}`)).toBeLessThan(
-        ex.prompt.indexOf(`${cmd(data.varB)}^{2}`),
-      );
+      expect(ex.prompt.indexOf(`${cmd(data.varA)}^{2}`)).toBeLessThan(ex.prompt.indexOf(`${cmd(data.varB)}^{2}`));
     }
   });
 

@@ -63,7 +63,14 @@ describe('linearEquations', () => {
   it('accepts decimal input for terminating fractions', () => {
     for (let seed = 0; seed < 200; seed++) {
       const ex = generateLinearEquations(seed, 7);
-      if (ex.answer === '1/2' || ex.answer === '-1/2' || ex.answer === '3/4' || ex.answer === '-3/4' || ex.answer === '1/4' || ex.answer === '-1/4') {
+      if (
+        ex.answer === '1/2' ||
+        ex.answer === '-1/2' ||
+        ex.answer === '3/4' ||
+        ex.answer === '-3/4' ||
+        ex.answer === '1/4' ||
+        ex.answer === '-1/4'
+      ) {
         const [n, d] = ex.answer.split('/').map(Number);
         expect(validateLinearEquations(String(n / d), ex)).toBe(true);
         return;

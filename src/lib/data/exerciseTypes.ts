@@ -33,6 +33,19 @@ import { generateFactoringOutAndBinomial, validateFactoringOutAndBinomial } from
 import FactoringOutAndBinomial from '../components/exercises/FactoringOutAndBinomial.svelte';
 import AdditionFractionInstructions from '../components/exerciseInstructions/AdditionFractionInstructions.svelte';
 import SubtractionFractionInstructions from '../components/exerciseInstructions/SubtractionFractionInstructions.svelte';
+import SquaresInstructions from '../components/exerciseInstructions/SquaresInstructions.svelte';
+import OrderOfOperationsInstructions from '../components/exerciseInstructions/OrderOfOperationsInstructions.svelte';
+import PrimeFactorisationInstructions from '../components/exerciseInstructions/PrimeFactorisationInstructions.svelte';
+import SimplifyFractionInstructions from '../components/exerciseInstructions/SimplifyFractionInstructions.svelte';
+import MultiplicationFractionInstructions from '../components/exerciseInstructions/MultiplicationFractionInstructions.svelte';
+import SubstitutionInstructions from '../components/exerciseInstructions/SubstitutionInstructions.svelte';
+import CollectingTermsInstructions from '../components/exerciseInstructions/CollectingTermsInstructions.svelte';
+import BinomialFormulasInstructions from '../components/exerciseInstructions/BinomialFormulasInstructions.svelte';
+import ScientificNotationInstructions from '../components/exerciseInstructions/ScientificNotationInstructions.svelte';
+import FactoringBinomialFormulasInstructions from '../components/exerciseInstructions/FactoringBinomialFormulasInstructions.svelte';
+import FactoringOutInstructions from '../components/exerciseInstructions/FactoringOutInstructions.svelte';
+import FactoringOutAndBinomialInstructions from '../components/exerciseInstructions/FactoringOutAndBinomialInstructions.svelte';
+import LinearEquationsInstructions from '../components/exerciseInstructions/LinearEquationsInstructions.svelte';
 import { generateLinearEquations, validateLinearEquations } from '../exercises/linearEquations';
 import LinearEquationsExercise from '../components/exercises/LinearEquationsExercise.svelte';
 import { trimCompare, validateFractionAnswer } from '../validation';
@@ -68,6 +81,7 @@ export const exerciseTypes: Record<string, ExerciseType> = {
     generate: generateSquares,
     validate: trimCompare,
     component: TextInputExercise,
+    instructionComponent: SquaresInstructions,
   },
   orderOfOperations: {
     id: 'orderOfOperations',
@@ -78,6 +92,7 @@ export const exerciseTypes: Record<string, ExerciseType> = {
     validate: trimCompare,
     component: TextInputExercise,
     prerequisites: [{ typeId: 'squares', complexity: 5 }],
+    instructionComponent: OrderOfOperationsInstructions,
   },
   primeFactorisation: {
     id: 'primeFactorisation',
@@ -91,6 +106,7 @@ export const exerciseTypes: Record<string, ExerciseType> = {
       { typeId: 'multiplication', complexity: 7 },
       { typeId: 'division', complexity: 7 },
     ],
+    instructionComponent: PrimeFactorisationInstructions,
   },
   simplifyFraction: {
     id: 'simplifyFraction',
@@ -100,6 +116,7 @@ export const exerciseTypes: Record<string, ExerciseType> = {
     generate: generateSimplifyFraction,
     validate: validateFractionAnswer,
     component: SimplifyFraction,
+    instructionComponent: SimplifyFractionInstructions,
   },
   additionFraction: {
     id: 'additionFraction',
@@ -132,6 +149,7 @@ export const exerciseTypes: Record<string, ExerciseType> = {
     validate: validateFractionAnswer,
     component: MultiplicationFraction,
     prerequisites: [{ typeId: 'simplifyFraction', complexity: 5 }],
+    instructionComponent: MultiplicationFractionInstructions,
   },
   substitution: {
     id: 'substitution',
@@ -141,6 +159,7 @@ export const exerciseTypes: Record<string, ExerciseType> = {
     generate: generateSubstitution,
     validate: validateSubstitution,
     component: SubstitutionExercise,
+    instructionComponent: SubstitutionInstructions,
   },
   collectingTerms: {
     id: 'collectingTerms',
@@ -150,6 +169,7 @@ export const exerciseTypes: Record<string, ExerciseType> = {
     generate: generateCollectingTerms,
     validate: validateCollectingTerms,
     component: CollectingTerms,
+    instructionComponent: CollectingTermsInstructions,
   },
   binomialFormulas: {
     id: 'binomialFormulas',
@@ -159,6 +179,7 @@ export const exerciseTypes: Record<string, ExerciseType> = {
     generate: generateBinomialFormulas,
     validate: validateBinomialFormulas,
     component: BinomialFormulas,
+    instructionComponent: BinomialFormulasInstructions,
   },
   scientificNotation: {
     id: 'scientificNotation',
@@ -168,6 +189,7 @@ export const exerciseTypes: Record<string, ExerciseType> = {
     generate: generateScientificNotation,
     validate: trimCompare,
     component: ScientificNotationExercise,
+    instructionComponent: ScientificNotationInstructions,
   },
   factoringBinomialFormulas: {
     id: 'factoringBinomialFormulas',
@@ -178,6 +200,7 @@ export const exerciseTypes: Record<string, ExerciseType> = {
     validate: validateFactoringBinomialFormulas,
     component: FactoringBinomialFormulas,
     prerequisites: [{ typeId: 'binomialFormulas', complexity: 5 }],
+    instructionComponent: FactoringBinomialFormulasInstructions,
   },
   factoringOut: {
     id: 'factoringOut',
@@ -187,6 +210,7 @@ export const exerciseTypes: Record<string, ExerciseType> = {
     generate: generateFactoringOut,
     validate: validateFactoringOut,
     component: FactoringOut,
+    instructionComponent: FactoringOutInstructions,
   },
   factoringOutAndBinomial: {
     id: 'factoringOutAndBinomial',
@@ -200,6 +224,7 @@ export const exerciseTypes: Record<string, ExerciseType> = {
       { typeId: 'factoringOut', complexity: 3 },
       { typeId: 'binomialFormulas', complexity: 3 },
     ],
+    instructionComponent: FactoringOutAndBinomialInstructions,
   },
   linearEquations: {
     id: 'linearEquations',
@@ -209,5 +234,6 @@ export const exerciseTypes: Record<string, ExerciseType> = {
     generate: generateLinearEquations,
     validate: validateLinearEquations,
     component: LinearEquationsExercise,
+    instructionComponent: LinearEquationsInstructions,
   },
 };

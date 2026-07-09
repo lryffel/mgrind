@@ -13,8 +13,8 @@
   <p>To subtract fractions, follow these steps:</p>
   <ol>
     <li>
-      <strong>Make the denominators the same</strong> — find the least common multiple (LCM) of the denominators.
-      Consider <Math expression={ex} />. The LCM of 10 and 2 is 10, so only the second fraction needs to be expanded:
+      <strong>Make the denominators the same</strong> — find the least common multiple (lcm) of the denominators.
+      Consider <Math expression={ex} />. The lcm of 10 and 2 is 10, so only the second fraction needs to be expanded:
       <Math expression={step1b} />
     </li>
     <li>
@@ -31,9 +31,9 @@
   <p>Um Brüche zu subtrahieren, gehe folgendermassen vor:</p>
   <ol>
     <li>
-      <strong>Gleichnamig machen</strong> — finde das kleinste gemeinsame Vielfache (kgV) der Nenner.
-      Betrachte <Math expression={ex} />. Das kgV von 10 und 2 ist 10, also muss nur der zweite Bruch erweitert
-      werden: <Math expression={step1b} />
+      <strong>Gleichnamig machen</strong> — finde das kleinste gemeinsame Vielfache (kgV) der Nenner. Betrachte <Math
+        expression={ex}
+      />. Das kgV von 10 und 2 ist 10, also muss nur der zweite Bruch erweitert werden: <Math expression={step1b} />
     </li>
     <li>
       <strong>Zähler subtrahieren</strong> — der Nenner bleibt gleich:

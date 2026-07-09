@@ -193,9 +193,7 @@ describe('prompt term order', () => {
       const varB = ex.data?.varB as string;
       if (!varA || !varB) continue;
 
-      expect(ex.prompt.indexOf(`${cmd(varA)}^{2}`)).toBeLessThan(
-        ex.prompt.indexOf(`${cmd(varB)}^{2}`),
-      );
+      expect(ex.prompt.indexOf(`${cmd(varA)}^{2}`)).toBeLessThan(ex.prompt.indexOf(`${cmd(varB)}^{2}`));
     }
   });
 
@@ -208,9 +206,7 @@ describe('prompt term order', () => {
       const varB = ex.data?.varB as string;
       if (!varA || !varB) continue;
 
-      expect(ex.prompt.indexOf(`${cmd(varA)}^{2}`)).toBeLessThan(
-        ex.prompt.indexOf(`${cmd(varB)}^{2}`),
-      );
+      expect(ex.prompt.indexOf(`${cmd(varA)}^{2}`)).toBeLessThan(ex.prompt.indexOf(`${cmd(varB)}^{2}`));
     }
   });
 
