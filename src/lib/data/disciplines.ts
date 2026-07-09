@@ -23,8 +23,8 @@ export const disciplines: Discipline[] = [
     exerciseTypeIds: ['simplifyFraction', 'additionFraction', 'subtractionFraction', 'multiplicationFraction'],
   },
   {
-    id: 'algebra',
-    nameKey: 'discipline.algebra.name',
+    id: 'termTransformations',
+    nameKey: 'discipline.termTransformations.name',
     exerciseTypeIds: [
       'substitution',
       'binomialFormulas',
@@ -32,6 +32,12 @@ export const disciplines: Discipline[] = [
       'factoringOut',
       'factoringBinomialFormulas',
       'factoringOutAndBinomial',
+      'linearEquations',
     ],
+  },
+  {
+    id: 'equations',
+    nameKey: 'discipline.equations.name',
+    exerciseTypeIds: ['linearEquations'],
   },
 ];

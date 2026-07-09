@@ -51,7 +51,12 @@ const dict = {
     en: 'Enter the result as a reduced fraction',
     de: 'Gib das Ergebnis als gekürzten Bruch ein',
   },
-  'discipline.algebra.name': { en: 'Algebra', de: 'Algebra' },
+  'discipline.termTransformations.name': { en: 'Term transformations', de: 'Umformungen' },
+  'discipline.equations.name': { en: 'Equations', de: 'Gleichungen' },
+  'exercise.linearEquations.name': { en: 'Linear Equations', de: 'Lineare Gleichungen' },
+  'exercise.linearEquations.desc': { en: 'Solve linear equations', de: 'Löse lineare Gleichungen' },
+  'exercise.linearEquations.promptBefore': { en: 'Find ', de: 'Löse nach ' },
+  'exercise.linearEquations.promptAfter': { en: '.', de: ' auf.' },
   'exercise.scientificNotation.name': { en: 'Scientific Notation', de: 'Wissenschaftliche Schreibweise' },
   'exercise.scientificNotation.desc': {
     en: 'Convert and compute with scientific notation',

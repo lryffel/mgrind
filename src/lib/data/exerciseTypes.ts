@@ -31,6 +31,8 @@ import { generateFactoringOut, validateFactoringOut } from '../exercises/factori
 import FactoringOut from '../components/exercises/FactoringOut.svelte';
 import { generateFactoringOutAndBinomial, validateFactoringOutAndBinomial } from '../exercises/factoringOutAndBinomial';
 import FactoringOutAndBinomial from '../components/exercises/FactoringOutAndBinomial.svelte';
+import { generateLinearEquations, validateLinearEquations } from '../exercises/linearEquations';
+import LinearEquationsExercise from '../components/exercises/LinearEquationsExercise.svelte';
 import { trimCompare, validateFractionAnswer } from '../validation';
 
 function validateSubtractionFraction(answer: string, exercise: Exercise): boolean {
@@ -194,5 +196,14 @@ export const exerciseTypes: Record<string, ExerciseType> = {
       { typeId: 'factoringOut', complexity: 3 },
       { typeId: 'binomialFormulas', complexity: 3 },
     ],
+  },
+  linearEquations: {
+    id: 'linearEquations',
+    nameKey: 'exercise.linearEquations.name',
+    descriptionKey: 'exercise.linearEquations.desc',
+    maxComplexity: 10,
+    generate: generateLinearEquations,
+    validate: validateLinearEquations,
+    component: LinearEquationsExercise,
   },
 };
