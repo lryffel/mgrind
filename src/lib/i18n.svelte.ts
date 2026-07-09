@@ -236,6 +236,16 @@ const dict = {
     de: 'Bestimme den fehlenden Innenwinkel eines Vielecks',
   },
   'exercise.interiorAngles.prompt': { en: 'Find the missing angle.', de: 'Bestimme den fehlenden Winkel.' },
+  'exercise.pythagoras.name': { en: 'Pythagoras', de: 'Satz des Pythagoras' },
+  'exercise.pythagoras.desc': {
+    en: 'Apply the Pythagorean theorem',
+    de: 'Wende den Satz des Pythagoras an',
+  },
+  'exercise.pythagoras.prompt': { en: 'Find the missing side length.', de: 'Bestimme die fehlende Seitenlänge.' },
+  'exercise.pythagoras.cannotCompute': {
+    en: 'Cannot be computed with the Pythagorean theorem',
+    de: 'Kann nicht mit dem Satz des Pythagoras berechnet werden',
+  },
 } satisfies Record<string, Record<Lang, string>>;
 
 export const state = $state({ lang: 'en' as Lang });

@@ -32,6 +32,17 @@ export interface ExerciseData {
   questions?: { latex: string; needsParens: boolean }[];
   sides?: number;
   angles?: { value: number; isMissing: boolean }[];
+  isRight?: boolean;
+  triangleVertices?: { x: number; y: number }[];
+  rightAngleVertex?: number | null;
+  sideANum?: number;
+  sideADen?: number;
+  sideBNum?: number;
+  sideBDen?: number;
+  sideCNum?: number;
+  sideCDen?: number;
+  missingSide?: string;
+  answerLatex?: string;
 }
 
 export interface Exercise {

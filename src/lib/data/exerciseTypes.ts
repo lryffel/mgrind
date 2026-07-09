@@ -61,7 +61,11 @@ import { generateExpandAndCollect, validateExpandAndCollect } from '../exercises
 import { generateLinearEquations, validateLinearEquations } from '../exercises/linearEquations';
 import LinearEquationsExercise from '../components/exercises/LinearEquationsExercise.svelte';
 import { generateInteriorAngles } from '../exercises/interiorAngles';
+import { generatePythagoras, validatePythagoras } from '../exercises/pythagoras';
 import InteriorAngles from '../components/exercises/InteriorAngles.svelte';
+import Pythagoras from '../components/exercises/Pythagoras.svelte';
+import InteriorAnglesInstructions from '../components/exerciseInstructions/InteriorAnglesInstructions.svelte';
+import PythagorasInstructions from '../components/exerciseInstructions/PythagorasInstructions.svelte';
 import { trimCompare, validateFractionAnswer } from '../validation';
 
 function validateSubtractionFraction(answer: string, exercise: Exercise): boolean {
@@ -296,6 +300,17 @@ export const exerciseTypes: Record<string, ExerciseType> = {
     validate: validateNecessityOfParentheses,
     component: NecessityOfParentheses,
   },
+  pythagoras: {
+    id: 'pythagoras',
+    nameKey: 'exercise.pythagoras.name',
+    descriptionKey: 'exercise.pythagoras.desc',
+    maxComplexity: 10,
+    generate: generatePythagoras,
+    validate: validatePythagoras,
+    component: Pythagoras,
+    instructionComponent: PythagorasInstructions,
+    prerequisites: [{ typeId: 'squares', complexity: 5 }],
+  },
   interiorAngles: {
     id: 'interiorAngles',
     nameKey: 'exercise.interiorAngles.name',
@@ -304,5 +319,6 @@ export const exerciseTypes: Record<string, ExerciseType> = {
     generate: generateInteriorAngles,
     validate: trimCompare,
     component: InteriorAngles,
+    instructionComponent: InteriorAnglesInstructions,
   },
 };
