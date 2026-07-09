@@ -96,7 +96,7 @@ const TEMPLATES: QuestionTemplate[] = [
   },
   {
     latex: ([a], [n, m]) => `{${a}}^{(${n}^{${m}})}`,
-    needsParens: true,
+    needsParens: false,
     varCount: 1,
     expCount: 2,
   },
