@@ -31,6 +31,8 @@ import { generateFactoringOut, validateFactoringOut } from '../exercises/factori
 import FactoringOut from '../components/exercises/FactoringOut.svelte';
 import { generateFactoringOutAndBinomial, validateFactoringOutAndBinomial } from '../exercises/factoringOutAndBinomial';
 import FactoringOutAndBinomial from '../components/exercises/FactoringOutAndBinomial.svelte';
+import { generateFactorEquations, validateFactorEquations } from '../exercises/factorEquations';
+import FactorEquations from '../components/exercises/FactorEquations.svelte';
 import AdditionFractionInstructions from '../components/exerciseInstructions/AdditionFractionInstructions.svelte';
 import SubtractionFractionInstructions from '../components/exerciseInstructions/SubtractionFractionInstructions.svelte';
 import SquaresInstructions from '../components/exerciseInstructions/SquaresInstructions.svelte';
@@ -48,6 +50,7 @@ import FactoringOutAndBinomialInstructions from '../components/exerciseInstructi
 import ExpandInstructions from '../components/exerciseInstructions/ExpandInstructions.svelte';
 import ExpandAndCollectInstructions from '../components/exerciseInstructions/ExpandAndCollectInstructions.svelte';
 import LinearEquationsInstructions from '../components/exerciseInstructions/LinearEquationsInstructions.svelte';
+import FactorEquationsInstructions from '../components/exerciseInstructions/FactorEquationsInstructions.svelte';
 import { generateExpand, validateExpand } from '../exercises/expand';
 import { generateExpandAndCollect, validateExpandAndCollect } from '../exercises/expandAndCollect';
 import { generateLinearEquations, validateLinearEquations } from '../exercises/linearEquations';
@@ -261,5 +264,20 @@ export const exerciseTypes: Record<string, ExerciseType> = {
     validate: validateLinearEquations,
     component: LinearEquationsExercise,
     instructionComponent: LinearEquationsInstructions,
+  },
+  factorEquations: {
+    id: 'factorEquations',
+    nameKey: 'exercise.factorEquations.name',
+    descriptionKey: 'exercise.factorEquations.desc',
+    maxComplexity: 10,
+    generate: generateFactorEquations,
+    validate: validateFactorEquations,
+    component: FactorEquations,
+    prerequisites: [
+      { typeId: 'factoringOut', complexity: 4 },
+      { typeId: 'factoringBinomialFormulas', complexity: 4 },
+      { typeId: 'linearEquations', complexity: 3 },
+    ],
+    instructionComponent: FactorEquationsInstructions,
   },
 };

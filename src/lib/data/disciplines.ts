@@ -40,6 +40,6 @@ export const disciplines: Discipline[] = [
   {
     id: 'equations',
     nameKey: 'discipline.equations.name',
-    exerciseTypeIds: ['linearEquations'],
+    exerciseTypeIds: ['linearEquations', 'factorEquations'],
   },
 ];

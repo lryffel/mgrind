@@ -200,6 +200,18 @@ const dict = {
     en: 'Formula:',
     de: 'Formel:',
   },
+  'exercise.factorEquations.name': {
+    en: 'Factor Equations',
+    de: 'Gleichungen faktorisieren',
+  },
+  'exercise.factorEquations.desc': {
+    en: 'Solve equations by factoring',
+    de: 'Löse Gleichungen durch Faktorisieren',
+  },
+  'exercise.factorEquations.prompt': {
+    en: 'Solve by factoring.',
+    de: 'Löse durch Faktorisieren.',
+  },
   help: { en: 'Help', de: 'Hilfe' },
   'theme.toggle': { en: 'Toggle theme', de: 'Theme wechseln' },
   settings: { en: 'Settings', de: 'Einstellungen' },

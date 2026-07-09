@@ -28,6 +28,7 @@ export interface ExerciseData {
   varA?: string | null;
   varB?: string;
   correctFormula?: number;
+  numSolutions?: number;
 }
 
 export interface Exercise {
