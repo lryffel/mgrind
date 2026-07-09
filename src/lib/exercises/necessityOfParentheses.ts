@@ -29,7 +29,7 @@ const TEMPLATES: QuestionTemplate[] = [
     expCount: 1,
   },
   {
-    latex: ([a, b], [n]) => `${a}(${b}^{${n}})`,
+    latex: ([a, b], [n]) => `${a}({${b}}^{${n}})`,
     needsParens: false,
     varCount: 2,
     expCount: 1,
@@ -95,13 +95,13 @@ const TEMPLATES: QuestionTemplate[] = [
     expCount: 0,
   },
   {
-    latex: ([a], [n, m]) => `${a}^{(${n}^{${m}})}`,
+    latex: ([a], [n, m]) => `{${a}}^{(${n}^{${m}})}`,
     needsParens: true,
     varCount: 1,
     expCount: 2,
   },
   {
-    latex: ([a], [n, m]) => `(${a}^{${n}})^{${m}}`,
+    latex: ([a], [n, m]) => `({${a}}^{${n}})^{${m}}`,
     needsParens: true,
     varCount: 1,
     expCount: 2,
