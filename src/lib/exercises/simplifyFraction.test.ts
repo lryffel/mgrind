@@ -1,27 +1,19 @@
 import { describe, it, expect } from 'vitest';
 import { generateSimplifyFraction } from './simplifyFraction';
 import { gcd } from '../math/number';
+import { expectDeterministic, expectSeedVariation, expectHasPromptAndAnswer } from '../test-utils';
 
 describe('generateSimplifyFraction', () => {
   it('returns a valid exercise with prompt and answer', () => {
-    const ex = generateSimplifyFraction(42, 0);
-    expect(ex).toHaveProperty('prompt');
-    expect(ex).toHaveProperty('answer');
+    expectHasPromptAndAnswer(generateSimplifyFraction, 42, 0);
   });
 
   it('is deterministic for the same seed and complexity', () => {
-    const a = generateSimplifyFraction(12345, 3);
-    const b = generateSimplifyFraction(12345, 3);
-    expect(a).toEqual(b);
+    expectDeterministic(generateSimplifyFraction, 12345, 3);
   });
 
   it('produces different results for different seeds', () => {
-    const seen = new Set<string>();
-    for (let seed = 0; seed < 50; seed++) {
-      const ex = generateSimplifyFraction(seed, 5);
-      seen.add(ex.prompt);
-    }
-    expect(seen.size).toBeGreaterThan(1);
+    expectSeedVariation(generateSimplifyFraction, 5);
   });
 
   it('prompt is a LaTeX fraction', () => {

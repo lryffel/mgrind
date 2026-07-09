@@ -1,24 +1,20 @@
 import { describe, it, expect } from 'vitest';
 import { generateMultiplication } from './multiplication';
+import { expectDeterministic, expectSeedVariation, expectHasPromptAndAnswer } from '../test-utils';
 
 describe('generateMultiplication', () => {
   it('returns a valid exercise with a prompt and answer', () => {
     const ex = generateMultiplication(42, 0);
-    expect(ex).toHaveProperty('prompt');
-    expect(ex).toHaveProperty('answer');
+    expectHasPromptAndAnswer(generateMultiplication, 42, 0);
     expect(ex.prompt).toMatch(/^\d+ \\cdot \d+ = \?$/);
   });
 
   it('is deterministic for the same seed and complexity', () => {
-    const a = generateMultiplication(12345, 3);
-    const b = generateMultiplication(12345, 3);
-    expect(a).toEqual(b);
+    expectDeterministic(generateMultiplication, 12345, 3);
   });
 
   it('produces different results for different seeds', () => {
-    const a = generateMultiplication(1, 5);
-    const b = generateMultiplication(2, 5);
-    expect(a).not.toEqual(b);
+    expectSeedVariation(generateMultiplication, 5);
   });
 
   it('produces correct multiplication results', () => {

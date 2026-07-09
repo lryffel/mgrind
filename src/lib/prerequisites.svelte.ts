@@ -1,7 +1,6 @@
 import type { Prerequisite } from './types';
 import { exerciseTypes } from './data/exerciseTypes';
-import { getComplexity, progress } from './progress.svelte';
-import { saveStored } from './storage';
+import { getComplexity, setComplexity } from './progress.svelte';
 
 export interface UnmetPrerequisite extends Prerequisite {
   nameKey: string;
@@ -32,10 +31,9 @@ export function getUnmetPrerequisites(typeId: string): UnmetPrerequisite[] {
 export function enablePrerequisites(typeId: string) {
   const prereqs = getPrerequisites(typeId);
   for (const p of prereqs) {
-    const current = progress[p.typeId] ?? 0;
+    const current = getComplexity(p.typeId);
     if (current < p.complexity) {
-      progress[p.typeId] = p.complexity;
+      setComplexity(p.typeId, p.complexity);
     }
   }
-  saveStored('mgrind-progress', progress);
 }

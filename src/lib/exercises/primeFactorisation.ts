@@ -45,7 +45,7 @@ function factorise(n: number): Map<number, number> {
 }
 
 export function generatePrimeFactorisation(seed: number, complexity: number): Exercise {
-  const clamped = Math.min(complexity, 10);
+  const clamped = Math.min(Math.max(complexity, 0), 10);
   const count = PRIME_COUNT[clamped];
   const primes = PRIMES.slice(0, count);
   const allowed = new Set(primes);

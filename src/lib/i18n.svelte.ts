@@ -173,6 +173,8 @@ const dict = {
     de: 'Formel:',
   },
   help: { en: 'Help', de: 'Hilfe' },
+  'theme.toggle': { en: 'Toggle theme', de: 'Theme wechseln' },
+  settings: { en: 'Settings', de: 'Einstellungen' },
 } satisfies Record<string, Record<Lang, string>>;
 
 export const state = $state({ lang: 'en' as Lang });

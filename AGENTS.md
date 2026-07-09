@@ -1,6 +1,7 @@
 - Don't infer design decisions.
 - Always check whether you can use abstracted code. If you see an opportunity, ask whether you should abstract.
 - Write tests for everything you implement, unless the user agrees that it is unnecessary.
+  - Shared test utilities in `src/lib/test-utils.ts`: `expectDeterministic`, `expectSeedVariation`, `expectHasPromptAndAnswer`
 - Try to fix linting errors instead of ignoring them.
 
 - `STRUCTURE.md` describes the codebase architecture — read it first.
@@ -18,9 +19,13 @@
 
 - Svelte 5 runes: `$state`, `$derived`, `$effect`, `$props`, `mount`
 - i18n: `_('key')` from `src/lib/i18n.svelte.ts`; lang persisted in localStorage
+  - All user-visible strings (including `aria-label`) must use `_('key')`
+  - To add a new key, add an entry to `dict` in `i18n.svelte.ts` with `en` and `de` values
 - Progress: `src/lib/progress.svelte.ts`; persisted in localStorage
 - Exercise types: `{ generate(seed, complexity): Exercise, validate(answer, exercise): boolean }`
-  — register in `src/lib/data/exerciseTypes.ts`
+  - Register in `src/lib/data/exerciseTypes.ts`
+  - Generators clamp complexity: `Math.min(Math.max(complexity, 0), maxComplexity)`
+  - Use `mulberry32(seed)` as the single RNG — no inline `Math.random()`
 - Disciplines: array in `src/lib/data/disciplines.ts`
 - Exercises use deterministic PRNG (`mulberry32`); seed = `Date.now()`
 - `CONCEPT.md` describes the app design — use it for guidance, don't infer
@@ -31,3 +36,13 @@
 - `Exercise.data.fields` (optional `{ variablePart: string }[]`) provides multi-input answer mode (e.g. for collecting terms, binomial formulas); `null` or `undefined` → single text input, present → multiple inputs
 - Interactive `<article>` cards use `<!-- svelte-ignore a11y_no_noninteractive_tabindex -->` and `a11y_no_noninteractive_element_interactions` comments to suppress Svelte a11y warnings
 - German text uses Swiss orthography: no "ß", always "ss" (e.g. "gross", "Masse", "Schweizer Strassenverordnung")
+
+- `src/lib/katex.ts` wraps `katex.renderToString` — imported by `Math.svelte`
+- `src/lib/instructionContext.svelte.ts` is a global singleton holding the current instruction component for the help modal
+
+## Naming conventions
+
+- Exercise generators: `camelCase.ts` in `src/lib/exercises/`
+- Svelte components: `PascalCase.svelte` in `src/lib/components/`
+- Test files: `sourceName.test.ts` co-located beside source
+- Modules with Svelte reactivity: `moduleName.svelte.ts`

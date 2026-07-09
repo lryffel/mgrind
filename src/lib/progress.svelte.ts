@@ -30,6 +30,11 @@ export function updateProgress(typeId: string, correct: boolean, maxComplexity: 
   return current;
 }
 
+export function setComplexity(typeId: string, value: number) {
+  progress[typeId] = value;
+  saveStored(STORAGE_KEY, progress);
+}
+
 export function resetProgress() {
   for (const key in progress) {
     progress[key] = 0;

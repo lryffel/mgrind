@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { _ } from '../i18n.svelte';
   let theme = $state(localStorage.getItem('mgrind-theme') ?? 'light');
 
   $effect(() => {
@@ -15,6 +16,6 @@
   }
 </script>
 
-<button class="outline" onclick={toggle} aria-label="Toggle theme">
+<button class="outline" onclick={toggle} aria-label={_('theme.toggle')}>
   {theme === 'light' ? '☾' : '☀'}
 </button>

@@ -3,8 +3,9 @@ import { mulberry32 } from '../prng';
 import { gcd } from '../math/number';
 
 export function generateMultiplicationFraction(seed: number, complexity: number): Exercise {
+  const clamped = Math.min(Math.max(complexity, 0), 10);
   const rng = mulberry32(seed);
-  const maxVal = Math.max(10 + complexity, 10);
+  const maxVal = Math.max(10 + clamped, 10);
 
   let a: number, b: number, c: number, d: number;
 

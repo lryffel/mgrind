@@ -24,7 +24,7 @@
 
 <details class="dropdown" bind:this={detailsEl}>
   <!-- svelte-ignore a11y_no_redundant_roles -->
-  <summary role="button" class="outline" aria-label="Settings">
+  <summary role="button" class="outline" aria-label={_('settings')}>
     <svg
       xmlns="http://www.w3.org/2000/svg"
       width="20"

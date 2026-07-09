@@ -121,8 +121,9 @@ function parseAnswer(s: string): [number, number] | null {
 export function generateLinearEquations(seed: number, complexity: number): Exercise {
   const rng = mulberry32(seed);
   const variable = pick(rng, ALL_VARS);
+  const clamped = Math.min(Math.max(complexity, 0), 10);
 
-  const isLow = complexity < 5;
+  const isLow = clamped < 5;
 
   let sNum: number, sDen: number, aNum: number, aDen: number;
 
