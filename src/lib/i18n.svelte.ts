@@ -212,6 +212,20 @@ const dict = {
     en: 'Solve by factoring.',
     de: 'Löse durch Faktorisieren.',
   },
+  'exercise.necessityOfParentheses.name': {
+    en: 'Necessity of Parentheses',
+    de: 'Notwendigkeit von Klammern',
+  },
+  'exercise.necessityOfParentheses.desc': {
+    en: 'Decide whether parentheses are necessary in algebraic expressions',
+    de: 'Entscheide, ob Klammern in algebraischen Ausdrücken nötig sind',
+  },
+  'exercise.necessityOfParentheses.prompt': {
+    en: 'Are the parentheses necessary?',
+    de: 'Sind die Klammern nötig?',
+  },
+  'answer.yes': { en: 'Yes', de: 'Ja' },
+  'answer.no': { en: 'No', de: 'Nein' },
   help: { en: 'Help', de: 'Hilfe' },
   'theme.toggle': { en: 'Toggle theme', de: 'Theme wechseln' },
   settings: { en: 'Settings', de: 'Einstellungen' },

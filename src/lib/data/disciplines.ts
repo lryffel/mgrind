@@ -34,6 +34,7 @@ export const disciplines: Discipline[] = [
       'factoringOut',
       'factoringBinomialFormulas',
       'factoringOutAndBinomial',
+      'necessityOfParentheses',
       'linearEquations',
     ],
   },

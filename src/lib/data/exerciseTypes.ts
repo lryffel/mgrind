@@ -33,6 +33,11 @@ import { generateFactoringOutAndBinomial, validateFactoringOutAndBinomial } from
 import FactoringOutAndBinomial from '../components/exercises/FactoringOutAndBinomial.svelte';
 import { generateFactorEquations, validateFactorEquations } from '../exercises/factorEquations';
 import FactorEquations from '../components/exercises/FactorEquations.svelte';
+import {
+  generateNecessityOfParentheses,
+  validateNecessityOfParentheses,
+} from '../exercises/necessityOfParentheses';
+import NecessityOfParentheses from '../components/exercises/NecessityOfParentheses.svelte';
 import AdditionFractionInstructions from '../components/exerciseInstructions/AdditionFractionInstructions.svelte';
 import SubtractionFractionInstructions from '../components/exerciseInstructions/SubtractionFractionInstructions.svelte';
 import SquaresInstructions from '../components/exerciseInstructions/SquaresInstructions.svelte';
@@ -279,5 +284,14 @@ export const exerciseTypes: Record<string, ExerciseType> = {
       { typeId: 'linearEquations', complexity: 3 },
     ],
     instructionComponent: FactorEquationsInstructions,
+  },
+  necessityOfParentheses: {
+    id: 'necessityOfParentheses',
+    nameKey: 'exercise.necessityOfParentheses.name',
+    descriptionKey: 'exercise.necessityOfParentheses.desc',
+    maxComplexity: 10,
+    generate: generateNecessityOfParentheses,
+    validate: validateNecessityOfParentheses,
+    component: NecessityOfParentheses,
   },
 };

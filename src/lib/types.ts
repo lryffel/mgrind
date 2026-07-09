@@ -29,6 +29,7 @@ export interface ExerciseData {
   varB?: string;
   correctFormula?: number;
   numSolutions?: number;
+  questions?: { latex: string; needsParens: boolean }[];
 }
 
 export interface Exercise {
