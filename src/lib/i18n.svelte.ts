@@ -246,6 +246,18 @@ const dict = {
     en: 'Cannot be computed with the Pythagorean theorem',
     de: 'Kann nicht mit dem Satz des Pythagoras berechnet werden',
   },
+  'exercise.simplifySymbolicFraction.name': {
+    en: 'Simplify Symbolic Fractions',
+    de: 'Bruchterme kürzen',
+  },
+  'exercise.simplifySymbolicFraction.desc': {
+    en: 'Simplify algebraic fractions by factoring and cancelling',
+    de: 'Kürze algebraische Brüche durch Faktorisieren',
+  },
+  'exercise.simplifySymbolicFraction.prompt': {
+    en: 'Simplify.',
+    de: 'Kürze.',
+  },
 } satisfies Record<string, Record<Lang, string>>;
 
 export const state = $state({ lang: 'en' as Lang });

@@ -60,6 +60,11 @@ import { generateExpand, validateExpand } from '../exercises/expand';
 import { generateExpandAndCollect, validateExpandAndCollect } from '../exercises/expandAndCollect';
 import { generateLinearEquations, validateLinearEquations } from '../exercises/linearEquations';
 import LinearEquationsExercise from '../components/exercises/LinearEquationsExercise.svelte';
+import {
+  generateSimplifySymbolicFraction,
+  validateSimplifySymbolicFraction,
+} from '../exercises/simplifySymbolicFraction';
+import SimplifySymbolicFraction from '../components/exercises/SimplifySymbolicFraction.svelte';
 import { generateInteriorAngles } from '../exercises/interiorAngles';
 import { generatePythagoras, validatePythagoras } from '../exercises/pythagoras';
 import InteriorAngles from '../components/exercises/InteriorAngles.svelte';
@@ -135,6 +140,19 @@ export const exerciseTypes: Record<string, ExerciseType> = {
     validate: validateFractionAnswer,
     component: SimplifyFraction,
     instructionComponent: SimplifyFractionInstructions,
+  },
+  simplifySymbolicFraction: {
+    id: 'simplifySymbolicFraction',
+    nameKey: 'exercise.simplifySymbolicFraction.name',
+    descriptionKey: 'exercise.simplifySymbolicFraction.desc',
+    maxComplexity: 10,
+    generate: generateSimplifySymbolicFraction,
+    validate: validateSimplifySymbolicFraction,
+    component: SimplifySymbolicFraction,
+    prerequisites: [
+      { typeId: 'factoringOut', complexity: 3 },
+      { typeId: 'binomialFormulas', complexity: 3 },
+    ],
   },
   additionFraction: {
     id: 'additionFraction',

@@ -20,7 +20,7 @@ export const disciplines: Discipline[] = [
   {
     id: 'fractions',
     nameKey: 'discipline.fractions.name',
-    exerciseTypeIds: ['simplifyFraction', 'additionFraction', 'subtractionFraction', 'multiplicationFraction'],
+    exerciseTypeIds: ['simplifyFraction', 'additionFraction', 'subtractionFraction', 'multiplicationFraction', 'simplifySymbolicFraction'],
   },
   {
     id: 'termTransformations',
@@ -34,6 +34,7 @@ export const disciplines: Discipline[] = [
       'factoringOut',
       'factoringBinomialFormulas',
       'factoringOutAndBinomial',
+      'simplifySymbolicFraction',
       'necessityOfParentheses',
       'linearEquations',
     ],
