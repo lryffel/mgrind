@@ -7,6 +7,7 @@
   import NumericInput from './NumericInput.svelte';
   import { formatFullFactoredLatex } from '../../exercises/factoringOutAndBinomial';
   import type { FactoringOutAndBinomialData } from '../../exercises/factoringOutAndBinomial';
+  import { normalizeCoeff } from '../../validation';
 
   let { exercise, onSubmit, onNext, feedback }: ExerciseProps = $props();
 
@@ -33,9 +34,9 @@
   let hasFormula = $derived(selectedFormula != null && selectedFormula > 0);
   let noFormula = $derived(selectedFormula === 0);
 
-  let normGcfCoeff = $derived((gcfCoeff ?? '').trim() || '1');
-  let normA = $derived((aVal ?? '').trim() || '1');
-  let normB = $derived((bVal ?? '').trim() || '1');
+  let normGcfCoeff = $derived(normalizeCoeff(gcfCoeff ?? ''));
+  let normA = $derived(normalizeCoeff(aVal ?? ''));
+  let normB = $derived(normalizeCoeff(bVal ?? ''));
 
   let currentOption = $derived(hasGcf ? data.factorOptions[selectedGcfIdx!] : null);
 

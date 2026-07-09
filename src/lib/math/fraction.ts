@@ -26,6 +26,7 @@ export function fracToString(num: number, den: number): string {
 export function parseFrac(s: string): Fraction | null {
   s = s.trim();
   if (!s) return null;
+  if (s === '-') return [-1, 1];
   const parts = s.split('/');
   if (parts.length === 2) {
     const num = parseInt(parts[0], 10);

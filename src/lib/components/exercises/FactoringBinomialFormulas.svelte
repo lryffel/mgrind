@@ -6,6 +6,7 @@
   import NumericInput from './NumericInput.svelte';
   import { formatFactoredLatex } from '../../exercises/factoringBinomialFormulas';
   import { parseFrac } from '../../math/fraction';
+  import { normalizeCoeff } from '../../validation';
 
   let { exercise, onSubmit, onNext, feedback }: ExerciseProps = $props();
 
@@ -16,7 +17,7 @@
   let bVal = $state('');
 
   function normVal(s: string): string {
-    return s.trim() || '1';
+    return normalizeCoeff(s);
   }
 
   let normA = $derived(normVal(aVal));

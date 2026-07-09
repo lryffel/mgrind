@@ -6,6 +6,7 @@
   import Feedback from '../Feedback.svelte';
   import NumericInput from './NumericInput.svelte';
   import { formatCollectingAnswer } from '../../exercises/collectingTerms';
+  import { normalizeCoeff } from '../../validation';
 
   let { exercise, onSubmit, onNext, feedback }: ExerciseProps = $props();
 
@@ -18,7 +19,7 @@
     values = fields.map(() => '');
   });
 
-  let normValues = $derived(values.map((v) => v.trim() || '1'));
+  let normValues = $derived(values.map(normalizeCoeff));
   let userLatex = $derived(formatCollectingAnswer(normValues, variableParts));
   let correctLatex = $derived(formatCollectingAnswer(exercise.answer.split(','), variableParts));
 </script>

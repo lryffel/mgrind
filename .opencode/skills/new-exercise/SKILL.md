@@ -64,6 +64,7 @@ let {
 - Call `onSubmit(userAnswerString)` on submit.
 - Use `_(key)` for all user-facing strings (import from `../../i18n.svelte` or relative path).
 - Use `$derived`, `$state`, `$effect` (Svelte 5 runes). Do not use `$:` or `export let`.
+- When using `NumericInput` for coefficient fields, normalize values with `normalizeCoeff` from `../../validation`. This converts empty input to `"1"` and bare `"-"` to `"-1"`.
 
 For examples, see existing components: `SimplifyFraction.svelte`, `PrimeFactorisation.svelte`.
 

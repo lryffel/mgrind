@@ -1,6 +1,12 @@
 import type { Exercise } from './types';
 import { reduceFrac } from './math/fraction';
 
+export function normalizeCoeff(s: string): string {
+  const t = s.trim();
+  if (t === '-') return '-1';
+  return t || '1';
+}
+
 export function trimCompare(answer: string, exercise: Exercise): boolean {
   return answer.trim() === exercise.answer;
 }

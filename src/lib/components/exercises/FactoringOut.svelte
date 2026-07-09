@@ -6,6 +6,7 @@
   import Feedback from '../Feedback.svelte';
   import NumericInput from './NumericInput.svelte';
   import { formatFactoredLatex } from '../../exercises/factoringOut';
+  import { normalizeCoeff } from '../../validation';
 
   let { exercise, onSubmit, onNext, feedback }: ExerciseProps = $props();
 
@@ -27,8 +28,8 @@
 
   let currentInnerVarParts = $derived(currentOption?.innerVarParts ?? []);
 
-  let normCoeffA = $derived((coeffA ?? '').trim() || '1');
-  let normCoeffs = $derived(coeffs.map((c) => (c ?? '').trim() || '1'));
+  let normCoeffA = $derived(normalizeCoeff(coeffA ?? ''));
+  let normCoeffs = $derived(coeffs.map((c) => normalizeCoeff(c ?? '')));
 
   let userLatex = $derived.by(() => {
     if (selectedIdx == null || selectedIdx < 0) return '';

@@ -6,6 +6,7 @@
   import Feedback from '../Feedback.svelte';
   import NumericInput from './NumericInput.svelte';
   import { buildExpandedLatex } from '../../exercises/binomialFormulas';
+  import { normalizeCoeff } from '../../validation';
 
   let { exercise, onSubmit, onNext, feedback }: ExerciseProps = $props();
 
@@ -18,7 +19,7 @@
     values = fields.map(() => '');
   });
 
-  let normValues = $derived(values.map((v) => v.trim() || '1'));
+  let normValues = $derived(values.map(normalizeCoeff));
   let userLatex = $derived(buildExpandedLatex(normValues, variableParts));
   let correctLatex = $derived(buildExpandedLatex(exercise.answer.split(','), variableParts));
 </script>
