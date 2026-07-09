@@ -22,10 +22,10 @@
     </li>
     <li>
       <strong>Find the common variables with the smallest exponent</strong> — both terms contain <Math
-        expression={'x'}
-      />, and the smallest exponent is 1. So the variable part of the gcd is <Math expression={'x'} />.
+        expression="x"
+      />, and the smallest exponent is 1. So the variable part of the gcd is <Math expression="x" />.
     </li>
-    <li><strong>Combine the numeric and variable parts</strong> — the full gcd is <Math expression={'4x'} />.</li>
+    <li><strong>Combine the numeric and variable parts</strong> — the full gcd is <Math expression="4x" />.</li>
     <li><strong>Divide each term by the gcd</strong> — <Math expression={div1} /> and <Math expression={div2} />.</li>
     <li>
       <strong>Write the result</strong> — as gcd times the inner expression in parentheses: <Math
@@ -48,12 +48,12 @@
     </li>
     <li>
       <strong>Finde die gemeinsamen Variablen mit dem kleinsten Exponenten</strong> — beide Terme enthalten <Math
-        expression={'x'}
-      />, und der kleinste Exponent ist 1. Der variable Teil des ggT ist also <Math expression={'x'} />.
+        expression="x"
+      />, und der kleinste Exponent ist 1. Der variable Teil des ggT ist also <Math expression="x" />.
     </li>
     <li>
       <strong>Kombiniere den numerischen und den variablen Teil</strong> — der vollständige ggT ist <Math
-        expression={'4x'}
+        expression="4x"
       />.
     </li>
     <li>

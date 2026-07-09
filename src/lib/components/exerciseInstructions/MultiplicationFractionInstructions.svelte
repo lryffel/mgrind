@@ -34,10 +34,10 @@
     <li>Without cross-cancellation: <Math expression={ex2noCancel} /></li>
     <li>
       With cross-cancellation: The numerator 3 and denominator 9 share a factor of 3, so <Math
-        expression={'3 \\div 3 = 1'}
-      /> and <Math expression={'9 \\div 3 = 3'} />. The numerator 8 and denominator 4 share a factor of 4, so <Math
-        expression={'8 \\div 4 = 2'}
-      /> and <Math expression={'4 \\div 4 = 1'} />. Now multiply: <Math expression={ex2Cancel} />
+        expression="3 \div 3 = 1"
+      /> and <Math expression="9 \div 3 = 3" />. The numerator 8 and denominator 4 share a factor of 4, so <Math
+        expression="8 \div 4 = 2"
+      /> and <Math expression="4 \div 4 = 1" />. Now multiply: <Math expression={ex2Cancel} />
     </li>
   </ul>
   <p>Enter the numerator and denominator of the simplified result.</p>
@@ -68,10 +68,10 @@
     <li>Ohne Kürzen vor dem Multiplizieren: <Math expression={ex2noCancel} /></li>
     <li>
       Mit Kürzen vor dem Multiplizieren: Der Zähler 3 und der Nenner 9 haben den gemeinsamen Teiler 3, also <Math
-        expression={'3 \\div 3 = 1'}
-      /> und <Math expression={'9 \\div 3 = 3'} />. Der Zähler 8 und der Nenner 4 haben den gemeinsamen Teiler 4, also <Math
-        expression={'8 \\div 4 = 2'}
-      /> und <Math expression={'4 \\div 4 = 1'} />. Jetzt multiplizieren: <Math expression={ex2Cancel} />
+        expression="3 \div 3 = 1"
+      /> und <Math expression="9 \div 3 = 3" />. Der Zähler 8 und der Nenner 4 haben den gemeinsamen Teiler 4, also <Math
+        expression="8 \div 4 = 2"
+      /> und <Math expression="4 \div 4 = 1" />. Jetzt multiplizieren: <Math expression={ex2Cancel} />
     </li>
   </ul>
   <p>Gib den Zähler und den Nenner des gekürzten Ergebnisses ein.</p>

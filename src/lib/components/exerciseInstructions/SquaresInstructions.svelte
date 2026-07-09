@@ -16,12 +16,12 @@
     <li><Math expression={posEx} /> — a positive base stays positive when squared.</li>
     <li>
       <Math expression={negBaseEx} /> — a negative base inside parentheses is squared as a whole: <Math
-        expression={'(-5) \\cdot (-5) = 25'}
+        expression="(-5) \cdot (-5) = 25"
       />. A negative times a negative gives a positive result.
     </li>
     <li>
       <Math expression={negOfSquareEx} /> — the square is computed first, then the negative sign is applied. This is equivalent
-      to <Math expression={'-(5 \\cdot 5) = -25'} />.
+      to <Math expression="-(5 \cdot 5) = -25" />.
     </li>
   </ul>
   <p>Enter your result as a number.</p>
@@ -35,12 +35,12 @@
     <li><Math expression={posEx} /> — eine positive Basis bleibt beim Quadrieren positiv.</li>
     <li>
       <Math expression={negBaseEx} /> — eine negative Basis in Klammern wird als Ganzes quadriert: <Math
-        expression={'(-5) \\cdot (-5) = 25'}
+        expression="(-5) \cdot (-5) = 25"
       />. Minus mal Minus ergibt Plus.
     </li>
     <li>
       <Math expression={negOfSquareEx} /> — das Quadrat wird zuerst berechnet, dann wird das negative Vorzeichen angewandt.
-      Dies entspricht <Math expression={'-(5 \\cdot 5) = -25'} />.
+      Dies entspricht <Math expression="-(5 \cdot 5) = -25" />.
     </li>
   </ul>
   <p>Gib dein Ergebnis als Zahl ein.</p>

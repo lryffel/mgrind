@@ -12,8 +12,8 @@
 {#if state.lang === 'en'}
   <p>
     Scientific notation is a compact way to write very large or very small numbers. A number in scientific notation is
-    written as <Math expression={sciForm} />, where <Math expression={'1 \\le m < 10'} /> (the coefficient) and <Math
-      expression={'e'}
+    written as <Math expression={sciForm} />, where <Math expression="1 \le m < 10" /> (the coefficient) and <Math
+      expression="e"
     /> is an integer (the exponent). The exponent tells you how many places to move the decimal point.
   </p>
   <p>This exercise has several variants depending on the difficulty level:</p>
@@ -43,8 +43,8 @@
   <p>
     Die wissenschaftliche Schreibweise ist eine kompakte Darstellung für sehr grosse oder sehr kleine Zahlen. Eine Zahl
     in wissenschaftlicher Schreibweise wird als <Math expression={sciForm} /> geschrieben, wobei <Math
-      expression={'1 \\le m < 10'}
-    /> (der Koeffizient) und <Math expression={'e'} /> eine ganze Zahl (der Exponent) ist. Der Exponent gibt an, um wie viele
+      expression="1 \le m < 10"
+    /> (der Koeffizient) und <Math expression="e" /> eine ganze Zahl (der Exponent) ist. Der Exponent gibt an, um wie viele
     Stellen das Komma verschoben wird.
   </p>
   <p>Diese Übung hat mehrere Varianten, je nach Schwierigkeitsgrad:</p>

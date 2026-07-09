@@ -17,7 +17,7 @@
   </p>
   <p>The standard order is:</p>
   <ol>
-    <li><strong>Parentheses</strong> — evaluate anything inside <Math expression={'( \\dots )'} /> first.</li>
+    <li><strong>Parentheses</strong> — evaluate anything inside <Math expression="( \dots )" /> first.</li>
     <li>
       <strong>Exponents and square roots</strong> — evaluate powers like <Math expression={'3^{2}'} /> and roots like <Math
         expression={'\\sqrt{9}'}
@@ -34,7 +34,7 @@
     </li>
     <li>Step 3 — Addition: <Math expression={step3} />.</li>
   </ul>
-  <p>The final result is <Math expression={'22'} />.</p>
+  <p>The final result is <Math expression="22" />.</p>
 {:else}
   <p>
     Diese Übung testet dein Verständnis der Rechenregeln — der Regeln, die festlegen, in welcher Reihenfolge du in einem
@@ -43,7 +43,7 @@
   </p>
   <p>Die Standard-Reihenfolge ist:</p>
   <ol>
-    <li><strong>Klammern</strong> — berechne zuerst alles innerhalb von <Math expression={'( \\dots )'} />.</li>
+    <li><strong>Klammern</strong> — berechne zuerst alles innerhalb von <Math expression="( \dots )" />.</li>
     <li>
       <strong>Exponenten und Quadratwurzeln</strong> — berechne Potenzen wie <Math expression={'3^{2}'} /> und Wurzeln wie
       <Math expression={'\\sqrt{9}'} />.
@@ -59,5 +59,5 @@
     </li>
     <li>Schritt 3 — Addition: <Math expression={step3} />.</li>
   </ul>
-  <p>Das Ergebnis ist <Math expression={'22'} />.</p>
+  <p>Das Ergebnis ist <Math expression="22" />.</p>
 {/if}

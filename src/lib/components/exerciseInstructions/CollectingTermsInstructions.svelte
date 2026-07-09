@@ -21,7 +21,7 @@
         expression={exTerms}
       />, the terms <Math expression={'3x^{2}'} /> and <Math expression={'5x^{2}'} /> share the variable part <Math
         expression={'x^{2}'}
-      />, while <Math expression={'2x'} /> and <Math expression={'-x'} /> share <Math expression={'x'} />.
+      />, while <Math expression="2x" /> and <Math expression="-x" /> share <Math expression="x" />.
     </li>
     <li>
       <strong>Combine coefficients</strong> — for each group of like terms, add or subtract their coefficients: <Math
@@ -33,8 +33,8 @@
     </li>
     <li>
       <strong>Enter the coefficients</strong> — for each variable part in the order shown, type the coefficient. In this
-      example you would enter <Math expression={'8'} /> for <Math expression={'x^{2}'} /> and <Math expression={'1'} /> for
-      <Math expression={'x'} />.
+      example you would enter <Math expression="8" /> for <Math expression={'x^{2}'} /> and <Math expression="1" /> for
+      <Math expression="x" />.
     </li>
   </ol>
 {:else}
@@ -48,8 +48,8 @@
     <li>
       <strong>Gleichartige Terme identifizieren</strong> — finde Terme mit demselben Variablenteil. Zum Beispiel haben
       in <Math expression={exTerms} /> die Terme <Math expression={'3x^{2}'} /> und <Math expression={'5x^{2}'} /> den gleichen
-      Variablenteil <Math expression={'x^{2}'} />, während <Math expression={'2x'} /> und <Math expression={'-x'} /> den Teil
-      <Math expression={'x'} /> gemeinsam haben.
+      Variablenteil <Math expression={'x^{2}'} />, während <Math expression="2x" /> und <Math expression="-x" /> den Teil
+      <Math expression="x" /> gemeinsam haben.
     </li>
     <li>
       <strong>Koeffizienten zusammenfassen</strong> — addiere oder subtrahiere die Koeffizienten jeder Gruppe: <Math
@@ -63,9 +63,9 @@
     </li>
     <li>
       <strong>Koeffizienten eingeben</strong> — für jeden Variablenteil in der angezeigten Reihenfolge den Koeffizienten
-      eintragen. In diesem Beispiel würdest du <Math expression={'8'} /> für <Math expression={'x^{2}'} /> und <Math
-        expression={'1'}
-      /> für <Math expression={'x'} /> eingeben.
+      eintragen. In diesem Beispiel würdest du <Math expression="8" /> für <Math expression={'x^{2}'} /> und <Math
+        expression="1"
+      /> für <Math expression="x" /> eingeben.
     </li>
   </ol>
 {/if}

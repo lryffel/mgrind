@@ -25,7 +25,6 @@
 - `CONCEPT.md` describes the app design — use it for guidance, don't infer
 
 - `Math.svelte` renders LaTeX via KaTeX (`katex.renderToString`); expressions use standard LaTeX (`\cdot`, `\frac{}{}`, `\sqrt{}`, `^{}`)
-  - ⚠️ Svelte static attributes (`expression="\\cdot"`) treat backslashes literally → produces `\\cdot` (double backslash) at runtime, which KaTeX misparses. Always use JS expressions: `expression={'\\cdot'}`
   - ⚠️ No math symbol (+, -, =, /, ^, ·, etc.) may ever appear outside KaTeX — all must be rendered through `<Math>`
 - `@picocss/pico` v2 is the only dependency — drive visual design through Pico classes (`role="group"`, `outline`, `<progress>`) before writing custom CSS
 - `Exercise.data.fields` (optional `{ variablePart: string }[]`) provides multi-input answer mode (e.g. for collecting terms, binomial formulas); `null` or `undefined` → single text input, present → multiple inputs

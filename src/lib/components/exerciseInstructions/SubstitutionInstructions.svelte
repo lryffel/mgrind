@@ -23,11 +23,11 @@
     <li><strong>Multiply and divide</strong> — perform all multiplication and division from left to right.</li>
     <li><strong>Add and subtract</strong> — perform addition and subtraction from left to right.</li>
   </ol>
-  <p>For example, evaluate <Math expression={ex1} /> with <Math expression={'x = 4'} />:</p>
+  <p>For example, evaluate <Math expression={ex1} /> with <Math expression="x = 4" />:</p>
   <p><Math expression={ex1sub} />.</p>
   <p>
-    Another example: evaluate <Math expression={ex2} /> with <Math expression={'a = 5'} /> and <Math
-      expression={'b = 3'}
+    Another example: evaluate <Math expression={ex2} /> with <Math expression="a = 5" /> and <Math
+      expression="b = 3"
     />:
   </p>
   <p><Math expression={ex2sub} />.</p>
@@ -53,11 +53,11 @@
     </li>
     <li><strong>Addieren und subtrahieren</strong> — führe Additionen und Subtraktionen von links nach rechts aus.</li>
   </ol>
-  <p>Zum Beispiel: Berechne <Math expression={ex1} /> mit <Math expression={'x = 4'} />:</p>
+  <p>Zum Beispiel: Berechne <Math expression={ex1} /> mit <Math expression="x = 4" />:</p>
   <p><Math expression={ex1sub} />.</p>
   <p>
-    Ein weiteres Beispiel: Berechne <Math expression={ex2} /> mit <Math expression={'a = 5'} /> und <Math
-      expression={'b = 3'}
+    Ein weiteres Beispiel: Berechne <Math expression={ex2} /> mit <Math expression="a = 5" /> und <Math
+      expression="b = 3"
     />:
   </p>
   <p><Math expression={ex2sub} />.</p>

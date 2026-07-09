@@ -33,14 +33,14 @@
       />.
     </li>
     <li>
-      <strong>Divide by the coefficient</strong> — <Math expression={'x = 9 \\div 3 = 3'} />, so <Math
+      <strong>Divide by the coefficient</strong> — <Math expression="x = 9 \div 3 = 3" />, so <Math
         expression={ex1res}
       />.
     </li>
   </ol>
   <p>Here is a more involved example: <Math expression={ex2} />.</p>
   <ul>
-    <li>Subtract <Math expression={'2x'} /> from both sides: <Math expression={ex2step1} />.</li>
+    <li>Subtract <Math expression="2x" /> from both sides: <Math expression={ex2step1} />.</li>
     <li>Subtract 1 from both sides: <Math expression={ex2res} />.</li>
   </ul>
   <p>For equations with fractions, the same steps apply. Example: <Math expression={ex3} />.</p>
@@ -67,14 +67,14 @@
       beiden Seiten: <Math expression={ex1step2} />.
     </li>
     <li>
-      <strong>Dividiere durch den Koeffizienten</strong> — <Math expression={'x = 9 \\div 3 = 3'} />, also <Math
+      <strong>Dividiere durch den Koeffizienten</strong> — <Math expression="x = 9 \div 3 = 3" />, also <Math
         expression={ex1res}
       />.
     </li>
   </ol>
   <p>Ein anspruchsvolleres Beispiel: <Math expression={ex2} />.</p>
   <ul>
-    <li>Subtrahiere <Math expression={'2x'} /> von beiden Seiten: <Math expression={ex2step1} />.</li>
+    <li>Subtrahiere <Math expression="2x" /> von beiden Seiten: <Math expression={ex2step1} />.</li>
     <li>Subtrahiere 1 von beiden Seiten: <Math expression={ex2res} />.</li>
   </ul>
   <p>Bei Gleichungen mit Brüchen gelten die gleichen Schritte. Beispiel: <Math expression={ex3} />.</p>

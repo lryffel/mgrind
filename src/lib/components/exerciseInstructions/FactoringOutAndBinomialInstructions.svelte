@@ -23,7 +23,7 @@
     <li>
       <strong>Factor out the gcd</strong> — from all terms, just as in the Factoring Out exercise. For <Math
         expression={ex1}
-      />, the GCD of 4, 8, and 4 is 4, and each term also contains <Math expression={'x'} />, giving <Math
+      />, the GCD of 4, 8, and 4 is 4, and each term also contains <Math expression="x" />, giving <Math
         expression={ex1gcf}
       />.
     </li>
@@ -37,7 +37,7 @@
     </li>
     <li>
       <strong>Apply the binomial formula</strong> — <Math expression={'x^{2} + 2x + 1'} /> matches the first formula with
-      <Math expression={'a = x'} /> and <Math expression={'b = 1'} />, giving <Math
+      <Math expression="a = x" /> and <Math expression="b = 1" />, giving <Math
         expression={'x^{2} + 2x + 1 = (x + 1)^{2}'}
       />.
     </li>
@@ -46,7 +46,7 @@
   <p>
     Another example: <Math expression={ex2} />. The gcd is 3, giving <Math expression={ex2gcf} />. The remainder <Math
       expression={'x^{2} - 4'}
-    /> matches the third formula with <Math expression={'a = x'} /> and <Math expression={'b = 2'} />, so the result is <Math
+    /> matches the third formula with <Math expression="a = x" /> and <Math expression="b = 2" />, so the result is <Math
       expression={ex2res}
     />.
   </p>
@@ -60,7 +60,7 @@
   <ol>
     <li>
       <strong>Klammere den ggT aus</strong> — wie bei der Übung «Ausklammern». Bei <Math expression={ex1} /> ist der ggT von
-      4, 8 und 4 gleich 4, und jeder Term enthält auch <Math expression={'x'} />, also <Math expression={ex1gcf} />.
+      4, 8 und 4 gleich 4, und jeder Term enthält auch <Math expression="x" />, also <Math expression={ex1gcf} />.
     </li>
     <li>
       <strong>Untersuche den Rest</strong> — prüfe, ob er eines der drei binomischen Formelmuster erfüllt:
@@ -72,7 +72,7 @@
     </li>
     <li>
       <strong>Wende die binomische Formel an</strong> — <Math expression={'x^{2} + 2x + 1'} /> passt zur ersten Formel mit
-      <Math expression={'a = x'} /> und <Math expression={'b = 1'} />, also <Math
+      <Math expression="a = x" /> und <Math expression="b = 1" />, also <Math
         expression={'x^{2} + 2x + 1 = (x + 1)^{2}'}
       />.
     </li>
@@ -81,7 +81,7 @@
   <p>
     Ein weiteres Beispiel: <Math expression={ex2} />. Der ggT ist 3, also <Math expression={ex2gcf} />. Der Rest <Math
       expression={'x^{2} - 4'}
-    /> passt zur dritten Formel mit <Math expression={'a = x'} /> und <Math expression={'b = 2'} />, somit ist das
+    /> passt zur dritten Formel mit <Math expression="a = x" /> und <Math expression="b = 2" />, somit ist das
     Ergebnis <Math expression={ex2res} />.
   </p>
   <p>
