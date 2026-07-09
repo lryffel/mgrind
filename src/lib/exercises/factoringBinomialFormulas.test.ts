@@ -5,6 +5,7 @@ import {
   validateFactoringBinomialFormulas,
   formatFactoredLatex,
 } from './factoringBinomialFormulas';
+import { cmd } from '../math/latex';
 
 describe('generateFactoringBinomialFormulas', () => {
   it('returns a valid exercise with prompt, answer, and data', () => {
@@ -179,6 +180,71 @@ describe('validateFactoringBinomialFormulas', () => {
     expect(validateFactoringBinomialFormulas('', ex)).toBe(false);
     expect(validateFactoringBinomialFormulas('abc', ex)).toBe(false);
     expect(validateFactoringBinomialFormulas('1,,', ex)).toBe(false);
+  });
+});
+
+describe('prompt term order', () => {
+  it('formula types 1 and 2 with varA: a² term precedes b² term', () => {
+    for (let seed = 0; seed < 1000; seed++) {
+      const ex = generateFactoringBinomialFormulas(seed, 5);
+      const cf = ex.data?.correctFormula as number;
+      if (cf !== 1 && cf !== 2) continue;
+      const varA = ex.data?.varA as string | null;
+      const varB = ex.data?.varB as string;
+      if (!varA || !varB) continue;
+
+      expect(ex.prompt.indexOf(`${cmd(varA)}^{2}`)).toBeLessThan(
+        ex.prompt.indexOf(`${cmd(varB)}^{2}`),
+      );
+    }
+  });
+
+  it('formula type 3 with varA: a² term precedes b² term', () => {
+    for (let seed = 0; seed < 1000; seed++) {
+      const ex = generateFactoringBinomialFormulas(seed, 5);
+      const cf = ex.data?.correctFormula as number;
+      if (cf !== 3) continue;
+      const varA = ex.data?.varA as string | null;
+      const varB = ex.data?.varB as string;
+      if (!varA || !varB) continue;
+
+      expect(ex.prompt.indexOf(`${cmd(varA)}^{2}`)).toBeLessThan(
+        ex.prompt.indexOf(`${cmd(varB)}^{2}`),
+      );
+    }
+  });
+
+  it('formula types 1 and 2 without varA: b² variable appears after the middle term', () => {
+    for (let seed = 0; seed < 1000; seed++) {
+      const ex = generateFactoringBinomialFormulas(seed, 3);
+      const cf = ex.data?.correctFormula as number;
+      if (cf !== 1 && cf !== 2) continue;
+      const varA = ex.data?.varA as string | null;
+      const varB = ex.data?.varB as string;
+      if (varA || !varB) continue;
+
+      const b2Latex = `${cmd(varB)}^{2}`;
+      const firstPlus = ex.prompt.indexOf(' + ');
+      const firstMinus = ex.prompt.indexOf(' - ');
+      const firstOp = firstPlus >= 0 && (firstMinus < 0 || firstPlus < firstMinus) ? firstPlus : firstMinus;
+      expect(firstOp).toBeGreaterThan(0);
+      expect(ex.prompt.indexOf(b2Latex)).toBeGreaterThan(firstOp);
+    }
+  });
+
+  it('formula type 3 without varA: b² term appears after the minus sign', () => {
+    for (let seed = 0; seed < 1000; seed++) {
+      const ex = generateFactoringBinomialFormulas(seed, 5);
+      const cf = ex.data?.correctFormula as number;
+      if (cf !== 3) continue;
+      const varA = ex.data?.varA as string | null;
+      const varB = ex.data?.varB as string;
+      if (varA || !varB) continue;
+
+      const minusIdx = ex.prompt.indexOf(' - ');
+      expect(minusIdx).toBeGreaterThan(0);
+      expect(ex.prompt.indexOf(`${cmd(varB)}^{2}`)).toBeGreaterThan(minusIdx);
+    }
   });
 });
 

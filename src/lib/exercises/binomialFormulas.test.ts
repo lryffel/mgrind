@@ -114,8 +114,46 @@ describe('generateBinomialFormulas', () => {
       }
     }
   });
+});
 
-  it('validateBinomialFormulas matches equivalent fractions', () => {
+describe('prompt term order', () => {
+  it('single-variable exercises: variable appears before constant in first factor', () => {
+    for (let seed = 0; seed < 500; seed++) {
+      const ex = generateBinomialFormulas(seed, 3);
+      const fields = getFields(ex);
+      if (fields.length < 2) continue;
+      const v0 = fields[0].variablePart.replace(/\^\{2\}/g, '');
+      const vn = fields[fields.length - 1].variablePart.replace(/\^\{2\}/g, '');
+      if (v0 !== vn) continue; // skip two-variable exercises
+
+      // Extract content of first parentheses
+      const firstParen = ex.prompt.indexOf('(');
+      const closeParen = ex.prompt.indexOf(')');
+      const inside = ex.prompt.slice(firstParen + 1, closeParen);
+      const opIdx = inside.search(/ \+ | - /);
+      expect(opIdx).toBeGreaterThan(0);
+      expect(inside.indexOf(v0)).toBeLessThan(opIdx);
+    }
+  });
+
+  it('two-variable exercises: first field variable precedes last field variable in prompt', () => {
+    for (let seed = 0; seed < 500; seed++) {
+      const ex = generateBinomialFormulas(seed, 7);
+      const fields = getFields(ex);
+      if (fields.length < 2) continue;
+
+      const v0 = fields[0].variablePart.replace(/\^\{2\}/g, '').replace('{}', '');
+      const vn = fields[fields.length - 1].variablePart.replace(/\^\{2\}/g, '').replace('{}', '');
+
+      if (!v0 || !vn || v0 === vn) continue; // single-variable
+
+      expect(ex.prompt.indexOf(v0)).toBeLessThan(ex.prompt.indexOf(vn));
+    }
+  });
+});
+
+describe('validateBinomialFormulas', () => {
+  it('matches equivalent fractions', () => {
     const ex: Exercise = {
       prompt: '',
       answer: '1/2,3/4',

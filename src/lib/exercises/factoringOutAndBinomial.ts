@@ -63,15 +63,15 @@ function buildPromptLaTeX(
 
   const ab = reduceFrac(2 * aNum * bNum, aDen * bDen);
 
-  const b2VarPart = `${gcfLatexPrefix}${cmd(varB)}^{2}`;
-  const abVarPart = `${gcfLatexPrefix}${varA ? `${cmd(varA)}${cmd(varB)}` : cmd(varB)}`;
   const a2VarPart = `${gcfLatexPrefix}${varA ? `${cmd(varA)}^{2}` : ''}`;
+  const abVarPart = `${gcfLatexPrefix}${varA ? `${cmd(varA)}${cmd(varB)}` : cmd(varB)}`;
+  const b2VarPart = `${gcfLatexPrefix}${cmd(varB)}^{2}`;
 
-  const term2 = coeffLatex(gcfCoeff * b2[0], b2[1], b2VarPart);
+  const term0 = coeffLatex(gcfCoeff * a2[0], a2[1], a2VarPart);
   const sign = formulaType === 1 ? '+' : '-';
   const term1 = `${sign} ${coeffLatex(gcfCoeff * ab[0], ab[1], abVarPart)}`;
-  const term0 = `+ ${coeffLatex(gcfCoeff * a2[0], a2[1], a2VarPart)}`;
-  return `${term2} ${term1} ${term0}`;
+  const term2 = `+ ${coeffLatex(gcfCoeff * b2[0], b2[1], b2VarPart)}`;
+  return `${term0} ${term1} ${term2}`;
 }
 
 function formatFullFactoredLatex(
