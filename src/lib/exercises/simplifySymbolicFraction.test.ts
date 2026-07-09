@@ -103,14 +103,15 @@ describe('subtype: difference of squares', () => {
 });
 
 describe('subtype: ax over bx', () => {
-  it('generates prompts with same variable in num and den', () => {
+  it('generates prompts with same variable(s) in num and den', () => {
     let found = false;
     for (let seed = 0; seed < 200; seed++) {
       const ex = generateSimplifySymbolicFraction(seed, 2);
-      const match = ex.prompt.match(/^\\frac\{(\d+)([a-z])\}\{(\d+)([a-z])\}$/);
+      const match = ex.prompt.match(/^\\frac\{(\d+)([a-z])\^\{?(\d+)\}?\}\{(\d+)([a-z])\^\{?(\d+)\}?\}$/);
       if (match) {
         found = true;
-        expect(match[2]).toBe(match[4]);
+        expect(match[2]).toBe(match[5]);
+        expect(match[3]).toBe(match[6]);
         break;
       }
     }

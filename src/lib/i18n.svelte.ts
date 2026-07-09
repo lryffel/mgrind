@@ -258,6 +258,10 @@ const dict = {
     en: 'Simplify.',
     de: 'Kürze.',
   },
+  'exercise.simplifySymbolicFraction.axbxPrompt': {
+    en: 'Cancel common variable factors, then simplify the coefficient fraction.',
+    de: 'Kürze die gemeinsamen Variablenfaktoren, dann kürze den Koeffizientenbruch.',
+  },
 } satisfies Record<string, Record<Lang, string>>;
 
 export const state = $state({ lang: 'en' as Lang });

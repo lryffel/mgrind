@@ -105,12 +105,27 @@ function genMonomial(rng: () => number, clamped: number): Exercise {
   return { prompt, answer, data: data as unknown as Exercise['data'] };
 }
 
-function genAXoverBX(rng: () => number): Exercise {
-  const v = pick(rng, VARS);
+function genAXoverBX(rng: () => number, clamped: number): Exercise {
+  const numVars = rng() > 0.5 ? 1 : 2;
+  const selectedVars: string[] = [];
+  for (let i = 0; i < numVars; i++) {
+    const v = pick(rng, VARS.filter((x) => !selectedVars.includes(x)));
+    selectedVars.push(v);
+  }
+
   const a = randInt(rng, 2, 9);
   const b = randInt(rng, 2, 9);
 
-  const prompt = `\\frac{${a}${v}}{${b}${v}}`;
+  const maxExp = clamped <= 3 ? 2 : clamped <= 6 ? 3 : 4;
+  const numVarsMap: VarMap = {};
+  const denVarsMap: VarMap = {};
+  for (const v of selectedVars) {
+    const exp = randInt(rng, 1, maxExp);
+    numVarsMap[v] = exp;
+    denVarsMap[v] = exp;
+  }
+
+  const prompt = `\\frac{${monomialLatex(a, numVarsMap)}}{${monomialLatex(b, denVarsMap)}}`;
 
   const g = gcd(a, b);
   const reducedA = a / g;
@@ -123,7 +138,7 @@ function genAXoverBX(rng: () => number): Exercise {
       numFields,
       denFields: [],
       showFraction: false,
-      promptKey: 'exercise.simplifySymbolicFraction.prompt',
+      promptKey: 'exercise.simplifySymbolicFraction.axbxPrompt',
     };
     return { prompt, answer, data: data as unknown as Exercise['data'] };
   }
@@ -135,7 +150,7 @@ function genAXoverBX(rng: () => number): Exercise {
     numFields,
     denFields,
     showFraction: true,
-    promptKey: 'exercise.simplifySymbolicFraction.prompt',
+    promptKey: 'exercise.simplifySymbolicFraction.axbxPrompt',
   };
   return { prompt, answer, data: data as unknown as Exercise['data'] };
 }
@@ -322,7 +337,7 @@ export function generateSimplifySymbolicFraction(seed: number, complexity: numbe
   if (clamped <= 3) {
     if (roll < 0.35) return genConstantFactoringOut(rng);
     if (roll < 0.65) return genMonomial(rng, clamped);
-    return genAXoverBX(rng);
+    return genAXoverBX(rng, clamped);
   }
 
   if (clamped <= 6) {
@@ -330,7 +345,7 @@ export function generateSimplifySymbolicFraction(seed: number, complexity: numbe
     if (roll < 0.4) return genDiffOfSquares(rng);
     if (roll < 0.6) return genMonomial(rng, clamped);
     if (roll < 0.8) return genQuadraticFactoring(rng);
-    return genAXoverBX(rng);
+    return genAXoverBX(rng, clamped);
   }
 
   if (roll < 0.15) return genDiffOfSquares(rng);
@@ -338,7 +353,7 @@ export function generateSimplifySymbolicFraction(seed: number, complexity: numbe
   if (roll < 0.45) return genMonomial(rng, clamped);
   if (roll < 0.55) return genVarGCF(rng);
   if (roll < 0.75) return genConstantFracFactoringOut(rng);
-  return genAXoverBX(rng);
+  return genAXoverBX(rng, clamped);
 }
 
 export function validateSimplifySymbolicFraction(answer: string, exercise: Exercise): boolean {
