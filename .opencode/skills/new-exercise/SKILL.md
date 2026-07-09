@@ -108,6 +108,38 @@ Edit `src/lib/i18n.svelte.ts` — add entries for:
 | `exercise.<id>.desc`   | Short description       |
 | `exercise.<id>.prompt` | (Optional) prompt label |
 
+### Prompt label guidelines
+
+Every exercise type should show a short, imperative instruction above the math expression (e.g. "Simplify.", "Expand.", "Collect terms."). To add one:
+
+1. **Add an i18n key** `exercise.<id>.prompt` with en/de values.
+2. **Set `promptKey`** in the generator's `ExerciseData`:
+
+   ```ts
+   return { prompt, answer, data: { promptKey: 'exercise.<id>.prompt' } };
+   ```
+
+3. **In the component**, read and render the prompt label:
+
+   ```svelte
+   let promptKey = $derived(exercise.data?.promptKey ?? null);
+   ```
+   ```svelte
+   {#if promptKey}
+     <p class="prompt-label">{_(promptKey)}</p>
+   {/if}
+   ```
+
+The `.prompt-label` class is already defined in `src/app.css` with `text-align: left` and `align-self: flex-start` to keep it left-aligned inside the centered exercise card.
+
+If the component serves a single exercise type (not shared), you can hardcode the i18n key instead of reading from data:
+
+```svelte
+<p class="prompt-label">{_('exercise.<id>.prompt')}</p>
+```
+
+If the prompt depends on the exercise subtype (e.g. scientific notation has different instructions for conversion vs. computation), store separate `promptKey` values per subtype.
+
 ## Step 5: Register in `exerciseTypes.ts`
 
 Edit `src/lib/data/exerciseTypes.ts`:
