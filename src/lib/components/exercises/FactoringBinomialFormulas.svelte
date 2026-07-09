@@ -3,7 +3,7 @@
   import type { ExerciseProps } from '../../types';
   import Math from '../Math.svelte';
   import ExerciseShell from '../ExerciseShell.svelte';
-  import TermInput from './TermInput.svelte';
+  import NumericInput from './NumericInput.svelte';
   import { formatFactoredLatex } from '../../exercises/factoringBinomialFormulas';
   import { parseFrac } from '../../math/fraction';
 
@@ -65,22 +65,22 @@
     </select>
 
     {#if selectedFormula !== null && selectedFormula !== 0}
-      <div class="expansion" role="group">
+      <div class="expansion">
         {#if selectedFormula === 1 || selectedFormula === 2}
           <Math expression="(" />
-          <TermInput bind:value={aVal} variablePart={varA ?? ''} />
+          <NumericInput bind:value={aVal} variablePart={varA ?? ''} />
           <Math expression={selectedFormula === 1 ? '+' : '-'} />
-          <TermInput bind:value={bVal} variablePart={varB} />
+          <NumericInput bind:value={bVal} variablePart={varB} />
           <Math expression=")^{2}" />
         {:else if selectedFormula === 3}
           <Math expression="(" />
-          <TermInput bind:value={aVal} variablePart={varA ?? ''} />
+          <NumericInput bind:value={aVal} variablePart={varA ?? ''} />
           <Math expression="+" />
-          <TermInput bind:value={bVal} variablePart={varB} />
+          <NumericInput bind:value={bVal} variablePart={varB} />
           <Math expression=")(" />
-          <TermInput value={aVal} variablePart={varA ?? ''} readonly />
+          <NumericInput value={aVal} variablePart={varA ?? ''} readonly />
           <Math expression="-" />
-          <TermInput value={bVal} variablePart={varB} readonly />
+          <NumericInput value={bVal} variablePart={varB} readonly />
           <Math expression=")" />
         {/if}
       </div>

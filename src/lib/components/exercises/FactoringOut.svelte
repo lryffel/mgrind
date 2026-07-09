@@ -4,7 +4,7 @@
   import Math from '../Math.svelte';
   import ExerciseShell from '../ExerciseShell.svelte';
   import Feedback from '../Feedback.svelte';
-  import TermInput from './TermInput.svelte';
+  import NumericInput from './NumericInput.svelte';
   import { formatFactoredLatex } from '../../exercises/factoringOut';
 
   let { exercise, onSubmit, onNext, feedback }: ExerciseProps = $props();
@@ -86,7 +86,7 @@
     <div class="expansion">
       <Math expression="=" />
       {#if selectedIdx != null && selectedIdx >= 0}
-        <TermInput bind:value={coeffA} />
+        <NumericInput bind:value={coeffA} />
         <Math expression={cdot} />
       {/if}
       <select bind:value={selectedIdx} class="factor-select" onchange={onSelectChange}>
@@ -103,7 +103,7 @@
             {#if i > 0}
               <Math expression="+" />
             {/if}
-            <TermInput bind:value={coeffs[i]} variablePart={part} />
+            <NumericInput bind:value={coeffs[i]} variablePart={part} />
           {/each}
           <Math expression=")" />
         {/key}

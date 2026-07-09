@@ -4,7 +4,7 @@
   import Math from '../Math.svelte';
   import ExerciseShell from '../ExerciseShell.svelte';
   import Feedback from '../Feedback.svelte';
-  import TermInput from './TermInput.svelte';
+  import NumericInput from './NumericInput.svelte';
   import { formatCollectingAnswer } from '../../exercises/collectingTerms';
 
   let { exercise, onSubmit, onNext, feedback }: ExerciseProps = $props();
@@ -35,7 +35,7 @@
         {#if i > 0}
           <Math expression="+" />
         {/if}
-        <TermInput bind:value={values[i]} {variablePart} />
+        <NumericInput bind:value={values[i]} {variablePart} />
       {/each}
     </div>
   {:else}

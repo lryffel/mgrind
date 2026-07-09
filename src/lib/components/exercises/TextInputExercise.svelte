@@ -4,6 +4,7 @@
   import Math from '../Math.svelte';
   import ExerciseShell from '../ExerciseShell.svelte';
   import Feedback from '../Feedback.svelte';
+  import NumericInput from './NumericInput.svelte';
 
   let { exercise, onSubmit, onNext, feedback }: ExerciseProps = $props();
 
@@ -16,15 +17,15 @@
       {@const parts = exercise.prompt.split('?')}
       <p class="prompt">
         <Math expression={parts[0]} />
-        <input type="text" class="inline-input" bind:value={userInput} />
+        <NumericInput bind:value={userInput} placeholder="" />
         <Math expression={parts[1] ?? ''} />
       </p>
     {:else}
       <p class="prompt">
         <Math expression={exercise.prompt} />
       </p>
-      <div role="group" class="answer-row">
-        <input type="text" class="answer-input" bind:value={userInput} />
+      <div class="answer-row">
+        <NumericInput bind:value={userInput} placeholder="" />
       </div>
     {/if}
   {:else}
@@ -45,8 +46,7 @@
 </ExerciseShell>
 
 <style>
-  .inline-input {
-    width: 5rem;
-    text-align: center;
+  .answer-row {
+    margin-top: 0.5rem;
   }
 </style>

@@ -67,7 +67,7 @@
 .coeff-input {
   min-width: 3rem;
   width: auto;
-  text-align: right;
+  font-family: monospace;
 }
 
 .coeff-input:read-only {
@@ -80,11 +80,6 @@
   align-items: center;
   gap: 0.3rem;
   white-space: nowrap;
-}
-
-.answer-input {
-  width: 150px;
-  text-align: center;
 }
 
 .feedback-row {

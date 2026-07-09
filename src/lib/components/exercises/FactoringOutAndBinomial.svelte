@@ -4,7 +4,7 @@
   import Math from '../Math.svelte';
   import ExerciseShell from '../ExerciseShell.svelte';
   import Feedback from '../Feedback.svelte';
-  import TermInput from './TermInput.svelte';
+  import NumericInput from './NumericInput.svelte';
   import { formatFullFactoredLatex } from '../../exercises/factoringOutAndBinomial';
   import type { FactoringOutAndBinomialData } from '../../exercises/factoringOutAndBinomial';
 
@@ -78,49 +78,65 @@
   </p>
 
   {#if feedback === null}
-    <div class="config-row" role="group">
-      <label class="config-item">
-        <span class="config-label">{_('exercise.factoringOutAndBinomial.commonFactor')}</span>
-        <select bind:value={selectedGcfIdx} class="factor-select">
-          <option value={null}>--</option>
-          <option value={-1}>1</option>
-          {#each data.factorOptions as opt, i (opt.text)}
-            <option value={i}>{opt.text}</option>
-          {/each}
-        </select>
-      </label>
-      <label class="config-item">
-        <span class="config-label">{_('exercise.factoringOutAndBinomial.formula')}</span>
-        <select bind:value={selectedFormula} class="formula-select">
-          <option value={null}>--</option>
-          <option value={0}>{_('exercise.factoringBinomialFormulas.noFormula')}</option>
-          <option value={1}>{_('exercise.factoringBinomialFormulas.formula1')}</option>
-          <option value={2}>{_('exercise.factoringBinomialFormulas.formula2')}</option>
-          <option value={3}>{_('exercise.factoringBinomialFormulas.formula3')}</option>
-        </select>
-      </label>
-    </div>
+    <div class="answer-group" role="group">
+      <div class="config-row" role="group">
+        <label class="config-item">
+          <span class="config-label">{_('exercise.factoringOutAndBinomial.commonFactor')}</span>
+          <select bind:value={selectedGcfIdx} class="factor-select">
+            <option value={null}>--</option>
+            <option value={-1}>1</option>
+            {#each data.factorOptions as opt, i (opt.text)}
+              <option value={i}>{opt.text}</option>
+            {/each}
+          </select>
+        </label>
+        <label class="config-item">
+          <span class="config-label">{_('exercise.factoringOutAndBinomial.formula')}</span>
+          <select bind:value={selectedFormula} class="formula-select">
+            <option value={null}>--</option>
+            <option value={0}>{_('exercise.factoringBinomialFormulas.noFormula')}</option>
+            <option value={1}>{_('exercise.factoringBinomialFormulas.formula1')}</option>
+            <option value={2}>{_('exercise.factoringBinomialFormulas.formula2')}</option>
+            <option value={3}>{_('exercise.factoringBinomialFormulas.formula3')}</option>
+          </select>
+        </label>
+      </div>
 
-    <div class="expansion">
-      <Math expression="=" />
-      {#if selectedGcfIdx != null}
-        <TermInput bind:value={gcfCoeff} variablePart={currentOption?.latex ?? ''} />
-      {/if}
-      {#if selectedGcfIdx != null && hasFormula}
-        <Math expression={cdot} />
-      {/if}
-      {#if hasFormula}
-        <span class="binomial-body">
-          <Math expression="(" />
-          <TermInput bind:value={aVal} variablePart={data.varA ?? ''} />
-          <Math expression={selectedFormula === 1 ? '+' : '-'} />
-          <TermInput bind:value={bVal} variablePart={data.varB} />
-          <Math expression=")^{2}" />
-        </span>
-      {/if}
-      {#if noFormula && selectedGcfIdx != null}
-        <p class="no-formula-hint">{_('exercise.factoringBinomialFormulas.noFormulaHint')}</p>
-      {/if}
+      <div class="expansion">
+        <Math expression="=" />
+        {#if selectedGcfIdx != null}
+          <NumericInput bind:value={gcfCoeff} variablePart={currentOption?.latex ?? ''} />
+        {/if}
+        {#if selectedGcfIdx != null && hasFormula}
+          <Math expression={cdot} />
+        {/if}
+        {#if hasFormula}
+          {#if selectedFormula === 3}
+            <span class="binomial-body">
+              <Math expression="(" />
+              <NumericInput bind:value={aVal} variablePart={data.varA ?? ''} />
+              <Math expression="+" />
+              <NumericInput bind:value={bVal} variablePart={data.varB} />
+              <Math expression=")(" />
+              <NumericInput value={aVal} variablePart={data.varA ?? ''} readonly />
+              <Math expression="-" />
+              <NumericInput value={bVal} variablePart={data.varB} readonly />
+              <Math expression=")" />
+            </span>
+          {:else}
+            <span class="binomial-body">
+              <Math expression="(" />
+              <NumericInput bind:value={aVal} variablePart={data.varA ?? ''} />
+              <Math expression={selectedFormula === 1 ? '+' : '-'} />
+              <NumericInput bind:value={bVal} variablePart={data.varB} />
+              <Math expression=")^{2}" />
+            </span>
+          {/if}
+        {/if}
+        {#if noFormula && selectedGcfIdx != null}
+          <p class="no-formula-hint">{_('exercise.factoringBinomialFormulas.noFormulaHint')}</p>
+        {/if}
+      </div>
     </div>
   {:else}
     <div class="expansion">
@@ -136,6 +152,14 @@
 </ExerciseShell>
 
 <style>
+  .answer-group {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.25rem;
+    width: auto;
+  }
+
   .config-row {
     display: flex;
     flex-wrap: wrap;

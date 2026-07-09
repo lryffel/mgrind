@@ -4,6 +4,7 @@
   import Math from '../Math.svelte';
   import ExerciseShell from '../ExerciseShell.svelte';
   import Feedback from '../Feedback.svelte';
+  import NumericInput from './NumericInput.svelte';
 
   let { exercise, onSubmit, onNext, feedback }: ExerciseProps = $props();
 
@@ -39,13 +40,23 @@
     </p>
     {#if isMultiInput}
       <div class="sci-row">
-        <input type="text" class="coeff-input" bind:value={coeffInput} placeholder="…" />
+        <NumericInput bind:value={coeffInput} align="right" placeholder="…" />
         <Math expression={cdot} />
-        <Math expression="10" /><sup><input type="text" class="exp-input" bind:value={expInput} placeholder="…" /></sup>
+        <Math expression="10" /><sup
+          ><input
+            type="text"
+            inputmode="numeric"
+            pattern="[0-9]*"
+            class="exp-input"
+            style="text-align: left; font-family: monospace;"
+            bind:value={expInput}
+            placeholder="…"
+          /></sup
+        >
       </div>
     {:else}
-      <div role="group" class="answer-row">
-        <input type="text" class="answer-input" bind:value={userInput} />
+      <div class="answer-row">
+        <NumericInput bind:value={userInput} placeholder="" />
       </div>
     {/if}
   {:else}
@@ -77,7 +88,6 @@
 
   .exp-input {
     width: 3rem;
-    text-align: center;
   }
 
   .user-answer {

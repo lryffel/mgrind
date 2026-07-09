@@ -4,7 +4,7 @@
   import Math from '../Math.svelte';
   import ExerciseShell from '../ExerciseShell.svelte';
   import Feedback from '../Feedback.svelte';
-  import FractionInput from './FractionInput.svelte';
+  import NumericInput from './NumericInput.svelte';
 
   let { exercise, onSubmit, onNext, feedback }: ExerciseProps = $props();
 
@@ -29,7 +29,7 @@
       <Math expression={op} />
       <Math expression={`\\frac{${num2}}{${den2}}`} />
       <Math expression="=" />
-      <FractionInput bind:num={numInput} bind:den={denInput} />
+      <NumericInput bind:num={numInput} bind:den={denInput} fraction />
     </p>
   {:else}
     <p class="prompt-label">{_(promptKey)}</p>
