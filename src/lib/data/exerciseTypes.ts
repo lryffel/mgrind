@@ -45,7 +45,11 @@ import ScientificNotationInstructions from '../components/exerciseInstructions/S
 import FactoringBinomialFormulasInstructions from '../components/exerciseInstructions/FactoringBinomialFormulasInstructions.svelte';
 import FactoringOutInstructions from '../components/exerciseInstructions/FactoringOutInstructions.svelte';
 import FactoringOutAndBinomialInstructions from '../components/exerciseInstructions/FactoringOutAndBinomialInstructions.svelte';
+import ExpandInstructions from '../components/exerciseInstructions/ExpandInstructions.svelte';
+import ExpandAndCollectInstructions from '../components/exerciseInstructions/ExpandAndCollectInstructions.svelte';
 import LinearEquationsInstructions from '../components/exerciseInstructions/LinearEquationsInstructions.svelte';
+import { generateExpand, validateExpand } from '../exercises/expand';
+import { generateExpandAndCollect, validateExpandAndCollect } from '../exercises/expandAndCollect';
 import { generateLinearEquations, validateLinearEquations } from '../exercises/linearEquations';
 import LinearEquationsExercise from '../components/exercises/LinearEquationsExercise.svelte';
 import { trimCompare, validateFractionAnswer } from '../validation';
@@ -225,6 +229,28 @@ export const exerciseTypes: Record<string, ExerciseType> = {
       { typeId: 'binomialFormulas', complexity: 3 },
     ],
     instructionComponent: FactoringOutAndBinomialInstructions,
+  },
+  expand: {
+    id: 'expand',
+    nameKey: 'exercise.expand.name',
+    descriptionKey: 'exercise.expand.desc',
+    maxComplexity: 10,
+    generate: generateExpand,
+    validate: validateExpand,
+    component: CollectingTerms,
+    prerequisites: [{ typeId: 'collectingTerms', complexity: 3 }],
+    instructionComponent: ExpandInstructions,
+  },
+  expandAndCollect: {
+    id: 'expandAndCollect',
+    nameKey: 'exercise.expandAndCollect.name',
+    descriptionKey: 'exercise.expandAndCollect.desc',
+    maxComplexity: 10,
+    generate: generateExpandAndCollect,
+    validate: validateExpandAndCollect,
+    component: CollectingTerms,
+    prerequisites: [{ typeId: 'expand', complexity: 3 }],
+    instructionComponent: ExpandAndCollectInstructions,
   },
   linearEquations: {
     id: 'linearEquations',

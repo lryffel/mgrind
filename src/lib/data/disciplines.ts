@@ -29,6 +29,8 @@ export const disciplines: Discipline[] = [
       'substitution',
       'binomialFormulas',
       'collectingTerms',
+      'expand',
+      'expandAndCollect',
       'factoringOut',
       'factoringBinomialFormulas',
       'factoringOutAndBinomial',

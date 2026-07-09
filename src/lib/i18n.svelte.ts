@@ -132,6 +132,16 @@ const dict = {
     en: 'no binomial formula applies',
     de: 'keine binomische Formel anwendbar',
   },
+  'exercise.expand.name': { en: 'Expand', de: 'Ausmultiplizieren' },
+  'exercise.expand.desc': {
+    en: 'Expand products of algebraic expressions',
+    de: 'Multipliziere Produkte von Termen aus',
+  },
+  'exercise.expandAndCollect.name': { en: 'Expand and Collect', de: 'Ausmultiplizieren & Zusammenfassen' },
+  'exercise.expandAndCollect.desc': {
+    en: 'Expand products and collect like terms',
+    de: 'Multipliziere aus und fasse gleiche Terme zusammen',
+  },
   'exercise.factoringOut.name': { en: 'Factoring Out', de: 'Ausklammern' },
   'exercise.factoringOut.desc': {
     en: 'Factor out common monomials',
