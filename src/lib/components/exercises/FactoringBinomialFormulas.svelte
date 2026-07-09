@@ -3,6 +3,7 @@
   import type { ExerciseProps } from '../../types';
   import Math from '../Math.svelte';
   import ExerciseShell from '../ExerciseShell.svelte';
+  import TermInput from './TermInput.svelte';
   import { formatFactoredLatex } from '../../exercises/factoringBinomialFormulas';
   import { parseFrac } from '../../math/fraction';
 
@@ -67,49 +68,19 @@
       <div class="expansion" role="group">
         {#if selectedFormula === 1 || selectedFormula === 2}
           <Math expression="(" />
-          <span class="term">
-            <input type="text" class="coeff-input" bind:value={aVal} placeholder="?" />
-            {#if varA}
-              <Math expression={varA} />
-            {/if}
-          </span>
+          <TermInput bind:value={aVal} variablePart={varA ?? ''} />
           <Math expression={selectedFormula === 1 ? '+' : '-'} />
-          <span class="term">
-            <input type="text" class="coeff-input" bind:value={bVal} placeholder="?" />
-            {#if varB}
-              <Math expression={varB} />
-            {/if}
-          </span>
+          <TermInput bind:value={bVal} variablePart={varB} />
           <Math expression=")^{2}" />
         {:else if selectedFormula === 3}
           <Math expression="(" />
-          <span class="term">
-            <input type="text" class="coeff-input" bind:value={aVal} placeholder="?" />
-            {#if varA}
-              <Math expression={varA} />
-            {/if}
-          </span>
+          <TermInput bind:value={aVal} variablePart={varA ?? ''} />
           <Math expression="+" />
-          <span class="term">
-            <input type="text" class="coeff-input" bind:value={bVal} placeholder="?" />
-            {#if varB}
-              <Math expression={varB} />
-            {/if}
-          </span>
+          <TermInput bind:value={bVal} variablePart={varB} />
           <Math expression=")(" />
-          <span class="term">
-            <input type="text" class="coeff-input linked" value={aVal} readonly />
-            {#if varA}
-              <Math expression={varA} />
-            {/if}
-          </span>
+          <TermInput value={aVal} variablePart={varA ?? ''} readonly />
           <Math expression="-" />
-          <span class="term">
-            <input type="text" class="coeff-input linked" value={bVal} readonly />
-            {#if varB}
-              <Math expression={varB} />
-            {/if}
-          </span>
+          <TermInput value={bVal} variablePart={varB} readonly />
           <Math expression=")" />
         {/if}
       </div>
@@ -144,11 +115,6 @@
     width: auto;
     min-width: 12rem;
     text-align: center;
-  }
-
-  .coeff-input.linked {
-    opacity: 0.7;
-    cursor: default;
   }
 
   .no-formula-hint {

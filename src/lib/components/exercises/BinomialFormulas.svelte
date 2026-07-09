@@ -4,6 +4,7 @@
   import Math from '../Math.svelte';
   import ExerciseShell from '../ExerciseShell.svelte';
   import Feedback from '../Feedback.svelte';
+  import TermInput from './TermInput.svelte';
   import { buildExpandedLatex } from '../../exercises/binomialFormulas';
 
   let { exercise, onSubmit, onNext, feedback }: ExerciseProps = $props();
@@ -28,18 +29,13 @@
   </p>
 
   {#if feedback === null}
-    <div class="expansion" role="group">
+    <div class="expansion">
       <Math expression="=" />
       {#each fields as { variablePart }, i (i)}
         {#if i > 0}
           <Math expression="+" />
         {/if}
-        <span class="term">
-          <input type="text" class="coeff-input" bind:value={values[i]} placeholder="?" />
-          {#if variablePart}
-            <Math expression={variablePart} />
-          {/if}
-        </span>
+        <TermInput bind:value={values[i]} {variablePart} />
       {/each}
     </div>
   {:else}
@@ -50,4 +46,3 @@
     <Feedback {feedback} {correctLatex} />
   {/if}
 </ExerciseShell>
-

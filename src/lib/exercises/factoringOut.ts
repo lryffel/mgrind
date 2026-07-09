@@ -2,9 +2,7 @@ import type { Exercise } from '../types';
 import { mulberry32 } from '../prng';
 import { randInt } from '../math/rng';
 import type { VarMap, FactorOption } from '../math/varmap';
-import {
-  varMapMultiply, varMapUnicode, gcdArray, buildFactorOptions, formatExpandedTerm,
-} from '../math/varmap';
+import { varMapMultiply, varMapUnicode, gcdArray, buildFactorOptions, formatExpandedTerm } from '../math/varmap';
 
 const ALL_VARS = ['x', 'y', 'z', 'a', 'b', 'c'];
 
@@ -24,7 +22,12 @@ function generateTrap(rng: () => number, numTerms: number, maxDegree: number): E
 
   for (let i = 0; i < numTerms; i++) {
     const remaining = numTerms - i;
-    const varsForTerm = Math.min(remaining === 1 ? varPool.length - varIdx : randInt(rng, 1, Math.min(2, varPool.length - varIdx - (remaining - 1))), varPool.length - varIdx);
+    const varsForTerm = Math.min(
+      remaining === 1
+        ? varPool.length - varIdx
+        : randInt(rng, 1, Math.min(2, varPool.length - varIdx - (remaining - 1))),
+      varPool.length - varIdx,
+    );
 
     const selectedVars = varPool.slice(varIdx, varIdx + varsForTerm);
     varIdx += varsForTerm;
@@ -32,7 +35,10 @@ function generateTrap(rng: () => number, numTerms: number, maxDegree: number): E
     const vars: VarMap = {};
     let degree = 0;
     for (let j = 0; j < selectedVars.length; j++) {
-      const maxExp = j === selectedVars.length - 1 ? Math.max(1, maxDegree - degree) : randInt(rng, 1, Math.max(1, maxDegree - degree - (selectedVars.length - j - 1)));
+      const maxExp =
+        j === selectedVars.length - 1
+          ? Math.max(1, maxDegree - degree)
+          : randInt(rng, 1, Math.max(1, maxDegree - degree - (selectedVars.length - j - 1)));
       const exp = Math.min(maxExp, maxDegree - degree);
       vars[selectedVars[j]] = exp;
       degree += exp;

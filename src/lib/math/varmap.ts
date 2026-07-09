@@ -7,9 +7,16 @@ export interface FactorOption {
 }
 
 const SUPERSCRIPTS: Record<string, string> = {
-  '0': '\u2070', '1': '\u00B9', '2': '\u00B2', '3': '\u00B3',
-  '4': '\u2074', '5': '\u2075', '6': '\u2076', '7': '\u2077',
-  '8': '\u2078', '9': '\u2079',
+  '0': '\u2070',
+  '1': '\u00B9',
+  '2': '\u00B2',
+  '3': '\u00B3',
+  '4': '\u2074',
+  '5': '\u2075',
+  '6': '\u2076',
+  '7': '\u2077',
+  '8': '\u2078',
+  '9': '\u2079',
 };
 
 export function varMapMultiply(a: VarMap, b: VarMap): VarMap {
@@ -66,7 +73,17 @@ export function varMapUnicode(v: VarMap): string {
   }
   if (Object.keys(sorted).length === 0) return '';
   return Object.entries(sorted)
-    .map(([k, e]) => `${k}${e === 1 ? '' : String(e).split('').map((d) => SUPERSCRIPTS[d]).join('')}`)
+    .map(
+      ([k, e]) =>
+        `${k}${
+          e === 1
+            ? ''
+            : String(e)
+                .split('')
+                .map((d) => SUPERSCRIPTS[d])
+                .join('')
+        }`,
+    )
     .join('');
 }
 

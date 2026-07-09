@@ -4,6 +4,7 @@
   import Math from '../Math.svelte';
   import ExerciseShell from '../ExerciseShell.svelte';
   import Feedback from '../Feedback.svelte';
+  import TermInput from './TermInput.svelte';
   import { formatFullFactoredLatex } from '../../exercises/factoringOutAndBinomial';
   import type { FactoringOutAndBinomialData } from '../../exercises/factoringOutAndBinomial';
 
@@ -36,9 +37,7 @@
   let normA = $derived((aVal ?? '').trim() || '1');
   let normB = $derived((bVal ?? '').trim() || '1');
 
-  let currentOption = $derived(
-    hasGcf ? data.factorOptions[selectedGcfIdx!] : null,
-  );
+  let currentOption = $derived(hasGcf ? data.factorOptions[selectedGcfIdx!] : null);
 
   let cdot = $derived('\\cdot');
 
@@ -46,9 +45,15 @@
     if (data.isTrap) return '';
     const correctOption = data.correctGcfIdx >= 0 ? data.factorOptions[data.correctGcfIdx] : null;
     return formatFullFactoredLatex(
-      data.formulaType, data.gcfCoeff, correctOption?.latex ?? '',
-      data.aNum, data.aDen, data.bNum, data.bDen,
-      data.varA, data.varB,
+      data.formulaType,
+      data.gcfCoeff,
+      correctOption?.latex ?? '',
+      data.aNum,
+      data.aDen,
+      data.bNum,
+      data.bDen,
+      data.varA,
+      data.varB,
     );
   });
 
@@ -99,12 +104,7 @@
     <div class="expansion">
       <Math expression="=" />
       {#if selectedGcfIdx != null}
-        <span class="term">
-          <input type="text" class="coeff-input" bind:value={gcfCoeff} placeholder="?" />
-          {#if currentOption}
-            <Math expression={currentOption.latex} />
-          {/if}
-        </span>
+        <TermInput bind:value={gcfCoeff} variablePart={currentOption?.latex ?? ''} />
       {/if}
       {#if selectedGcfIdx != null && hasFormula}
         <Math expression={cdot} />
@@ -112,19 +112,9 @@
       {#if hasFormula}
         <span class="binomial-body">
           <Math expression="(" />
-          <span class="term">
-            <input type="text" class="coeff-input" bind:value={aVal} placeholder="?" />
-            {#if data.varA}
-              <Math expression={data.varA} />
-            {/if}
-          </span>
+          <TermInput bind:value={aVal} variablePart={data.varA ?? ''} />
           <Math expression={selectedFormula === 1 ? '+' : '-'} />
-          <span class="term">
-            <input type="text" class="coeff-input" bind:value={bVal} placeholder="?" />
-            {#if data.varB}
-              <Math expression={data.varB} />
-            {/if}
-          </span>
+          <TermInput bind:value={bVal} variablePart={data.varB} />
           <Math expression=")^{2}" />
         </span>
       {/if}
@@ -175,25 +165,6 @@
     width: auto;
     min-width: 10rem;
     text-align: center;
-  }
-
-  .expansion {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: 0.25rem;
-    margin: 0.5rem 0;
-  }
-
-  .coeff-input {
-    width: 3rem;
-    text-align: center;
-  }
-
-  .term {
-    display: inline-flex;
-    align-items: baseline;
-    gap: 0.1rem;
   }
 
   .binomial-body {

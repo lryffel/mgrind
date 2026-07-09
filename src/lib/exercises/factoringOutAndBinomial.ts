@@ -26,11 +26,7 @@ export interface FactoringOutAndBinomialData {
   gcfVarLatex: string;
 }
 
-function innerTermVarMaps(
-  formulaType: number,
-  varA: string | null,
-  varB: string,
-): (VarMap | null)[] {
+function innerTermVarMaps(formulaType: number, varA: string | null, varB: string): (VarMap | null)[] {
   const a2: VarMap = varA ? { [varA]: 2 } : {};
   const b2: VarMap = { [varB]: 2 };
 
@@ -44,8 +40,10 @@ function innerTermVarMaps(
 
 function buildPromptLaTeX(
   formulaType: number,
-  aNum: number, aDen: number,
-  bNum: number, bDen: number,
+  aNum: number,
+  aDen: number,
+  bNum: number,
+  bDen: number,
   gcfCoeff: number,
   gcfVarMap: VarMap | null,
   varA: string | null,
@@ -80,8 +78,10 @@ function formatFullFactoredLatex(
   formulaType: number,
   gcfCoeff: number,
   gcfVarLatex: string,
-  aNum: number, aDen: number,
-  bNum: number, bDen: number,
+  aNum: number,
+  aDen: number,
+  bNum: number,
+  bDen: number,
   varA: string | null,
   varB: string,
 ): string {
@@ -100,15 +100,10 @@ function formatFullFactoredLatex(
   return `${gcfStr}\\,${inner}`;
 }
 
-function generateNormal(
-  rng: () => number,
-  formulaType: number,
-  allowFrac: boolean,
-  allowGcfVar: boolean,
-): Exercise {
+function generateNormal(rng: () => number, formulaType: number, allowGcfVar: boolean): Exercise {
   for (let attempt = 0; attempt < 30; attempt++) {
-    const [_aNum, _aDen] = randCoeff(rng, allowFrac);
-    const [_bNum, _bDen] = randCoeff(rng, allowFrac);
+    const [_aNum, _aDen] = randCoeff(rng, false);
+    const [_bNum, _bDen] = randCoeff(rng, false);
     let aNum = _aNum;
     const aDen = _aDen;
     let bNum = _bNum;
@@ -142,7 +137,7 @@ function generateNormal(
     const innerMaps = innerTermVarMaps(formulaType, varA, varB);
     const termVarParts: VarMap[] = innerMaps
       .filter((m): m is VarMap => m !== null)
-      .map((m) => gcfVarMap ? varMapMultiply(gcfVarMap, m) : m);
+      .map((m) => (gcfVarMap ? varMapMultiply(gcfVarMap, m) : m));
 
     const factorOptions = buildFactorOptions(termVarParts);
     const gcfVarLatex = gcfVarMap ? varMapLatex(gcfVarMap) : '';
@@ -160,8 +155,14 @@ function generateNormal(
 
     const prompt = buildPromptLaTeX(
       formulaType,
-      aCoeff[0], aCoeff[1], bCoeff[0], bCoeff[1],
-      gcfCoeff, gcfVarMap, varA, varB,
+      aCoeff[0],
+      aCoeff[1],
+      bCoeff[0],
+      bCoeff[1],
+      gcfCoeff,
+      gcfVarMap,
+      varA,
+      varB,
     );
 
     const answer = `${formulaType},${gcfCoeff},${correctGcfIdx},${aCoeff[0]}/${aCoeff[1]},${bCoeff[0]}/${bCoeff[1]}`;
@@ -171,9 +172,12 @@ function generateNormal(
       gcfCoeff,
       factorOptions,
       correctGcfIdx,
-      aNum: aCoeff[0], aDen: aCoeff[1],
-      bNum: bCoeff[0], bDen: bCoeff[1],
-      varA, varB,
+      aNum: aCoeff[0],
+      aDen: aCoeff[1],
+      bNum: bCoeff[0],
+      bDen: bCoeff[1],
+      varA,
+      varB,
       isTrap: false,
       termVarParts: termVarPartsLatex,
       gcfVarLatex,
@@ -188,20 +192,27 @@ function generateNormal(
   const prompt = buildPromptLaTeX(1, aCoeff[0], aCoeff[1], bCoeff[0], bCoeff[1], 2, null, null, v);
   const answer = `1,2,-1,${aCoeff[0]}/1,${bCoeff[0]}/1`;
   const data: FactoringOutAndBinomialData = {
-    formulaType: 1, gcfCoeff: 2, correctGcfIdx: -1,
+    formulaType: 1,
+    gcfCoeff: 2,
+    correctGcfIdx: -1,
     factorOptions: [],
-    aNum: aCoeff[0], aDen: 1, bNum: bCoeff[0], bDen: 1,
-    varA: null, varB: v, isTrap: false,
+    aNum: aCoeff[0],
+    aDen: 1,
+    bNum: bCoeff[0],
+    bDen: 1,
+    varA: null,
+    varB: v,
+    isTrap: false,
     termVarParts: [`${cmd(v)}^{2}`, cmd(v), ''],
     gcfVarLatex: '',
   };
   return { prompt, answer, data: data as unknown as Exercise['data'] };
 }
 
-function generateTrap(rng: () => number, allowFrac: boolean, allowGcfVar: boolean): Exercise {
+function generateTrap(rng: () => number, allowGcfVar: boolean): Exercise {
   const trapType = Math.floor(rng() * 3);
-  const aCoeff = randCoeff(rng, allowFrac);
-  const bCoeff = randCoeff(rng, allowFrac);
+  const aCoeff = randCoeff(rng, false);
+  const bCoeff = randCoeff(rng, false);
   const varB = pick(rng, INNER_VARS);
   let varA: string | null = null;
   if (allowGcfVar) {
@@ -241,9 +252,12 @@ function generateTrap(rng: () => number, allowFrac: boolean, allowGcfVar: boolea
     gcfCoeff,
     factorOptions: [],
     correctGcfIdx: -1,
-    aNum: aCoeff[0], aDen: aCoeff[1],
-    bNum: bCoeff[0], bDen: bCoeff[1],
-    varA, varB,
+    aNum: aCoeff[0],
+    aDen: aCoeff[1],
+    bNum: bCoeff[0],
+    bDen: bCoeff[1],
+    varA,
+    varB,
     isTrap: true,
     termVarParts: [],
     gcfVarLatex: gcfVarLatexPart,
@@ -254,16 +268,15 @@ function generateTrap(rng: () => number, allowFrac: boolean, allowGcfVar: boolea
 export function generateFactoringOutAndBinomial(seed: number, complexity: number): Exercise {
   const rng = mulberry32(seed);
   const clamped = Math.min(Math.max(complexity, 0), 9);
-  const allowFrac = clamped >= 9;
   const allowGcfVar = clamped >= 7;
   const useAllFormulas = clamped >= 4;
 
   if (rng() < 0.25) {
-    return generateTrap(rng, allowFrac, allowGcfVar);
+    return generateTrap(rng, allowGcfVar);
   }
 
   const formulaType = useAllFormulas ? Math.floor(rng() * 3) + 1 : 1;
-  return generateNormal(rng, formulaType, allowFrac, allowGcfVar);
+  return generateNormal(rng, formulaType, allowGcfVar);
 }
 
 export function validateFactoringOutAndBinomial(answer: string, exercise: Exercise): boolean {

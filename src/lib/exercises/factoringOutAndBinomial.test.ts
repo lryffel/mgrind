@@ -105,17 +105,15 @@ describe('generateFactoringOutAndBinomial', () => {
     }
   });
 
-  it('complexity 9 may produce fractional coefficients', () => {
-    let sawFraction = false;
+  it('never produces fractional coefficients', () => {
     for (let seed = 0; seed < 500; seed++) {
-      const ex = generateFactoringOutAndBinomial(seed, 9);
-      if (d(ex).isTrap) continue;
-      if (d(ex).aDen > 1 || d(ex).bDen > 1) {
-        sawFraction = true;
-        break;
+      for (let c = 0; c <= 9; c++) {
+        const ex = generateFactoringOutAndBinomial(seed + c * 1000, c);
+        if (d(ex).isTrap) continue;
+        expect(d(ex).aDen).toBe(1);
+        expect(d(ex).bDen).toBe(1);
       }
     }
-    expect(sawFraction).toBe(true);
   });
 
   it('complexity 7+ may include GCF variable part', () => {
@@ -145,7 +143,16 @@ describe('validateFactoringOutAndBinomial', () => {
     const ex: Exercise = {
       prompt: '',
       answer: '1,3,-1,2/1,4/1',
-      data: { formulaType: 1, gcfCoeff: 3, correctGcfIdx: -1, aNum: 2, aDen: 1, bNum: 4, bDen: 1, isTrap: false } as unknown as Exercise['data'],
+      data: {
+        formulaType: 1,
+        gcfCoeff: 3,
+        correctGcfIdx: -1,
+        aNum: 2,
+        aDen: 1,
+        bNum: 4,
+        bDen: 1,
+        isTrap: false,
+      } as unknown as Exercise['data'],
     };
     expect(validateFactoringOutAndBinomial('2,3,-1,2/1,4/1', ex)).toBe(false);
     expect(validateFactoringOutAndBinomial('3,3,-1,2/1,4/1', ex)).toBe(false);
@@ -155,7 +162,16 @@ describe('validateFactoringOutAndBinomial', () => {
     const ex: Exercise = {
       prompt: '',
       answer: '1,3,-1,2/1,4/1',
-      data: { formulaType: 1, gcfCoeff: 3, correctGcfIdx: -1, aNum: 2, aDen: 1, bNum: 4, bDen: 1, isTrap: false } as unknown as Exercise['data'],
+      data: {
+        formulaType: 1,
+        gcfCoeff: 3,
+        correctGcfIdx: -1,
+        aNum: 2,
+        aDen: 1,
+        bNum: 4,
+        bDen: 1,
+        isTrap: false,
+      } as unknown as Exercise['data'],
     };
     expect(validateFactoringOutAndBinomial('1,5,-1,2/1,4/1', ex)).toBe(false);
   });
@@ -164,7 +180,16 @@ describe('validateFactoringOutAndBinomial', () => {
     const ex: Exercise = {
       prompt: '',
       answer: '1,3,0,2/1,4/1',
-      data: { formulaType: 1, gcfCoeff: 3, correctGcfIdx: 0, aNum: 2, aDen: 1, bNum: 4, bDen: 1, isTrap: false } as unknown as Exercise['data'],
+      data: {
+        formulaType: 1,
+        gcfCoeff: 3,
+        correctGcfIdx: 0,
+        aNum: 2,
+        aDen: 1,
+        bNum: 4,
+        bDen: 1,
+        isTrap: false,
+      } as unknown as Exercise['data'],
     };
     expect(validateFactoringOutAndBinomial('1,3,1,2/1,4/1', ex)).toBe(false);
   });
@@ -173,7 +198,16 @@ describe('validateFactoringOutAndBinomial', () => {
     const ex: Exercise = {
       prompt: '',
       answer: '1,3,-1,2/1,4/1',
-      data: { formulaType: 1, gcfCoeff: 3, correctGcfIdx: -1, aNum: 2, aDen: 1, bNum: 4, bDen: 1, isTrap: false } as unknown as Exercise['data'],
+      data: {
+        formulaType: 1,
+        gcfCoeff: 3,
+        correctGcfIdx: -1,
+        aNum: 2,
+        aDen: 1,
+        bNum: 4,
+        bDen: 1,
+        isTrap: false,
+      } as unknown as Exercise['data'],
     };
     expect(validateFactoringOutAndBinomial('1,3,-1,5/1,4/1', ex)).toBe(false);
   });
@@ -182,7 +216,16 @@ describe('validateFactoringOutAndBinomial', () => {
     const ex: Exercise = {
       prompt: '',
       answer: '1,3,-1,2/1,4/1',
-      data: { formulaType: 1, gcfCoeff: 3, correctGcfIdx: -1, aNum: 2, aDen: 1, bNum: 4, bDen: 1, isTrap: false } as unknown as Exercise['data'],
+      data: {
+        formulaType: 1,
+        gcfCoeff: 3,
+        correctGcfIdx: -1,
+        aNum: 2,
+        aDen: 1,
+        bNum: 4,
+        bDen: 1,
+        isTrap: false,
+      } as unknown as Exercise['data'],
     };
     expect(validateFactoringOutAndBinomial('1,3,-1,2/1,7/1', ex)).toBe(false);
   });
@@ -209,7 +252,16 @@ describe('validateFactoringOutAndBinomial', () => {
     const ex: Exercise = {
       prompt: '',
       answer: '1,3,-1,2/1,4/1',
-      data: { formulaType: 1, gcfCoeff: 3, correctGcfIdx: -1, aNum: 2, aDen: 1, bNum: 4, bDen: 1, isTrap: false } as unknown as Exercise['data'],
+      data: {
+        formulaType: 1,
+        gcfCoeff: 3,
+        correctGcfIdx: -1,
+        aNum: 2,
+        aDen: 1,
+        bNum: 4,
+        bDen: 1,
+        isTrap: false,
+      } as unknown as Exercise['data'],
     };
     expect(validateFactoringOutAndBinomial('-1', ex)).toBe(false);
   });
@@ -218,7 +270,16 @@ describe('validateFactoringOutAndBinomial', () => {
     const ex: Exercise = {
       prompt: '',
       answer: '1,3,-1,2/1,4/1',
-      data: { formulaType: 1, gcfCoeff: 3, correctGcfIdx: -1, aNum: 2, aDen: 1, bNum: 4, bDen: 1, isTrap: false } as unknown as Exercise['data'],
+      data: {
+        formulaType: 1,
+        gcfCoeff: 3,
+        correctGcfIdx: -1,
+        aNum: 2,
+        aDen: 1,
+        bNum: 4,
+        bDen: 1,
+        isTrap: false,
+      } as unknown as Exercise['data'],
     };
     expect(validateFactoringOutAndBinomial('', ex)).toBe(false);
     expect(validateFactoringOutAndBinomial('1,3', ex)).toBe(false);
@@ -276,9 +337,15 @@ describe('regression', () => {
       const data = d(ex);
       const correctOption = data.correctGcfIdx >= 0 ? data.factorOptions[data.correctGcfIdx] : null;
       const latex = formatFullFactoredLatex(
-        data.formulaType, data.gcfCoeff, correctOption?.latex ?? '',
-        data.aNum, data.aDen, data.bNum, data.bDen,
-        data.varA, data.varB,
+        data.formulaType,
+        data.gcfCoeff,
+        correctOption?.latex ?? '',
+        data.aNum,
+        data.aDen,
+        data.bNum,
+        data.bDen,
+        data.varA,
+        data.varB,
       );
       expect(latex.charAt(0)).toBe(String(data.gcfCoeff).charAt(0));
     }
@@ -295,7 +362,9 @@ describe('regression', () => {
 
   it('gcfCoeff absorbs gcd of aNum,bNum so gcd(aNum,bNum)=1 for integer coeffs', () => {
     function gcd(a: number, b: number): number {
-      while (b) { [a, b] = [b, a % b]; }
+      while (b) {
+        [a, b] = [b, a % b];
+      }
       return Math.abs(a);
     }
     for (let seed = 0; seed < 2000; seed++) {
@@ -310,7 +379,9 @@ describe('regression', () => {
 
   it('generated polynomial coefficients match the stored data', () => {
     function gcd(a: number, b: number): number {
-      while (b) { [a, b] = [b, a % b]; }
+      while (b) {
+        [a, b] = [b, a % b];
+      }
       return Math.abs(a);
     }
     for (let seed = 0; seed < 2000; seed++) {

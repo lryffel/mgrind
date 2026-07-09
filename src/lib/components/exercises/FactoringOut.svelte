@@ -4,25 +4,26 @@
   import Math from '../Math.svelte';
   import ExerciseShell from '../ExerciseShell.svelte';
   import Feedback from '../Feedback.svelte';
+  import TermInput from './TermInput.svelte';
   import { formatFactoredLatex } from '../../exercises/factoringOut';
 
   let { exercise, onSubmit, onNext, feedback }: ExerciseProps = $props();
 
-  let data = $derived(exercise.data as unknown as {
-    isTrap: boolean;
-    factorOptions: { text: string; latex: string; innerVarParts: string[] }[];
-    correctIdx: number;
-    gcfCoeff: number;
-    expectedInnerCoeffs: number[];
-  });
+  let data = $derived(
+    exercise.data as unknown as {
+      isTrap: boolean;
+      factorOptions: { text: string; latex: string; innerVarParts: string[] }[];
+      correctIdx: number;
+      gcfCoeff: number;
+      expectedInnerCoeffs: number[];
+    },
+  );
 
   let selectedIdx = $state<number | null>(null);
   let coeffA = $state('');
   let coeffs = $state<string[]>([]);
 
-  let currentOption = $derived(
-    selectedIdx !== null && selectedIdx >= 0 ? data.factorOptions[selectedIdx] : null,
-  );
+  let currentOption = $derived(selectedIdx !== null && selectedIdx >= 0 ? data.factorOptions[selectedIdx] : null);
 
   let currentInnerVarParts = $derived(currentOption?.innerVarParts ?? []);
 
@@ -85,14 +86,7 @@
     <div class="expansion">
       <Math expression="=" />
       {#if selectedIdx != null && selectedIdx >= 0}
-        <span>
-          <input
-            type="text"
-            class="coeff-input"
-            bind:value={coeffA}
-            placeholder="?"
-          />
-        </span>
+        <TermInput bind:value={coeffA} />
         <Math expression={cdot} />
       {/if}
       <select bind:value={selectedIdx} class="factor-select" onchange={onSelectChange}>
@@ -109,17 +103,7 @@
             {#if i > 0}
               <Math expression="+" />
             {/if}
-            <span class="term">
-              <input
-                type="text"
-                class="coeff-input"
-                bind:value={coeffs[i]}
-                placeholder="?"
-              />
-              {#if part}
-                <Math expression={part} />
-              {/if}
-            </span>
+            <TermInput bind:value={coeffs[i]} variablePart={part} />
           {/each}
           <Math expression=")" />
         {/key}

@@ -29,10 +29,7 @@ import {
 import FactoringBinomialFormulas from '../components/exercises/FactoringBinomialFormulas.svelte';
 import { generateFactoringOut, validateFactoringOut } from '../exercises/factoringOut';
 import FactoringOut from '../components/exercises/FactoringOut.svelte';
-import {
-  generateFactoringOutAndBinomial,
-  validateFactoringOutAndBinomial,
-} from '../exercises/factoringOutAndBinomial';
+import { generateFactoringOutAndBinomial, validateFactoringOutAndBinomial } from '../exercises/factoringOutAndBinomial';
 import FactoringOutAndBinomial from '../components/exercises/FactoringOutAndBinomial.svelte';
 import { trimCompare, validateFractionAnswer } from '../validation';
 
