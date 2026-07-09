@@ -31,6 +31,8 @@ import { generateFactoringOut, validateFactoringOut } from '../exercises/factori
 import FactoringOut from '../components/exercises/FactoringOut.svelte';
 import { generateFactoringOutAndBinomial, validateFactoringOutAndBinomial } from '../exercises/factoringOutAndBinomial';
 import FactoringOutAndBinomial from '../components/exercises/FactoringOutAndBinomial.svelte';
+import AdditionFractionInstructions from '../components/exerciseInstructions/AdditionFractionInstructions.svelte';
+import SubtractionFractionInstructions from '../components/exerciseInstructions/SubtractionFractionInstructions.svelte';
 import { generateLinearEquations, validateLinearEquations } from '../exercises/linearEquations';
 import LinearEquationsExercise from '../components/exercises/LinearEquationsExercise.svelte';
 import { trimCompare, validateFractionAnswer } from '../validation';
@@ -108,6 +110,7 @@ export const exerciseTypes: Record<string, ExerciseType> = {
     validate: validateFractionAnswer,
     component: AdditionFraction,
     prerequisites: [{ typeId: 'simplifyFraction', complexity: 5 }],
+    instructionComponent: AdditionFractionInstructions,
   },
   subtractionFraction: {
     id: 'subtractionFraction',
@@ -118,6 +121,7 @@ export const exerciseTypes: Record<string, ExerciseType> = {
     validate: validateSubtractionFraction,
     component: SubtractionFraction,
     prerequisites: [{ typeId: 'simplifyFraction', complexity: 5 }],
+    instructionComponent: SubtractionFractionInstructions,
   },
   multiplicationFraction: {
     id: 'multiplicationFraction',

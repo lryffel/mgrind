@@ -30,3 +30,4 @@
 - `@picocss/pico` v2 is the only dependency — drive visual design through Pico classes (`role="group"`, `outline`, `<progress>`) before writing custom CSS
 - `Exercise.data.fields` (optional `{ variablePart: string }[]`) provides multi-input answer mode (e.g. for collecting terms, binomial formulas); `null` or `undefined` → single text input, present → multiple inputs
 - Interactive `<article>` cards use `<!-- svelte-ignore a11y_no_noninteractive_tabindex -->` and `a11y_no_noninteractive_element_interactions` comments to suppress Svelte a11y warnings
+- German text uses Swiss orthography: no "ß", always "ss" (e.g. "gross", "Masse", "Schweizer Strassenverordnung")

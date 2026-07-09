@@ -67,7 +67,37 @@ let {
 
 For examples, see existing components: `SimplifyFraction.svelte`, `PrimeFactorisation.svelte`.
 
-## Step 3: Add i18n keys
+## Step 3: (Optional) Add instruction component
+
+If the exercise type needs a help modal with solving instructions:
+
+Create `src/lib/components/exerciseInstructions/<Name>Instructions.svelte`. It's a regular Svelte component with full control over HTML, KaTeX via `<Math>`, and bilingual content. Define KaTeX expressions in `<script>` to share them across languages.
+
+**Example** (`src/lib/components/exerciseInstructions/AdditionFractionInstructions.svelte`):
+
+```svelte
+<script lang="ts">
+  import { state } from '../../i18n.svelte';
+  import Math from '../Math.svelte';
+
+  const ex = '\\frac{2}{3} + \\frac{3}{4}';
+</script>
+
+{#if state.lang === 'en'}
+  <p>English instructions with <Math expression={ex} /></p>
+{:else}
+  <p>Deutsche Anleitung mit <Math expression={ex} /></p>
+{/if}
+```
+
+Then register it in `src/lib/data/exerciseTypes.ts`:
+
+1. Import the component.
+2. Add `instructionComponent: <Name>Instructions` to the exercise type entry.
+
+The `?` button appears automatically on the exercise card. If `instructionComponent` is not set, no button is shown.
+
+## Step 4: Add i18n keys
 
 Edit `src/lib/i18n.svelte.ts` — add entries for:
 
@@ -77,7 +107,7 @@ Edit `src/lib/i18n.svelte.ts` — add entries for:
 | `exercise.<id>.desc`   | Short description       |
 | `exercise.<id>.prompt` | (Optional) prompt label |
 
-## Step 4: Register in `exerciseTypes.ts`
+## Step 5: Register in `exerciseTypes.ts`
 
 Edit `src/lib/data/exerciseTypes.ts`:
 
@@ -99,7 +129,7 @@ Edit `src/lib/data/exerciseTypes.ts`:
 - `trimCompare` compares `answer.trim() === exercise.answer` — use unless the type needs custom validation.
 - `maxComplexity` determines the number of difficulty levels (levels go from 0 to maxComplexity-1).
 
-## Step 5: (Optional) Assign to a discipline
+## Step 6: (Optional) Assign to a discipline
 
 If the type should appear in a discipline, add its `id` to the discipline's `exerciseTypeIds` array in `src/lib/data/disciplines.ts`.
 

@@ -5,6 +5,7 @@
   import { exerciseTypes } from '../data/exerciseTypes';
   import { disciplines } from '../data/disciplines';
   import { ExerciseSession } from '../exerciseSession.svelte';
+  import { instructionContext } from '../instructionContext.svelte';
 
   let { disciplineId, onBack }: { disciplineId: string; onBack: () => void } = $props();
 
@@ -16,6 +17,7 @@
     if (!session || disciplineId !== session.disciplineId) {
       session = new ExerciseSession(disciplineId);
     }
+    instructionContext.currentInstructionComponent = session?.currentType?.instructionComponent;
   });
 </script>
 

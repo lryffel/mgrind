@@ -162,6 +162,7 @@ const dict = {
     en: 'Formula:',
     de: 'Formel:',
   },
+  help: { en: 'Help', de: 'Hilfe' },
 } satisfies Record<string, Record<Lang, string>>;
 
 export const state = $state({ lang: 'en' as Lang });

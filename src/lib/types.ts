@@ -50,6 +50,7 @@ export interface ExerciseType {
   validate: (answer: string, exercise: Exercise) => boolean;
   component: ExerciseComponent;
   prerequisites?: Prerequisite[];
+  instructionComponent?: Component;
 }
 
 export interface Discipline {

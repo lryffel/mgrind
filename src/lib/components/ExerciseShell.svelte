@@ -1,7 +1,9 @@
 <script lang="ts">
+  import type { Snippet, Component } from 'svelte';
   import { _ } from '../i18n.svelte';
-  import type { Snippet } from 'svelte';
   import type { Exercise, ExerciseFeedback } from '../types';
+  import Modal from './Modal.svelte';
+  import { instructionContext } from '../instructionContext.svelte';
 
   let {
     exercise,
@@ -20,6 +22,7 @@
   } = $props();
 
   let el = $state<HTMLElement | null>(null);
+  let showHelp = $state(false);
 
   function handleKeydown(e: KeyboardEvent) {
     if (e.key === 'Enter') {
@@ -52,6 +55,9 @@
 {#if card}
   <!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
   <article class="exercise-card" bind:this={el} onclick={onClick} onkeydown={onArticleKeydown}>
+    {#if instructionContext.currentInstructionComponent}
+      <button class="help-button" onclick={() => (showHelp = true)} aria-label={_('help')}>?</button>
+    {/if}
     {@render children()}
     <div class="submit-row">
       {#if feedback === null}
@@ -63,6 +69,9 @@
   </article>
 {:else}
   <div class="exercise-card" bind:this={el}>
+    {#if instructionContext.currentInstructionComponent}
+      <button class="help-button" onclick={() => (showHelp = true)} aria-label={_('help')}>?</button>
+    {/if}
     {@render children()}
     <div class="submit-row">
       {#if feedback === null}
@@ -73,3 +82,32 @@
     </div>
   </div>
 {/if}
+
+<Modal show={showHelp} onclose={() => (showHelp = false)}>
+  {#if instructionContext.currentInstructionComponent}
+    {@const Comp = instructionContext.currentInstructionComponent}
+    <Comp />
+  {/if}
+</Modal>
+
+<style>
+  .help-button {
+    position: absolute;
+    top: 0.5rem;
+    right: 0.5rem;
+    width: 2rem;
+    height: 2rem;
+    padding: 0;
+    border-radius: 50%;
+    font-size: 1rem;
+    font-weight: 700;
+    line-height: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--pico-background-color);
+    border: 1px solid var(--pico-muted-border-color);
+    color: var(--pico-color);
+    cursor: pointer;
+  }
+</style>
