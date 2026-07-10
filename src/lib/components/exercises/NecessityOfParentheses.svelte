@@ -62,7 +62,7 @@
     {/each}
   </div>
 
-  {#if feedback !== null}
+  {#if feedback === 'correct'}
     <Feedback {feedback} />
   {/if}
 </ExerciseShell>

@@ -11,6 +11,8 @@
   let userInput = $state('');
 
   let validationError = $derived(userInput.includes(',') ? _('error.decimalComma') : null);
+
+  let correctLatex = $derived(exercise.answer);
 </script>
 
 <ExerciseShell {exercise} {feedback} submitAnswer={() => onSubmit(userInput.trim())} {onNext} {validationError}>
@@ -43,7 +45,7 @@
         <Math expression={exercise.prompt} />
       </p>
     {/if}
-    <Feedback {feedback} textAnswer={exercise.answer} />
+    <Feedback {feedback} {correctLatex} textAnswer={exercise.answer} />
   {/if}
 </ExerciseShell>
 
