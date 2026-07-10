@@ -105,6 +105,21 @@ describe('validateFractionAnswer', () => {
     const ex: Exercise = { prompt: '', answer: '1,2' };
     expect(validateFractionAnswer('', ex)).toBe(false);
   });
+
+  it('accepts "0,1" when answer is 0/1', () => {
+    const ex: Exercise = { prompt: '', answer: '0,1' };
+    expect(validateFractionAnswer('0,1', ex)).toBe(true);
+  });
+
+  it('accepts "0,1" as equivalent to 0/5', () => {
+    const ex: Exercise = { prompt: '', answer: '0,5' };
+    expect(validateFractionAnswer('0,1', ex)).toBe(true);
+  });
+
+  it('rejects "0,1" when answer is 2/3', () => {
+    const ex: Exercise = { prompt: '', answer: '2,3' };
+    expect(validateFractionAnswer('0,1', ex)).toBe(false);
+  });
 });
 
 describe('exercise type validation integration', () => {

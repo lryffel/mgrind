@@ -29,8 +29,10 @@
     denValues = denFields.map(() => '');
   });
 
-  let normNumValues = $derived(numValues.map(normalizeCoeff));
-  let normDenValues = $derived(denValues.map(normalizeCoeff));
+  let numContexts = $derived(numFields.map((f) => (f.variablePart === '' ? 'summand' : 'coefficient')));
+  let denContexts = $derived(denFields.map((f) => (f.variablePart === '' ? 'summand' : 'coefficient')));
+  let normNumValues = $derived(numValues.map((v, i) => normalizeCoeff(v, numContexts[i])));
+  let normDenValues = $derived(denValues.map((v, i) => normalizeCoeff(v, denContexts[i])));
 
   let correctNumParts = $derived(showFraction ? exercise.answer.split(';')[0].split(',') : exercise.answer.split(','));
   let correctDenParts = $derived(showFraction ? exercise.answer.split(';')[1].split(',') : []);
@@ -50,9 +52,9 @@
   {feedback}
   submitAnswer={() => {
     if (showFraction) {
-      onSubmit(`${normalizeCoeff(numValues[0])};${normalizeCoeff(denValues[0])}`);
+      onSubmit(`${normalizeCoeff(numValues[0], numContexts[0])};${normalizeCoeff(denValues[0], denContexts[0])}`);
     } else {
-      onSubmit(numValues.map(normalizeCoeff).join(','));
+      onSubmit(numValues.map((v, i) => normalizeCoeff(v, numContexts[i])).join(','));
     }
   }}
   {validationError}
@@ -72,13 +74,13 @@
         <span class="result-fraction">
           <span class="fraction-num">
             {#each numFields as field, i (i)}
-              <NumericInput bind:value={numValues[i]} variablePart={field.variablePart} />
+              <NumericInput bind:value={numValues[i]} variablePart={field.variablePart} context={numContexts[i]} />
             {/each}
           </span>
           <span class="fraction-bar"></span>
           <span class="fraction-den">
             {#each denFields as field, i (i)}
-              <NumericInput bind:value={denValues[i]} variablePart={field.variablePart} />
+              <NumericInput bind:value={denValues[i]} variablePart={field.variablePart} context={denContexts[i]} />
             {/each}
           </span>
         </span>
@@ -87,7 +89,7 @@
           {#if i > 0}
             <Math expression="+" />
           {/if}
-          <NumericInput bind:value={numValues[i]} variablePart={field.variablePart} />
+          <NumericInput bind:value={numValues[i]} variablePart={field.variablePart} context={numContexts[i]} />
         {/each}
       {/if}
     </div>
@@ -113,7 +115,7 @@
     width: 100%;
     height: 2px;
     background: currentColor;
-    min-width: 3rem;
+    min-width: 2rem;
   }
 
   .fraction-num,

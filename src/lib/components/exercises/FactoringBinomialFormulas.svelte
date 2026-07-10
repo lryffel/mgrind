@@ -20,7 +20,7 @@
   let validationError = $derived(aVal.includes(',') || bVal.includes(',') ? _('error.decimalComma') : null);
 
   function normVal(s: string): string {
-    return normalizeCoeff(s);
+    return normalizeCoeff(s, 'coefficient');
   }
 
   let normA = $derived(normVal(aVal));
@@ -75,19 +75,19 @@
       <div class="expansion">
         {#if selectedFormula === 1 || selectedFormula === 2}
           <Math expression="(" />
-          <NumericInput bind:value={aVal} variablePart={varA ?? ''} />
+          <NumericInput bind:value={aVal} variablePart={varA ?? ''} context="coefficient" />
           <Math expression={selectedFormula === 1 ? '+' : '-'} />
-          <NumericInput bind:value={bVal} variablePart={varB} />
+          <NumericInput bind:value={bVal} variablePart={varB} context="coefficient" />
           <Math expression=")^{2}" />
         {:else if selectedFormula === 3}
           <Math expression="(" />
-          <NumericInput bind:value={aVal} variablePart={varA ?? ''} />
+          <NumericInput bind:value={aVal} variablePart={varA ?? ''} context="coefficient" />
           <Math expression="+" />
-          <NumericInput bind:value={bVal} variablePart={varB} />
+          <NumericInput bind:value={bVal} variablePart={varB} context="coefficient" />
           <Math expression=")(" />
-          <NumericInput value={aVal} variablePart={varA ?? ''} readonly />
+          <NumericInput value={aVal} variablePart={varA ?? ''} context="coefficient" readonly />
           <Math expression="-" />
-          <NumericInput value={bVal} variablePart={varB} readonly />
+          <NumericInput value={bVal} variablePart={varB} context="coefficient" readonly />
           <Math expression=")" />
         {/if}
       </div>

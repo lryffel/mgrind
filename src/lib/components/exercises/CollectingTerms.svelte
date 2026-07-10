@@ -22,7 +22,8 @@
     values = fields.map(() => '');
   });
 
-  let normValues = $derived(values.map(normalizeCoeff));
+  let contexts = $derived(fields.map((f) => (f.variablePart === '' ? 'summand' : 'coefficient')));
+  let normValues = $derived(values.map((v, i) => normalizeCoeff(v, contexts[i])));
   let userLatex = $derived(formatCollectingAnswer(normValues, variableParts));
   let correctLatex = $derived(formatCollectingAnswer(exercise.answer.split(','), variableParts));
 </script>
@@ -42,7 +43,7 @@
         {#if i > 0}
           <Math expression="+" />
         {/if}
-        <NumericInput bind:value={values[i]} {variablePart} />
+        <NumericInput bind:value={values[i]} {variablePart} context={contexts[i]} />
       {/each}
     </div>
   {:else}

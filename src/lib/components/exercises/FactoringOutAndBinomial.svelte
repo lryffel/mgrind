@@ -38,9 +38,9 @@
   let hasFormula = $derived(selectedFormula != null && selectedFormula > 0);
   let noFormula = $derived(selectedFormula === 0);
 
-  let normGcfCoeff = $derived(normalizeCoeff(gcfCoeff ?? ''));
-  let normA = $derived(normalizeCoeff(aVal ?? ''));
-  let normB = $derived(normalizeCoeff(bVal ?? ''));
+  let normGcfCoeff = $derived(normalizeCoeff(gcfCoeff ?? '', 'coefficient'));
+  let normA = $derived(normalizeCoeff(aVal ?? '', 'coefficient'));
+  let normB = $derived(normalizeCoeff(bVal ?? '', 'coefficient'));
 
   let currentOption = $derived(hasGcf ? data.factorOptions[selectedGcfIdx!] : null);
 
@@ -111,7 +111,7 @@
       <div class="expansion">
         <Math expression="=" />
         {#if selectedGcfIdx != null}
-          <NumericInput bind:value={gcfCoeff} variablePart={currentOption?.latex ?? ''} />
+          <NumericInput bind:value={gcfCoeff} variablePart={currentOption?.latex ?? ''} context="coefficient" />
         {/if}
         {#if selectedGcfIdx != null && hasFormula}
           <Math expression={cdot} />
@@ -120,21 +120,21 @@
           {#if selectedFormula === 3}
             <span class="binomial-body">
               <Math expression="(" />
-              <NumericInput bind:value={aVal} variablePart={data.varA ?? ''} />
+              <NumericInput bind:value={aVal} variablePart={data.varA ?? ''} context="coefficient" />
               <Math expression="+" />
-              <NumericInput bind:value={bVal} variablePart={data.varB} />
+              <NumericInput bind:value={bVal} variablePart={data.varB} context="coefficient" />
               <Math expression=")(" />
-              <NumericInput value={aVal} variablePart={data.varA ?? ''} readonly />
+              <NumericInput value={aVal} variablePart={data.varA ?? ''} context="coefficient" readonly />
               <Math expression="-" />
-              <NumericInput value={bVal} variablePart={data.varB} readonly />
+              <NumericInput value={bVal} variablePart={data.varB} context="coefficient" readonly />
               <Math expression=")" />
             </span>
           {:else}
             <span class="binomial-body">
               <Math expression="(" />
-              <NumericInput bind:value={aVal} variablePart={data.varA ?? ''} />
+              <NumericInput bind:value={aVal} variablePart={data.varA ?? ''} context="coefficient" />
               <Math expression={selectedFormula === 1 ? '+' : '-'} />
-              <NumericInput bind:value={bVal} variablePart={data.varB} />
+              <NumericInput bind:value={bVal} variablePart={data.varB} context="coefficient" />
               <Math expression=")^{2}" />
             </span>
           {/if}

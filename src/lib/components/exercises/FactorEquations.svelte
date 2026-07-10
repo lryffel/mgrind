@@ -46,7 +46,7 @@
       {#each labels as label, i (i)}
         <span class="solution-row">
           <Math expression={label} />
-          <NumericInput bind:value={values[i]} placeholder="" align="center" />
+          <NumericInput bind:value={values[i]} align="center" />
         </span>
       {/each}
     </div>

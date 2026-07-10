@@ -31,13 +31,19 @@
     return `\\frac{${n}}{${d}}`;
   });
 
-  const correctLatex = $derived(`\\frac{${correctNumDen[0]}}{${correctNumDen[1]}}`);
+  const op = $derived(exercise.data?.op ?? '-');
+  const correctLatex = $derived(
+    correctNumDen[1] === '1' ? correctNumDen[0] : `\\frac{${correctNumDen[0]}}{${correctNumDen[1]}}`,
+  );
+  const userLatex = $derived(
+    (denInput || '1') === '1' ? `${numInput || '0'}` : `\\frac{${numInput || '0'}}{${denInput || '1'}}`,
+  );
 </script>
 
 <ExerciseShell
   {exercise}
   {feedback}
-  submitAnswer={() => onSubmit(`${numInput},${denInput}`)}
+  submitAnswer={() => onSubmit(`${numInput || '0'},${denInput || '1'}`)}
   {onNext}
   {validationError}
 >
@@ -45,21 +51,19 @@
     <p class="prompt-label">{_(promptKey)}</p>
     <p class="prompt fraction-prompt">
       <Math expression={`\\frac{${num1}}{${den1}}`} />
-      <Math expression="-" />
+      <Math expression={op} />
       <Math expression={`\\frac{${num2}}{${den2}}`} />
       <Math expression="=" />
-      <NumericInput bind:num={numInput} bind:den={denInput} fraction />
+      <NumericInput bind:num={numInput} bind:den={denInput} fraction numPlaceholder="0" denPlaceholder="1" />
     </p>
   {:else}
     <p class="prompt-label">{_(promptKey)}</p>
     <p class="prompt fraction-prompt">
       <Math expression={`\\frac{${num1}}{${den1}}`} />
-      <Math expression="-" />
+      <Math expression={op} />
       <Math expression={`\\frac{${num2}}{${den2}}`} />
       <Math expression="=" />
-      <span class="user-answer"
-        ><Math expression={numInput && denInput ? `\\frac{${numInput}}{${denInput}}` : '\\;'} /></span
-      >
+      <span class="user-answer"><Math expression={userLatex} /></span>
     </p>
     <Feedback {feedback} {correctLatex} />
     {#if hasNegativeDenominator}

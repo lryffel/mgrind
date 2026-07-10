@@ -1,5 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import { generateSubstitution, validateSubstitution } from './substitution';
+import type { Exercise } from '../types';
 
 function allVariablesPresent(): Set<string> {
   return new Set(['a', 'b', 'c', 'k', 'm', 'n', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z']);
@@ -158,6 +159,15 @@ describe('validateSubstitution', () => {
     expect(validateSubstitution('abc', ex)).toBe(false);
     expect(validateSubstitution('', ex)).toBe(false);
     expect(validateSubstitution('1/0', ex)).toBe(false);
+  });
+
+  it('accepts "0/1" when answer is 0/1', () => {
+    const ex: Exercise = {
+      prompt: 'x = 0',
+      answer: '0/1',
+      data: { term: 'x', value: '0', variable: 'x', complexity: 0 },
+    };
+    expect(validateSubstitution('0/1', ex)).toBe(true);
   });
 
   it('accepts integer-style answers matching the expected', () => {

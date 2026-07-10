@@ -32,8 +32,8 @@
 
   let currentInnerVarParts = $derived(currentOption?.innerVarParts ?? []);
 
-  let normCoeffA = $derived(normalizeCoeff(coeffA ?? ''));
-  let normCoeffs = $derived(coeffs.map((c) => normalizeCoeff(c ?? '')));
+  let normCoeffA = $derived(normalizeCoeff(coeffA ?? '', 'coefficient'));
+  let normCoeffs = $derived(coeffs.map((c) => normalizeCoeff(c ?? '', 'coefficient')));
 
   let userLatex = $derived.by(() => {
     if (selectedIdx == null || selectedIdx < 0) return '';
@@ -91,7 +91,7 @@
     <div class="expansion">
       <Math expression="=" />
       {#if selectedIdx != null && selectedIdx >= 0}
-        <NumericInput bind:value={coeffA} />
+        <NumericInput bind:value={coeffA} context="coefficient" />
         <Math expression={cdot} />
       {/if}
       <select bind:value={selectedIdx} class="factor-select" onchange={onSelectChange}>
@@ -108,7 +108,7 @@
             {#if i > 0}
               <Math expression="+" />
             {/if}
-            <NumericInput bind:value={coeffs[i]} variablePart={part} />
+            <NumericInput bind:value={coeffs[i]} variablePart={part} context="coefficient" />
           {/each}
           <Math expression=")" />
         {/key}

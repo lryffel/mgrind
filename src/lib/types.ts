@@ -1,5 +1,7 @@
 import type { Component } from 'svelte';
 
+export type InputContext = 'coefficient' | 'exponent' | 'summand' | 'numerator' | 'denominator' | 'plain';
+
 export type ExerciseFeedback = 'correct' | 'incorrect' | null;
 
 export interface ExerciseProps {

@@ -1,10 +1,19 @@
-import type { Exercise } from './types';
+import type { Exercise, InputContext } from './types';
 import { reduceFrac } from './math/fraction';
 
-export function normalizeCoeff(s: string): string {
+const DEFAULTS: Record<InputContext, string> = {
+  coefficient: '1',
+  exponent: '0',
+  summand: '0',
+  numerator: '0',
+  denominator: '1',
+  plain: '',
+};
+
+export function normalizeCoeff(s: string, context: InputContext = 'coefficient'): string {
   const t = s.trim();
   if (t === '-') return '-1';
-  return t || '1';
+  return t || DEFAULTS[context];
 }
 
 export function trimCompare(answer: string, exercise: Exercise): boolean {

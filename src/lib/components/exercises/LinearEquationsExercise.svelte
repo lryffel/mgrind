@@ -28,7 +28,7 @@
     </p>
     <p class="answer-row">
       <Math expression={`${variable} = `} />
-      <NumericInput bind:value={userInput} placeholder="" />
+      <NumericInput bind:value={userInput} />
     </p>
   {:else}
     <p class="prompt-label">

@@ -19,7 +19,7 @@
       {@const parts = exercise.prompt.split('?')}
       <p class="prompt">
         <Math expression={parts[0]} />
-        <NumericInput bind:value={userInput} placeholder="" />
+        <NumericInput bind:value={userInput} />
         <Math expression={parts[1] ?? ''} />
       </p>
     {:else}
@@ -27,7 +27,7 @@
         <Math expression={exercise.prompt} />
       </p>
       <div class="answer-row">
-        <NumericInput bind:value={userInput} placeholder="" />
+        <NumericInput bind:value={userInput} />
       </div>
     {/if}
   {:else}

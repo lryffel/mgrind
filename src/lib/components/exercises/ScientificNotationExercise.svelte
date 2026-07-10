@@ -54,23 +54,14 @@
     </p>
     {#if isMultiInput}
       <div class="sci-row">
-        <NumericInput bind:value={coeffInput} align="right" placeholder="…" />
+        <NumericInput bind:value={coeffInput} align="right" context="coefficient" />
         <Math expression={cdot} />
-        <Math expression="10" />^<sup
-          ><input
-            type="text"
-            inputmode="numeric"
-            pattern="[0-9]*"
-            class="exp-input"
-            style="text-align: left; font-family: monospace;"
-            bind:value={expInput}
-            placeholder="…"
-          /></sup
-        >
+        <Math expression="10" />
+        <NumericInput bind:value={expInput} superscript context="exponent" align="left" />
       </div>
     {:else}
       <div class="answer-row">
-        <NumericInput bind:value={userInput} placeholder="" />
+        <NumericInput bind:value={userInput} />
       </div>
     {/if}
   {:else}
@@ -83,7 +74,7 @@
     {#if isMultiInput}
       <div class="sci-row">
         <span class="user-answer">
-          <Math expression={`${coeffInput} \\cdot 10`} />^<sup>{expInput || ''}</sup>
+          <Math expression={`${coeffInput} \\cdot 10^{${expInput || '0'}}`} />
         </span>
       </div>
     {:else}
@@ -103,10 +94,6 @@
     gap: 6px;
     font-size: 1.25rem;
     margin: 1rem 0;
-  }
-
-  .exp-input {
-    width: 3rem;
   }
 
   .user-answer {

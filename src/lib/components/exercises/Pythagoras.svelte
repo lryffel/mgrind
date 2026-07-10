@@ -173,7 +173,6 @@
         {/if}
       </div>
     {/each}
-
   </div>
 
   {#if isNonRight && feedback === null}

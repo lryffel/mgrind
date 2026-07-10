@@ -1,5 +1,6 @@
 <script lang="ts">
   import Math from '../Math.svelte';
+  import type { InputContext } from '../../types';
 
   let {
     value = $bindable(),
@@ -7,9 +8,14 @@
     den = $bindable(),
     variablePart = '',
     readonly = false,
-    placeholder = '?',
+    placeholder,
+    numPlaceholder,
+    denPlaceholder,
     fraction = false,
+    superscript = false,
     align = 'center',
+    context = 'plain',
+    onkeydown,
   }: {
     value?: string;
     num?: string;
@@ -17,27 +23,27 @@
     variablePart?: string;
     readonly?: boolean;
     placeholder?: string;
+    numPlaceholder?: string;
+    denPlaceholder?: string;
     fraction?: boolean;
+    superscript?: boolean;
     align?: 'center' | 'right' | 'left';
+    context?: InputContext;
+    onkeydown?: (e: KeyboardEvent) => void;
   } = $props();
 
-  let inputEl: HTMLInputElement | undefined = $state();
-  let numEl: HTMLInputElement | undefined = $state();
-  let denEl: HTMLInputElement | undefined = $state();
+  const DEFAULTS: Record<InputContext, string> = {
+    coefficient: '1',
+    exponent: '0',
+    summand: '0',
+    numerator: '0',
+    denominator: '1',
+    plain: '?',
+  };
 
-  function setWidth(el: HTMLInputElement, v: string) {
-    const w = v.length + 5;
-    el.style.width = (w > 5 ? w : 5) + 'ch';
-  }
-
-  $effect(() => {
-    if (fraction) {
-      if (numEl) setWidth(numEl, num ?? '');
-      if (denEl) setWidth(denEl, den ?? '');
-    } else if (inputEl) {
-      setWidth(inputEl, value ?? '');
-    }
-  });
+  let resolvedPlaceholder = $derived(placeholder ?? DEFAULTS[context]);
+  let resolvedNumPlaceholder = $derived(numPlaceholder ?? placeholder ?? DEFAULTS['numerator']);
+  let resolvedDenPlaceholder = $derived(denPlaceholder ?? placeholder ?? DEFAULTS['denominator']);
 </script>
 
 {#if fraction}
@@ -49,9 +55,9 @@
       class="coeff-input"
       style="text-align: {align}"
       bind:value={num}
-      bind:this={numEl}
-      {placeholder}
+      placeholder={resolvedNumPlaceholder}
       {readonly}
+      {onkeydown}
     />
     <span class="fraction-bar"></span>
     <input
@@ -61,28 +67,44 @@
       class="coeff-input"
       style="text-align: {align}"
       bind:value={den}
-      bind:this={denEl}
-      {placeholder}
+      placeholder={resolvedDenPlaceholder}
       {readonly}
+      {onkeydown}
     />
   </span>
 {:else}
-  <span class="term">
-    <input
-      type="text"
-      inputmode="numeric"
-      pattern="[0-9]*"
-      class="coeff-input"
-      style="text-align: {align}"
-      bind:value
-      bind:this={inputEl}
-      {placeholder}
-      {readonly}
-    />
-    {#if variablePart}
-      <Math expression={variablePart} />
-    {/if}
-  </span>
+  {#if superscript}
+    <sup>
+      <input
+        type="text"
+        inputmode="numeric"
+        pattern="[0-9]*"
+        class="coeff-input"
+        style="text-align: {align}"
+        bind:value
+        placeholder={resolvedPlaceholder}
+        {readonly}
+        {onkeydown}
+      />
+    </sup>
+  {:else}
+    <span class="term">
+      <input
+        type="text"
+        inputmode="numeric"
+        pattern="[0-9]*"
+        class="coeff-input"
+        style="text-align: {align}"
+        bind:value
+        placeholder={resolvedPlaceholder}
+        {readonly}
+        {onkeydown}
+      />
+      {#if variablePart}
+        <Math expression={variablePart} />
+      {/if}
+    </span>
+  {/if}
 {/if}
 
 <style>
@@ -98,6 +120,13 @@
     width: 100%;
     height: 2px;
     background: currentColor;
-    min-width: 3rem;
+    min-width: 2rem;
+  }
+
+  sup {
+    font-size: 0.75em;
+    position: relative;
+    top: -0.65em;
+    line-height: 0;
   }
 </style>
