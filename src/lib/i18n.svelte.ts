@@ -245,6 +245,10 @@ const dict = {
     en: 'Cannot be computed with the Pythagorean theorem',
     de: 'Kann nicht mit dem Satz des Pythagoras berechnet werden',
   },
+  'exercise.pythagoras.cannotComputeShort': {
+    en: "Doesn't work",
+    de: 'Geht nicht',
+  },
   'exercise.simplifySymbolicFraction.name': {
     en: 'Simplify Symbolic Fractions',
     de: 'Bruchterme kürzen',

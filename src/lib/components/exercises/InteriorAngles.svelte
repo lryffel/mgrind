@@ -3,7 +3,8 @@
   import type { ExerciseProps } from '../../types';
   import ExerciseShell from '../ExerciseShell.svelte';
   import Feedback from '../Feedback.svelte';
-  import NumericInput from '../exercises/NumericInput.svelte';
+  import NumericInput from './NumericInput.svelte';
+  import KaTeX from '../Math.svelte';
 
   interface AngleData {
     value: number;
@@ -23,13 +24,18 @@
 
   let validationError = $derived(userInput.includes(',') ? _('error.decimalComma') : null);
 
-  const degreeSymbol = '{}^\\circ';
+  const degreeLatex = '{}^\\circ';
   const correctLatex = $derived(exercise.answer + '{}^\\circ');
 
   const data = $derived(exercise.data as InteriorAnglesData);
 
   const cx = 150;
   const cy = 140;
+
+  function userAnswerLatex(answer: string): string {
+    if (answer === '') return '?';
+    return answer + '^\\circ';
+  }
 
   function labelPos(vx: number, vy: number) {
     const dir = Math.atan2(vy - cy, vx - cx);
@@ -65,73 +71,71 @@
 </script>
 
 <ExerciseShell {exercise} {feedback} submitAnswer={() => onSubmit(userInput.trim())} {onNext} {validationError}>
-  {#if feedback === null}
-    <p class="prompt-label">{_('exercise.interiorAngles.prompt')}</p>
-  {:else}
-    <p class="prompt-label">{_('exercise.interiorAngles.prompt')}</p>
-  {/if}
+  <p class="prompt-label">{_('exercise.interiorAngles.prompt')}</p>
 
-  <svg viewBox="0 0 300 280" class="polygon-svg">
+  <div class="svg-container">
+    <svg viewBox="0 0 300 280" class="polygon-svg">
+      {#each data.angles as angle, i (i)}
+        {@const next = data.angles[(i + 1) % data.sides]}
+        <line
+          x1={angle.vertexX}
+          y1={angle.vertexY}
+          x2={next.vertexX}
+          y2={next.vertexY}
+          stroke="currentColor"
+          stroke-width="2"
+        />
+      {/each}
+
+      {#each data.angles as angle, i (i)}
+        {@const prev = data.angles[(i - 1 + data.sides) % data.sides]}
+        {@const next = data.angles[(i + 1) % data.sides]}
+        <path d={arcPath(angle, prev, next)} fill="none" stroke="currentColor" stroke-width="1.5" />
+        <circle cx={angle.vertexX} cy={angle.vertexY} r="3" fill="currentColor" />
+      {/each}
+    </svg>
+
     {#each data.angles as angle, i (i)}
-      {@const next = data.angles[(i + 1) % data.sides]}
-      <line
-        x1={angle.vertexX}
-        y1={angle.vertexY}
-        x2={next.vertexX}
-        y2={next.vertexY}
-        stroke="currentColor"
-        stroke-width="2"
-      />
-    {/each}
-
-    {#each data.angles as angle, i (i)}
-      {@const prev = data.angles[(i - 1 + data.sides) % data.sides]}
-      {@const next = data.angles[(i + 1) % data.sides]}
-      <path d={arcPath(angle, prev, next)} fill="none" stroke="currentColor" stroke-width="1.5" />
-      <circle cx={angle.vertexX} cy={angle.vertexY} r="3" fill="currentColor" />
-
       {@const lp = labelPos(angle.vertexX, angle.vertexY)}
-      {#if angle.isMissing && feedback === null}
-        <text
-          x={lp.x}
-          y={lp.y}
-          text-anchor="middle"
-          dominant-baseline="central"
-          font-size="18"
-          font-weight="700"
-          fill="currentColor"
-        >
-          ?
-        </text>
-      {:else}
-        <text x={lp.x} y={lp.y} text-anchor="middle" dominant-baseline="central" font-size="13" fill="currentColor">
-          {angle.value}°
-        </text>
-      {/if}
+      <div class="svg-overlay" style="left: {(lp.x / 300) * 100}%; top: {(lp.y / 280) * 100}%;">
+        {#if angle.isMissing && feedback === null}
+          <NumericInput bind:value={userInput} placeholder="?" variablePart={degreeLatex} />
+        {:else if angle.isMissing && feedback !== null}
+          <span class="user-answer"><KaTeX expression={userAnswerLatex(userInput)} /></span>
+        {:else}
+          <KaTeX expression={angle.value + '^\\circ'} />
+        {/if}
+      </div>
     {/each}
-  </svg>
+  </div>
 
-  {#if feedback === null}
-    <div class="answer-row">
-      <NumericInput bind:value={userInput} placeholder="" variablePart={degreeSymbol} />
+  {#if feedback !== null}
+    <div class="feedback-row">
+      <Feedback {feedback} {correctLatex} />
     </div>
-  {:else}
-    <Feedback {feedback} {correctLatex} />
   {/if}
 </ExerciseShell>
 
 <style>
   .polygon-svg {
     display: block;
-    margin: 0 auto;
-    max-width: 300px;
     width: 100%;
     height: auto;
   }
 
-  .answer-row {
+  .svg-container {
+    position: relative;
+    display: inline-block;
+    width: 100%;
+    margin: 0.5rem 0;
+  }
+
+  .svg-overlay {
+    position: absolute;
+    transform: translate(-50%, -50%);
     display: flex;
-    justify-content: flex-start;
-    margin-top: 0.5rem;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.9rem;
   }
 </style>

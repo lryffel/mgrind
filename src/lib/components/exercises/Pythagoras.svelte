@@ -4,6 +4,7 @@
   import ExerciseShell from '../ExerciseShell.svelte';
   import Feedback from '../Feedback.svelte';
   import NumericInput from './NumericInput.svelte';
+  import KaTeX from '../Math.svelte';
 
   interface Vertex {
     x: number;
@@ -113,6 +114,22 @@
     return `${p1x},${p1y} ${p3x},${p3y} ${p2x},${p2y}`;
   });
 
+  function sideLatex(num: number, den: number): string {
+    if (den === 1) return String(num);
+    return `\\frac{${num}}{${den}}`;
+  }
+
+  function userAnswerLatex(answer: string): string {
+    if (answer === '') return '?';
+    if (answer.includes('/')) {
+      const parts = answer.split('/');
+      return `\\frac{${parts[0]}}{${parts[1]}}`;
+    }
+    return answer;
+  }
+
+  const cannotComputeShort = $derived(_('exercise.pythagoras.cannotComputeShort'));
+
   function handleSubmit() {
     onSubmit(userInput.trim());
   }
@@ -125,67 +142,96 @@
 <ExerciseShell {exercise} {feedback} submitAnswer={handleSubmit} {onNext} {validationError}>
   <p class="prompt-label">{_('exercise.pythagoras.prompt')}</p>
 
-  <svg viewBox="0 0 250 250" class="triangle-svg">
-    {#each vertices as v, i (i)}
-      {@const next = vertices[(i + 1) % 3]}
-      <line x1={v.x} y1={v.y} x2={next.x} y2={next.y} stroke="currentColor" stroke-width="2" />
-    {/each}
+  <div class="svg-container">
+    <svg viewBox="0 0 250 250" class="triangle-svg">
+      {#each vertices as v, i (i)}
+        {@const next = vertices[(i + 1) % 3]}
+        <line x1={v.x} y1={v.y} x2={next.x} y2={next.y} stroke="currentColor" stroke-width="2" />
+      {/each}
 
-    {#each vertices as v, i (i)}
-      <circle cx={v.x} cy={v.y} r="3" fill="currentColor" />
-    {/each}
+      {#each vertices as v, i (i)}
+        <circle cx={v.x} cy={v.y} r="3" fill="currentColor" />
+      {/each}
 
-    {#if rightAnglePoints}
-      <polyline points={rightAnglePoints} fill="none" stroke="currentColor" stroke-width="1.5" />
-    {/if}
+      {#if rightAnglePoints}
+        <polyline points={rightAnglePoints} fill="none" stroke="currentColor" stroke-width="1.5" />
+      {/if}
+    </svg>
 
     {#each sides as s, i (i)}
-      <g transform="translate({s.labelX}, {s.labelY})">
+      <div class="svg-overlay" style="left: {(s.labelX / 250) * 100}%; top: {(s.labelY / 250) * 100}%;">
         {#if s.isMissing && feedback === null}
-          <text text-anchor="middle" y="5" font-size="18" font-weight="700" fill="currentColor">?</text>
-        {:else if s.den === 1}
-          <text text-anchor="middle" y="5" font-size="15" fill="currentColor">{s.num}</text>
+          <NumericInput bind:value={userInput} placeholder="?" />
+        {:else if s.isMissing && feedback !== null}
+          {#if exercise.answer === 'cannot_compute'}
+            <span class="user-answer">{cannotComputeShort}</span>
+          {:else}
+            <span class="user-answer"><KaTeX expression={userAnswerLatex(userInput)} /></span>
+          {/if}
         {:else}
-          <text text-anchor="middle" y="-6" font-size="13" fill="currentColor">{s.num}</text>
-          <line x1="-14" y1="0" x2="14" y2="0" stroke="currentColor" stroke-width="1" />
-          <text text-anchor="middle" y="14" font-size="13" fill="currentColor">{s.den}</text>
+          <KaTeX expression={sideLatex(s.num, s.den)} />
         {/if}
-      </g>
+      </div>
     {/each}
-  </svg>
 
-  {#if feedback === null}
-    <div class="answer-row">
-      <NumericInput bind:value={userInput} placeholder="?" />
-    </div>
-    {#if isNonRight}
-      <button class="cannot-compute-btn" onclick={handleCannotCompute}>
-        {_('exercise.pythagoras.cannotCompute')}
-      </button>
+  </div>
+
+  {#if isNonRight && feedback === null}
+    <button class="cannot-compute-link" onclick={handleCannotCompute} title={_('exercise.pythagoras.cannotCompute')}>
+      {cannotComputeShort}
+    </button>
+  {/if}
+
+  {#if feedback !== null}
+    {#if exercise.answer === 'cannot_compute'}
+      <div class="feedback-row">
+        <Feedback {feedback} textAnswer={cannotComputeShort} />
+      </div>
+    {:else}
+      <div class="feedback-row">
+        <Feedback {feedback} correctLatex={data.answerLatex} />
+      </div>
     {/if}
-  {:else if exercise.answer === 'cannot_compute'}
-    <Feedback {feedback} textAnswer={_('exercise.pythagoras.cannotCompute')} />
-  {:else}
-    <Feedback {feedback} correctLatex={data.answerLatex} />
   {/if}
 </ExerciseShell>
 
 <style>
   .triangle-svg {
     display: block;
-    margin: 0 auto;
-    max-width: 250px;
     width: 100%;
     height: auto;
   }
 
-  .answer-row {
-    display: flex;
-    justify-content: flex-start;
-    margin-top: 0.5rem;
+  .svg-container {
+    position: relative;
+    display: inline-block;
+    width: 100%;
+    margin: 0.5rem 0;
   }
 
-  .cannot-compute-btn {
-    margin-top: 0.5rem;
+  .svg-overlay {
+    position: absolute;
+    transform: translate(-50%, -50%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.9rem;
+  }
+
+  .cannot-compute-link {
+    background: none;
+    border: none;
+    padding: 0;
+    font: inherit;
+    font-size: 0.8rem;
+    color: var(--c-primary);
+    cursor: pointer;
+    text-decoration: underline dotted;
+    display: block;
+    margin: 0 auto 0.25rem;
+  }
+
+  .cannot-compute-link:hover {
+    text-decoration-style: solid;
   }
 </style>
