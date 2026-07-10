@@ -124,6 +124,7 @@ Every exercise type should show a short, imperative instruction above the math e
    ```svelte
    let promptKey = $derived(exercise.data?.promptKey ?? null);
    ```
+
    ```svelte
    {#if promptKey}
      <p class="prompt-label">{_(promptKey)}</p>
