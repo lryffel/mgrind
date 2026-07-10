@@ -10,15 +10,16 @@
 
 {#if state.lang === 'en'}
   <p>
-    This exercise asks you to expand products and collect like terms. You will see an
-    expression that combines two or more products with <Math expression="+" /> or
+    This exercise asks you to expand products and collect like terms. You will see an expression that combines two or
+    more products with <Math expression="+" /> or
     <Math expression="-" />.
   </p>
   <p>To solve, follow these steps:</p>
   <ol>
     <li>
-      <strong>Expand each product</strong> individually by multiplying out term by term.
-      For example, in <Math expression={ex1} />, expand <Math expression="2x(3x+1)" /> to
+      <strong>Expand each product</strong> individually by multiplying out term by term. For example, in <Math
+        expression={ex1}
+      />, expand <Math expression="2x(3x+1)" /> to
       <Math expression={'6x^{2} + 2x'} /> and <Math expression="x(x+4)" /> to
       <Math expression={'x^{2} + 4x'} />.
     </li>
@@ -37,8 +38,8 @@
   </p>
 {:else}
   <p>
-    In dieser Übung musst du Produkte ausmultiplizieren und gleiche Terme zusammenfassen.
-    Du siehst einen Ausdruck, der zwei oder mehr Produkte mit <Math expression="+" /> oder
+    In dieser Übung musst du Produkte ausmultiplizieren und gleiche Terme zusammenfassen. Du siehst einen Ausdruck, der
+    zwei oder mehr Produkte mit <Math expression="+" /> oder
     <Math expression="-" /> kombiniert.
   </p>
   <p>Gehe folgendermassen vor:</p>
@@ -50,13 +51,13 @@
       <Math expression={'x^{2} + 4x'} />.
     </li>
     <li>
-      <strong>Fasse gleiche Terme</strong> im gesamten Ausdruck zusammen. Im Beispiel
-      ergibt <Math expression={'6x^{2} - x^{2} = 5x^{2}'} /> und
+      <strong>Fasse gleiche Terme</strong> im gesamten Ausdruck zusammen. Im Beispiel ergibt <Math
+        expression={'6x^{2} - x^{2} = 5x^{2}'}
+      /> und
       <Math expression="2x - 4x = -2x" />, also <Math expression={ex1Result} />.
     </li>
     <li>
-      <strong>Gib die Koeffizienten</strong> für jeden Variablenteil in der angezeigten
-      Reihenfolge ein.
+      <strong>Gib die Koeffizienten</strong> für jeden Variablenteil in der angezeigten Reihenfolge ein.
     </li>
   </ol>
   <p>

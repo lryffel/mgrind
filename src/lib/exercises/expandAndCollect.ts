@@ -88,17 +88,13 @@ function formatProduct(factors: Term[][]): string {
     }
     return `(${formatSum(factors[0])})^{2}`;
   }
-  return factors
-    .map((f) => (f.length === 1 ? formatSum(f) : `(${formatSum(f)})`))
-    .join('');
+  return factors.map((f) => (f.length === 1 ? formatSum(f) : `(${formatSum(f)})`)).join('');
 }
 
 function normalizeSign(part: ExprPart): ExprPart {
   const firstTerm = part.factors[0][0];
   if (firstTerm.coeff < 0) {
-    const newFactors = part.factors.map((factor) =>
-      factor.map((t) => ({ coeff: -t.coeff, vars: t.vars })),
-    );
+    const newFactors = part.factors.map((factor) => factor.map((t) => ({ coeff: -t.coeff, vars: t.vars })));
     const newOp = part.op === '+' ? '-' : '+';
     return { factors: newFactors, op: newOp };
   }
@@ -127,7 +123,10 @@ function genMonoBinoSingle(rng: () => number): ExprPart[] {
   const part1: ExprPart = {
     factors: [
       [{ coeff: a, vars: { [v]: 1 } }],
-      [{ coeff: b, vars: { [v]: 1 } }, { coeff: c, vars: {} }],
+      [
+        { coeff: b, vars: { [v]: 1 } },
+        { coeff: c, vars: {} },
+      ],
     ],
     op: '+',
   };
@@ -138,7 +137,10 @@ function genMonoBinoSingle(rng: () => number): ExprPart[] {
   const part2: ExprPart = {
     factors: [
       [{ coeff: d, vars: { [v]: 1 } }],
-      [{ coeff: e, vars: { [v]: 1 } }, { coeff: f, vars: {} }],
+      [
+        { coeff: e, vars: { [v]: 1 } },
+        { coeff: f, vars: {} },
+      ],
     ],
     op: rng() > 0.5 ? '+' : '-',
   };
@@ -155,7 +157,10 @@ function genMonoBinoPair(rng: () => number): ExprPart[] {
   const part1: ExprPart = {
     factors: [
       [{ coeff: a, vars: { [v1]: 1 } }],
-      [{ coeff: b, vars: { [v1]: 1 } }, { coeff: c, vars: { [v2]: 1 } }],
+      [
+        { coeff: b, vars: { [v1]: 1 } },
+        { coeff: c, vars: { [v2]: 1 } },
+      ],
     ],
     op: '+',
   };
@@ -166,7 +171,10 @@ function genMonoBinoPair(rng: () => number): ExprPart[] {
   const part2: ExprPart = {
     factors: [
       [{ coeff: d, vars: { [v2]: 1 } }],
-      [{ coeff: e, vars: { [v2]: 1 } }, { coeff: f, vars: { [v1]: 1 } }],
+      [
+        { coeff: e, vars: { [v2]: 1 } },
+        { coeff: f, vars: { [v1]: 1 } },
+      ],
     ],
     op: rng() > 0.5 ? '+' : '-',
   };
@@ -210,7 +218,15 @@ function genSquareSquarePair(rng: () => number): ExprPart[] {
   const c = randInt(rng, 1, 5);
   const d = randInt(rng, 1, 5) * (rng() > 0.4 ? 1 : -1);
   const binom2: Term[] = [
-    { coeff: termsEqual(binom1, [{ coeff: c, vars: { [v1]: 1 } }, { coeff: d, vars: { [v2]: 1 } }]) ? c + 1 : c, vars: { [v1]: 1 } },
+    {
+      coeff: termsEqual(binom1, [
+        { coeff: c, vars: { [v1]: 1 } },
+        { coeff: d, vars: { [v2]: 1 } },
+      ])
+        ? c + 1
+        : c,
+      vars: { [v1]: 1 },
+    },
     { coeff: d, vars: { [v2]: 1 } },
   ];
 
@@ -274,7 +290,7 @@ function genMixedHigh(rng: () => number, maxDegree: number): ExprPart[] {
 
     parts.push({
       factors: [[mono], bino],
-      op: p === 0 ? '+' : (rng() > 0.5 ? '+' : '-'),
+      op: p === 0 ? '+' : rng() > 0.5 ? '+' : '-',
     });
   }
 
@@ -321,22 +337,43 @@ export function generateExpandAndCollect(seed: number, complexity: number): Exer
   for (let attempt = 0; attempt < 50; attempt++) {
     const localRng = mulberry32(seed + attempt * 31 + clamped * 17);
 
-    const params = clamped <= 2 ? { type: 'monoBinoSingle' } as const
-      : clamped <= 4 ? { type: pick(localRng, ['monoBinoSingle', 'monoBinoPair'] as const) }
-      : clamped <= 7 ? { type: pick(localRng, ['monoBinoPair', 'squareSingle', 'squarePair'] as const) }
-      : clamped <= 9 ? { type: pick(localRng, ['monoBinoPair', 'squareSingle', 'higher2'] as const) }
-      : { type: pick(localRng, ['higher2', 'higher3', 'mixed2', 'mixed3'] as const) };
+    const params =
+      clamped <= 2
+        ? ({ type: 'monoBinoSingle' } as const)
+        : clamped <= 4
+          ? { type: pick(localRng, ['monoBinoSingle', 'monoBinoPair'] as const) }
+          : clamped <= 7
+            ? { type: pick(localRng, ['monoBinoPair', 'squareSingle', 'squarePair'] as const) }
+            : clamped <= 9
+              ? { type: pick(localRng, ['monoBinoPair', 'squareSingle', 'higher2'] as const) }
+              : { type: pick(localRng, ['higher2', 'higher3', 'mixed2', 'mixed3'] as const) };
 
     let parts: ExprPart[];
     switch (params.type) {
-      case 'monoBinoSingle': parts = genMonoBinoSingle(localRng); break;
-      case 'monoBinoPair': parts = genMonoBinoPair(localRng); break;
-      case 'squareSingle': parts = genSquareSquareSingle(localRng); break;
-      case 'squarePair': parts = genSquareSquarePair(localRng); break;
-      case 'higher2': parts = genHigherDegree(localRng, 2); break;
-      case 'higher3': parts = genHigherDegree(localRng, 3); break;
-      case 'mixed2': parts = genMixedHigh(localRng, 2); break;
-      case 'mixed3': parts = genMixedHigh(localRng, 3); break;
+      case 'monoBinoSingle':
+        parts = genMonoBinoSingle(localRng);
+        break;
+      case 'monoBinoPair':
+        parts = genMonoBinoPair(localRng);
+        break;
+      case 'squareSingle':
+        parts = genSquareSquareSingle(localRng);
+        break;
+      case 'squarePair':
+        parts = genSquareSquarePair(localRng);
+        break;
+      case 'higher2':
+        parts = genHigherDegree(localRng, 2);
+        break;
+      case 'higher3':
+        parts = genHigherDegree(localRng, 3);
+        break;
+      case 'mixed2':
+        parts = genMixedHigh(localRng, 2);
+        break;
+      case 'mixed3':
+        parts = genMixedHigh(localRng, 3);
+        break;
     }
 
     const ex = buildResult(parts);
@@ -348,7 +385,10 @@ export function generateExpandAndCollect(seed: number, complexity: number): Exer
   return {
     prompt: `${v}(${v}+1) + 2${v}(${v}-1)`,
     answer: '3,-1',
-    data: { fields: [{ variablePart: `${v}^{2}` }, { variablePart: v }], promptKey: 'exercise.expandAndCollect.prompt' },
+    data: {
+      fields: [{ variablePart: `${v}^{2}` }, { variablePart: v }],
+      promptKey: 'exercise.expandAndCollect.prompt',
+    },
   };
 }
 

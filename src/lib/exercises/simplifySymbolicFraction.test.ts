@@ -1,8 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import {
-  generateSimplifySymbolicFraction,
-  validateSimplifySymbolicFraction,
-} from './simplifySymbolicFraction';
+import { generateSimplifySymbolicFraction, validateSimplifySymbolicFraction } from './simplifySymbolicFraction';
 import { expectDeterministic, expectSeedVariation, expectHasPromptAndAnswer } from '../test-utils';
 
 describe('generateSimplifySymbolicFraction', () => {

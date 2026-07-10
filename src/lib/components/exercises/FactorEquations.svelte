@@ -13,15 +13,15 @@
 
   let values = $state<string[]>([]);
 
+  let validationError = $derived(values.some((v) => v.includes(',')) ? _('error.decimalComma') : null);
+
   $effect(() => {
     if (feedback === null) {
       values = Array(numSolutions).fill('');
     }
   });
 
-  let labels = $derived(
-    Array.from({ length: numSolutions }, (_, i) => `${variable}_{${i + 1}} = `),
-  );
+  let labels = $derived(Array.from({ length: numSolutions }, (_, i) => `${variable}_{${i + 1}} = `));
 
   let correctLatex = $derived.by(() => {
     const roots = exercise.answer.split(',').map(Number);
@@ -35,7 +35,7 @@
   }
 </script>
 
-<ExerciseShell {exercise} {feedback} submitAnswer={handleSubmit} {onNext}  >
+<ExerciseShell {exercise} {feedback} submitAnswer={handleSubmit} {onNext} {validationError}>
   <p class="prompt-label">{_('exercise.factorEquations.prompt')}</p>
   <p class="prompt">
     <Math expression={exercise.prompt} />

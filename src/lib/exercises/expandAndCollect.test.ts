@@ -111,9 +111,7 @@ describe('generateExpandAndCollect', () => {
     const ex = generateExpandAndCollect(42, 3);
     const parts = ex.answer.split(',').map((s) => s.trim());
     if (parts.length >= 1) {
-      const wrong = parts
-        .map((p, i) => (i === 0 ? String(parseInt(p, 10) + 100) : p))
-        .join(',');
+      const wrong = parts.map((p, i) => (i === 0 ? String(parseInt(p, 10) + 100) : p)).join(',');
       expect(validateExpandAndCollect(wrong, ex)).toBe(false);
     }
   });

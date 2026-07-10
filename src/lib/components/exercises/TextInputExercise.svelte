@@ -9,9 +9,11 @@
   let { exercise, onSubmit, onNext, feedback }: ExerciseProps = $props();
 
   let userInput = $state('');
+
+  let validationError = $derived(userInput.includes(',') ? _('error.decimalComma') : null);
 </script>
 
-<ExerciseShell {exercise} {feedback} submitAnswer={() => onSubmit(userInput.trim())} {onNext}  >
+<ExerciseShell {exercise} {feedback} submitAnswer={() => onSubmit(userInput.trim())} {onNext} {validationError}>
   {#if feedback === null}
     {#if exercise.prompt.includes('?')}
       {@const parts = exercise.prompt.split('?')}

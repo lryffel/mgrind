@@ -10,11 +10,13 @@
 
   let userInput = $state('');
 
+  let validationError = $derived(userInput.includes(',') ? _('error.decimalComma') : null);
+
   const variable = $derived(exercise.data?.variable ?? 'x');
   const correctLatex = $derived(`${variable} = ${exercise.answer}`);
 </script>
 
-<ExerciseShell {exercise} {feedback} submitAnswer={() => onSubmit(userInput.trim())} {onNext}  >
+<ExerciseShell {exercise} {feedback} submitAnswer={() => onSubmit(userInput.trim())} {onNext} {validationError}>
   {#if feedback === null}
     <p class="prompt-label">
       {_('exercise.linearEquations.promptBefore')}<Math expression={variable} />{_(

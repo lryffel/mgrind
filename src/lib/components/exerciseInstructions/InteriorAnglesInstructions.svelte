@@ -11,8 +11,8 @@
 
 {#if state.lang === 'en'}
   <p>
-    An interior angle is the angle inside a polygon formed by two adjacent sides. In this exercise you are shown a polygon
-    with some angles given and one angle missing. Your task is to calculate the missing angle.
+    An interior angle is the angle inside a polygon formed by two adjacent sides. In this exercise you are shown a
+    polygon with some angles given and one angle missing. Your task is to calculate the missing angle.
   </p>
   <p>
     The sum of the interior angles of a polygon depends only on the number of sides <Math expression="n" />:
@@ -23,8 +23,8 @@
     <li>Pentagon (<Math expression="n = 5" />): <Math expression={pentSum} /></li>
   </ul>
   <p>
-    The general formula is <Math expression={formula} />. Add up the given angles, then subtract their sum from the total
-    to find the missing angle.
+    The general formula is <Math expression={formula} />. Add up the given angles, then subtract their sum from the
+    total to find the missing angle.
   </p>
   <p>
     Note that the polygon might not be convex — some interior angles can be larger than <Math expression={oneEighty} />.
@@ -34,8 +34,8 @@
 {:else}
   <p>
     Ein Innenwinkel ist der Winkel innerhalb eines Vielecks, der von zwei benachbarten Seiten gebildet wird. In dieser
-    Übung wird dir ein Vieleck gezeigt, bei dem einige Winkel gegeben sind und ein Winkel fehlt. Deine Aufgabe ist es, den
-    fehlenden Winkel zu berechnen.
+    Übung wird dir ein Vieleck gezeigt, bei dem einige Winkel gegeben sind und ein Winkel fehlt. Deine Aufgabe ist es,
+    den fehlenden Winkel zu berechnen.
   </p>
   <p>
     Die Summe der Innenwinkel eines Vielecks hängt nur von der Anzahl der Seiten <Math expression="n" /> ab:
@@ -46,8 +46,8 @@
     <li>Fünfeck (<Math expression="n = 5" />): <Math expression={pentSum} /></li>
   </ul>
   <p>
-    Die allgemeine Formel lautet <Math expression={formula} />. Addiere die gegebenen Winkel und ziehe ihre Summe von der
-    Gesamtsumme ab, um den fehlenden Winkel zu erhalten.
+    Die allgemeine Formel lautet <Math expression={formula} />. Addiere die gegebenen Winkel und ziehe ihre Summe von
+    der Gesamtsumme ab, um den fehlenden Winkel zu erhalten.
   </p>
   <p>
     Beachte, dass das Vieleck nicht konvex sein muss — einige Innenwinkel können grösser als

@@ -12,6 +12,10 @@
   let numInput = $state('');
   let denInput = $state('');
 
+  let validationError = $derived(
+    input.includes(',') || numInput.includes(',') || denInput.includes(',') ? _('error.decimalComma') : null,
+  );
+
   const variable = $derived(exercise.data?.variable ?? 'x');
   const value = $derived(exercise.data?.value ?? '');
   const term = $derived(exercise.data?.term ?? exercise.prompt);
@@ -32,7 +36,7 @@
   const textAnswer = $derived(answerIsFraction ? undefined : exercise.answer);
 </script>
 
-<ExerciseShell {exercise} {feedback} {submitAnswer} {onNext}  >
+<ExerciseShell {exercise} {feedback} {submitAnswer} {onNext} {validationError}>
   <p class="prompt-label">
     {_('exercise.substitution.promptBefore')}<Math expression={`${variable} = ${value}`} />{_(
       'exercise.substitution.promptAfter',

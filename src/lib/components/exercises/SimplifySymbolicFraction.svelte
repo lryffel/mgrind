@@ -20,6 +20,10 @@
   let numValues = $state<string[]>([]);
   let denValues = $state<string[]>([]);
 
+  let validationError = $derived(
+    [...numValues, ...denValues].some((v) => v.includes(',')) ? _('error.decimalComma') : null,
+  );
+
   $effect(() => {
     numValues = numFields.map(() => '');
     denValues = denFields.map(() => '');
@@ -28,12 +32,8 @@
   let normNumValues = $derived(numValues.map(normalizeCoeff));
   let normDenValues = $derived(denValues.map(normalizeCoeff));
 
-  let correctNumParts = $derived(
-    showFraction ? exercise.answer.split(';')[0].split(',') : exercise.answer.split(','),
-  );
-  let correctDenParts = $derived(
-    showFraction ? exercise.answer.split(';')[1].split(',') : [],
-  );
+  let correctNumParts = $derived(showFraction ? exercise.answer.split(';')[0].split(',') : exercise.answer.split(','));
+  let correctDenParts = $derived(showFraction ? exercise.answer.split(';')[1].split(',') : []);
   let correctNumVarParts = $derived(numFields.map((f) => f.variablePart));
   let correctDenVarParts = $derived(denFields.map((f) => f.variablePart));
 
@@ -43,7 +43,6 @@
   let correctLatex = $derived(
     formatSymbolicResult(correctNumParts, correctNumVarParts, correctDenParts, correctDenVarParts, showFraction),
   );
-
 </script>
 
 <ExerciseShell
@@ -56,6 +55,7 @@
       onSubmit(numValues.map(normalizeCoeff).join(','));
     }
   }}
+  {validationError}
   {onNext}
 >
   {#if promptKey}

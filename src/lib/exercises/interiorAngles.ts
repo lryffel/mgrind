@@ -13,10 +13,7 @@ export interface InteriorAnglesData {
   angles: InteriorAnglesAngle[];
 }
 
-function generateVertices(
-  rng: () => number,
-  sides: number,
-): { x: number; y: number }[] {
+function generateVertices(rng: () => number, sides: number): { x: number; y: number }[] {
   const cx = 150;
   const cy = 140;
   const rx = 95;

@@ -6,6 +6,14 @@ export interface FactorOption {
   innerVarParts: string[];
 }
 
+const LATEX_VAR_NAMES: Record<string, string> = {
+  '\\ell': '\u2113',
+};
+
+function varDisplayName(key: string): string {
+  return LATEX_VAR_NAMES[key] ?? key;
+}
+
 const SUPERSCRIPTS: Record<string, string> = {
   '0': '\u2070',
   '1': '\u00B9',
@@ -62,7 +70,7 @@ export function varMapText(v: VarMap): string {
   }
   if (Object.keys(sorted).length === 0) return '';
   return Object.entries(sorted)
-    .map(([k, e]) => `${k}${e === 1 ? '' : `^${e}`}`)
+    .map(([k, e]) => `${varDisplayName(k)}${e === 1 ? '' : `^${e}`}`)
     .join('');
 }
 
@@ -75,7 +83,7 @@ export function varMapUnicode(v: VarMap): string {
   return Object.entries(sorted)
     .map(
       ([k, e]) =>
-        `${k}${
+        `${varDisplayName(k)}${
           e === 1
             ? ''
             : String(e)

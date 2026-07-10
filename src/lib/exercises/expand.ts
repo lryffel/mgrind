@@ -16,14 +16,7 @@ interface Term {
   vars: VarMap;
 }
 
-const VAR_SETS = [
-  ['x'],
-  ['x', 'y'],
-  ['a'],
-  ['a', 'b'],
-  ['m'],
-  ['m', 'n'],
-];
+const VAR_SETS = [['x'], ['x', 'y'], ['a'], ['a', 'b'], ['m'], ['m', 'n']];
 
 function multiplyTerms(a: Term, b: Term): Term {
   return { coeff: a.coeff * b.coeff, vars: varMapMultiply(a.vars, b.vars) };
@@ -74,9 +67,7 @@ function formatFactor(terms: Term[]): string {
 }
 
 function formatProductPrompt(factors: Term[][]): string {
-  return factors
-    .map((f) => (f.length === 1 ? formatFactor(f) : `(${formatFactor(f)})`))
-    .join('');
+  return factors.map((f) => (f.length === 1 ? formatFactor(f) : `(${formatFactor(f)})`)).join('');
 }
 
 function buildResult(terms: Term[], prompt: string): Exercise {
@@ -95,9 +86,7 @@ function ensureTwoDistinct(terms: Term[], v: string): void {
 }
 
 function genMonoBinomial(rng: () => number, maxDegree: number, useTwoVars: boolean): Exercise {
-  const candidates = useTwoVars && rng() > 0.4
-    ? VAR_SETS.filter((v) => v.length >= 2)
-    : VAR_SETS;
+  const candidates = useTwoVars && rng() > 0.4 ? VAR_SETS.filter((v) => v.length >= 2) : VAR_SETS;
   const varSet = pick(rng, candidates);
   const v = pick(rng, varSet);
 
@@ -134,9 +123,7 @@ function genMonoBinomial(rng: () => number, maxDegree: number, useTwoVars: boole
 }
 
 function genMonoTrinomial(rng: () => number, maxDegree: number, useTwoVars: boolean): Exercise {
-  const candidates = useTwoVars && rng() > 0.3
-    ? VAR_SETS.filter((v) => v.length >= 2)
-    : VAR_SETS;
+  const candidates = useTwoVars && rng() > 0.3 ? VAR_SETS.filter((v) => v.length >= 2) : VAR_SETS;
   const varSet = pick(rng, candidates);
   const v = pick(rng, varSet);
 
@@ -176,7 +163,10 @@ function genMonoTrinomial(rng: () => number, maxDegree: number, useTwoVars: bool
 }
 
 function genBinomBinomial(rng: () => number, maxDegree: number): Exercise {
-  const twoVarSet = pick(rng, VAR_SETS.filter((v) => v.length >= 2));
+  const twoVarSet = pick(
+    rng,
+    VAR_SETS.filter((v) => v.length >= 2),
+  );
   const v1 = twoVarSet[0];
   const v2 = twoVarSet[1];
 
@@ -223,7 +213,10 @@ function genBinomBinomial(rng: () => number, maxDegree: number): Exercise {
 }
 
 function genBinomTrinomial(rng: () => number, maxDegree: number): Exercise {
-  const twoVarSet = pick(rng, VAR_SETS.filter((v) => v.length >= 2));
+  const twoVarSet = pick(
+    rng,
+    VAR_SETS.filter((v) => v.length >= 2),
+  );
   const v1 = twoVarSet[0];
   const v2 = twoVarSet[1];
   const v3 = v1 === 'x' ? 'z' : v1 === 'a' ? 'c' : 'z';

@@ -26,11 +26,13 @@
 
   let { exercise, onSubmit, onNext, feedback }: ExerciseProps = $props();
 
+  let userInput = $state('');
+
+  let validationError = $derived(userInput.includes(',') ? _('error.decimalComma') : null);
+
   const data = $derived(exercise.data as unknown as PythagorasData);
   const vertices = $derived(data.triangleVertices);
   const isNonRight = $derived(!data.isRight);
-
-  let userInput = $state('');
 
   const cx = $derived((vertices[0].x + vertices[1].x + vertices[2].x) / 3);
   const cy = $derived((vertices[0].y + vertices[1].y + vertices[2].y) / 3);
@@ -120,7 +122,7 @@
   }
 </script>
 
-<ExerciseShell {exercise} {feedback} submitAnswer={handleSubmit} {onNext}>
+<ExerciseShell {exercise} {feedback} submitAnswer={handleSubmit} {onNext} {validationError}>
   <p class="prompt-label">{_('exercise.pythagoras.prompt')}</p>
 
   <svg viewBox="0 0 250 250" class="triangle-svg">

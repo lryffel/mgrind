@@ -17,6 +17,16 @@
   const isMultiInput = $derived(subType !== 'sciToDec');
   const promptKey = $derived(exercise.data?.promptKey ?? null);
 
+  let validationError = $derived(
+    isMultiInput
+      ? coeffInput.includes(',') || expInput.includes(',')
+        ? _('error.decimalComma')
+        : null
+      : userInput.includes(',')
+        ? _('error.decimalComma')
+        : null,
+  );
+
   function handleSubmit() {
     if (isMultiInput) {
       onSubmit(`${coeffInput.trim()},${expInput.trim()}`);
@@ -34,7 +44,7 @@
   const textAnswer = $derived(isMultiInput ? undefined : exercise.answer);
 </script>
 
-<ExerciseShell {exercise} {feedback} submitAnswer={handleSubmit} {onNext}  >
+<ExerciseShell {exercise} {feedback} submitAnswer={handleSubmit} {onNext} {validationError}>
   {#if feedback === null}
     {#if promptKey}
       <p class="prompt-label">{_(promptKey)}</p>

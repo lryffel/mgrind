@@ -5,8 +5,8 @@
 
 {#if state.lang === 'en'}
   <p>
-    In this exercise you are given a quadratic (or cubic) equation. Your task is to solve it by factoring.
-    The answer is the solution set — one, two, or three numbers.
+    In this exercise you are given a quadratic (or cubic) equation. Your task is to solve it by factoring. The answer is
+    the solution set — one, two, or three numbers.
   </p>
   <p>
     The equation may not always be set to zero — the terms can be distributed across both sides. Before factoring, first
@@ -47,8 +47,7 @@
     </li>
   </ol>
   <p>
-    For cubic equations, factor out <Math expression="x" /> first and then factor the remaining quadratic using the same
-    techniques.
+    For cubic equations, factor out <Math expression="x" /> first and then factor the remaining quadratic using the same techniques.
   </p>
   <p>Enter each solution in a separate field. The order of the fields does not matter.</p>
 {:else}
@@ -63,8 +62,8 @@
   <p>Wende diese Faktorisierungstechniken an:</p>
   <ol>
     <li>
-      <strong>Klammere einen gemeinsamen Faktor aus</strong> — wenn jeder Term <Math expression="x" /> enthält, klammere
-      ihn aus.
+      <strong>Klammere einen gemeinsamen Faktor aus</strong> — wenn jeder Term <Math expression="x" /> enthält, klammere ihn
+      aus.
       <br />
       Beispiel: <Math expression="x^{2} = 4x" /> umgeformt zu <Math expression="x^{2} - 4x = 0" />, dann faktorisiert zu
       <Math expression="x(x - 4) = 0" />, also sind die Lösungen <Math expression="x = 0" /> und
@@ -97,8 +96,8 @@
     </li>
   </ol>
   <p>
-    Bei kubischen Gleichungen klammere zuerst <Math expression="x" /> aus und faktorisiere dann die verbleibende
-    quadratische Gleichung mit denselben Techniken.
+    Bei kubischen Gleichungen klammere zuerst <Math expression="x" /> aus und faktorisiere dann die verbleibende quadratische
+    Gleichung mit denselben Techniken.
   </p>
   <p>Gib jede Lösung in ein separates Feld ein. Die Reihenfolge der Felder spielt keine Rolle.</p>
 {/if}

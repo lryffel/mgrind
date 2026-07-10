@@ -19,6 +19,10 @@
   let aVal = $state('');
   let bVal = $state('');
 
+  let validationError = $derived(
+    gcfCoeff.includes(',') || aVal.includes(',') || bVal.includes(',') ? _('error.decimalComma') : null,
+  );
+
   $effect(() => {
     if (feedback === null) {
       selectedFormula = null;
@@ -73,7 +77,7 @@
   }
 </script>
 
-<ExerciseShell {exercise} {feedback} submitAnswer={handleSubmit} {onNext}>
+<ExerciseShell {exercise} {feedback} submitAnswer={handleSubmit} {onNext} {validationError}>
   <p class="prompt-label">{_('exercise.factoringOutAndBinomial.prompt')}</p>
   <p class="prompt">
     <Math expression={exercise.prompt} />

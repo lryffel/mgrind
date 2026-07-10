@@ -30,7 +30,10 @@ function genMonomial(rng: () => number, clamped: number): Exercise {
   const numVars = clamped <= 4 ? 1 : rng() > 0.4 ? 1 : 2;
   const selectedVars: string[] = [];
   for (let i = 0; i < numVars; i++) {
-    const v = pick(rng, VARS.filter((x) => !selectedVars.includes(x)));
+    const v = pick(
+      rng,
+      VARS.filter((x) => !selectedVars.includes(x)),
+    );
     selectedVars.push(v);
   }
 
@@ -109,7 +112,10 @@ function genAXoverBX(rng: () => number, clamped: number): Exercise {
   const numVars = rng() > 0.5 ? 1 : 2;
   const selectedVars: string[] = [];
   for (let i = 0; i < numVars; i++) {
-    const v = pick(rng, VARS.filter((x) => !selectedVars.includes(x)));
+    const v = pick(
+      rng,
+      VARS.filter((x) => !selectedVars.includes(x)),
+    );
     selectedVars.push(v);
   }
 
@@ -198,10 +204,7 @@ function genDiffOfSquares(rng: () => number): Exercise {
 
   const resultB = usePlus ? -a : a;
 
-  const numFields: { variablePart: string }[] = [
-    { variablePart: 'x' },
-    { variablePart: '' },
-  ];
+  const numFields: { variablePart: string }[] = [{ variablePart: 'x' }, { variablePart: '' }];
   const answer = `1,${resultB}`;
   const data: SimplifySymbolicFractionData = {
     numFields,
@@ -240,10 +243,7 @@ function genQuadraticFactoring(rng: () => number): Exercise {
 
   const prompt = `\\frac{${polyLatex(numTerms)}}{${polyLatex(denTerms)}}`;
 
-  const numFields: { variablePart: string }[] = [
-    { variablePart: 'x' },
-    { variablePart: '' },
-  ];
+  const numFields: { variablePart: string }[] = [{ variablePart: 'x' }, { variablePart: '' }];
   const answer = `1,${resultRoot}`;
   const data: SimplifySymbolicFractionData = {
     numFields,
@@ -256,7 +256,10 @@ function genQuadraticFactoring(rng: () => number): Exercise {
 
 function genVarGCF(rng: () => number): Exercise {
   const var1 = pick(rng, VARS);
-  const var2 = pick(rng, VARS.filter((v) => v !== var1));
+  const var2 = pick(
+    rng,
+    VARS.filter((v) => v !== var1),
+  );
 
   const gcfVar: VarMap = { [var1]: 1, [var2]: 1 };
   const gcfCoeff = rng() > 0.4 ? randInt(rng, 2, 4) : 1;

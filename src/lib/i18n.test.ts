@@ -62,4 +62,10 @@ describe('i18n', () => {
     setLang('en');
     expect(state.lang).toBe('en');
   });
+
+  it('translates decimal comma error', () => {
+    expect(_('error.decimalComma')).toBe('Please use a period (.) instead of a comma (,)');
+    setLang('de');
+    expect(_('error.decimalComma')).toBe('Bitte benutze einen Punkt (.) anstelle eines Kommas (,)');
+  });
 });

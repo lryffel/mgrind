@@ -95,9 +95,7 @@ export function generatePythagoras(seed: number, complexity: number): Exercise {
   const swapLegs = rng() < 0.5;
   const swapAxes = rng() < 0.5;
 
-  const compatibleTriples = rightTriples.filter(
-    ([, , c]) => (c * kn) / kd <= 5,
-  );
+  const compatibleTriples = rightTriples.filter(([, , c]) => (c * kn) / kd <= 5);
   const baseTriple = pick(rng, compatibleTriples.length > 0 ? compatibleTriples : [[3, 4, 5]]);
 
   const missingIdx = Math.floor(rng() * 3);

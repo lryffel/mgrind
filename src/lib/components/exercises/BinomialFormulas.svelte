@@ -15,6 +15,8 @@
   // eslint-disable-next-line svelte/prefer-writable-derived
   let values = $state<string[]>([]);
 
+  let validationError = $derived(values.some((v) => v.includes(',')) ? _('error.decimalComma') : null);
+
   $effect(() => {
     values = fields.map(() => '');
   });
@@ -24,7 +26,7 @@
   let correctLatex = $derived(buildExpandedLatex(exercise.answer.split(','), variableParts));
 </script>
 
-<ExerciseShell {exercise} {feedback} submitAnswer={() => onSubmit(normValues.join(','))} {onNext}>
+<ExerciseShell {exercise} {feedback} submitAnswer={() => onSubmit(normValues.join(','))} {onNext} {validationError}>
   <p class="prompt-label">{_('exercise.binomialFormulas.prompt')}</p>
   <p class="prompt">
     <Math expression={exercise.prompt} />

@@ -31,14 +31,10 @@
       />).
     </li>
     <li>
-      15 is divisible by <Math expression="3" />: <Math expression={step3} /> (one factor of <Math
-        expression="3"
-      />).
+      15 is divisible by <Math expression="3" />: <Math expression={step3} /> (one factor of <Math expression="3" />).
     </li>
     <li>
-      5 is divisible by <Math expression="5" />: <Math expression={step4} /> (one factor of <Math
-        expression="5"
-      />).
+      5 is divisible by <Math expression="5" />: <Math expression={step4} /> (one factor of <Math expression="5" />).
     </li>
   </ul>
   <p>
@@ -74,9 +70,7 @@
       />).
     </li>
     <li>
-      15 ist durch <Math expression="3" /> teilbar: <Math expression={step3} /> (ein Faktor <Math
-        expression="3"
-      />).
+      15 ist durch <Math expression="3" /> teilbar: <Math expression={step3} /> (ein Faktor <Math expression="3" />).
     </li>
     <li>
       5 ist durch <Math expression="5" /> teilbar: <Math expression={step4} /> (ein Faktor <Math expression="5" />).

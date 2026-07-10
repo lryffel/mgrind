@@ -11,6 +11,8 @@
   // eslint-disable-next-line svelte/prefer-writable-derived
   let values = $state<string[]>([]);
 
+  let validationError = $derived(values.some((v) => v.includes(',')) ? _('error.decimalComma') : null);
+
   $effect(() => {
     values = primes.map(() => '');
   });
@@ -43,7 +45,13 @@
   }
 </script>
 
-<ExerciseShell {exercise} {feedback} submitAnswer={() => onSubmit(values.map((v) => Number(v) || 0).join(','))} {onNext}>
+<ExerciseShell
+  {exercise}
+  {feedback}
+  submitAnswer={() => onSubmit(values.map((v) => Number(v) || 0).join(','))}
+  {onNext}
+  {validationError}
+>
   <p class="prompt-label">{_('exercise.primeFactorisation.prompt')}</p>
   <p class="prompt">
     <Math expression={exercise.prompt} />

@@ -11,11 +11,19 @@
   let numInput = $state('');
   let denInput = $state('');
 
+  let validationError = $derived(numInput.includes(',') || denInput.includes(',') ? _('error.decimalComma') : null);
+
   let correctNumDen = $derived(exercise.answer.split(','));
   let correctLatex = $derived(`\\frac{${correctNumDen[0]}}{${correctNumDen[1]}}`);
 </script>
 
-<ExerciseShell {exercise} {feedback} submitAnswer={() => onSubmit(`${numInput},${denInput}`)} {onNext}  >
+<ExerciseShell
+  {exercise}
+  {feedback}
+  submitAnswer={() => onSubmit(`${numInput},${denInput}`)}
+  {onNext}
+  {validationError}
+>
   {#if feedback === null}
     <p class="prompt-label">{_('exercise.simplifyFraction.prompt')}</p>
     <p class="prompt fraction-prompt">
@@ -28,7 +36,9 @@
     <p class="prompt fraction-prompt">
       <Math expression={exercise.prompt} />
       <Math expression="=" />
-      <span class="user-answer"><Math expression={numInput && denInput ? `\\frac{${numInput}}{${denInput}}` : '\\;'} /></span>
+      <span class="user-answer"
+        ><Math expression={numInput && denInput ? `\\frac{${numInput}}{${denInput}}` : '\\;'} /></span
+      >
     </p>
     <Feedback {feedback} {correctLatex} />
   {/if}

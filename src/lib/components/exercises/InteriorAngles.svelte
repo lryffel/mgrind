@@ -21,6 +21,8 @@
 
   let userInput = $state('');
 
+  let validationError = $derived(userInput.includes(',') ? _('error.decimalComma') : null);
+
   const degreeSymbol = '{}^\\circ';
   const correctLatex = $derived(exercise.answer + '{}^\\circ');
 
@@ -62,7 +64,7 @@
   }
 </script>
 
-<ExerciseShell {exercise} {feedback} submitAnswer={() => onSubmit(userInput.trim())} {onNext}>
+<ExerciseShell {exercise} {feedback} submitAnswer={() => onSubmit(userInput.trim())} {onNext} {validationError}>
   {#if feedback === null}
     <p class="prompt-label">{_('exercise.interiorAngles.prompt')}</p>
   {:else}
@@ -90,7 +92,15 @@
 
       {@const lp = labelPos(angle.vertexX, angle.vertexY)}
       {#if angle.isMissing && feedback === null}
-        <text x={lp.x} y={lp.y} text-anchor="middle" dominant-baseline="central" font-size="18" font-weight="700" fill="currentColor">
+        <text
+          x={lp.x}
+          y={lp.y}
+          text-anchor="middle"
+          dominant-baseline="central"
+          font-size="18"
+          font-weight="700"
+          fill="currentColor"
+        >
           ?
         </text>
       {:else}

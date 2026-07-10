@@ -261,6 +261,10 @@ const dict = {
     en: 'Simplify.',
     de: 'Kürze.',
   },
+  'error.decimalComma': {
+    en: 'Please use a period (.) instead of a comma (,)',
+    de: 'Bitte benutze einen Punkt (.) anstelle eines Kommas (,)',
+  },
 } satisfies Record<string, Record<Lang, string>>;
 
 export const state = $state({ lang: 'en' as Lang });

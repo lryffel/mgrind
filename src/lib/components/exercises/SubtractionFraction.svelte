@@ -12,6 +12,8 @@
   let numInput = $state('');
   let denInput = $state('');
 
+  let validationError = $derived(numInput.includes(',') || denInput.includes(',') ? _('error.decimalComma') : null);
+
   const num1 = $derived(exercise.data?.num1 ?? 0);
   const den1 = $derived(exercise.data?.den1 ?? 1);
   const num2 = $derived(exercise.data?.num2 ?? 0);
@@ -32,7 +34,13 @@
   const correctLatex = $derived(`\\frac{${correctNumDen[0]}}{${correctNumDen[1]}}`);
 </script>
 
-<ExerciseShell {exercise} {feedback} submitAnswer={() => onSubmit(`${numInput},${denInput}`)} {onNext}  >
+<ExerciseShell
+  {exercise}
+  {feedback}
+  submitAnswer={() => onSubmit(`${numInput},${denInput}`)}
+  {onNext}
+  {validationError}
+>
   {#if feedback === null}
     <p class="prompt-label">{_(promptKey)}</p>
     <p class="prompt fraction-prompt">
@@ -49,7 +57,9 @@
       <Math expression="-" />
       <Math expression={`\\frac{${num2}}{${den2}}`} />
       <Math expression="=" />
-      <span class="user-answer"><Math expression={numInput && denInput ? `\\frac{${numInput}}{${denInput}}` : '\\;'} /></span>
+      <span class="user-answer"
+        ><Math expression={numInput && denInput ? `\\frac{${numInput}}{${denInput}}` : '\\;'} /></span
+      >
     </p>
     <Feedback {feedback} {correctLatex} />
     {#if hasNegativeDenominator}

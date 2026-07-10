@@ -24,6 +24,10 @@
   let coeffA = $state('');
   let coeffs = $state<string[]>([]);
 
+  let validationError = $derived(
+    coeffA.includes(',') || coeffs.some((c) => c.includes(',')) ? _('error.decimalComma') : null,
+  );
+
   let currentOption = $derived(selectedIdx !== null && selectedIdx >= 0 ? data.factorOptions[selectedIdx] : null);
 
   let currentInnerVarParts = $derived(currentOption?.innerVarParts ?? []);
@@ -77,7 +81,7 @@
   }
 </script>
 
-<ExerciseShell {exercise} {feedback} submitAnswer={handleSubmit} {onNext}>
+<ExerciseShell {exercise} {feedback} submitAnswer={handleSubmit} {onNext} {validationError}>
   <p class="prompt-label">{_('exercise.factoringOut.prompt')}</p>
   <p class="prompt">
     <Math expression={exercise.prompt} />

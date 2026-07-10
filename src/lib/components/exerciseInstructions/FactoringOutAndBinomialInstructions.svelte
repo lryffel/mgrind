@@ -81,8 +81,9 @@
   <p>
     Ein weiteres Beispiel: <Math expression={ex2} />. Der ggT ist 3, also <Math expression={ex2gcf} />. Der Rest <Math
       expression={'x^{2} - 4'}
-    /> passt zur dritten Formel mit <Math expression="a = x" /> und <Math expression="b = 2" />, somit ist das
-    Ergebnis <Math expression={ex2res} />.
+    /> passt zur dritten Formel mit <Math expression="a = x" /> und <Math expression="b = 2" />, somit ist das Ergebnis <Math
+      expression={ex2res}
+    />.
   </p>
   <p>
     Überprüfe deine Antwort, indem du das Ergebnis ausmultiplizierst — du solltest den ursprünglichen Term erhalten.
