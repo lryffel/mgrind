@@ -39,9 +39,8 @@
   }
 </script>
 
-<!-- svelte-ignore a11y_no_noninteractive_tabindex -->
-<!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
-<article class="discipline-card" {onclick} onkeydown={(e) => e.key === 'Enter' && onclick()} tabindex="0">
+<!-- svelte-ignore a11y_no_noninteractive_element_to_interactive_role -->
+<article class="discipline-card" role="link" {onclick} onkeydown={(e) => e.key === 'Enter' && onclick()} tabindex="0">
   <h2>{_(discipline.nameKey)}</h2>
   <button
     class="gear-button"
@@ -65,7 +64,7 @@
         {@const disabled = isDisabled(type.id)}
         {@const locked = !arePrerequisitesMet(type.id)}
         <div
-          class="type-row outline"
+          class="type-row"
           class:disabled={disabled && !locked}
           class:locked
           onclick={(e) => handleRow(type.id, e)}
@@ -73,7 +72,7 @@
           tabindex="0"
           role="button"
         >
-          <span class="type-name">{locked ? '🔒 ' : ''}{_(type.nameKey)}</span>
+          <span class="type-name" title={_(type.nameKey)}>{locked ? '🔒 ' : ''}{_(type.nameKey)}</span>
           <progress value={complexity / type.maxComplexity} max={1}></progress>
           <span class="type-complexity">{complexity}/{type.maxComplexity}</span>
         </div>
@@ -88,6 +87,7 @@
 <Modal show={lockedTypeId !== null} onclose={closeDialog}>
   {#snippet footer()}
     <button class="outline" onclick={closeDialog}>{_('back')}</button>
+
     <button class="danger" onclick={handleEnableNow}>{_('exercise.enableNow')}</button>
   {/snippet}
   <header>
@@ -119,63 +119,9 @@
     cursor: pointer;
     padding: 0.25rem;
     line-height: 1;
-    color: var(--pico-muted-color);
+    color: var(--c-text-muted);
   }
   .gear-button.warning {
-    color: var(--pico-del-color);
-  }
-  .card-footer {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-  }
-  .card-footer progress {
-    flex: 1;
-  }
-  .type-list {
-    display: flex;
-    flex-direction: column;
-    gap: 0;
-    padding: 0.5rem 0;
-  }
-  .type-row {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    padding: 0.25rem 0.5rem;
-    border-radius: var(--pico-border-radius);
-    cursor: pointer;
-    color: inherit;
-  }
-  .type-row.outline {
-    border: none;
-  }
-  .type-row:hover {
-    background: var(--pico-table-row-stripped-background);
-  }
-  .type-row.disabled {
-    opacity: 0.5;
-    text-decoration: line-through;
-  }
-  .type-row.locked {
-    opacity: 0.5;
-  }
-  .type-name {
-    flex: 0 0 11rem;
-    color: var(--pico-color);
-    text-align: left;
-  }
-  .type-row progress {
-    flex: 1;
-  }
-  .type-complexity {
-    flex: 0 0 3rem;
-    text-align: right;
-    font-size: 0.8rem;
-    color: var(--pico-muted-color);
-  }
-  .warning-text {
-    color: var(--pico-del-color);
-    font-size: 0.85rem;
+    color: var(--c-incorrect);
   }
 </style>

@@ -1,7 +1,7 @@
-import '@picocss/pico/css/pico.min.css';
 import 'katex/dist/katex.min.css';
-import { mount } from 'svelte';
+import './design.css';
 import './app.css';
+import { mount } from 'svelte';
 import App from './App.svelte';
 import { initLang } from './lib/i18n.svelte';
 import { initProgress } from './lib/progress.svelte';

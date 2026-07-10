@@ -3,6 +3,7 @@
   import type { ExerciseProps } from '../../types';
   import Math from '../Math.svelte';
   import ExerciseShell from '../ExerciseShell.svelte';
+  import Feedback from '../Feedback.svelte';
   import NumericInput from './NumericInput.svelte';
   import { formatFactoredLatex } from '../../exercises/factoringBinomialFormulas';
   import { parseFrac } from '../../math/fraction';
@@ -49,6 +50,8 @@
     if (!aParsed || !bParsed) return '';
     return formatFactoredLatex(formula, aParsed[0], aParsed[1], bParsed[0], bParsed[1], varA, varB);
   });
+
+  let textAnswer = $derived(correctLatex ? undefined : _('exercise.factoringBinomialFormulas.noFormulaFeedback'));
 </script>
 
 <ExerciseShell {exercise} {feedback} {submitAnswer} {onNext}>
@@ -96,19 +99,7 @@
         <Math expression={userLatex} />
       {/if}
     </div>
-    {#if feedback === 'correct'}
-      <p class="feedback correct">{_('feedback.correct')}</p>
-    {:else}
-      <p class="feedback incorrect">
-        {_('feedback.incorrect.prefix')}
-        {#if correctLatex}
-          <Math expression={correctLatex} />
-        {:else}
-          {_('exercise.factoringBinomialFormulas.noFormulaFeedback')}
-        {/if}
-        {_('feedback.incorrect.suffix')}
-      </p>
-    {/if}
+    <Feedback {feedback} {correctLatex} {textAnswer} />
   {/if}
 </ExerciseShell>
 
@@ -121,7 +112,7 @@
 
   .no-formula-hint {
     font-style: italic;
-    color: var(--pico-muted-color, #777);
+    color: var(--c-text-muted);
     margin: 0;
   }
 </style>

@@ -135,6 +135,6 @@
 
   .no-factor-feedback {
     font-style: italic;
-    color: var(--pico-muted-color, #777);
+    color: var(--c-text-muted);
   }
 </style>

@@ -48,13 +48,5 @@
 </dialog>
 
 <style>
-  :global(.danger) {
-    --pico-background-color: var(--pico-del-color);
-    --pico-border-color: var(--pico-del-color);
-    --pico-color: var(--pico-color-light);
-  }
-  :global(.danger:hover) {
-    --pico-background-color: var(--pico-del-color);
-    --pico-border-color: var(--pico-del-color);
-  }
+  /* danger class now defined in design.css */
 </style>

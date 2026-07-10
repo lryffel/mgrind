@@ -14,16 +14,35 @@
     textAnswer?: string;
     correctMessage?: string;
   } = $props();
+
+  let celebrating = $state(false);
+
+  $effect(() => {
+    if (feedback === 'correct') {
+      celebrating = true;
+    } else {
+      celebrating = false;
+    }
+  });
+
+  function onAnimEnd() {
+    celebrating = false;
+  }
 </script>
 
 {#if feedback}
   {#if feedback === 'correct'}
-    <p class="feedback correct">{correctMessage ?? _('feedback.correct')}</p>
+    <p class="feedback correct" class:celebrating onanimationend={onAnimEnd} role="status">
+      {correctMessage ?? _('feedback.correct')}
+      {#if correctLatex}<Math expression={correctLatex} />{/if}
+    </p>
   {:else if correctLatex}
-    <p class="feedback incorrect">
+    <p class="feedback incorrect" role="status">
       {_('feedback.incorrect.prefix')}<Math expression={correctLatex} />{_('feedback.incorrect.suffix')}
     </p>
   {:else}
-    <p class="feedback incorrect">{_('feedback.incorrect', textAnswer ?? '')}</p>
+    <p class="feedback incorrect" role="status">
+      {_('feedback.incorrect', textAnswer ?? '')}
+    </p>
   {/if}
 {/if}

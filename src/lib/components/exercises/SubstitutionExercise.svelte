@@ -68,7 +68,7 @@
 <style>
   .hint {
     font-size: 0.85rem;
-    color: var(--pico-muted-color, #777);
+    color: var(--c-text-muted);
     margin-bottom: 0.5rem;
     text-align: center;
   }

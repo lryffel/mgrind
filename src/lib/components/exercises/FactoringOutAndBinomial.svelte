@@ -177,7 +177,7 @@
 
   .config-label {
     font-size: 0.85em;
-    color: var(--pico-muted-color, #777);
+    color: var(--c-text-muted);
     white-space: nowrap;
   }
 
@@ -202,12 +202,12 @@
 
   .no-formula-hint {
     font-style: italic;
-    color: var(--pico-muted-color, #777);
+    color: var(--c-text-muted);
     margin: 0;
   }
 
   .no-formula-feedback {
     font-style: italic;
-    color: var(--pico-muted-color, #777);
+    color: var(--c-text-muted);
   }
 </style>

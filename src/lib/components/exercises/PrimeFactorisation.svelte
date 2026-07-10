@@ -3,6 +3,7 @@
   import type { ExerciseProps } from '../../types';
   import Math from '../Math.svelte';
   import ExerciseShell from '../ExerciseShell.svelte';
+  import Feedback from '../Feedback.svelte';
 
   let { exercise, onSubmit, onNext, feedback }: ExerciseProps = $props();
 
@@ -22,6 +23,9 @@
       .map(({ prime, exp }) => (exp === '1' ? `${prime}` : `${prime}^{${exp}}`));
     return parts.join(' \\cdot ');
   }
+
+  let correctMessage = $derived(`${_('feedback.correct.primeFactorisation')}`);
+  let correctLatex = $derived(formatCorrectAnswer());
 </script>
 
 <ExerciseShell {exercise} {feedback} submitAnswer={() => onSubmit(values.join(','))} {onNext}>
@@ -49,14 +53,8 @@
         </span>
       {/each}
     </div>
-  {:else if feedback === 'correct'}
-    <p class="feedback correct">
-      {_('feedback.correct.primeFactorisation')}<Math expression={formatCorrectAnswer()} />
-    </p>
   {:else}
-    <p class="feedback incorrect">
-      {_('feedback.incorrect.prefix')}<Math expression={formatCorrectAnswer()} />{_('feedback.incorrect.suffix')}
-    </p>
+    <Feedback {feedback} {correctMessage} {correctLatex} />
   {/if}
 </ExerciseShell>
 

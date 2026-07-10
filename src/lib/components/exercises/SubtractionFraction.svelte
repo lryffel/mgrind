@@ -3,6 +3,7 @@
   import type { ExerciseProps } from '../../types';
   import Math from '../Math.svelte';
   import ExerciseShell from '../ExerciseShell.svelte';
+  import Feedback from '../Feedback.svelte';
   import NumericInput from './NumericInput.svelte';
   import { normalizeFraction } from '../../math/fraction';
 
@@ -27,6 +28,8 @@
     const [n, d] = normalizeFraction(numVal, denVal);
     return `\\frac{${n}}{${d}}`;
   });
+
+  const correctLatex = $derived(`\\frac{${correctNumDen[0]}}{${correctNumDen[1]}}`);
 </script>
 
 <ExerciseShell {exercise} {feedback} submitAnswer={() => onSubmit(`${numInput},${denInput}`)} {onNext} card={false}>
@@ -48,20 +51,12 @@
       <Math expression="=" />
       <Math expression={numInput && denInput ? `\\frac{${numInput}}{${denInput}}` : '\\;'} />
     </p>
+    <Feedback {feedback} {correctLatex} />
     {#if hasNegativeDenominator}
-      <p class="feedback correct">
-        {_('feedback.correct')}
-      </p>
       <p class="feedback warning">
         {_('feedback.negativeDenominator.prefix')}<Math expression={normalizedWarningLatex} />{_(
           'feedback.incorrect.suffix',
         )}
-      </p>
-    {:else}
-      <p class="feedback {feedback}">
-        {feedback === 'correct' ? _('feedback.correct') : _('feedback.incorrect.prefix')}<Math
-          expression={`\\frac{${correctNumDen[0]}}{${correctNumDen[1]}}`}
-        />{_('feedback.incorrect.suffix')}
       </p>
     {/if}
   {/if}

@@ -126,14 +126,7 @@
   <svg viewBox="0 0 250 250" class="triangle-svg">
     {#each vertices as v, i (i)}
       {@const next = vertices[(i + 1) % 3]}
-      <line
-        x1={v.x}
-        y1={v.y}
-        x2={next.x}
-        y2={next.y}
-        stroke="currentColor"
-        stroke-width="2"
-      />
+      <line x1={v.x} y1={v.y} x2={next.x} y2={next.y} stroke="currentColor" stroke-width="2" />
     {/each}
 
     {#each vertices as v, i (i)}
@@ -141,12 +134,7 @@
     {/each}
 
     {#if rightAnglePoints}
-      <polyline
-        points={rightAnglePoints}
-        fill="none"
-        stroke="currentColor"
-        stroke-width="1.5"
-      />
+      <polyline points={rightAnglePoints} fill="none" stroke="currentColor" stroke-width="1.5" />
     {/if}
 
     {#each sides as s, i (i)}
@@ -174,13 +162,7 @@
       </button>
     {/if}
   {:else if exercise.answer === 'cannot_compute'}
-    {#if feedback === 'correct'}
-      <p class="feedback correct">{_('feedback.correct')}</p>
-    {:else}
-      <p class="feedback incorrect">
-        {_('feedback.incorrect.prefix')}{_('exercise.pythagoras.cannotCompute')}{_('feedback.incorrect.suffix')}
-      </p>
-    {/if}
+    <Feedback {feedback} textAnswer={_('exercise.pythagoras.cannotCompute')} />
   {:else}
     <Feedback {feedback} correctLatex={data.answerLatex} />
   {/if}

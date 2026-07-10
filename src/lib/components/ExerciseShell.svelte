@@ -105,9 +105,9 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    background: var(--pico-background-color);
-    border: 1px solid var(--pico-muted-border-color);
-    color: var(--pico-color);
+    background: var(--c-bg-card);
+    border: 1px solid var(--c-border);
+    color: var(--c-text-muted);
     cursor: pointer;
   }
 </style>

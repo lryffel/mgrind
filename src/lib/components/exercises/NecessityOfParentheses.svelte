@@ -7,9 +7,7 @@
 
   let { exercise, onSubmit, onNext, feedback }: ExerciseProps = $props();
 
-  let questions = $derived(
-    (exercise.data?.questions as { latex: string; needsParens: boolean }[]) ?? [],
-  );
+  let questions = $derived((exercise.data?.questions as { latex: string; needsParens: boolean }[]) ?? []);
 
   // eslint-disable-next-line svelte/prefer-writable-derived
   let answers = $state<string[]>([]);
@@ -33,7 +31,6 @@
         }))
       : [],
   );
-
 </script>
 
 <ExerciseShell {exercise} {feedback} submitAnswer={handleSubmit} {onNext}>
@@ -46,14 +43,12 @@
       </span>
       {#if feedback === null}
         <div class="button-group" role="group">
-          <button
-            class={answers[i] === 'yes' ? '' : 'outline'}
-            onclick={() => (answers[i] = 'yes')}
-          >{_('answer.yes')}</button>
-          <button
-            class={answers[i] === 'no' ? '' : 'outline'}
-            onclick={() => (answers[i] = 'no')}
-          >{_('answer.no')}</button>
+          <button class={answers[i] === 'yes' ? '' : 'outline'} onclick={() => (answers[i] = 'yes')}
+            >{_('answer.yes')}</button
+          >
+          <button class={answers[i] === 'no' ? '' : 'outline'} onclick={() => (answers[i] = 'no')}
+            >{_('answer.no')}</button
+          >
         </div>
       {:else if correctAnswers[i].correct}
         <span class="feedback-indicator correct">
@@ -91,10 +86,10 @@
   }
 
   .feedback-indicator.correct {
-    color: var(--pico-color-green, green);
+    color: var(--c-correct);
   }
 
   .feedback-indicator.incorrect {
-    color: var(--pico-color-red, red);
+    color: var(--c-incorrect);
   }
 </style>
