@@ -32,7 +32,9 @@
 
 - `Math.svelte` renders LaTeX via KaTeX (`katex.renderToString`); expressions use standard LaTeX (`\cdot`, `\frac{}{}`, `\sqrt{}`, `^{}`)
   - ⚠️ No math symbol (+, -, =, /, ^, ·, etc.) may ever appear outside KaTeX — all must be rendered through `<Math>`
-- `@picocss/pico` v2 is the only dependency — drive visual design through Pico classes (`role="group"`, `outline`, `<progress>`) before writing custom CSS
+- Design is custom (`src/design.css`) — no CSS framework. Theme via `--c-*` custom properties (cyan primary, magenta correct, red incorrect). Light/dark mode via `.light`/`.dark` on `<html>`.
+- Notebook-style exercise cards: left-aligned, 3px border-left accent, toolbar with SVG help icon, `<hr>` before full-width submit button
+- `<Feedback>` renders user answer in `<Math>` with `.user-answer` class (colored by correctness). Correct: message only. Incorrect: prefix + correct answer. Optional celebration animation on correct.
 - `Exercise.data.fields` (optional `{ variablePart: string }[]`) provides multi-input answer mode (e.g. for collecting terms, binomial formulas); `null` or `undefined` → single text input, present → multiple inputs
 - Interactive `<article>` cards use `<!-- svelte-ignore a11y_no_noninteractive_tabindex -->` and `a11y_no_noninteractive_element_interactions` comments to suppress Svelte a11y warnings
 - German text uses Swiss orthography: no "ß", always "ss" (e.g. "gross", "Masse", "Schweizer Strassenverordnung")
