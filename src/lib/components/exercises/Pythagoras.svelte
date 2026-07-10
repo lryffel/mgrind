@@ -179,7 +179,7 @@
 
   .answer-row {
     display: flex;
-    justify-content: center;
+    justify-content: flex-start;
     margin-top: 0.5rem;
   }
 

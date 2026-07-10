@@ -24,7 +24,7 @@ describe('i18n', () => {
   });
 
   it('interpolates positional arguments', () => {
-    expect(_('feedback.incorrect', '42')).toBe('Incorrect. The answer was 42.');
+    expect(_('feedback.incorrect', '42')).toBe('The correct answer was: 42');
     expect(_('progress.percent', '75')).toBe('Progress: 75%');
   });
 

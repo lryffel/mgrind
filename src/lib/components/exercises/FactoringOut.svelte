@@ -116,10 +116,10 @@
       {#if data.isTrap && feedback === 'correct'}
         <span class="no-factor-feedback">{_('exercise.factoringOut.noFactor')}</span>
       {:else if data.isTrap}
-        <Math expression={userLatex} />
+        <span class="user-answer"><Math expression={userLatex} /></span>
         <span class="no-factor-feedback">{_('exercise.factoringOut.noFactor')}</span>
       {:else}
-        <Math expression={userLatex} />
+        <span class="user-answer"><Math expression={userLatex} /></span>
       {/if}
     </div>
     <Feedback {feedback} {correctLatex} />

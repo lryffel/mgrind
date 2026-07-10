@@ -14,7 +14,7 @@
   const correctLatex = $derived(`${variable} = ${exercise.answer}`);
 </script>
 
-<ExerciseShell {exercise} {feedback} submitAnswer={() => onSubmit(userInput.trim())} {onNext} card={false}>
+<ExerciseShell {exercise} {feedback} submitAnswer={() => onSubmit(userInput.trim())} {onNext}  >
   {#if feedback === null}
     <p class="prompt-label">
       {_('exercise.linearEquations.promptBefore')}<Math expression={variable} />{_(
@@ -39,7 +39,7 @@
     </p>
     <p class="answer-row">
       <Math expression={`${variable} = `} />
-      {userInput}
+      <span class="user-answer"><Math expression={userInput} /></span>
     </p>
     <Feedback {feedback} {correctLatex} />
   {/if}

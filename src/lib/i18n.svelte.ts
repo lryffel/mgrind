@@ -103,9 +103,8 @@ const dict = {
     en: 'Correct! The prime factorisation is ',
     de: 'Richtig! Die Primfaktorzerlegung ist ',
   },
-  'feedback.incorrect': { en: 'Incorrect. The answer was {0}.', de: 'Falsch. Die Antwort war {0}.' },
-  'feedback.incorrect.prefix': { en: 'Incorrect. The answer was ', de: 'Falsch. Die Antwort war ' },
-  'feedback.incorrect.suffix': { en: '.', de: '.' },
+  'feedback.incorrect': { en: 'The correct answer was: {0}', de: 'Die richtige Antwort war: {0}' },
+  'feedback.incorrect.prefix': { en: 'The correct answer was: ', de: 'Die richtige Antwort war: ' },
   'progress.percent': { en: 'Progress: {0}%', de: 'Fortschritt: {0}%' },
   back: { en: 'Back', de: 'Zurück' },
   'lang.switch': { en: 'DE', de: 'EN' },
@@ -259,8 +258,8 @@ const dict = {
     de: 'Kürze.',
   },
   'exercise.simplifySymbolicFraction.axbxPrompt': {
-    en: 'Cancel common variable factors, then simplify the coefficient fraction.',
-    de: 'Kürze die gemeinsamen Variablenfaktoren, dann kürze den Koeffizientenbruch.',
+    en: 'Simplify.',
+    de: 'Kürze.',
   },
 } satisfies Record<string, Record<Lang, string>>;
 

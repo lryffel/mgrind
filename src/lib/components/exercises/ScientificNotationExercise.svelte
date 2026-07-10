@@ -34,7 +34,7 @@
   const textAnswer = $derived(isMultiInput ? undefined : exercise.answer);
 </script>
 
-<ExerciseShell {exercise} {feedback} submitAnswer={handleSubmit} {onNext} card={false}>
+<ExerciseShell {exercise} {feedback} submitAnswer={handleSubmit} {onNext}  >
   {#if feedback === null}
     {#if promptKey}
       <p class="prompt-label">{_(promptKey)}</p>
@@ -46,7 +46,7 @@
       <div class="sci-row">
         <NumericInput bind:value={coeffInput} align="right" placeholder="…" />
         <Math expression={cdot} />
-        <Math expression="10" /><sup
+        <Math expression="10" />^<sup
           ><input
             type="text"
             inputmode="numeric"
@@ -71,13 +71,15 @@
       <Math expression={exercise.prompt} />
     </p>
     {#if isMultiInput}
-      <p class="user-answer">
-        <Math expression={`${coeffInput || '?'} \\cdot 10^{${expInput || '?'}}`} />
-      </p>
+      <div class="sci-row">
+        <span class="user-answer">
+          <Math expression={`${coeffInput} \\cdot 10`} />^<sup>{expInput || ''}</sup>
+        </span>
+      </div>
     {:else}
-      <p class="user-answer">
-        <Math expression={userInput || '?'} />
-      </p>
+      <div class="answer-row">
+        <span class="user-answer"><Math expression={userInput} /></span>
+      </div>
     {/if}
     <Feedback {feedback} {correctLatex} {textAnswer} />
   {/if}
@@ -87,7 +89,7 @@
   .sci-row {
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-start;
     gap: 6px;
     font-size: 1.25rem;
     margin: 1rem 0;
@@ -98,7 +100,7 @@
   }
 
   .user-answer {
-    text-align: center;
+    text-align: left;
     font-size: 1.25rem;
     margin: 0.5rem 0;
   }

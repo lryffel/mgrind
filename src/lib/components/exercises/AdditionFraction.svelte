@@ -21,7 +21,7 @@
   const correctLatex = $derived(`\\frac{${correctNumDen[0]}}{${correctNumDen[1]}}`);
 </script>
 
-<ExerciseShell {exercise} {feedback} submitAnswer={() => onSubmit(`${numInput},${denInput}`)} {onNext} card={false}>
+<ExerciseShell {exercise} {feedback} submitAnswer={() => onSubmit(`${numInput},${denInput}`)} {onNext}  >
   {#if feedback === null}
     <p class="prompt-label">{_(promptKey)}</p>
     <p class="prompt fraction-prompt">
@@ -38,7 +38,7 @@
       <Math expression={op} />
       <Math expression={`\\frac{${num2}}{${den2}}`} />
       <Math expression="=" />
-      <Math expression={numInput && denInput ? `\\frac{${numInput}}{${denInput}}` : '\\;'} />
+      <span class="user-answer"><Math expression={numInput && denInput ? `\\frac{${numInput}}{${denInput}}` : '\\;'} /></span>
     </p>
     <Feedback {feedback} {correctLatex} />
   {/if}

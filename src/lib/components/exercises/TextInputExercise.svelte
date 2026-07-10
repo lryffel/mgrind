@@ -11,7 +11,7 @@
   let userInput = $state('');
 </script>
 
-<ExerciseShell {exercise} {feedback} submitAnswer={() => onSubmit(userInput.trim())} {onNext} card={false}>
+<ExerciseShell {exercise} {feedback} submitAnswer={() => onSubmit(userInput.trim())} {onNext}  >
   {#if feedback === null}
     {#if exercise.prompt.includes('?')}
       {@const parts = exercise.prompt.split('?')}
@@ -33,7 +33,7 @@
       {@const parts = exercise.prompt.split('?')}
       <p class="prompt">
         <Math expression={parts[0]} />
-        {userInput}
+        <span class="user-answer"><Math expression={userInput} /></span>
         <Math expression={parts[1] ?? ''} />
       </p>
     {:else}

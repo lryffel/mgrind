@@ -34,11 +34,10 @@
   {#if feedback === 'correct'}
     <p class="feedback correct" class:celebrating onanimationend={onAnimEnd} role="status">
       {correctMessage ?? _('feedback.correct')}
-      {#if correctLatex}<Math expression={correctLatex} />{/if}
     </p>
   {:else if correctLatex}
     <p class="feedback incorrect" role="status">
-      {_('feedback.incorrect.prefix')}<Math expression={correctLatex} />{_('feedback.incorrect.suffix')}
+      {_('feedback.incorrect.prefix')}<Math expression={correctLatex} />
     </p>
   {:else}
     <p class="feedback incorrect" role="status">

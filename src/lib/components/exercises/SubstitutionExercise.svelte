@@ -32,7 +32,7 @@
   const textAnswer = $derived(answerIsFraction ? undefined : exercise.answer);
 </script>
 
-<ExerciseShell {exercise} {feedback} {submitAnswer} {onNext} card={false}>
+<ExerciseShell {exercise} {feedback} {submitAnswer} {onNext}  >
   <p class="prompt-label">
     {_('exercise.substitution.promptBefore')}<Math expression={`${variable} = ${value}`} />{_(
       'exercise.substitution.promptAfter',
@@ -56,9 +56,9 @@
       <Math expression={term} />
       <Math expression="=" />
       {#if answerIsFraction}
-        <Math expression={`\\frac{${numInput || '0'}}{${denInput || '1'}}`} />
+        <span class="user-answer"><Math expression={`\\frac{${numInput || '0'}}{${denInput || '1'}}`} /></span>
       {:else}
-        <span class="user-answer">{input || '\u00A0'}</span>
+        <span class="user-answer"><Math expression={input || ''} /></span>
       {/if}
     </p>
     <Feedback {feedback} {correctLatex} {textAnswer} />
@@ -70,7 +70,7 @@
     font-size: 0.85rem;
     color: var(--c-text-muted);
     margin-bottom: 0.5rem;
-    text-align: center;
+    text-align: left;
   }
 
   .user-answer {

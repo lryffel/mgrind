@@ -35,7 +35,7 @@
   }
 </script>
 
-<ExerciseShell {exercise} {feedback} submitAnswer={handleSubmit} {onNext} card={false}>
+<ExerciseShell {exercise} {feedback} submitAnswer={handleSubmit} {onNext}  >
   <p class="prompt-label">{_('exercise.factorEquations.prompt')}</p>
   <p class="prompt">
     <Math expression={exercise.prompt} />
@@ -55,7 +55,7 @@
       {#each labels as label, i (i)}
         <span class="solution-row">
           <Math expression={label} />
-          {values[i] || '?'}
+          <span class="user-answer"><Math expression={values[i] || '?'} /></span>
         </span>
       {/each}
     </div>

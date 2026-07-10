@@ -94,7 +94,7 @@
   {:else}
     <div class="expansion">
       <Math expression="=" />
-      <Math expression={userLatex} />
+      <span class="user-answer"><Math expression={userLatex} /></span>
     </div>
     <Feedback {feedback} {correctLatex} />
   {/if}

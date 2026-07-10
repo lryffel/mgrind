@@ -9,10 +9,10 @@
 
   let primes = $derived(exercise.data?.primes ?? []);
   // eslint-disable-next-line svelte/prefer-writable-derived
-  let values = $state<number[]>([]);
+  let values = $state<string[]>([]);
 
   $effect(() => {
-    values = primes.map(() => 0);
+    values = primes.map(() => '');
   });
 
   function formatCorrectAnswer(): string {
@@ -24,11 +24,26 @@
     return parts.join(' \\cdot ');
   }
 
-  let correctMessage = $derived(`${_('feedback.correct.primeFactorisation')}`);
   let correctLatex = $derived(formatCorrectAnswer());
+
+  let displayed = $derived(
+    primes.map((prime, i) => ({ prime, exp: values[i] })).filter(({ exp }) => exp && exp !== '0'),
+  );
+
+  function handleKeydown(i: number, e: KeyboardEvent) {
+    if (e.key === 'ArrowUp' || e.key === 'ArrowDown') {
+      e.preventDefault();
+      let v = Number(values[i]) || 0;
+      if (e.key === 'ArrowUp') {
+        if (v < 9) values[i] = String(v + 1);
+      } else {
+        if (v > 0) values[i] = v === 1 ? '' : String(v - 1);
+      }
+    }
+  }
 </script>
 
-<ExerciseShell {exercise} {feedback} submitAnswer={() => onSubmit(values.join(','))} {onNext}>
+<ExerciseShell {exercise} {feedback} submitAnswer={() => onSubmit(values.map((v) => Number(v) || 0).join(','))} {onNext}>
   <p class="prompt-label">{_('exercise.primeFactorisation.prompt')}</p>
   <p class="prompt">
     <Math expression={exercise.prompt} />
@@ -43,18 +58,38 @@
         {/if}
         <span class="prime-term">
           <Math expression={prime + '\\text{\\char`^}'} /><input
-            type="number"
+            type="text"
+            inputmode="numeric"
+            pattern="[0-9]*"
             class="exp-input"
             bind:value={values[i]}
-            min={0}
-            max={9}
             placeholder="0"
+            onkeydown={(e) => handleKeydown(i, e)}
           />
         </span>
       {/each}
     </div>
   {:else}
-    <Feedback {feedback} {correctMessage} {correctLatex} />
+    <div class="factorisation" role="group">
+      <Math expression="=" />
+      {#if displayed.length === 0}
+        <span class="user-answer"><Math expression="1" /></span>
+      {:else}
+        {#each displayed as { prime, exp }, i (prime)}
+          {#if i > 0}
+            <Math expression="\cdot" />
+          {/if}
+          <span class="user-answer">
+            {#if exp === '1'}
+              <Math expression={`${prime}`} />
+            {:else}
+              <Math expression={`${prime}^{${exp}}`} />
+            {/if}
+          </span>
+        {/each}
+      {/if}
+    </div>
+    <Feedback {feedback} {correctLatex} />
   {/if}
 </ExerciseShell>
 
@@ -65,7 +100,7 @@
     gap: 0.4rem;
     font-size: 1.25rem;
     flex-wrap: wrap;
-    justify-content: center;
+    justify-content: flex-start;
   }
 
   .factorisation .prime-term {
