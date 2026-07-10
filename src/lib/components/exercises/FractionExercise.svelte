@@ -60,7 +60,7 @@
         <Math expression={displayOp} />
         <Math expression={`\\frac{${num2}}{${den2}}`} />
       {:else}
-        <Math expression={exercise.prompt} />
+        <Math expression={exercise.prompt} display />
       {/if}
       <Math expression="=" />
       <NumericInput bind:num={frac.num} bind:den={frac.den} fraction numPlaceholder="0" denPlaceholder="1" />
@@ -75,7 +75,7 @@
         <Math expression={displayOp} />
         <Math expression={`\\frac{${num2}}{${den2}}`} />
       {:else}
-        <Math expression={exercise.prompt} />
+        <Math expression={exercise.prompt} display />
       {/if}
       <Math expression="=" />
       <span class="user-answer"><Math expression={frac.userLatex} /></span>

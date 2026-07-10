@@ -25,7 +25,6 @@ export const disciplines: Discipline[] = [
       'additionFraction',
       'subtractionFraction',
       'multiplicationFraction',
-      'simplifySymbolicFraction',
     ],
   },
   {
@@ -40,7 +39,6 @@ export const disciplines: Discipline[] = [
       'factoringOut',
       'factoringBinomialFormulas',
       'factoringOutAndBinomial',
-      'simplifySymbolicFraction',
       'necessityOfParentheses',
       'linearEquations',
     ],

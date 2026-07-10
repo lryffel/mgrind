@@ -14,10 +14,12 @@ export function useFractionInput(): FractionInput {
 
   let _validationError = $derived(_num.includes(',') || _den.includes(',') ? _('error.decimalComma') : null);
 
-  let _userLatex = $derived((_den || '1') === '1' ? `${_num || '0'}` : `\\frac{${_num || '0'}}{${_den || '1'}}`);
+  let _userLatex = $derived(
+    (!_den || _den === '0' || _den === '1') ? `${_num || '0'}` : `\\frac{${_num || '0'}}{${_den}}`,
+  );
 
   function getSubmitValue(separator = ','): string {
-    return `${_num || '0'}${separator}${_den || '1'}`;
+    return `${_num || '0'}${separator}${!_den || _den === '0' ? '1' : _den}`;
   }
 
   return {
@@ -44,5 +46,6 @@ export function useFractionInput(): FractionInput {
 }
 
 export function fractionLatex(num: string, den: string): string {
-  return den === '1' ? num : `\\frac{${num}}{${den}}`;
+  const d = !den || den === '0' ? '1' : den;
+  return d === '1' ? num : `\\frac{${num}}{${d}}`;
 }

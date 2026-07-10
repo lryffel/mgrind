@@ -253,22 +253,6 @@ const dict = {
     en: "Doesn't work",
     de: 'Geht nicht',
   },
-  'exercise.simplifySymbolicFraction.name': {
-    en: 'Simplify Symbolic Fractions',
-    de: 'Bruchterme kürzen',
-  },
-  'exercise.simplifySymbolicFraction.desc': {
-    en: 'Simplify algebraic fractions by factoring and cancelling',
-    de: 'Kürze algebraische Brüche durch Faktorisieren',
-  },
-  'exercise.simplifySymbolicFraction.prompt': {
-    en: 'Simplify.',
-    de: 'Kürze.',
-  },
-  'exercise.simplifySymbolicFraction.axbxPrompt': {
-    en: 'Simplify.',
-    de: 'Kürze.',
-  },
   'error.decimalComma': {
     en: 'Please use a period (.) instead of a comma (,)',
     de: 'Bitte benutze einen Punkt (.) anstelle eines Kommas (,)',

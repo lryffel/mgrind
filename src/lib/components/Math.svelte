@@ -1,8 +1,8 @@
 <script lang="ts">
-  import { renderMath } from '../katex';
+  import { renderMath, renderMathDisplay } from '../katex';
 
-  let { expression }: { expression: string } = $props();
+  let { expression, display = false }: { expression: string; display?: boolean } = $props();
 </script>
 
 <!-- eslint-disable-next-line svelte/no-at-html-tags -->
-{@html renderMath(expression)}
+{@html display ? renderMathDisplay(expression) : renderMath(expression)}
