@@ -5,16 +5,14 @@
   import ExerciseShell from '../ExerciseShell.svelte';
   import Feedback from '../Feedback.svelte';
   import NumericInput from './NumericInput.svelte';
+  import { useFractionInput, fractionLatex } from '../../fraction-input.svelte';
 
   let { exercise, onSubmit, onNext, feedback }: ExerciseProps = $props();
 
   let input = $state('');
-  let numInput = $state('');
-  let denInput = $state('');
+  let frac = useFractionInput();
 
-  let validationError = $derived(
-    input.includes(',') || numInput.includes(',') || denInput.includes(',') ? _('error.decimalComma') : null,
-  );
+  let validationError = $derived(input.includes(',') || frac.validationError !== null ? _('error.decimalComma') : null);
 
   const variable = $derived(exercise.data?.variable ?? 'x');
   const value = $derived(exercise.data?.value ?? '');
@@ -23,25 +21,19 @@
   const answerIsFraction = $derived(exercise.answer.includes('/'));
 
   function submitAnswer() {
-    const answer = answerIsFraction ? `${numInput.trim() || '0'}/${denInput.trim() || '1'}` : input.trim();
+    const answer = answerIsFraction ? frac.getSubmitValue('/') : input.trim();
     onSubmit(answer);
   }
 
   const correctLatex = $derived.by(() => {
     if (!answerIsFraction) return undefined;
     const parts = exercise.answer.split('/');
-    return parts[1] === '1' ? parts[0] : `\\frac{${parts[0]}}{${parts[1]}}`;
+    return fractionLatex(parts[0], parts[1]);
   });
 
   const textAnswer = $derived(answerIsFraction ? undefined : exercise.answer);
 
-  const userLatex = $derived(
-    answerIsFraction
-      ? (denInput || '1') === '1'
-        ? `${numInput || '0'}`
-        : `\\frac{${numInput || '0'}}{${denInput || '1'}}`
-      : input || '',
-  );
+  const userLatex = $derived(answerIsFraction ? frac.userLatex : input || '');
 </script>
 
 <ExerciseShell {exercise} {feedback} {submitAnswer} {onNext} {validationError}>
@@ -58,7 +50,7 @@
       <Math expression={term} />
       <Math expression="=" />
       {#if answerIsFraction}
-        <NumericInput bind:num={numInput} bind:den={denInput} fraction numPlaceholder="0" denPlaceholder="1" />
+        <NumericInput bind:num={frac.num} bind:den={frac.den} fraction numPlaceholder="0" denPlaceholder="1" />
       {:else}
         <NumericInput bind:value={input} />
       {/if}

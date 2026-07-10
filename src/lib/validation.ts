@@ -37,3 +37,20 @@ export function validateFractionAnswer(answer: string, exercise: Exercise): bool
   if (user === null || correct === null) return false;
   return user[0] * correct[1] === correct[0] * user[1];
 }
+
+function isReduced(answer: string): boolean {
+  const trimmed = answer.trim();
+  if (!trimmed) return false;
+  const parts = trimmed.split(',');
+  if (parts.length !== 2) return false;
+  const num = parseInt(parts[0], 10);
+  const den = parseInt(parts[1], 10);
+  if (isNaN(num) || isNaN(den) || den === 0) return false;
+  const [rNum, rDen] = reduceFrac(num, den);
+  return num === rNum && den === rDen;
+}
+
+export function validateFractionReduced(answer: string, exercise: Exercise): boolean {
+  if (!validateFractionAnswer(answer, exercise)) return false;
+  return isReduced(answer);
+}

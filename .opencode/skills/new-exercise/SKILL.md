@@ -64,9 +64,85 @@ let {
 - Call `onSubmit(userAnswerString)` on submit.
 - Use `_(key)` for all user-facing strings (import from `../../i18n.svelte` or relative path).
 - Use `$derived`, `$state`, `$effect` (Svelte 5 runes). Do not use `$:` or `export let`.
-- When using `NumericInput` for coefficient fields, normalize values with `normalizeCoeff` from `../../validation`. This converts empty input to `"1"` and bare `"-"` to `"-1"`.
 
-For examples, see existing components: `SimplifyFraction.svelte`, `PrimeFactorisation.svelte`.
+**Input rules — use `NumericInput` for everything.**
+
+No raw `<input>` tags anywhere outside `NumericInput.svelte`. All exercise input must go through `NumericInput`.
+
+**Single-value input** — just bind `value`:
+
+```svelte
+<NumericInput bind:value={myVar} />
+```
+
+**Fraction input** — use the `useFractionInput()` composable from
+`src/lib/fraction-input.svelte.ts`:
+
+```svelte
+<script lang="ts">
+  import { useFractionInput, fractionLatex } from '../../fraction-input.svelte';
+  let frac = useFractionInput();
+</script>
+
+<!-- input -->
+<NumericInput bind:num={frac.num} bind:den={frac.den} fraction numPlaceholder="0" denPlaceholder="1" />
+
+<!-- submit -->
+submitAnswer={() => onSubmit(frac.getSubmitValue())}
+
+<!-- validation -->
+validationError={frac.validationError}
+
+<!-- user-answer feedback -->
+<Math expression={frac.userLatex} />
+
+<!-- correct-answer feedback -->
+let correctLatex = $derived(fractionLatex(numPart, denPart));
+```
+
+The composable handles normalising empty fields, collapsing oneths (den=1 →
+just the numerator), and comma validation. `getSubmitValue()` takes an optional
+separator (default `','`); pass `'/'` for slash-delimited answers.
+
+**Superscript mode** (exponents):
+
+```svelte
+<NumericInput bind:value={val} superscript context="exponent" />
+```
+
+The `<sup>` is styled with `position: relative; top: -0.65em` for a raised
+appearance regardless of parent flex alignment.
+
+**Multi-input polynomial exercises** (collecting terms, binomial formulas,
+etc.):
+
+- One `<NumericInput bind:value={val} variablePart={latex} context="coefficient" />` per term.
+- Normalise with `normalizeCoeff(s, context)` from `../../validation`.
+- Submit as comma-separated string: `values.map(v => normalizeCoeff(v, 'coefficient')).join(',')`.
+
+**Available `context` prop values** (from `InputContext` in `src/types.ts`,
+sets the input placeholder):
+
+| Context       | Placeholder |
+| ------------- | ----------- |
+| `coefficient` | `1`         |
+| `exponent`    | `0`         |
+| `summand`     | `0`         |
+| `numerator`   | `0`         |
+| `denominator` | `1`         |
+| `plain`       | `?`         |
+
+Other `NumericInput` props: `align` (`'center'`/`'right'`/`'left'`),
+`onkeydown` (arrow keys), `readonly`.
+
+**Style**: `.coeff-input` is defined globally in `design.css` — compact
+`padding: 0.2rem 0.4rem` with `field-sizing: content`. No per-component input
+sizing needed.
+
+For examples, see: `FractionExercise.svelte` (fraction),
+`PrimeFactorisation.svelte` (superscript + arrow keys),
+`ScientificNotationExercise.svelte` (both), `CollectingTerms.svelte`
+(multi-input polynomial).
 
 ## Step 3: (Optional) Add instruction component
 

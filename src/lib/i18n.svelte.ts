@@ -88,8 +88,12 @@ const dict = {
     de: 'Wende die Rechenregeln an',
   },
   'feedback.negativeDenominator.prefix': {
-    en: 'Signs should be put in the numerator if possible: ',
-    de: 'Vorzeichen sollten wenn möglich in den Zähler platziert werden: ',
+    en: 'Signs should be put in the numerator, or better yet in front of the fraction: ',
+    de: 'Vorzeichen sollten wenn möglich in den Zähler, oder noch besser vor den Bruch, platziert werden: ',
+  },
+  'feedback.fractionCanReduce': {
+    en: 'The fraction can be reduced: ',
+    de: 'Der Bruch kann noch gekürzt werden: ',
   },
   'exercise.simplifyFraction.prompt': { en: 'Simplify.', de: 'Kürze.' },
   'exercise.primeFactorisation.prompt': {

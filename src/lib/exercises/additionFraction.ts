@@ -47,7 +47,15 @@ function generateSameDenominator(rng: () => number, clamped: number): Exercise {
   return {
     prompt: `\\frac{${f1Num}}{${f1Den}} + \\frac{${f2Num}}{${f2Den}}`,
     answer: `${a},${b}`,
-    data: { num1: f1Num, den1: f1Den, num2: f2Num, den2: f2Den, op: '+', subType: 'sameDenominator' },
+    data: {
+      num1: f1Num,
+      den1: f1Den,
+      num2: f2Num,
+      den2: f2Den,
+      op: '+',
+      subType: 'sameDenominator',
+      promptKey: 'exercise.additionFraction.prompt',
+    },
   };
 }
 
@@ -82,6 +90,14 @@ function generateCommonFactor(rng: () => number, clamped: number): Exercise {
   return {
     prompt: `\\frac{${n1}}{${den1}} + \\frac{${n2}}{${den2}}`,
     answer: `${sumNum / g},${commonDen / g}`,
-    data: { num1: n1, den1, num2: n2, den2, op: '+', subType: 'commonFactor' },
+    data: {
+      num1: n1,
+      den1,
+      num2: n2,
+      den2,
+      op: '+',
+      subType: 'commonFactor',
+      promptKey: 'exercise.additionFraction.prompt',
+    },
   };
 }

@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { normalizeCoeff, trimCompare, validateFractionAnswer } from './validation';
+import { normalizeCoeff, trimCompare, validateFractionAnswer, validateFractionReduced } from './validation';
 import { validateCollectingTerms } from './exercises/collectingTerms';
 import { validateBinomialFormulas } from './exercises/binomialFormulas';
 import { validateExpandAndCollect } from './exercises/expandAndCollect';
@@ -122,6 +122,28 @@ describe('validateFractionAnswer', () => {
   });
 });
 
+describe('validateFractionReduced', () => {
+  it('accepts already reduced fraction', () => {
+    const ex: Exercise = { prompt: '', answer: '1,2' };
+    expect(validateFractionReduced('1,2', ex)).toBe(true);
+  });
+
+  it('rejects unreduced equivalent fraction', () => {
+    const ex: Exercise = { prompt: '', answer: '1,2' };
+    expect(validateFractionReduced('2,4', ex)).toBe(false);
+  });
+
+  it('rejects different fraction even if reduced', () => {
+    const ex: Exercise = { prompt: '', answer: '1,2' };
+    expect(validateFractionReduced('3,4', ex)).toBe(false);
+  });
+
+  it('accepts zero numerator', () => {
+    const ex: Exercise = { prompt: '', answer: '0,1' };
+    expect(validateFractionReduced('0,1', ex)).toBe(true);
+  });
+});
+
 describe('exercise type validation integration', () => {
   it('multiplicationFraction accepts unreduced equivalent answer', () => {
     const type = exerciseTypes['multiplicationFraction'];
@@ -143,13 +165,13 @@ describe('exercise type validation integration', () => {
     }
   });
 
-  it('simplifyFraction accepts unreduced equivalent answer', () => {
+  it('simplifyFraction rejects unreduced equivalent answer', () => {
     const type = exerciseTypes['simplifyFraction'];
     for (let seed = 0; seed < 50; seed++) {
       const ex = type.generate(seed, 5);
       const [num, den] = ex.answer.split(',').map(Number);
       const unreduced = `${num * 3},${den * 3}`;
-      expect(type.validate(unreduced, ex)).toBe(true);
+      expect(type.validate(unreduced, ex)).toBe(false);
     }
   });
 

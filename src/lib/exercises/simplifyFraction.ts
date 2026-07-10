@@ -21,5 +21,6 @@ export function generateSimplifyFraction(seed: number, complexity: number): Exer
   return {
     prompt: `\\frac{${numerator}}{${denominator}}`,
     answer: `${a},${b}`,
+    data: { promptKey: 'exercise.simplifyFraction.prompt' },
   };
 }

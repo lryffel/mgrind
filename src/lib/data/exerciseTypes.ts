@@ -11,10 +11,7 @@ import { generateMultiplicationFraction } from '../exercises/multiplicationFract
 import { generateSubstitution, validateSubstitution } from '../exercises/substitution';
 import TextInputExercise from '../components/exercises/TextInputExercise.svelte';
 import PrimeFactorisation from '../components/exercises/PrimeFactorisation.svelte';
-import SimplifyFraction from '../components/exercises/SimplifyFraction.svelte';
-import AdditionFraction from '../components/exercises/AdditionFraction.svelte';
-import SubtractionFraction from '../components/exercises/SubtractionFraction.svelte';
-import MultiplicationFraction from '../components/exercises/MultiplicationFraction.svelte';
+import FractionExercise from '../components/exercises/FractionExercise.svelte';
 import SubstitutionExercise from '../components/exercises/SubstitutionExercise.svelte';
 import BinomialFormulas from '../components/exercises/BinomialFormulas.svelte';
 import { generateBinomialFormulas, validateBinomialFormulas } from '../exercises/binomialFormulas';
@@ -68,7 +65,7 @@ import InteriorAngles from '../components/exercises/InteriorAngles.svelte';
 import Pythagoras from '../components/exercises/Pythagoras.svelte';
 import InteriorAnglesInstructions from '../components/exerciseInstructions/InteriorAnglesInstructions.svelte';
 import PythagorasInstructions from '../components/exerciseInstructions/PythagorasInstructions.svelte';
-import { trimCompare, validateFractionAnswer } from '../validation';
+import { trimCompare, validateFractionAnswer, validateFractionReduced } from '../validation';
 
 function validateSubtractionFraction(answer: string, exercise: Exercise): boolean {
   return validateFractionAnswer(answer, exercise);
@@ -134,8 +131,8 @@ export const exerciseTypes: Record<string, ExerciseType> = {
     descriptionKey: 'exercise.simplifyFraction.desc',
     maxComplexity: 10,
     generate: generateSimplifyFraction,
-    validate: validateFractionAnswer,
-    component: SimplifyFraction,
+    validate: validateFractionReduced,
+    component: FractionExercise,
     instructionComponent: SimplifyFractionInstructions,
   },
   simplifySymbolicFraction: {
@@ -158,7 +155,7 @@ export const exerciseTypes: Record<string, ExerciseType> = {
     maxComplexity: 10,
     generate: generateAdditionFraction,
     validate: validateFractionAnswer,
-    component: AdditionFraction,
+    component: FractionExercise,
     prerequisites: [{ typeId: 'simplifyFraction', complexity: 5 }],
     instructionComponent: AdditionFractionInstructions,
   },
@@ -169,7 +166,7 @@ export const exerciseTypes: Record<string, ExerciseType> = {
     maxComplexity: 10,
     generate: generateSubtractionFraction,
     validate: validateSubtractionFraction,
-    component: SubtractionFraction,
+    component: FractionExercise,
     prerequisites: [{ typeId: 'simplifyFraction', complexity: 5 }],
     instructionComponent: SubtractionFractionInstructions,
   },
@@ -180,7 +177,7 @@ export const exerciseTypes: Record<string, ExerciseType> = {
     maxComplexity: 10,
     generate: generateMultiplicationFraction,
     validate: validateFractionAnswer,
-    component: MultiplicationFraction,
+    component: FractionExercise,
     prerequisites: [{ typeId: 'simplifyFraction', complexity: 5 }],
     instructionComponent: MultiplicationFractionInstructions,
   },
