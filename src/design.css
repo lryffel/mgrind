@@ -589,32 +589,21 @@ html.modal-is-open {
   color: var(--c-incorrect);
 }
 
-.expansion {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.4rem;
-  font-size: 1.25rem;
-  flex-wrap: wrap;
-  justify-content: flex-start;
-}
-
-.expansion .Math {
-  white-space: nowrap;
-}
-
 .fraction-prompt {
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  gap: 0.5rem;
   font-size: 1.5rem;
   font-weight: 600;
   margin: 0;
+  line-height: 2.2;
 }
 
-.fraction-prompt .equals,
-.fraction-prompt .op {
-  font-size: 1.5rem;
+.fraction-prompt .term,
+.fraction-prompt .fraction-input,
+.fraction-prompt sup {
+  vertical-align: middle;
+}
+
+.continuation {
+  display: inline;
 }
 
 .coeff-input {

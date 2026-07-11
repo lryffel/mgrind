@@ -46,6 +46,18 @@
 
   let cdot = $derived('\\cdot');
 
+  let userLatex = $derived.by(() => {
+    if (selectedFormula == null || selectedFormula === 0) return '';
+    const coeff = parseInt(normGcfCoeff, 10) || 1;
+    const gcfLatex =
+      selectedGcfIdx != null && selectedGcfIdx >= 0 && selectedGcfIdx < data.factorOptions.length
+        ? data.factorOptions[selectedGcfIdx].latex
+        : '';
+    const a = parseInt(normA, 10) || 1;
+    const b = parseInt(normB, 10) || 1;
+    return formatFullFactoredLatex(selectedFormula, coeff, gcfLatex, a, 1, b, 1, data.varA, data.varB);
+  });
+
   let correctFactoredLatex = $derived.by(() => {
     if (data.isTrap) return '';
     const correctOption = data.correctGcfIdx >= 0 ? data.factorOptions[data.correctGcfIdx] : null;
@@ -79,10 +91,6 @@
 
 <ExerciseShell {exercise} {feedback} submitAnswer={handleSubmit} {onNext} {validationError}>
   <p class="prompt-label">{_('exercise.factoringOutAndBinomial.prompt')}</p>
-  <p class="prompt">
-    <Math expression={exercise.prompt} />
-  </p>
-
   {#if feedback === null}
     <div class="answer-group" role="group">
       <div class="config-row" role="group">
@@ -108,51 +116,65 @@
         </label>
       </div>
 
-      <div class="expansion">
-        <Math expression="=" />
-        {#if selectedGcfIdx != null}
-          <NumericInput bind:value={gcfCoeff} variablePart={currentOption?.latex ?? ''} context="coefficient" />
-        {/if}
-        {#if selectedGcfIdx != null && hasFormula}
-          <Math expression={cdot} />
-        {/if}
-        {#if hasFormula}
-          {#if selectedFormula === 3}
-            <span class="binomial-body">
-              <Math expression="(" />
-              <NumericInput bind:value={aVal} variablePart={data.varA ?? ''} context="coefficient" />
-              <Math expression="+" />
-              <NumericInput bind:value={bVal} variablePart={data.varB} context="coefficient" />
-              <Math expression=")(" />
-              <NumericInput value={aVal} variablePart={data.varA ?? ''} context="coefficient" readonly />
-              <Math expression="-" />
-              <NumericInput value={bVal} variablePart={data.varB} context="coefficient" readonly />
-              <Math expression=")" />
-            </span>
-          {:else}
-            <span class="binomial-body">
-              <Math expression="(" />
-              <NumericInput bind:value={aVal} variablePart={data.varA ?? ''} context="coefficient" />
-              <Math expression={selectedFormula === 1 ? '+' : '-'} />
-              <NumericInput bind:value={bVal} variablePart={data.varB} context="coefficient" />
-              <Math expression=")^{2}" />
-            </span>
+      <p class="prompt fraction-prompt">
+        <Math expression={exercise.prompt} />
+        <span class="continuation">
+          <Math expression="=" />
+          {#if selectedGcfIdx != null}
+            <NumericInput bind:value={gcfCoeff} variablePart={currentOption?.latex ?? ''} context="coefficient" />
           {/if}
-        {/if}
-        {#if noFormula && selectedGcfIdx != null}
-          <p class="no-formula-hint">{_('exercise.factoringBinomialFormulas.noFormulaHint')}</p>
-        {/if}
-      </div>
+          {#if selectedGcfIdx != null && hasFormula}
+            <Math expression={cdot} />
+          {/if}
+          {#if hasFormula}
+            {#if selectedFormula === 3}
+              <span class="binomial-body">
+                <Math expression="(" />
+                <NumericInput bind:value={aVal} variablePart={data.varA ?? ''} context="coefficient" />
+                <Math expression="+" />
+                <NumericInput bind:value={bVal} variablePart={data.varB} context="coefficient" />
+                <Math expression=")(" />
+                <NumericInput value={aVal} variablePart={data.varA ?? ''} context="coefficient" readonly />
+                <Math expression="-" />
+                <NumericInput value={bVal} variablePart={data.varB} context="coefficient" readonly />
+                <Math expression=")" />
+              </span>
+            {:else}
+              <span class="binomial-body">
+                <Math expression="(" />
+                <NumericInput bind:value={aVal} variablePart={data.varA ?? ''} context="coefficient" />
+                <Math expression={selectedFormula === 1 ? '+' : '-'} />
+                <NumericInput bind:value={bVal} variablePart={data.varB} context="coefficient" />
+                <Math expression=")^{2}" />
+              </span>
+            {/if}
+          {/if}
+          {#if noFormula && selectedGcfIdx != null}
+            <span class="no-formula-hint">{_('exercise.factoringBinomialFormulas.noFormulaHint')}</span>
+          {/if}
+        </span>
+      </p>
     </div>
   {:else}
-    <div class="expansion">
-      <Math expression="=" />
-      {#if data.isTrap}
+    <p class="prompt fraction-prompt">
+      <Math expression={exercise.prompt} />
+      {#if data.isTrap && feedback === 'correct'}
+        <span class="no-formula-feedback">{_('exercise.factoringBinomialFormulas.noFormulaFeedback')}</span>
+      {:else if data.isTrap}
+        {#if userLatex}
+          <span class="continuation">
+            <Math expression="=" />
+            <span class="user-answer"><Math expression={userLatex} /></span>
+          </span>
+        {/if}
         <span class="no-formula-feedback">{_('exercise.factoringBinomialFormulas.noFormulaFeedback')}</span>
       {:else}
-        <Math expression={correctFactoredLatex} />
+        <span class="continuation">
+          <Math expression="=" />
+          <span class="user-answer"><Math expression={userLatex} /></span>
+        </span>
       {/if}
-    </div>
+    </p>
     <Feedback {feedback} correctLatex={correctFactoredLatex} />
   {/if}
 </ExerciseShell>
@@ -187,19 +209,18 @@
 
   .factor-select {
     width: auto;
-    min-width: 4rem;
+    min-width: auto;
     text-align: center;
   }
 
   .formula-select {
     width: auto;
-    min-width: 10rem;
+    min-width: 8rem;
     text-align: center;
   }
 
   .binomial-body {
     display: inline-flex;
-    flex-wrap: wrap;
     align-items: center;
     gap: 0.25rem;
   }

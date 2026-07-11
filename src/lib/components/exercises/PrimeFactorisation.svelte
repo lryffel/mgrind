@@ -54,63 +54,56 @@
   {validationError}
 >
   <p class="prompt-label">{_('exercise.primeFactorisation.prompt')}</p>
-  <p class="prompt">
-    <Math expression={exercise.prompt} />
-  </p>
-
   {#if feedback === null}
-    <div class="factorisation" role="group">
-      <Math expression="=" />
-      {#each primes as prime, i (prime)}
-        {#if i > 0}
-          <Math expression="\cdot" />
-        {/if}
-        <span class="prime-term">
-          <Math expression={String(prime)} />
-          <NumericInput
-            bind:value={values[i]}
-            superscript
-            context="exponent"
-            onkeydown={(e: KeyboardEvent) => handleKeydown(i, e)}
-          />
-        </span>
-      {/each}
-    </div>
-  {:else}
-    <div class="factorisation" role="group">
-      <Math expression="=" />
-      {#if displayed.length === 0}
-        <span class="user-answer"><Math expression="1" /></span>
-      {:else}
-        {#each displayed as { prime, exp }, i (prime)}
+    <p class="prompt fraction-prompt">
+      <Math expression={exercise.prompt} />
+      <span class="continuation">
+        <Math expression="=" />
+        {#each primes as prime, i (prime)}
           {#if i > 0}
             <Math expression="\cdot" />
           {/if}
-          <span class="user-answer">
-            {#if exp === '1'}
-              <Math expression={`${prime}`} />
-            {:else}
-              <Math expression={`${prime}^{${exp}}`} />
-            {/if}
+          <span class="prime-term">
+            <Math expression={String(prime)} />
+            <NumericInput
+              bind:value={values[i]}
+              superscript
+              context="exponent"
+              onkeydown={(e: KeyboardEvent) => handleKeydown(i, e)}
+            />
           </span>
         {/each}
-      {/if}
-    </div>
+      </span>
+    </p>
+  {:else}
+    <p class="prompt fraction-prompt">
+      <Math expression={exercise.prompt} />
+      <span class="continuation">
+        <Math expression="=" />
+        {#if displayed.length === 0}
+          <span class="user-answer"><Math expression="1" /></span>
+        {:else}
+          {#each displayed as { prime, exp }, i (prime)}
+            {#if i > 0}
+              <Math expression="\cdot" />
+            {/if}
+            <span class="user-answer">
+              {#if exp === '1'}
+                <Math expression={`${prime}`} />
+              {:else}
+                <Math expression={`${prime}^{${exp}}`} />
+              {/if}
+            </span>
+          {/each}
+        {/if}
+      </span>
+    </p>
     <Feedback {feedback} {correctLatex} />
   {/if}
 </ExerciseShell>
 
 <style>
-  .factorisation {
-    display: flex;
-    align-items: center;
-    gap: 0.4rem;
-    font-size: 1.25rem;
-    flex-wrap: wrap;
-    justify-content: flex-start;
-  }
-
-  .factorisation .prime-term {
+  .prime-term {
     display: inline-flex;
     align-items: center;
     gap: 2px;

@@ -58,10 +58,6 @@
 
 <ExerciseShell {exercise} {feedback} {submitAnswer} {onNext} {validationError}>
   <p class="prompt-label">{_('exercise.factoringBinomialFormulas.prompt')}</p>
-  <p class="prompt">
-    <Math expression={exercise.prompt} />
-  </p>
-
   {#if feedback === null}
     <select bind:value={selectedFormula} class="formula-select">
       <option value={null}>--</option>
@@ -71,36 +67,46 @@
       <option value={0}>{_('exercise.factoringBinomialFormulas.noFormula')}</option>
     </select>
 
-    {#if selectedFormula !== null && selectedFormula !== 0}
-      <div class="expansion">
-        {#if selectedFormula === 1 || selectedFormula === 2}
-          <Math expression="(" />
-          <NumericInput bind:value={aVal} variablePart={varA ?? ''} context="coefficient" />
-          <Math expression={selectedFormula === 1 ? '+' : '-'} />
-          <NumericInput bind:value={bVal} variablePart={varB} context="coefficient" />
-          <Math expression=")^{2}" />
-        {:else if selectedFormula === 3}
-          <Math expression="(" />
-          <NumericInput bind:value={aVal} variablePart={varA ?? ''} context="coefficient" />
-          <Math expression="+" />
-          <NumericInput bind:value={bVal} variablePart={varB} context="coefficient" />
-          <Math expression=")(" />
-          <NumericInput value={aVal} variablePart={varA ?? ''} context="coefficient" readonly />
-          <Math expression="-" />
-          <NumericInput value={bVal} variablePart={varB} context="coefficient" readonly />
-          <Math expression=")" />
-        {/if}
-      </div>
-    {:else if selectedFormula === 0}
-      <p class="no-formula-hint">{_('exercise.factoringBinomialFormulas.noFormulaHint')}</p>
-    {/if}
-  {:else}
-    <div class="expansion">
-      {#if userLatex}
-        <Math expression="=" />
-        <span class="user-answer"><Math expression={userLatex} /></span>
+    <p class="prompt fraction-prompt">
+      <Math expression={exercise.prompt} />
+      {#if selectedFormula !== null && selectedFormula !== 0}
+        <span class="continuation">
+          <Math expression="=" />
+          {#if selectedFormula === 1 || selectedFormula === 2}
+            <Math expression="(" />
+            <NumericInput bind:value={aVal} variablePart={varA ?? ''} context="coefficient" />
+            <Math expression={selectedFormula === 1 ? '+' : '-'} />
+            <NumericInput bind:value={bVal} variablePart={varB} context="coefficient" />
+            <Math expression=")^{2}" />
+          {:else if selectedFormula === 3}
+            <Math expression="(" />
+            <NumericInput bind:value={aVal} variablePart={varA ?? ''} context="coefficient" />
+            <Math expression="+" />
+            <NumericInput bind:value={bVal} variablePart={varB} context="coefficient" />
+            <Math expression=")(" />
+            <NumericInput value={aVal} variablePart={varA ?? ''} context="coefficient" readonly />
+            <Math expression="-" />
+            <NumericInput value={bVal} variablePart={varB} context="coefficient" readonly />
+            <Math expression=")" />
+          {/if}
+        </span>
+      {:else if selectedFormula === 0}
+        <span class="continuation">
+          <Math expression="=" />
+          <span class="no-formula-hint">{_('exercise.factoringBinomialFormulas.noFormulaHint')}</span>
+        </span>
       {/if}
-    </div>
+    </p>
+  {:else}
+    <p class="prompt fraction-prompt">
+      <Math expression={exercise.prompt} />
+      <span class="continuation">
+        {#if userLatex}
+          <Math expression="=" />
+          <span class="user-answer"><Math expression={userLatex} /></span>
+        {/if}
+      </span>
+    </p>
     <Feedback {feedback} {correctLatex} {textAnswer} />
   {/if}
 </ExerciseShell>
@@ -108,7 +114,7 @@
 <style>
   .formula-select {
     width: auto;
-    min-width: 12rem;
+    min-width: 8rem;
     text-align: center;
   }
 

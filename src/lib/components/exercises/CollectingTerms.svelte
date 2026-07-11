@@ -32,25 +32,27 @@
   {#if promptKey}
     <p class="prompt-label">{_(promptKey)}</p>
   {/if}
-  <p class="prompt">
-    <Math expression={exercise.prompt} />
-  </p>
-
   {#if feedback === null}
-    <div class="expansion">
-      <Math expression="=" />
-      {#each fields as { variablePart }, i (i)}
-        {#if i > 0}
-          <Math expression="+" />
-        {/if}
-        <NumericInput bind:value={values[i]} {variablePart} context={contexts[i]} />
-      {/each}
-    </div>
+    <p class="prompt fraction-prompt">
+      <Math expression={exercise.prompt} />
+      <span class="continuation">
+        <Math expression="=" />
+        {#each fields as { variablePart }, i (i)}
+          {#if i > 0}
+            <Math expression="+" />
+          {/if}
+          <NumericInput bind:value={values[i]} {variablePart} context={contexts[i]} />
+        {/each}
+      </span>
+    </p>
   {:else}
-    <div class="expansion">
-      <Math expression="=" />
-      <span class="user-answer"><Math expression={userLatex} /></span>
-    </div>
+    <p class="prompt fraction-prompt">
+      <Math expression={exercise.prompt} />
+      <span class="continuation">
+        <Math expression="=" />
+        <span class="user-answer"><Math expression={userLatex} /></span>
+      </span>
+    </p>
     <Feedback {feedback} {correctLatex} />
   {/if}
 </ExerciseShell>

@@ -83,49 +83,51 @@
 
 <ExerciseShell {exercise} {feedback} submitAnswer={handleSubmit} {onNext} {validationError}>
   <p class="prompt-label">{_('exercise.factoringOut.prompt')}</p>
-  <p class="prompt">
-    <Math expression={exercise.prompt} />
-  </p>
-
   {#if feedback === null}
-    <div class="expansion">
-      <Math expression="=" />
-      {#if selectedIdx != null && selectedIdx >= 0}
-        <NumericInput bind:value={coeffA} context="coefficient" />
-        <Math expression={cdot} />
-      {/if}
-      <select bind:value={selectedIdx} class="factor-select" onchange={onSelectChange}>
-        <option value={null}>--</option>
-        <option value={-1}>{_('exercise.factoringOut.noFactor')}</option>
-        {#each data.factorOptions as opt, i (opt.text)}
-          <option value={i}>{opt.text}</option>
-        {/each}
-      </select>
-      {#if selectedIdx != null && selectedIdx >= 0}
-        {#key inputKey}
-          <Math expression={cdotOpen} />
-          {#each currentInnerVarParts as part, i (i)}
-            {#if i > 0}
-              <Math expression="+" />
-            {/if}
-            <NumericInput bind:value={coeffs[i]} variablePart={part} context="coefficient" />
+    <p class="prompt fraction-prompt">
+      <Math expression={exercise.prompt} />
+      <span class="continuation">
+        <Math expression="=" />
+        {#if selectedIdx != null && selectedIdx >= 0}
+          <NumericInput bind:value={coeffA} context="coefficient" />
+          <Math expression={cdot} />
+        {/if}
+        <select bind:value={selectedIdx} class="factor-select" onchange={onSelectChange}>
+          <option value={null}>--</option>
+          <option value={-1}>{_('exercise.factoringOut.noFactor')}</option>
+          {#each data.factorOptions as opt, i (opt.text)}
+            <option value={i}>{opt.text}</option>
           {/each}
-          <Math expression=")" />
-        {/key}
-      {/if}
-    </div>
+        </select>
+        {#if selectedIdx != null && selectedIdx >= 0}
+          {#key inputKey}
+            <Math expression={cdotOpen} />
+            {#each currentInnerVarParts as part, i (i)}
+              {#if i > 0}
+                <Math expression="+" />
+              {/if}
+              <NumericInput bind:value={coeffs[i]} variablePart={part} context="coefficient" />
+            {/each}
+            <Math expression=")" />
+          {/key}
+        {/if}
+      </span>
+    </p>
   {:else}
-    <div class="expansion">
-      <Math expression="=" />
-      {#if data.isTrap && feedback === 'correct'}
-        <span class="no-factor-feedback">{_('exercise.factoringOut.noFactor')}</span>
-      {:else if data.isTrap}
-        <span class="user-answer"><Math expression={userLatex} /></span>
-        <span class="no-factor-feedback">{_('exercise.factoringOut.noFactor')}</span>
-      {:else}
-        <span class="user-answer"><Math expression={userLatex} /></span>
-      {/if}
-    </div>
+    <p class="prompt fraction-prompt">
+      <Math expression={exercise.prompt} />
+      <span class="continuation">
+        <Math expression="=" />
+        {#if data.isTrap && feedback === 'correct'}
+          <span class="no-factor-feedback">{_('exercise.factoringOut.noFactor')}</span>
+        {:else if data.isTrap}
+          <span class="user-answer"><Math expression={userLatex} /></span>
+          <span class="no-factor-feedback">{_('exercise.factoringOut.noFactor')}</span>
+        {:else}
+          <span class="user-answer"><Math expression={userLatex} /></span>
+        {/if}
+      </span>
+    </p>
     <Feedback {feedback} {correctLatex} />
   {/if}
 </ExerciseShell>
@@ -133,7 +135,7 @@
 <style>
   .factor-select {
     width: auto;
-    min-width: 6rem;
+    min-width: auto;
     text-align: center;
   }
 
