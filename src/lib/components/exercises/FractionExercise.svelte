@@ -56,7 +56,12 @@
       <p class="prompt-label">{_(promptKey)}</p>
     {/if}
     <div class="fraction-prompt-row">
-      <Math expression={isBinary ? `${promptFraction(num1!, den1!)} ${displayOp} ${promptFraction(num2!, den2!)}` : exercise.prompt} display />
+      <Math
+        expression={isBinary
+          ? `${promptFraction(num1!, den1!)} ${displayOp} ${promptFraction(num2!, den2!)}`
+          : exercise.prompt}
+        display
+      />
       <Math expression="=" />
       <NumericInput bind:num={frac.num} bind:den={frac.den} fraction numPlaceholder="0" denPlaceholder="1" />
     </div>
@@ -65,7 +70,12 @@
       <p class="prompt-label">{_(promptKey)}</p>
     {/if}
     <div class="fraction-prompt-row">
-      <Math expression={isBinary ? `${promptFraction(num1!, den1!)} ${displayOp} ${promptFraction(num2!, den2!)}` : exercise.prompt} display />
+      <Math
+        expression={isBinary
+          ? `${promptFraction(num1!, den1!)} ${displayOp} ${promptFraction(num2!, den2!)}`
+          : exercise.prompt}
+        display
+      />
       <Math expression="=" />
       <span class="user-answer"><Math expression={frac.userLatex} display /></span>
     </div>
