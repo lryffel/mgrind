@@ -36,6 +36,18 @@
   const vertices = $derived(data.triangleVertices);
   const isNonRight = $derived(!data.isRight);
 
+  const padding = 20;
+  const viewBounds = $derived.by(() => {
+    const xs = vertices.map((v) => v.x);
+    const ys = vertices.map((v) => v.y);
+    const minX = Math.min(...xs) - padding;
+    const minY = Math.min(...ys) - padding;
+    const maxX = Math.max(...xs) + padding;
+    const maxY = Math.max(...ys) + padding;
+    return { minX, minY, width: maxX - minX, height: maxY - minY };
+  });
+  const viewBoxAttr = $derived(`${viewBounds.minX} ${viewBounds.minY} ${viewBounds.width} ${viewBounds.height}`);
+
   const cx = $derived((vertices[0].x + vertices[1].x + vertices[2].x) / 3);
   const cy = $derived((vertices[0].y + vertices[1].y + vertices[2].y) / 3);
 
@@ -147,7 +159,7 @@
   <p class="prompt-label">{_('exercise.pythagoras.prompt')}</p>
 
   <div class="svg-container">
-    <svg viewBox="0 0 250 250" class="triangle-svg">
+    <svg viewBox={viewBoxAttr} class="triangle-svg">
       {#each vertices as v, i (i)}
         {@const next = vertices[(i + 1) % 3]}
         <line x1={v.x} y1={v.y} x2={next.x} y2={next.y} stroke="currentColor" stroke-width="2" />
@@ -163,7 +175,7 @@
     </svg>
 
     {#each sides as s, i (i)}
-      <div class="svg-overlay" style="left: {(s.labelX / 250) * 100}%; top: {(s.labelY / 250) * 100}%;">
+      <div class="svg-overlay" style="left: {((s.labelX - viewBounds.minX) / viewBounds.width) * 100}%; top: {((s.labelY - viewBounds.minY) / viewBounds.height) * 100}%;">
         {#if s.isMissing && feedback === null}
           <NumericInput bind:value={userInput} placeholder="?" />
         {:else if s.isMissing && feedback !== null}

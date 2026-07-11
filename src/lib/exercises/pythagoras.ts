@@ -33,8 +33,7 @@ function toNum(num: number, den: number): number {
 }
 
 function computeVertices(abLen: number, acLen: number, bcLen: number): Vertex[] {
-  const viewSize = 250;
-  const margin = 40;
+  const drawSize = 200;
 
   const v2: Vertex = { x: 0, y: 0 };
   const v1: Vertex = { x: bcLen, y: 0 };
@@ -51,11 +50,11 @@ function computeVertices(abLen: number, acLen: number, bcLen: number): Vertex[] 
   const maxX = Math.max(...xs);
   const maxY = Math.max(...ys);
   const dim = Math.max(maxX - minX, maxY - minY);
-  const scale = dim > 0.001 ? (viewSize - 2 * margin) / dim : 1;
+  const scale = dim > 0.001 ? drawSize / dim : 1;
 
   return verts.map((v) => ({
-    x: (v.x - minX) * scale + margin,
-    y: (maxY - v.y) * scale + margin,
+    x: (v.x - minX) * scale,
+    y: (maxY - v.y) * scale,
   }));
 }
 

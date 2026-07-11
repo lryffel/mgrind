@@ -29,6 +29,18 @@
 
   const data = $derived(exercise.data as InteriorAnglesData);
 
+  const padding = 20;
+  const viewBounds = $derived.by(() => {
+    const xs = data.angles.map((a) => a.vertexX);
+    const ys = data.angles.map((a) => a.vertexY);
+    const minX = Math.min(...xs) - padding;
+    const minY = Math.min(...ys) - padding;
+    const maxX = Math.max(...xs) + padding;
+    const maxY = Math.max(...ys) + padding;
+    return { minX, minY, width: maxX - minX, height: maxY - minY };
+  });
+  const viewBoxAttr = $derived(`${viewBounds.minX} ${viewBounds.minY} ${viewBounds.width} ${viewBounds.height}`);
+
   const cx = 150;
   const cy = 140;
 
@@ -74,7 +86,7 @@
   <p class="prompt-label">{_('exercise.interiorAngles.prompt')}</p>
 
   <div class="svg-container">
-    <svg viewBox="0 0 300 280" class="polygon-svg">
+    <svg viewBox={viewBoxAttr} class="polygon-svg">
       {#each data.angles as angle, i (i)}
         {@const next = data.angles[(i + 1) % data.sides]}
         <line
@@ -97,7 +109,7 @@
 
     {#each data.angles as angle, i (i)}
       {@const lp = labelPos(angle.vertexX, angle.vertexY)}
-      <div class="svg-overlay" style="left: {(lp.x / 300) * 100}%; top: {(lp.y / 280) * 100}%;">
+      <div class="svg-overlay" style="left: {((lp.x - viewBounds.minX) / viewBounds.width) * 100}%; top: {((lp.y - viewBounds.minY) / viewBounds.height) * 100}%;">
         {#if angle.isMissing && feedback === null}
           <NumericInput bind:value={userInput} placeholder="?" variablePart={degreeLatex} />
         {:else if angle.isMissing && feedback !== null}
