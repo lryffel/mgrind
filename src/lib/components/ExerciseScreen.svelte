@@ -27,8 +27,18 @@
   </ul>
   <ul>
     <li>
-      <div class="progress-bar" class:full={disciplineProgress >= 1} role="progressbar" aria-valuenow={disciplineProgress} aria-valuemin="0" aria-valuemax="1">
-        <div class="progress-gradient" style="clip-path: inset(0 {100 - disciplineProgress * 100}% 0 0 round 0.3125rem)"></div>
+      <div
+        class="progress-bar"
+        class:full={disciplineProgress >= 1}
+        role="progressbar"
+        aria-valuenow={disciplineProgress}
+        aria-valuemin="0"
+        aria-valuemax="1"
+      >
+        <div
+          class="progress-gradient"
+          style="clip-path: inset(0 {100 - disciplineProgress * 100}% 0 0 round 0.3125rem)"
+        ></div>
       </div>
     </li>
   </ul>

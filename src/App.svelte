@@ -15,12 +15,19 @@
     activeDisciplineId = id;
     selectedTypeId = typeId ?? null;
     screen = 'exercise';
+    history.pushState({ screen: 'exercise' }, '');
   }
 
   function backToMenu() {
     screen = 'menu';
     activeDisciplineId = null;
     selectedTypeId = null;
+  }
+
+  function handlePopstate() {
+    if (screen === 'exercise') {
+      backToMenu();
+    }
   }
 </script>
 
@@ -29,7 +36,9 @@
     <ul>
       <li>
         <h1 class="rainbow-logo">
-          <span class="c0">m</span><span class="c1">g</span><span class="c2">r</span><span class="c3">i</span><span class="c4">n</span><span class="c5">d</span>
+          <span class="c0">m</span><span class="c1">g</span><span class="c2">r</span><span class="c3">i</span><span
+            class="c4">n</span
+          ><span class="c5">d</span>
         </h1>
       </li>
     </ul>
@@ -40,6 +49,8 @@
     </ul>
   </nav>
 </header>
+
+<svelte:window onpopstate={handlePopstate} />
 
 <main class="container">
   {#if screen === 'menu'}
@@ -64,17 +75,41 @@
   .rainbow-logo span {
     display: inline-block;
   }
-  :global([data-theme='light']) .rainbow-logo .c0 { color: #dc2626; }
-  :global([data-theme='light']) .rainbow-logo .c1 { color: #ea580c; }
-  :global([data-theme='light']) .rainbow-logo .c2 { color: #ca8a04; }
-  :global([data-theme='light']) .rainbow-logo .c3 { color: #16a34a; }
-  :global([data-theme='light']) .rainbow-logo .c4 { color: #2563eb; }
-  :global([data-theme='light']) .rainbow-logo .c5 { color: #9333ea; }
+  :global([data-theme='light']) .rainbow-logo .c0 {
+    color: #dc2626;
+  }
+  :global([data-theme='light']) .rainbow-logo .c1 {
+    color: #ea580c;
+  }
+  :global([data-theme='light']) .rainbow-logo .c2 {
+    color: #ca8a04;
+  }
+  :global([data-theme='light']) .rainbow-logo .c3 {
+    color: #16a34a;
+  }
+  :global([data-theme='light']) .rainbow-logo .c4 {
+    color: #2563eb;
+  }
+  :global([data-theme='light']) .rainbow-logo .c5 {
+    color: #9333ea;
+  }
 
-  :global([data-theme='dark']) .rainbow-logo .c0 { color: #ef4444; }
-  :global([data-theme='dark']) .rainbow-logo .c1 { color: #f97316; }
-  :global([data-theme='dark']) .rainbow-logo .c2 { color: #eab308; }
-  :global([data-theme='dark']) .rainbow-logo .c3 { color: #22c55e; }
-  :global([data-theme='dark']) .rainbow-logo .c4 { color: #3b82f6; }
-  :global([data-theme='dark']) .rainbow-logo .c5 { color: #a855f7; }
+  :global([data-theme='dark']) .rainbow-logo .c0 {
+    color: #ef4444;
+  }
+  :global([data-theme='dark']) .rainbow-logo .c1 {
+    color: #f97316;
+  }
+  :global([data-theme='dark']) .rainbow-logo .c2 {
+    color: #eab308;
+  }
+  :global([data-theme='dark']) .rainbow-logo .c3 {
+    color: #22c55e;
+  }
+  :global([data-theme='dark']) .rainbow-logo .c4 {
+    color: #3b82f6;
+  }
+  :global([data-theme='dark']) .rainbow-logo .c5 {
+    color: #a855f7;
+  }
 </style>

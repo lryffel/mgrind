@@ -38,7 +38,6 @@ export class ExerciseSession {
       const rng = mulberry32(Date.now());
       const index = Math.floor(rng() * allTypeIds.length);
       this.currentType = exerciseTypes[allTypeIds[index]];
-      this.currentTypeId = this.currentType.id;
     }
     this.currentSeed = Date.now();
     this.exercise = this.currentType.generate(this.currentSeed, getComplexity(this.currentType.id));

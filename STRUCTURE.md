@@ -19,14 +19,14 @@ Also typed `ExerciseProps`, `ExerciseFeedback`, and `ExerciseComponent = Compone
 
 ## Shared utilities
 
-| File                       | Role                                                                     |
-| -------------------------- | ------------------------------------------------------------------------ |
-| `src/lib/math/number.ts`   | `gcd`, `areCoprime`, `randomCoprimePair`, `bumpPastThreshold`            |
+| File                       | Role                                                                                          |
+| -------------------------- | --------------------------------------------------------------------------------------------- |
+| `src/lib/math/number.ts`   | `gcd`, `areCoprime`, `randomCoprimePair`, `bumpPastThreshold`                                 |
 | `src/lib/math/fraction.ts` | `Fraction`, `reduceFrac`, `parseFrac`, `fracEqual`, `normalizeFraction`, `niceNum`, `niceMax` |
-| `src/lib/math/rng.ts`      | `randInt`, `pick`, `shuffle`, `randCoeff`, `pickExclude`, `pickDistinct` |
-| `src/lib/katex.ts`         | `renderMath(expr)` — wraps `katex.renderToString`                        |
-| `src/lib/validation.ts`    | `trimCompare`, `validateFractionAnswer` — shared validators              |
-| `src/lib/storage.ts`       | `loadStored` / `saveStored` — type-safe localStorage helpers             |
+| `src/lib/math/rng.ts`      | `randInt`, `pick`, `shuffle`, `randCoeff`, `pickExclude`, `pickDistinct`                      |
+| `src/lib/katex.ts`         | `renderMath(expr)` — wraps `katex.renderToString`                                             |
+| `src/lib/validation.ts`    | `trimCompare`, `validateFractionAnswer` — shared validators                                   |
+| `src/lib/storage.ts`       | `loadStored` / `saveStored` — type-safe localStorage helpers                                  |
 
 ## Domain data
 
@@ -39,8 +39,8 @@ Also typed `ExerciseProps`, `ExerciseFeedback`, and `ExerciseComponent = Compone
 
 One file per type. Uses `mulberry32` from `src/lib/prng.ts` and helper functions from `src/lib/math/`.
 
-| File                          | Role                                    |
-| ----------------------------- | --------------------------------------- |
+| File                               | Role                                                                                                     |
+| ---------------------------------- | -------------------------------------------------------------------------------------------------------- |
 | `src/lib/exercises/termAlgebra.ts` | `Term`, `multiplyTerms`, `expandProduct`, `collectTerms` — shared by `expand.ts` / `expandAndCollect.ts` |
 
 ## Exercise session (`src/lib/exerciseSession.svelte.ts`)
