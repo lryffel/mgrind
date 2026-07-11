@@ -13,6 +13,7 @@
     onSelectType,
   }: { discipline: Discipline; onclick: () => void; onSelectType?: (typeId: string) => void } = $props();
   let progress = $derived(getDisciplineProgress(discipline, exerciseTypes));
+  let isComplete = $derived(progress >= 1);
   let types = $derived(discipline.exerciseTypeIds.map((id) => exerciseTypes[id]).filter(Boolean));
   let anyDisabled = $derived(types.some((t) => isDisabled(t.id)));
   let open = $state(false);
@@ -53,7 +54,7 @@
 </script>
 
 <!-- svelte-ignore a11y_no_noninteractive_element_to_interactive_role -->
-<article class="discipline-card" role="link" {onclick} onkeydown={(e) => e.key === 'Enter' && onclick()} tabindex="0">
+<article class="discipline-card" class:complete={isComplete} role="link" {onclick} onkeydown={(e) => e.key === 'Enter' && onclick()} tabindex="0">
   <h2>{_(discipline.nameKey)}</h2>
   <button
     class="gear-button"
@@ -95,14 +96,14 @@
             aria-label={_(type.nameKey)}
           />
           <span class="type-name" title={_(type.nameKey)}>{locked ? '🔒 ' : ''}{_(type.nameKey)}</span>
-          <progress value={complexity / type.maxComplexity} max={1}></progress>
+          <progress class:full={complexity >= type.maxComplexity} value={complexity / type.maxComplexity} max={1}></progress>
           <span class="type-complexity">{complexity}/{type.maxComplexity}</span>
         </div>
       {/each}
     </div>
   {/if}
   <div class="card-footer">
-    <progress value={progress} max={1}>{(progress * 100).toFixed(0)}%</progress>
+    <progress class:full={isComplete} value={progress} max={1}>{(progress * 100).toFixed(0)}%</progress>
   </div>
 </article>
 

@@ -257,6 +257,7 @@ const dict = {
     en: "Doesn't work",
     de: 'Geht nicht',
   },
+  'discipline.complete': { en: 'Complete!', de: 'Abgeschlossen!' },
   'error.decimalComma': {
     en: 'Please use a period (.) instead of a comma (,)',
     de: 'Bitte benutze einen Punkt (.) anstelle eines Kommas (,)',

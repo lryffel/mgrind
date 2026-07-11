@@ -1,7 +1,7 @@
 /* ============================================================
    mgrind — Design system
-   Replaces Pico CSS. Light/dark theme via [data-theme].
-   Accent: cyan (primary), magenta (correct/celebration).
+   Light/dark theme via [data-theme].
+   Accent: blue (primary), green (correct).
    ============================================================ */
 
 /* ---- Reset ------------------------------------------------- */
@@ -65,12 +65,12 @@ a {
   --c-text-heading: #111;
   --c-border: #e0e0e0;
   --c-border-light: #eee;
-  --c-primary: #0891b2;
-  --c-primary-hover: #0e7490;
-  --c-primary-focus: rgba(8, 145, 178, 0.2);
+  --c-primary: #2563eb;
+  --c-primary-hover: #1d4ed8;
+  --c-primary-focus: rgba(37, 99, 235, 0.2);
   --c-primary-inverse: var(--c-white);
-  --c-correct: #d946ef;
-  --c-correct-glow: rgba(217, 70, 239, 0.35);
+  --c-correct: #16a34a;
+  --c-correct-glow: rgba(22, 163, 74, 0.35);
   --c-incorrect: #be123c;
   --c-incorrect-bg: rgba(190, 18, 60, 0.08);
   --c-warning: #d97706;
@@ -95,12 +95,12 @@ a {
   --c-text-heading: #eee;
   --c-border: #2a2e3a;
   --c-border-light: #1e2230;
-  --c-primary: #22d3ee;
-  --c-primary-hover: #67e8f9;
-  --c-primary-focus: rgba(34, 211, 238, 0.2);
+  --c-primary: #60a5fa;
+  --c-primary-hover: #93c5fd;
+  --c-primary-focus: rgba(96, 165, 250, 0.2);
   --c-primary-inverse: #0c0e14;
-  --c-correct: #e879f9;
-  --c-correct-glow: rgba(232, 121, 249, 0.35);
+  --c-correct: #4ade80;
+  --c-correct-glow: rgba(74, 222, 128, 0.35);
   --c-incorrect: #fb7185;
   --c-incorrect-bg: rgba(251, 113, 133, 0.1);
   --c-warning: #fbbf24;
@@ -338,15 +338,116 @@ progress::-webkit-progress-bar {
   border-radius: var(--radius-full);
 }
 
+/* Full rainbow — native clipping shows only the filled portion */
 progress::-webkit-progress-value {
-  background: var(--c-primary);
+  background: linear-gradient(to right, #ef4444, #f97316, #eab308, #22c55e, #3b82f6, #6366f1, #a855f7);
   border-radius: var(--radius-full);
   transition: width 0.3s ease;
 }
 
 progress::-moz-progress-bar {
-  background: var(--c-primary);
+  background: linear-gradient(to right, #ef4444, #f97316, #eab308, #22c55e, #3b82f6, #6366f1, #a855f7);
   border-radius: var(--radius-full);
+}
+
+/* Full glow — on the element itself for reliable rendering */
+progress.full {
+  box-shadow: 0 0 8px 2px rgba(168, 85, 247, 0.5), 0 0 16px 4px rgba(99, 102, 241, 0.3);
+}
+
+/* ---- Complete Discipline Card ------------------------------ */
+
+/* Rainbow border via layered backgrounds */
+article.discipline-card.complete {
+  border: 2px solid transparent;
+  background-clip: padding-box, border-box;
+  background-origin: padding-box, border-box;
+  background-image:
+    linear-gradient(var(--c-bg-card), var(--c-bg-card)),
+    linear-gradient(to right, #ef4444, #f97316, #eab308, #22c55e, #3b82f6, #6366f1, #a855f7);
+  box-shadow:
+    0 0 12px 2px rgba(168, 85, 247, 0.25),
+    0 0 24px 6px rgba(99, 102, 241, 0.15),
+    var(--shadow-sm);
+  position: relative;
+  transition:
+    box-shadow var(--transition),
+    transform var(--transition);
+  overflow: hidden;
+}
+
+article.discipline-card.complete:hover {
+  box-shadow:
+    0 0 18px 4px rgba(168, 85, 247, 0.35),
+    0 0 36px 10px rgba(99, 102, 241, 0.2),
+    var(--shadow-md);
+}
+
+/* Hover-only sparkle effects */
+@media (hover: hover) {
+  article.discipline-card.complete::before,
+  article.discipline-card.complete::after {
+    content: '';
+    position: absolute;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
+
+  article.discipline-card.complete::before {
+    background: #fbbf24;
+    top: 20%;
+    right: 15%;
+  }
+
+  article.discipline-card.complete::after {
+    background: #a78bfa;
+    top: 60%;
+    right: 10%;
+  }
+
+  article.discipline-card.complete:hover::before {
+    opacity: 1;
+    animation: sparkle-1 1.2s ease-out infinite;
+  }
+
+  article.discipline-card.complete:hover::after {
+    opacity: 1;
+    animation: sparkle-2 1s ease-out infinite 0.3s;
+  }
+}
+
+@keyframes sparkle-1 {
+  0% {
+    transform: translate(0, 0) scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: translate(-20px, -30px) scale(1.5);
+    opacity: 0.7;
+  }
+  100% {
+    transform: translate(-40px, -60px) scale(0);
+    opacity: 0;
+  }
+}
+
+@keyframes sparkle-2 {
+  0% {
+    transform: translate(0, 0) scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: translate(25px, -25px) scale(1.3);
+    opacity: 0.7;
+  }
+  100% {
+    transform: translate(50px, -50px) scale(0);
+    opacity: 0;
+  }
 }
 
 /* ---- Dropdown (details > summary) -------------------------- */
@@ -788,16 +889,16 @@ html.modal-is-open {
 }
 
 .feedback.celebrating::before {
-  background: var(--c-correct);
+  background: var(--c-primary);
   animation: confetti-1 0.7s ease-out forwards;
 }
 
 .feedback.celebrating::after {
-  background: var(--c-primary);
+  background: var(--c-correct);
   animation: confetti-2 0.7s ease-out forwards;
   box-shadow:
-    -20px -10px 0 var(--c-correct),
-    20px 5px 0 var(--c-primary);
+    -20px -10px 0 var(--c-primary),
+    20px 5px 0 var(--c-correct);
 }
 
 /* ---- Exercise Prompt Row ----------------------------------- */

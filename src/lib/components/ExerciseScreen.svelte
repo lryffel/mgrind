@@ -26,7 +26,7 @@
     <li><button class="outline" onclick={onBack}>{_('back')}</button></li>
   </ul>
   <ul>
-    <li><progress value={disciplineProgress} max={1}>{(disciplineProgress * 100).toFixed(0)}%</progress></li>
+    <li><progress class:full={disciplineProgress >= 1} value={disciplineProgress} max={1}>{(disciplineProgress * 100).toFixed(0)}%</progress></li>
   </ul>
 </nav>
 
