@@ -1,6 +1,7 @@
 import type { Exercise } from '../types';
 import { mulberry32 } from '../prng';
 import { randomCoprimePair } from '../math/number';
+import { promptFraction } from '../math/latex';
 
 export function generateSimplifyFraction(seed: number, complexity: number): Exercise {
   const clamped = Math.min(Math.max(complexity, 0), 10);
@@ -19,7 +20,7 @@ export function generateSimplifyFraction(seed: number, complexity: number): Exer
   const denominator = b * factor;
 
   return {
-    prompt: `\\frac{${numerator}}{${denominator}}`,
+    prompt: promptFraction(numerator, denominator),
     answer: `${a},${b}`,
     data: { promptKey: 'exercise.simplifyFraction.prompt' },
   };

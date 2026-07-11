@@ -2,10 +2,19 @@ import { describe, it, expect } from 'vitest';
 import { generateSubtractionFraction } from './subtractionFraction';
 import { gcd } from '../math/number';
 
+function termRegex(): string {
+  return `(?:\\\\frac\{(\\d+)\}\{(\\d+)\}|(\\d+))`;
+}
+
 function parseFracs(prompt: string): number[] {
-  const match = prompt.match(/^\\frac\{(\d+)\}\{(\d+)\} - \\frac\{(\d+)\}\{(\d+)\}$/);
+  const re = new RegExp(`^${termRegex()} - ${termRegex()}$`);
+  const match = prompt.match(re);
   expect(match).not.toBeNull();
-  return [parseInt(match![1]), parseInt(match![2]), parseInt(match![3]), parseInt(match![4])];
+  const t1Num = match![1] !== undefined ? parseInt(match![1]) : parseInt(match![3]);
+  const t1Den = match![2] !== undefined ? parseInt(match![2]) : 1;
+  const t2Num = match![4] !== undefined ? parseInt(match![4]) : parseInt(match![6]);
+  const t2Den = match![5] !== undefined ? parseInt(match![5]) : 1;
+  return [t1Num, t1Den, t2Num, t2Den];
 }
 
 describe('generateSubtractionFraction', () => {
@@ -30,10 +39,12 @@ describe('generateSubtractionFraction', () => {
     expect(seen.size).toBeGreaterThan(1);
   });
 
-  it('prompt has two fractions joined by -', () => {
+  it('prompt has two terms joined by -', () => {
     for (let seed = 0; seed < 100; seed++) {
       const ex = generateSubtractionFraction(seed, 4);
-      expect(ex.prompt).toMatch(/^\\frac\{\d+\}\{\d+\} - \\frac\{\d+\}\{\d+\}$/);
+      const vals = parseFracs(ex.prompt);
+      expect(vals).toHaveLength(4);
+      vals.forEach((v) => expect(Number.isInteger(v)).toBe(true));
     }
   });
 

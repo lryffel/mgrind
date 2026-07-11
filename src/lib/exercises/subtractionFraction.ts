@@ -1,6 +1,7 @@
 import type { Exercise } from '../types';
 import { mulberry32 } from '../prng';
 import { gcd, randomCoprimePair } from '../math/number';
+import { promptFraction } from '../math/latex';
 
 export function generateSubtractionFraction(seed: number, complexity: number): Exercise {
   const clamped = Math.min(Math.max(complexity, 0), 10);
@@ -82,7 +83,7 @@ function generateSameDenominator(rng: () => number, clamped: number): Exercise {
   const f2Den = commonDen / g2;
 
   return {
-    prompt: `\\frac{${f1Num}}{${f1Den}} - \\frac{${f2Num}}{${f2Den}}`,
+    prompt: `${promptFraction(f1Num, f1Den)} - ${promptFraction(f2Num, f2Den)}`,
     answer: `${a},${b}`,
     data: {
       num1: f1Num,
@@ -127,7 +128,7 @@ function generateCommonFactor(rng: () => number, clamped: number): Exercise {
   const g = gcd(Math.abs(diffNum), commonDen);
 
   return {
-    prompt: `\\frac{${n1}}{${den1}} - \\frac{${n2}}{${den2}}`,
+    prompt: `${promptFraction(n1, den1)} - ${promptFraction(n2, den2)}`,
     answer: `${diffNum / g},${commonDen / g}`,
     data: {
       num1: n1,

@@ -1,6 +1,7 @@
 import type { Exercise } from '../types';
 import { mulberry32 } from '../prng';
 import { gcd } from '../math/number';
+import { promptFraction } from '../math/latex';
 
 export function generateMultiplicationFraction(seed: number, complexity: number): Exercise {
   const clamped = Math.min(Math.max(complexity, 0), 10);
@@ -80,7 +81,7 @@ export function generateMultiplicationFraction(seed: number, complexity: number)
   const g = gcd(prodNum, prodDen);
 
   return {
-    prompt: `\\frac{${a}}{${b}} \\cdot \\frac{${c}}{${d}}`,
+    prompt: `${promptFraction(a, b)} \\cdot ${promptFraction(c, d)}`,
     answer: `${prodNum / g},${prodDen / g}`,
     data: { num1: a, den1: b, num2: c, den2: d, op: '*', promptKey: 'exercise.multiplicationFraction.prompt' },
   };

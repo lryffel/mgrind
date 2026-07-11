@@ -8,7 +8,7 @@
   import { normalizeFraction } from '../../math/fraction';
   import { useFractionInput, fractionLatex } from '../../fraction-input.svelte';
   import { reduceFrac } from '../../math/fraction';
-  import { coeffLatex } from '../../math/latex';
+  import { coeffLatex, promptFraction } from '../../math/latex';
 
   let { exercise, onSubmit, onNext, feedback }: ExerciseProps = $props();
 
@@ -40,7 +40,7 @@
   const reducedForm = $derived.by(() => reduceFrac(rawNum, rawDen));
   const isReducible = $derived(feedback !== null && (rawNum !== reducedForm[0] || rawDen !== reducedForm[1]));
   const reduceLatex = $derived(
-    isReducible ? `\\frac{${rawNum}}{${rawDen}} = \\frac{${reducedForm[0]}}{${reducedForm[1]}}` : '',
+    isReducible ? `${promptFraction(rawNum, rawDen)} = ${promptFraction(reducedForm[0], reducedForm[1])}` : '',
   );
 </script>
 
@@ -56,7 +56,7 @@
       <p class="prompt-label">{_(promptKey)}</p>
     {/if}
     <div class="fraction-prompt-row">
-      <Math expression={isBinary ? `\\frac{${num1}}{${den1}} ${displayOp} \\frac{${num2}}{${den2}}` : exercise.prompt} display />
+      <Math expression={isBinary ? `${promptFraction(num1!, den1!)} ${displayOp} ${promptFraction(num2!, den2!)}` : exercise.prompt} display />
       <Math expression="=" />
       <NumericInput bind:num={frac.num} bind:den={frac.den} fraction numPlaceholder="0" denPlaceholder="1" />
     </div>
@@ -65,7 +65,7 @@
       <p class="prompt-label">{_(promptKey)}</p>
     {/if}
     <div class="fraction-prompt-row">
-      <Math expression={isBinary ? `\\frac{${num1}}{${den1}} ${displayOp} \\frac{${num2}}{${den2}}` : exercise.prompt} display />
+      <Math expression={isBinary ? `${promptFraction(num1!, den1!)} ${displayOp} ${promptFraction(num2!, den2!)}` : exercise.prompt} display />
       <Math expression="=" />
       <span class="user-answer"><Math expression={frac.userLatex} /></span>
     </div>
