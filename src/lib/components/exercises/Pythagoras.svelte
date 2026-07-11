@@ -145,6 +145,13 @@
 </script>
 
 <ExerciseShell {exercise} {feedback} submitAnswer={handleSubmit} {onNext} {validationError}>
+  {#snippet submitExtra()}
+    {#if isNonRight && feedback === null}
+      <button class="cannot-compute-link" onclick={handleCannotCompute} title={cannotComputeShort}>
+        {cannotComputeShort}
+      </button>
+    {/if}
+  {/snippet}
   <p class="prompt-label">{_('exercise.pythagoras.prompt')}</p>
 
   <SvgContainer {vertices}>
@@ -180,12 +187,6 @@
     {/snippet}
   </SvgContainer>
 
-  {#if isNonRight && feedback === null}
-    <button class="cannot-compute-link" onclick={handleCannotCompute} title={cannotComputeShort}>
-      {cannotComputeShort}
-    </button>
-  {/if}
-
   {#if feedback !== null}
     {#if exercise.answer === 'cannot_compute'}
       <div class="feedback-row">
@@ -203,14 +204,11 @@
   .cannot-compute-link {
     background: none;
     border: none;
-    padding: 0;
     font: inherit;
     font-size: 0.8rem;
     color: var(--c-primary);
     cursor: pointer;
     text-decoration: underline dotted;
-    display: block;
-    margin: 0 auto 0.25rem;
   }
 
   .cannot-compute-link:hover {

@@ -12,6 +12,7 @@
     onNext,
     validationError = null,
     children,
+    submitExtra,
   }: {
     exercise: Exercise;
     feedback: ExerciseFeedback;
@@ -19,6 +20,7 @@
     onNext: () => void;
     validationError?: string | null;
     children: Snippet;
+    submitExtra?: Snippet;
   } = $props();
 
   let el = $state<HTMLElement | null>(null);
@@ -90,6 +92,9 @@
     <p class="validation-error" role="alert">{validationError}</p>
   {/if}
   <div class="submit-row">
+    {#if submitExtra}
+      {@render submitExtra()}
+    {/if}
     {#if feedback === null}
       <button onclick={submitAnswer} disabled={!!validationError}>{_('answer.submit')}</button>
     {:else}
