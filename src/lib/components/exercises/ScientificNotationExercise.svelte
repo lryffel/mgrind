@@ -54,7 +54,7 @@
       <Math expression="=" />
       {#if isMultiInput}
         <NumericInput bind:value={coeffInput} context="coefficient" />
-        <Math expression={'\\cdot'} />
+        <Math expression="\cdot" />
         <Math expression="10" />
         <NumericInput bind:value={expInput} superscript context="exponent" />
       {:else}

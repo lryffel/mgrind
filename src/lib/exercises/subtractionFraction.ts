@@ -34,7 +34,7 @@ export function generateSubtractionFraction(seed: number, complexity: number): E
 function generateSameDenominator(rng: () => number, maxVal: number): Exercise {
   let b = niceNum(rng, maxVal);
   if (b < 2) b = 2;
-  let a: number;
+  let a = 1;
   for (let attempt = 0; attempt < 100; attempt++) {
     a = 1 + Math.floor(rng() * (b - 1));
     if (gcd(a, b) === 1) break;
@@ -118,7 +118,8 @@ function generateSameDenominator(rng: () => number, maxVal: number): Exercise {
 }
 
 function generateCommonFactor(rng: () => number, maxVal: number): Exercise {
-  let p: number, q: number;
+  let p = 2,
+    q = 3;
   for (let attempt = 0; attempt < 50; attempt++) {
     p = niceNum(rng, maxVal);
     q = niceNum(rng, maxVal);

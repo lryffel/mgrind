@@ -2,12 +2,8 @@ import { describe, it, expect } from 'vitest';
 import { generateSubtractionFraction } from './subtractionFraction';
 import { gcd } from '../math/number';
 
-function termRegex(): string {
-  return `(?:(?:\\\\frac|\\\\dfrac)\{(\\d+)\}\{(\\d+)\}|(\\d+))`;
-}
-
 function parseFracs(prompt: string): number[] {
-  const re = new RegExp(`^${termRegex()} - ${termRegex()}$`);
+  const re = /(?:(?:\\frac|\\dfrac){(\d+)}{(\d+)}|(\d+)) - (?:(?:\\frac|\\dfrac){(\d+)}{(\d+)}|(\d+))/;
   const match = prompt.match(re);
   expect(match).not.toBeNull();
   const t1Num = match![1] !== undefined ? parseInt(match![1]) : parseInt(match![3]);

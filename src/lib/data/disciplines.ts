@@ -20,12 +20,7 @@ export const disciplines: Discipline[] = [
   {
     id: 'fractions',
     nameKey: 'discipline.fractions.name',
-    exerciseTypeIds: [
-      'simplifyFraction',
-      'additionFraction',
-      'subtractionFraction',
-      'multiplicationFraction',
-    ],
+    exerciseTypeIds: ['simplifyFraction', 'additionFraction', 'subtractionFraction', 'multiplicationFraction'],
   },
   {
     id: 'termTransformations',

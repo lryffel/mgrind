@@ -18,7 +18,7 @@ export function useFractionInput(): FractionInput {
   let _userLatex = $derived.by(() => {
     if (!_den || _den === '0' || _den === '1') {
       const n = Number(_num);
-      return isNaN(n) ? (_num || '0') : coeffLatex(n, 1, '');
+      return isNaN(n) ? _num || '0' : coeffLatex(n, 1, '');
     }
     const n = Number(_num);
     const d = Number(_den);

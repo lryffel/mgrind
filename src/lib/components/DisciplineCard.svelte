@@ -7,7 +7,11 @@
   import { arePrerequisitesMet, getUnmetPrerequisites, enablePrerequisites } from '../prerequisites.svelte';
   import Modal from './Modal.svelte';
 
-  let { discipline, onclick, onSelectType }: { discipline: Discipline; onclick: () => void; onSelectType?: (typeId: string) => void } = $props();
+  let {
+    discipline,
+    onclick,
+    onSelectType,
+  }: { discipline: Discipline; onclick: () => void; onSelectType?: (typeId: string) => void } = $props();
   let progress = $derived(getDisciplineProgress(discipline, exerciseTypes));
   let types = $derived(discipline.exerciseTypeIds.map((id) => exerciseTypes[id]).filter(Boolean));
   let anyDisabled = $derived(types.some((t) => isDisabled(t.id)));

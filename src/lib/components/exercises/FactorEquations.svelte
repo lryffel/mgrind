@@ -59,11 +59,9 @@
       {#each labels as label, i (i)}
         <span class="solution-row">
           <Math expression={label} />
-          <span
-            class="user-answer"
-            class:correct={perRootCorrect[i]}
-            class:incorrect={!perRootCorrect[i]}
-          ><Math expression={values[i] || '?'} /></span>
+          <span class="user-answer" class:correct={perRootCorrect[i]} class:incorrect={!perRootCorrect[i]}
+            ><Math expression={values[i] || '?'} /></span
+          >
         </span>
       {/each}
     </div>

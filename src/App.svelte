@@ -41,7 +41,11 @@
   {#if screen === 'menu'}
     <section>
       {#each disciplines as discipline (discipline.id)}
-        <DisciplineCard {discipline} onclick={() => selectDiscipline(discipline.id)} onSelectType={(id) => selectDiscipline(discipline.id, id)} />
+        <DisciplineCard
+          {discipline}
+          onclick={() => selectDiscipline(discipline.id)}
+          onSelectType={(id) => selectDiscipline(discipline.id, id)}
+        />
       {/each}
     </section>
   {:else if activeDisciplineId}

@@ -24,15 +24,10 @@ describe('generateAdditionFraction', () => {
     expect(seen.size).toBeGreaterThan(1);
   });
 
-  function termRegex(): string {
-    return `(?:(?:\\\\frac|\\\\dfrac)\{(\\d+)\}\{(\\d+)\}|(\\d+))`;
-  }
-
   function parseFracs(prompt: string): number[] {
-    const re = new RegExp(`^${termRegex()} \\+ ${termRegex()}$`);
+    const re = /(?:(?:\\frac|\\dfrac){(\d+)}{(\d+)}|(\d+)) \+ (?:(?:\\frac|\\dfrac){(\d+)}{(\d+)}|(\d+))/;
     const match = prompt.match(re);
     expect(match).not.toBeNull();
-    // each term: either [frac num, frac den, null] or [null, null, plain num]
     const t1Num = match![1] !== undefined ? parseInt(match![1]) : parseInt(match![3]);
     const t1Den = match![2] !== undefined ? parseInt(match![2]) : 1;
     const t2Num = match![4] !== undefined ? parseInt(match![4]) : parseInt(match![6]);
