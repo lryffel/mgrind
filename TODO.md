@@ -1,4 +1,4 @@
 - [ ] Fix the spacing of the geometry exercises. The svg has a lot of space on top and even more on the bottom. It's worse for the Pythagoras exercise.
 - [x] In the binary fraction exercises, and preferrably everywhere else, render fractions with denominator 1 as just the numerator.
 - [x] Render user submitted fractions as display fractions as well, for example in the binary fractions exercise. Also include the rule that negative numerators get the minus in front of the fraction. (now uses \dfrac everywhere + <Math display> for user answers)
-- [ ] Refactor the exercise about adding fractions so that the computations are much less annoying. Use only powers of 2 and 5 as numerators, with a possible multiple 3.
+- [x] Refactor the exercise about adding fractions so that the computations are much less annoying. Use only powers of 2 and 5 as denominators, with a possible multiple 3. (also applied to subtraction)

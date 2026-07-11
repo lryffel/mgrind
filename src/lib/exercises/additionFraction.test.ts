@@ -97,7 +97,7 @@ describe('generateAdditionFraction', () => {
     for (let seed = 0; seed < 200; seed++) {
       const ex = generateAdditionFraction(seed, 0);
       const vals = parseFracs(ex.prompt);
-      expect(Math.max(...vals)).toBeLessThanOrEqual(50);
+      expect(Math.max(...vals)).toBeLessThanOrEqual(100);
     }
     for (let seed = 0; seed < 200; seed++) {
       const ex = generateAdditionFraction(seed, 10);

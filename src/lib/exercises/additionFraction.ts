@@ -1,28 +1,52 @@
 import type { Exercise } from '../types';
 import { mulberry32 } from '../prng';
-import { gcd, randomCoprimePair } from '../math/number';
+import { gcd } from '../math/number';
 import { promptFraction } from '../math/latex';
+
+/** Generate a nice number (prime factors only 2, 5, optionally 3) not exceeding maxVal. */
+function niceNum(rng: () => number, maxVal: number): number {
+  for (let attempt = 0; attempt < 50; attempt++) {
+    const a = Math.floor(rng() * 4); // 0..3 → 1,2,4,8
+    const b = Math.floor(rng() * 3); // 0..2 → 1,5,25
+    const c = rng() < 0.3 ? 1 : 0;
+    const n = 2 ** a * 5 ** b * 3 ** c;
+    if (n <= maxVal && n >= 2) return n;
+  }
+  return 2;
+}
+
+function niceMax(clamped: number): number {
+  return 7 + Math.floor(clamped * 1.5);
+}
 
 export function generateAdditionFraction(seed: number, complexity: number): Exercise {
   const clamped = Math.min(Math.max(complexity, 0), 10);
   const rng = mulberry32(seed);
+  const maxVal = niceMax(clamped);
 
   if (rng() < 0.5) {
-    return generateSameDenominator(rng, clamped);
+    return generateSameDenominator(rng, maxVal);
   } else {
-    return generateCommonFactor(rng, clamped);
+    return generateCommonFactor(rng, maxVal);
   }
 }
 
-function generateSameDenominator(rng: () => number, clamped: number): Exercise {
-  const minFactor = 2 + Math.floor((clamped * 3) / 10);
-  const maxFactor = 5 + Math.floor((clamped * 45) / 10);
-  const factor = minFactor + Math.floor(rng() * (maxFactor - minFactor + 1));
+function generateSameDenominator(rng: () => number, maxVal: number): Exercise {
+  // Pick a nice reduced denominator b for the sum, and a coprime numerator a
+  let b = niceNum(rng, maxVal);
+  if (b < 2) b = 2;
+  let a: number;
+  for (let attempt = 0; attempt < 100; attempt++) {
+    a = 1 + Math.floor(rng() * (b - 1));
+    if (gcd(a, b) === 1) break;
+  }
+  if (gcd(a, b) !== 1) {
+    a = 1;
+    b = Math.max(b, 2);
+  }
 
-  const maxProduct = 50 + Math.floor((clamped * 450) / 10);
-  const maxBase = Math.max(3, Math.floor(maxProduct / factor));
-
-  const [a, b] = randomCoprimePair(rng, 2, maxBase);
+  // Pick a nice factor to make the unreduced denominator
+  const factor = Math.max(2, niceNum(rng, maxVal));
 
   const totalNum = a * factor;
   const commonDen = b * factor;
@@ -60,13 +84,20 @@ function generateSameDenominator(rng: () => number, clamped: number): Exercise {
   };
 }
 
-function generateCommonFactor(rng: () => number, clamped: number): Exercise {
-  const minF = 2 + Math.floor((clamped * 3) / 10);
-  const maxF = 5 + Math.floor((clamped * 45) / 10);
-  const factor = minF + Math.floor(rng() * (maxF - minF + 1));
+function generateCommonFactor(rng: () => number, maxVal: number): Exercise {
+  let p: number, q: number;
+  for (let attempt = 0; attempt < 50; attempt++) {
+    p = niceNum(rng, maxVal);
+    q = niceNum(rng, maxVal);
+    if (p !== q && gcd(p, q) === 1) break;
+  }
+  p = Math.max(2, p);
+  q = Math.max(2, q);
+  if (p === q || gcd(p, q) !== 1) {
+    q = p + 1;
+  }
 
-  const maxMult = 3 + Math.floor((clamped * 7) / 10);
-  const [p, q] = randomCoprimePair(rng, 2, maxMult);
+  const factor = Math.max(2, niceNum(rng, maxVal));
 
   const den1 = p * factor;
   const den2 = q * factor;

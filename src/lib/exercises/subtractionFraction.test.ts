@@ -109,7 +109,7 @@ describe('generateSubtractionFraction', () => {
     for (let seed = 0; seed < 200; seed++) {
       const ex = generateSubtractionFraction(seed, 10);
       const vals = parseFracs(ex.prompt);
-      expect(Math.max(...vals)).toBeLessThanOrEqual(1000);
+      expect(Math.max(...vals)).toBeLessThanOrEqual(500);
     }
   });
 
