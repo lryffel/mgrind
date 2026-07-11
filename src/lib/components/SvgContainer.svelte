@@ -6,7 +6,7 @@
 
   let {
     vertices,
-    padding = 20,
+    padding = 28,
     children,
     overlays,
   }: {

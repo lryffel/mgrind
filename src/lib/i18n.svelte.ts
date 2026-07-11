@@ -244,7 +244,10 @@ const dict = {
     en: 'Apply the Pythagorean theorem',
     de: 'Wende den Satz des Pythagoras an',
   },
-  'exercise.pythagoras.prompt': { en: 'Find the missing side length.', de: 'Bestimme die fehlende Seitenlänge.' },
+  'exercise.pythagoras.prompt': {
+    en: 'Find the missing side length using the Pythagorean theorem.',
+    de: 'Bestimme die fehlende Seitenlänge mit dem Satz des Pythagoras.',
+  },
   'exercise.pythagoras.cannotCompute': {
     en: 'Cannot be computed with the Pythagorean theorem',
     de: 'Kann nicht mit dem Satz des Pythagoras berechnet werden',
