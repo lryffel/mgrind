@@ -12,9 +12,11 @@ export class ExerciseSession {
   currentSeed = $state(0);
   feedback = $state<'correct' | 'incorrect' | null>(null);
   exercise = $state<Exercise>({} as Exercise);
+  currentTypeId = $state<string | null>(null);
 
-  constructor(disciplineId: string) {
+  constructor(disciplineId: string, typeId?: string) {
     this.disciplineId = disciplineId;
+    if (typeId) this.currentTypeId = typeId;
     this.next();
   }
 
@@ -26,13 +28,17 @@ export class ExerciseSession {
 
   next() {
     const discipline = disciplines.find((d) => d.id === this.disciplineId)!;
-    const typeIds = getEnabledTypeIds(discipline).filter((id) => arePrerequisitesMet(id));
-    if (typeIds.length === 0) {
+    const allTypeIds = getEnabledTypeIds(discipline).filter((id) => arePrerequisitesMet(id));
+
+    if (this.currentTypeId && exerciseTypes[this.currentTypeId]) {
+      this.currentType = exerciseTypes[this.currentTypeId];
+    } else if (allTypeIds.length === 0) {
       this.currentType = exerciseTypes[discipline.exerciseTypeIds[0]];
     } else {
       const rng = mulberry32(Date.now());
-      const index = Math.floor(rng() * typeIds.length);
-      this.currentType = exerciseTypes[typeIds[index]];
+      const index = Math.floor(rng() * allTypeIds.length);
+      this.currentType = exerciseTypes[allTypeIds[index]];
+      this.currentTypeId = this.currentType.id;
     }
     this.currentSeed = Date.now();
     this.exercise = this.currentType.generate(this.currentSeed, getComplexity(this.currentType.id));

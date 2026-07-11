@@ -7,7 +7,7 @@
   import { arePrerequisitesMet, getUnmetPrerequisites, enablePrerequisites } from '../prerequisites.svelte';
   import Modal from './Modal.svelte';
 
-  let { discipline, onclick }: { discipline: Discipline; onclick: () => void } = $props();
+  let { discipline, onclick, onSelectType }: { discipline: Discipline; onclick: () => void; onSelectType?: (typeId: string) => void } = $props();
   let progress = $derived(getDisciplineProgress(discipline, exerciseTypes));
   let types = $derived(discipline.exerciseTypeIds.map((id) => exerciseTypes[id]).filter(Boolean));
   let anyDisabled = $derived(types.some((t) => isDisabled(t.id)));
@@ -17,12 +17,21 @@
   let lockedType = $derived(lockedTypeId ? exerciseTypes[lockedTypeId] : null);
   let unmet = $derived(lockedTypeId ? getUnmetPrerequisites(lockedTypeId) : []);
 
-  function handleRow(typeId: string, e: Event) {
+  function handleCheckbox(typeId: string, e: Event) {
     e.stopPropagation();
     if (!arePrerequisitesMet(typeId)) {
       lockedTypeId = typeId;
     } else {
       toggleDisabled(typeId, discipline);
+    }
+  }
+
+  function handleRowClick(typeId: string, e: Event) {
+    e.stopPropagation();
+    if (!arePrerequisitesMet(typeId)) {
+      lockedTypeId = typeId;
+    } else {
+      onSelectType?.(typeId);
     }
   }
 
@@ -67,11 +76,20 @@
           class="type-row"
           class:disabled={disabled && !locked}
           class:locked
-          onclick={(e) => handleRow(type.id, e)}
-          onkeydown={(e) => e.key === 'Enter' && handleRow(type.id, e)}
+          onclick={(e) => handleRowClick(type.id, e)}
+          onkeydown={(e) => e.key === 'Enter' && handleRowClick(type.id, e)}
           tabindex="0"
           role="button"
         >
+          <input
+            type="checkbox"
+            checked={!disabled}
+            disabled={locked}
+            onclick={(e) => handleCheckbox(type.id, e)}
+            onkeydown={(e) => e.key === 'Enter' && handleCheckbox(type.id, e)}
+            tabindex="-1"
+            aria-label={_(type.nameKey)}
+          />
           <span class="type-name" title={_(type.nameKey)}>{locked ? '🔒 ' : ''}{_(type.nameKey)}</span>
           <progress value={complexity / type.maxComplexity} max={1}></progress>
           <span class="type-complexity">{complexity}/{type.maxComplexity}</span>

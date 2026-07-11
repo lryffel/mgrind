@@ -9,15 +9,18 @@
 
   let screen = $state<'menu' | 'exercise'>('menu');
   let activeDisciplineId = $state<string | null>(null);
+  let selectedTypeId = $state<string | null>(null);
 
-  function selectDiscipline(id: string) {
+  function selectDiscipline(id: string, typeId?: string) {
     activeDisciplineId = id;
+    selectedTypeId = typeId ?? null;
     screen = 'exercise';
   }
 
   function backToMenu() {
     screen = 'menu';
     activeDisciplineId = null;
+    selectedTypeId = null;
   }
 </script>
 
@@ -38,10 +41,10 @@
   {#if screen === 'menu'}
     <section>
       {#each disciplines as discipline (discipline.id)}
-        <DisciplineCard {discipline} onclick={() => selectDiscipline(discipline.id)} />
+        <DisciplineCard {discipline} onclick={() => selectDiscipline(discipline.id)} onSelectType={(id) => selectDiscipline(discipline.id, id)} />
       {/each}
     </section>
   {:else if activeDisciplineId}
-    <ExerciseScreen disciplineId={activeDisciplineId} onBack={backToMenu} />
+    <ExerciseScreen disciplineId={activeDisciplineId} onBack={backToMenu} typeId={selectedTypeId ?? undefined} />
   {/if}
 </main>

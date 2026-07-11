@@ -7,7 +7,7 @@
   import { ExerciseSession } from '../exerciseSession.svelte';
   import { instructionContext } from '../instructionContext.svelte';
 
-  let { disciplineId, onBack }: { disciplineId: string; onBack: () => void } = $props();
+  let { disciplineId, onBack, typeId }: { disciplineId: string; onBack: () => void; typeId?: string } = $props();
 
   let discipline = $derived(disciplines.find((d: Discipline) => d.id === disciplineId)!);
   let disciplineProgress = $derived(getDisciplineProgress(discipline, exerciseTypes));
@@ -15,7 +15,7 @@
 
   $effect(() => {
     if (!session || disciplineId !== session.disciplineId) {
-      session = new ExerciseSession(disciplineId);
+      session = new ExerciseSession(disciplineId, typeId);
     }
     instructionContext.currentInstructionComponent = session?.currentType?.instructionComponent;
   });
