@@ -219,3 +219,22 @@ export function validateFactorEquations(answer: string, exercise: Exercise): boo
   userRoots.sort((a, b) => a - b);
   return userRoots.every((r, i) => r === expectedRoots[i]);
 }
+
+export function validateFactorEquationsPerRoot(answer: string, exercise: Exercise): boolean[] {
+  const trimmed = answer.trim();
+  if (!trimmed) return [false];
+
+  const parts = trimmed.split(',');
+  const userRoots: number[] = [];
+  for (const p of parts) {
+    const n = parseInt(p.trim(), 10);
+    if (isNaN(n)) return Array(userRoots.length).fill(false);
+    userRoots.push(n);
+  }
+
+  const expectedRoots = exercise.answer.split(',').map((s) => parseInt(s, 10));
+  if (userRoots.length !== expectedRoots.length) return Array(userRoots.length).fill(false);
+
+  const sortedUser = [...userRoots].sort((a, b) => a - b);
+  return sortedUser.map((r, i) => r === expectedRoots[i]);
+}
