@@ -148,18 +148,18 @@
   <p class="prompt-label">{_('exercise.pythagoras.prompt')}</p>
 
   <SvgContainer {vertices}>
-      {#each vertices as v, i (i)}
-        {@const next = vertices[(i + 1) % 3]}
-        <line x1={v.x} y1={v.y} x2={next.x} y2={next.y} stroke="currentColor" stroke-width="2" />
-      {/each}
+    {#each vertices as v, i (i)}
+      {@const next = vertices[(i + 1) % 3]}
+      <line x1={v.x} y1={v.y} x2={next.x} y2={next.y} stroke="currentColor" stroke-width="2" />
+    {/each}
 
-      {#each vertices as v, i (i)}
-        <circle cx={v.x} cy={v.y} r="3" fill="currentColor" />
-      {/each}
+    {#each vertices as v, i (i)}
+      <circle cx={v.x} cy={v.y} r="3" fill="currentColor" />
+    {/each}
 
-      {#if rightAnglePoints}
-        <polyline points={rightAnglePoints} fill="none" stroke="currentColor" stroke-width="1.5" />
-      {/if}
+    {#if rightAnglePoints}
+      <polyline points={rightAnglePoints} fill="none" stroke="currentColor" stroke-width="1.5" />
+    {/if}
 
     {#snippet overlays({ pct })}
       {#each sides as s, i (i)}

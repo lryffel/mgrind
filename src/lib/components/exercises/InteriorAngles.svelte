@@ -76,24 +76,24 @@
   <p class="prompt-label">{_('exercise.interiorAngles.prompt')}</p>
 
   <SvgContainer {vertices}>
-      {#each data.angles as angle, i (i)}
-        {@const next = data.angles[(i + 1) % data.sides]}
-        <line
-          x1={angle.vertexX}
-          y1={angle.vertexY}
-          x2={next.vertexX}
-          y2={next.vertexY}
-          stroke="currentColor"
-          stroke-width="2"
-        />
-      {/each}
+    {#each data.angles as angle, i (i)}
+      {@const next = data.angles[(i + 1) % data.sides]}
+      <line
+        x1={angle.vertexX}
+        y1={angle.vertexY}
+        x2={next.vertexX}
+        y2={next.vertexY}
+        stroke="currentColor"
+        stroke-width="2"
+      />
+    {/each}
 
-      {#each data.angles as angle, i (i)}
-        {@const prev = data.angles[(i - 1 + data.sides) % data.sides]}
-        {@const next = data.angles[(i + 1) % data.sides]}
-        <path d={arcPath(angle, prev, next)} fill="none" stroke="currentColor" stroke-width="1.5" />
-        <circle cx={angle.vertexX} cy={angle.vertexY} r="3" fill="currentColor" />
-      {/each}
+    {#each data.angles as angle, i (i)}
+      {@const prev = data.angles[(i - 1 + data.sides) % data.sides]}
+      {@const next = data.angles[(i + 1) % data.sides]}
+      <path d={arcPath(angle, prev, next)} fill="none" stroke="currentColor" stroke-width="1.5" />
+      <circle cx={angle.vertexX} cy={angle.vertexY} r="3" fill="currentColor" />
+    {/each}
 
     {#snippet overlays({ pct })}
       {#each data.angles as angle, i (i)}
@@ -117,4 +117,3 @@
     </div>
   {/if}
 </ExerciseShell>
-
