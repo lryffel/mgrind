@@ -3,6 +3,7 @@
 - Write tests for everything you implement, unless the user agrees that it is unnecessary.
   - Shared test utilities in `src/lib/test-utils.ts`: `expectDeterministic`, `expectSeedVariation`, `expectHasPromptAndAnswer`
 - Try to fix linting errors instead of ignoring them.
+- After implementing a feature, fixing a bug or refactoring, check whether any skills, AGENTS.md or STRUCTURE.md need an update.
 
 - `STRUCTURE.md` describes the codebase architecture — read it first.
 
