@@ -6,6 +6,7 @@
   import { isDisabled, toggleDisabled, enableType } from '../disabledTypes.svelte';
   import { arePrerequisitesMet, getUnmetPrerequisites, enablePrerequisites } from '../prerequisites.svelte';
   import Modal from './Modal.svelte';
+  import ProgressBar from './ProgressBar.svelte';
 
   let {
     discipline,
@@ -103,35 +104,14 @@
             aria-label={_(type.nameKey)}
           />
           <span class="type-name" title={_(type.nameKey)}>{locked ? '🔒 ' : ''}{_(type.nameKey)}</span>
-          <div
-            class="progress-bar"
-            class:full={complexity >= type.maxComplexity}
-            role="progressbar"
-            aria-valuenow={complexity / type.maxComplexity}
-            aria-valuemin="0"
-            aria-valuemax="1"
-          >
-            <div
-              class="progress-gradient"
-              style="clip-path: inset(0 {100 - (complexity / type.maxComplexity) * 100}% 0 0 round 0.3125rem)"
-            ></div>
-          </div>
+          <ProgressBar value={complexity / type.maxComplexity} />
           <span class="type-complexity">{complexity}/{type.maxComplexity}</span>
         </div>
       {/each}
     </div>
   {/if}
   <div class="card-footer">
-    <div
-      class="progress-bar"
-      class:full={isComplete}
-      role="progressbar"
-      aria-valuenow={progress}
-      aria-valuemin="0"
-      aria-valuemax="1"
-    >
-      <div class="progress-gradient" style="clip-path: inset(0 {100 - progress * 100}% 0 0 round 0.3125rem)"></div>
-    </div>
+    <ProgressBar value={progress} />
   </div>
 </article>
 

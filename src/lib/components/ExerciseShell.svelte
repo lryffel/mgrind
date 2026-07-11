@@ -3,6 +3,7 @@
   import { _ } from '../i18n.svelte';
   import type { Exercise, ExerciseFeedback } from '../types';
   import Modal from './Modal.svelte';
+  import ProgressBar from './ProgressBar.svelte';
   import { instructionContext } from '../instructionContext.svelte';
   import { exerciseProgress } from '../exerciseProgressContext.svelte';
 
@@ -66,16 +67,7 @@
   onclick={onClick}
   onkeydown={onArticleKeydown}
 >
-  <div
-    class="progress-bar"
-    class:full={progressValue >= 1}
-    role="progressbar"
-    aria-valuenow={progressValue}
-    aria-valuemin="0"
-    aria-valuemax="1"
-  >
-    <div class="progress-gradient" style="clip-path: inset(0 {100 - progressValue * 100}% 0 0 round 0.3125rem)"></div>
-  </div>
+  <ProgressBar value={progressValue} />
   <div class="exercise-content">
     <div class="exercise-prompt">
       {@render children()}
