@@ -31,6 +31,7 @@
 - `CONCEPT.md` describes the app design — use it for guidance, don't infer
 
 - `Math.svelte` renders LaTeX via KaTeX (`katex.renderToString`); expressions use standard LaTeX (`\cdot`, `\frac{}{}`, `\sqrt{}`, `^{}`)
+  - Optional `display` prop (default `false`) enables KaTeX display mode for standalone expressions
   - ⚠️ No math symbol (+, -, =, /, ^, ·, etc.) may ever appear outside KaTeX — all must be rendered through `<Math>`
 - Design is custom (`src/design.css`) — no CSS framework. Theme via `--c-*` custom properties (cyan primary, magenta correct, red incorrect). Light/dark mode via `.light`/`.dark` on `<html>`.
 - Notebook-style exercise cards: left-aligned, 3px border-left accent, toolbar with SVG help icon, `<hr>` before full-width submit button
