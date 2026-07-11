@@ -5,6 +5,7 @@
   import Feedback from '../Feedback.svelte';
   import NumericInput from './NumericInput.svelte';
   import KaTeX from '../Math.svelte';
+  import SvgContainer from '../SvgContainer.svelte';
 
   interface AngleData {
     value: number;
@@ -28,18 +29,7 @@
   const correctLatex = $derived(exercise.answer + '{}^\\circ');
 
   const data = $derived(exercise.data as InteriorAnglesData);
-
-  const padding = 20;
-  const viewBounds = $derived.by(() => {
-    const xs = data.angles.map((a) => a.vertexX);
-    const ys = data.angles.map((a) => a.vertexY);
-    const minX = Math.min(...xs) - padding;
-    const minY = Math.min(...ys) - padding;
-    const maxX = Math.max(...xs) + padding;
-    const maxY = Math.max(...ys) + padding;
-    return { minX, minY, width: maxX - minX, height: maxY - minY };
-  });
-  const viewBoxAttr = $derived(`${viewBounds.minX} ${viewBounds.minY} ${viewBounds.width} ${viewBounds.height}`);
+  const vertices = $derived(data.angles.map((a) => ({ x: a.vertexX, y: a.vertexY })));
 
   const cx = 150;
   const cy = 140;
@@ -52,8 +42,8 @@
   function labelPos(vx: number, vy: number) {
     const dir = Math.atan2(vy - cy, vx - cx);
     return {
-      x: vx + 28 * Math.cos(dir),
-      y: vy + 28 * Math.sin(dir),
+      x: vx + 22 * Math.cos(dir),
+      y: vy + 22 * Math.sin(dir),
     };
   }
 
@@ -85,8 +75,7 @@
 <ExerciseShell {exercise} {feedback} submitAnswer={() => onSubmit(userInput.trim())} {onNext} {validationError}>
   <p class="prompt-label">{_('exercise.interiorAngles.prompt')}</p>
 
-  <div class="svg-container">
-    <svg viewBox={viewBoxAttr} class="polygon-svg">
+  <SvgContainer {vertices}>
       {#each data.angles as angle, i (i)}
         {@const next = data.angles[(i + 1) % data.sides]}
         <line
@@ -105,21 +94,22 @@
         <path d={arcPath(angle, prev, next)} fill="none" stroke="currentColor" stroke-width="1.5" />
         <circle cx={angle.vertexX} cy={angle.vertexY} r="3" fill="currentColor" />
       {/each}
-    </svg>
 
-    {#each data.angles as angle, i (i)}
-      {@const lp = labelPos(angle.vertexX, angle.vertexY)}
-      <div class="svg-overlay" style="left: {((lp.x - viewBounds.minX) / viewBounds.width) * 100}%; top: {((lp.y - viewBounds.minY) / viewBounds.height) * 100}%;">
-        {#if angle.isMissing && feedback === null}
-          <NumericInput bind:value={userInput} placeholder="?" variablePart={degreeLatex} />
-        {:else if angle.isMissing && feedback !== null}
-          <span class="user-answer"><KaTeX expression={userAnswerLatex(userInput)} /></span>
-        {:else}
-          <KaTeX expression={angle.value + '^\\circ'} />
-        {/if}
-      </div>
-    {/each}
-  </div>
+    {#snippet overlays({ pct })}
+      {#each data.angles as angle, i (i)}
+        {@const lp = labelPos(angle.vertexX, angle.vertexY)}
+        <div class="svg-overlay" style={pct(lp.x, lp.y)}>
+          {#if angle.isMissing && feedback === null}
+            <NumericInput bind:value={userInput} placeholder="?" variablePart={degreeLatex} />
+          {:else if angle.isMissing && feedback !== null}
+            <span class="user-answer"><KaTeX expression={userAnswerLatex(userInput)} /></span>
+          {:else}
+            <KaTeX expression={angle.value + '^\\circ'} />
+          {/if}
+        </div>
+      {/each}
+    {/snippet}
+  </SvgContainer>
 
   {#if feedback !== null}
     <div class="feedback-row">
@@ -128,26 +118,3 @@
   {/if}
 </ExerciseShell>
 
-<style>
-  .polygon-svg {
-    display: block;
-    width: 100%;
-    height: auto;
-  }
-
-  .svg-container {
-    position: relative;
-    display: inline-block;
-    width: 100%;
-    margin: 0.5rem 0;
-  }
-
-  .svg-overlay {
-    position: absolute;
-    transform: translate(-50%, -50%);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 0.9rem;
-  }
-</style>

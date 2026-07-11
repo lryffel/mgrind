@@ -5,6 +5,7 @@
   import Feedback from '../Feedback.svelte';
   import NumericInput from './NumericInput.svelte';
   import KaTeX from '../Math.svelte';
+  import SvgContainer from '../SvgContainer.svelte';
   import { coeffLatex } from '../../math/latex';
 
   interface Vertex {
@@ -36,18 +37,6 @@
   const vertices = $derived(data.triangleVertices);
   const isNonRight = $derived(!data.isRight);
 
-  const padding = 20;
-  const viewBounds = $derived.by(() => {
-    const xs = vertices.map((v) => v.x);
-    const ys = vertices.map((v) => v.y);
-    const minX = Math.min(...xs) - padding;
-    const minY = Math.min(...ys) - padding;
-    const maxX = Math.max(...xs) + padding;
-    const maxY = Math.max(...ys) + padding;
-    return { minX, minY, width: maxX - minX, height: maxY - minY };
-  });
-  const viewBoxAttr = $derived(`${viewBounds.minX} ${viewBounds.minY} ${viewBounds.width} ${viewBounds.height}`);
-
   const cx = $derived((vertices[0].x + vertices[1].x + vertices[2].x) / 3);
   const cy = $derived((vertices[0].y + vertices[1].y + vertices[2].y) / 3);
 
@@ -58,7 +47,7 @@
     const dy = my - cy;
     const len = Math.sqrt(dx * dx + dy * dy);
     if (len < 0.01) return { x: mx, y: my };
-    return { x: mx + (dx / len) * 28, y: my + (dy / len) * 28 };
+    return { x: mx + (dx / len) * 22, y: my + (dy / len) * 22 };
   });
 
   const acLabel = $derived.by(() => {
@@ -68,7 +57,7 @@
     const dy = my - cy;
     const len = Math.sqrt(dx * dx + dy * dy);
     if (len < 0.01) return { x: mx, y: my };
-    return { x: mx + (dx / len) * 28, y: my + (dy / len) * 28 };
+    return { x: mx + (dx / len) * 22, y: my + (dy / len) * 22 };
   });
 
   const bcLabel = $derived.by(() => {
@@ -78,7 +67,7 @@
     const dy = my - cy;
     const len = Math.sqrt(dx * dx + dy * dy);
     if (len < 0.01) return { x: mx, y: my };
-    return { x: mx + (dx / len) * 28, y: my + (dy / len) * 28 };
+    return { x: mx + (dx / len) * 22, y: my + (dy / len) * 22 };
   });
 
   const sides = $derived([
@@ -158,8 +147,7 @@
 <ExerciseShell {exercise} {feedback} submitAnswer={handleSubmit} {onNext} {validationError}>
   <p class="prompt-label">{_('exercise.pythagoras.prompt')}</p>
 
-  <div class="svg-container">
-    <svg viewBox={viewBoxAttr} class="triangle-svg">
+  <SvgContainer {vertices}>
       {#each vertices as v, i (i)}
         {@const next = vertices[(i + 1) % 3]}
         <line x1={v.x} y1={v.y} x2={next.x} y2={next.y} stroke="currentColor" stroke-width="2" />
@@ -172,24 +160,25 @@
       {#if rightAnglePoints}
         <polyline points={rightAnglePoints} fill="none" stroke="currentColor" stroke-width="1.5" />
       {/if}
-    </svg>
 
-    {#each sides as s, i (i)}
-      <div class="svg-overlay" style="left: {((s.labelX - viewBounds.minX) / viewBounds.width) * 100}%; top: {((s.labelY - viewBounds.minY) / viewBounds.height) * 100}%;">
-        {#if s.isMissing && feedback === null}
-          <NumericInput bind:value={userInput} placeholder="?" />
-        {:else if s.isMissing && feedback !== null}
-          {#if exercise.answer === 'cannot_compute'}
-            <span class="user-answer">{cannotComputeShort}</span>
+    {#snippet overlays({ pct })}
+      {#each sides as s, i (i)}
+        <div class="svg-overlay" style={pct(s.labelX, s.labelY)}>
+          {#if s.isMissing && feedback === null}
+            <NumericInput bind:value={userInput} placeholder="?" />
+          {:else if s.isMissing && feedback !== null}
+            {#if exercise.answer === 'cannot_compute'}
+              <span class="user-answer">{cannotComputeShort}</span>
+            {:else}
+              <span class="user-answer"><KaTeX expression={userAnswerLatex(userInput)} /></span>
+            {/if}
           {:else}
-            <span class="user-answer"><KaTeX expression={userAnswerLatex(userInput)} /></span>
+            <KaTeX expression={sideLatex(s.num, s.den)} />
           {/if}
-        {:else}
-          <KaTeX expression={sideLatex(s.num, s.den)} />
-        {/if}
-      </div>
-    {/each}
-  </div>
+        </div>
+      {/each}
+    {/snippet}
+  </SvgContainer>
 
   {#if isNonRight && feedback === null}
     <button class="cannot-compute-link" onclick={handleCannotCompute} title={_('exercise.pythagoras.cannotCompute')}>
@@ -211,28 +200,6 @@
 </ExerciseShell>
 
 <style>
-  .triangle-svg {
-    display: block;
-    width: 100%;
-    height: auto;
-  }
-
-  .svg-container {
-    position: relative;
-    display: inline-block;
-    width: 100%;
-    margin: 0.5rem 0;
-  }
-
-  .svg-overlay {
-    position: absolute;
-    transform: translate(-50%, -50%);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 0.9rem;
-  }
-
   .cannot-compute-link {
     background: none;
     border: none;
