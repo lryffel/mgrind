@@ -4,9 +4,9 @@
 
   const ex = '\\frac{1}{10} - \\frac{1}{2}';
   const step1b = '\\frac{1 \\cdot 5}{2 \\cdot 5} = \\frac{5}{10}';
-  const step2 = '\\frac{1}{10} - \\frac{5}{10} = \\frac{1 - 5}{10} = \\frac{-4}{10}';
-  const step3 = '\\frac{-4}{10} = \\frac{-2}{5}';
-  const result = '\\frac{-2}{5}';
+  const step2 = '\\frac{1}{10} - \\frac{5}{10} = \\frac{1 - 5}{10} = -\\frac{4}{10}';
+  const step3 = '-\\frac{4}{10} = -\\frac{2}{5}';
+  const result = '-\\frac{2}{5}';
 </script>
 
 {#if state.lang === 'en'}

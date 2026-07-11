@@ -1,4 +1,5 @@
 import { _ } from './i18n.svelte';
+import { coeffLatex } from './math/latex';
 
 export interface FractionInput {
   num: string;
@@ -47,5 +48,11 @@ export function useFractionInput(): FractionInput {
 
 export function fractionLatex(num: string, den: string): string {
   const d = !den || den === '0' ? '1' : den;
-  return d === '1' ? num : `\\frac{${num}}{${d}}`;
+  if (d === '1') return num;
+  const n = Number(num);
+  const dn = Number(d);
+  if (!isNaN(n) && !isNaN(dn)) {
+    return coeffLatex(n, dn, '');
+  }
+  return `\\frac{${num}}{${d}}`;
 }

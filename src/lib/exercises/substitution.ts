@@ -3,17 +3,18 @@ import { mulberry32 } from '../prng';
 import { randInt, pick } from '../math/rng';
 import { reduceFrac, parseFrac } from '../math/fraction';
 import { gcd } from '../math/number';
+import { coeffLatex } from '../math/latex';
 
 function fracDisplay(num: number, den: number): string {
   if (den === 1) return String(num);
   if (num % den === 0) return String(num / den);
-  return `\\frac{${num}}{${den}}`;
+  return coeffLatex(num, den, '');
 }
 
 function fracCoeffDisplay(num: number, den: number): string {
   if (den === 1) return String(num);
   if (num % den === 0) return String(num / den);
-  return `\\frac{${num}}{${den}}`;
+  return coeffLatex(num, den, '');
 }
 
 function randomFrac(rng: () => number): [number, number] {

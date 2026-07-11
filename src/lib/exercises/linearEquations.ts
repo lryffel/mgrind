@@ -2,6 +2,7 @@ import type { Exercise } from '../types';
 import { mulberry32 } from '../prng';
 import { randInt, pick } from '../math/rng';
 import { reduceFrac, parseFrac } from '../math/fraction';
+import { coeffLatex } from '../math/latex';
 
 type Term = { type: 'coeff' | 'const'; num: number; den: number };
 
@@ -334,7 +335,7 @@ export function generateLinearEquations(seed: number, complexity: number): Exerc
     const pDen = 1;
     const [apNum, apDen] = mulFrac(aNum, aDen, pNum, pDen);
     const [rhsNum, rhsDen] = addFrac(bNum, bDen, apNum, apDen);
-    const coeffLatex = aDen === 1 ? (aNum === 1 ? '' : aNum === -1 ? '-' : String(aNum)) : `\\frac{${aNum}}{${aDen}}`;
+    const coeffLatexStr = coeffLatex(aNum, aDen, '');
     const pLatex =
       pDen === 1
         ? pNum >= 0
@@ -343,8 +344,8 @@ export function generateLinearEquations(seed: number, complexity: number): Exerc
         : pNum >= 0
           ? ` + \\frac{${pNum}}{${pDen}}`
           : ` - \\frac{${Math.abs(pNum)}}{${pDen}}`;
-    const rhsLatex = rhsDen === 1 ? String(rhsNum) : `\\frac{${rhsNum}}{${rhsDen}}`;
-    equationLatex = `${coeffLatex}(${variable}${pLatex}) = ${rhsLatex}`;
+    const rhsLatex = coeffLatex(rhsNum, rhsDen, '');
+    equationLatex = `${coeffLatexStr}(${variable}${pLatex}) = ${rhsLatex}`;
   } else {
     equationLatex = `${formatSum(leftTerms, variable)} = ${formatSum(rightTerms, variable)}`;
   }

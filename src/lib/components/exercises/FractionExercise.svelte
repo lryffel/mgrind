@@ -8,6 +8,7 @@
   import { normalizeFraction } from '../../math/fraction';
   import { useFractionInput, fractionLatex } from '../../fraction-input.svelte';
   import { reduceFrac } from '../../math/fraction';
+  import { coeffLatex } from '../../math/latex';
 
   let { exercise, onSubmit, onNext, feedback }: ExerciseProps = $props();
 
@@ -31,7 +32,7 @@
   const normalizedWarningLatex = $derived.by(() => {
     if (!hasNegativeDenominator) return '';
     const [n, d] = normalizeFraction(numVal, denVal);
-    return `\\frac{${n}}{${d}}`;
+    return coeffLatex(n, d, '');
   });
 
   const rawNum = $derived(parseInt(frac.num || '0', 10));

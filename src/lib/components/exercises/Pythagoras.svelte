@@ -5,6 +5,7 @@
   import Feedback from '../Feedback.svelte';
   import NumericInput from './NumericInput.svelte';
   import KaTeX from '../Math.svelte';
+  import { coeffLatex } from '../../math/latex';
 
   interface Vertex {
     x: number;
@@ -116,13 +117,16 @@
 
   function sideLatex(num: number, den: number): string {
     if (den === 1) return String(num);
-    return `\\frac{${num}}{${den}}`;
+    return coeffLatex(num, den, '');
   }
 
   function userAnswerLatex(answer: string): string {
     if (answer === '') return '?';
     if (answer.includes('/')) {
       const parts = answer.split('/');
+      const n = Number(parts[0]);
+      const d = Number(parts[1]);
+      if (!isNaN(n) && !isNaN(d)) return coeffLatex(n, d, '');
       return `\\frac{${parts[0]}}{${parts[1]}}`;
     }
     return answer;
