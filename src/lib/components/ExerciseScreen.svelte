@@ -26,7 +26,11 @@
     <li><button class="outline" onclick={onBack}>{_('back')}</button></li>
   </ul>
   <ul>
-    <li><progress class:full={disciplineProgress >= 1} value={disciplineProgress} max={1}>{(disciplineProgress * 100).toFixed(0)}%</progress></li>
+    <li>
+      <div class="progress-bar" class:full={disciplineProgress >= 1} role="progressbar" aria-valuenow={disciplineProgress} aria-valuemin="0" aria-valuemax="1">
+        <div class="progress-gradient" style="clip-path: inset(0 {100 - disciplineProgress * 100}% 0 0 round 0.3125rem)"></div>
+      </div>
+    </li>
   </ul>
 </nav>
 

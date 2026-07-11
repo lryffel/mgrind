@@ -321,37 +321,25 @@ article footer {
 }
 
 /* ---- Progress ---------------------------------------------- */
-progress {
+.progress-bar {
   display: block;
+  position: relative;
   width: 100%;
   height: 0.625rem;
   border-radius: var(--radius-full);
+  background: var(--c-border);
   overflow: hidden;
-  -webkit-appearance: none;
-  appearance: none;
-  background: var(--c-border);
-  border: none;
 }
 
-progress::-webkit-progress-bar {
-  background: var(--c-border);
-  border-radius: var(--radius-full);
-}
-
-/* Full rainbow — native clipping shows only the filled portion */
-progress::-webkit-progress-value {
+/* Gradient spans the full bar; clip-path reveals only the filled portion */
+.progress-gradient {
+  width: 100%;
+  height: 100%;
   background: linear-gradient(to right, #ef4444, #f97316, #eab308, #22c55e, #3b82f6, #6366f1, #a855f7);
-  border-radius: var(--radius-full);
-  transition: width 0.3s ease;
 }
 
-progress::-moz-progress-bar {
-  background: linear-gradient(to right, #ef4444, #f97316, #eab308, #22c55e, #3b82f6, #6366f1, #a855f7);
-  border-radius: var(--radius-full);
-}
-
-/* Full glow — on the element itself for reliable rendering */
-progress.full {
+/* Glow on full bars (no unfill covers the gradient) */
+.progress-bar.full {
   box-shadow: 0 0 8px 2px rgba(168, 85, 247, 0.5), 0 0 16px 4px rgba(99, 102, 241, 0.3);
 }
 
@@ -793,12 +781,12 @@ html.modal-is-open {
 
 /* The title attribute provides the native tooltip on hover */
 
-.type-row progress {
+.type-row .progress-bar {
   flex: 0 0 10rem;
 }
 
 @media (max-width: 480px) {
-  .type-row progress {
+  .type-row .progress-bar {
     flex: 0 0 6rem;
   }
 }
@@ -817,7 +805,7 @@ html.modal-is-open {
   margin-top: 0.25rem;
 }
 
-.card-footer progress {
+.card-footer .progress-bar {
   flex: 1;
 }
 
