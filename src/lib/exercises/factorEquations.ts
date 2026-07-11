@@ -235,6 +235,5 @@ export function validateFactorEquationsPerRoot(answer: string, exercise: Exercis
   const expectedRoots = exercise.answer.split(',').map((s) => parseInt(s, 10));
   if (userRoots.length !== expectedRoots.length) return Array(userRoots.length).fill(false);
 
-  const sortedUser = [...userRoots].sort((a, b) => a - b);
-  return sortedUser.map((r, i) => r === expectedRoots[i]);
+  return userRoots.map((v, i) => v === expectedRoots[i]);
 }
