@@ -74,19 +74,19 @@
           <Math expression="=" />
           {#if selectedFormula === 1 || selectedFormula === 2}
             <Math expression="(" />
-            <NumericInput bind:value={aVal} variablePart={varA ?? ''} context="coefficient" />
+            <NumericInput bind:value={aVal} variablePart={varA ?? ''} context="coefficient" blockSign />
             <Math expression={selectedFormula === 1 ? '+' : '-'} />
-            <NumericInput bind:value={bVal} variablePart={varB} context="coefficient" />
+            <NumericInput bind:value={bVal} variablePart={varB} context="coefficient" blockSign />
             <Math expression=")^{2}" />
           {:else if selectedFormula === 3}
             <Math expression="(" />
-            <NumericInput bind:value={aVal} variablePart={varA ?? ''} context="coefficient" />
+            <NumericInput bind:value={aVal} variablePart={varA ?? ''} context="coefficient" blockSign />
             <Math expression="+" />
-            <NumericInput bind:value={bVal} variablePart={varB} context="coefficient" />
+            <NumericInput bind:value={bVal} variablePart={varB} context="coefficient" blockSign />
             <Math expression=")(" />
-            <NumericInput value={aVal} variablePart={varA ?? ''} context="coefficient" readonly />
+            <NumericInput value={aVal} variablePart={varA ?? ''} context="coefficient" readonly blockSign />
             <Math expression="-" />
-            <NumericInput value={bVal} variablePart={varB} context="coefficient" readonly />
+            <NumericInput value={bVal} variablePart={varB} context="coefficient" readonly blockSign />
             <Math expression=")" />
           {/if}
         </span>

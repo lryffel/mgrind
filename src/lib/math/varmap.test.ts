@@ -31,7 +31,7 @@ describe('varMapText / varMapUnicode with LaTeX command keys', () => {
 
 describe('varMapLatex', () => {
   it('preserves \\ell as a LaTeX command', () => {
-    expect(varMapLatex({ '\\ell': 1 })).toBe('\\ell');
+    expect(varMapLatex({ '\\ell': 1 })).toBe('\\ell{}');
   });
 
   it('preserves \\ell with exponent in LaTeX', () => {
@@ -54,6 +54,6 @@ describe('buildFactorOptions', () => {
 
 describe('formatExpandedTerm', () => {
   it('uses LaTeX commands in expanded output', () => {
-    expect(formatExpandedTerm(1, { '\\ell': 1 }, true)).toBe('\\ell');
+    expect(formatExpandedTerm(1, { '\\ell': 1 }, true)).toBe('\\ell{}');
   });
 });

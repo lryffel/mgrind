@@ -15,6 +15,7 @@
     superscript = false,
     align = 'center',
     context = 'plain',
+    blockSign = false,
     onkeydown,
   }: {
     value?: string;
@@ -29,8 +30,16 @@
     superscript?: boolean;
     align?: 'center' | 'right' | 'left';
     context?: InputContext;
+    blockSign?: boolean;
     onkeydown?: (e: KeyboardEvent) => void;
   } = $props();
+
+  function handleKeydown(e: KeyboardEvent) {
+    if (blockSign && (e.key === '-' || e.key === '+')) {
+      e.preventDefault();
+    }
+    onkeydown?.(e);
+  }
 
   const DEFAULTS: Record<InputContext, string> = {
     coefficient: '1',
@@ -55,10 +64,10 @@
       class="coeff-input"
       style="text-align: {align}"
       bind:value={num}
-      placeholder={resolvedNumPlaceholder}
-      {readonly}
-      {onkeydown}
-    />
+        placeholder={resolvedNumPlaceholder}
+        {readonly}
+        onkeydown={handleKeydown}
+      />
     <span class="fraction-bar"></span>
     <input
       type="text"
@@ -69,7 +78,7 @@
       bind:value={den}
       placeholder={resolvedDenPlaceholder}
       {readonly}
-      {onkeydown}
+      onkeydown={handleKeydown}
     />
   </span>
 {:else}
@@ -84,7 +93,7 @@
         bind:value
         placeholder={resolvedPlaceholder}
         {readonly}
-        {onkeydown}
+        onkeydown={handleKeydown}
       />
     </sup>
   {:else}
@@ -98,7 +107,7 @@
         bind:value
         placeholder={resolvedPlaceholder}
         {readonly}
-        {onkeydown}
+        onkeydown={handleKeydown}
       />
       {#if variablePart}
         <Math expression={variablePart} />

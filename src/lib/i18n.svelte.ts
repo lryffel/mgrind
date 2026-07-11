@@ -174,6 +174,7 @@ const dict = {
     en: 'Factor out common monomials',
     de: 'Klammere gemeinsame Faktoren aus',
   },
+  'exercise.factoringOut.commonVariable': { en: 'Common variable(s):', de: 'Gemeinsame Variablen:' },
   'exercise.factoringOut.noFactor': { en: 'No common factor', de: 'Kein gemeinsamer Faktor' },
   'exercise.factoringOut.prompt': {
     en: 'Factor out as much as possible.',

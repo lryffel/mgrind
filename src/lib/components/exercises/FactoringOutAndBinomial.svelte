@@ -121,7 +121,7 @@
         <span class="continuation">
           <Math expression="=" />
           {#if selectedGcfIdx != null}
-            <NumericInput bind:value={gcfCoeff} variablePart={currentOption?.latex ?? ''} context="coefficient" />
+            <NumericInput bind:value={gcfCoeff} variablePart={currentOption?.latex ?? ''} context="coefficient" blockSign />
           {/if}
           {#if selectedGcfIdx != null && hasFormula}
             <Math expression={cdot} />
@@ -130,21 +130,21 @@
             {#if selectedFormula === 3}
               <span class="binomial-body">
                 <Math expression="(" />
-                <NumericInput bind:value={aVal} variablePart={data.varA ?? ''} context="coefficient" />
+                <NumericInput bind:value={aVal} variablePart={data.varA ?? ''} context="coefficient" blockSign />
                 <Math expression="+" />
-                <NumericInput bind:value={bVal} variablePart={data.varB} context="coefficient" />
+                <NumericInput bind:value={bVal} variablePart={data.varB} context="coefficient" blockSign />
                 <Math expression=")(" />
-                <NumericInput value={aVal} variablePart={data.varA ?? ''} context="coefficient" readonly />
+                <NumericInput value={aVal} variablePart={data.varA ?? ''} context="coefficient" readonly blockSign />
                 <Math expression="-" />
-                <NumericInput value={bVal} variablePart={data.varB} context="coefficient" readonly />
+                <NumericInput value={bVal} variablePart={data.varB} context="coefficient" readonly blockSign />
                 <Math expression=")" />
               </span>
             {:else}
               <span class="binomial-body">
                 <Math expression="(" />
-                <NumericInput bind:value={aVal} variablePart={data.varA ?? ''} context="coefficient" />
+                <NumericInput bind:value={aVal} variablePart={data.varA ?? ''} context="coefficient" blockSign />
                 <Math expression={selectedFormula === 1 ? '+' : '-'} />
-                <NumericInput bind:value={bVal} variablePart={data.varB} context="coefficient" />
+                <NumericInput bind:value={bVal} variablePart={data.varB} context="coefficient" blockSign />
                 <Math expression=")^{2}" />
               </span>
             {/if}

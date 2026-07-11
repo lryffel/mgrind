@@ -222,7 +222,7 @@ export function validateFactorEquations(answer: string, exercise: Exercise): boo
 
 export function validateFactorEquationsPerRoot(answer: string, exercise: Exercise): boolean[] {
   const trimmed = answer.trim();
-  if (!trimmed) return [false];
+  if (!trimmed) return [];
 
   const parts = trimmed.split(',');
   const userRoots: number[] = [];
@@ -235,5 +235,7 @@ export function validateFactorEquationsPerRoot(answer: string, exercise: Exercis
   const expectedRoots = exercise.answer.split(',').map((s) => parseInt(s, 10));
   if (userRoots.length !== expectedRoots.length) return Array(userRoots.length).fill(false);
 
-  return userRoots.map((v, i) => v === expectedRoots[i]);
+  const sortedUser = [...userRoots].sort((a, b) => a - b);
+  const sortedExpected = [...expectedRoots].sort((a, b) => a - b);
+  return sortedUser.map((v, i) => v === sortedExpected[i]);
 }

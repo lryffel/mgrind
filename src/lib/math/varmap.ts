@@ -59,7 +59,7 @@ export function varMapLatex(v: VarMap): string {
   }
   if (Object.keys(sorted).length === 0) return '';
   return Object.entries(sorted)
-    .map(([k, e]) => `${k}${e === 1 ? '' : `^{${e}}`}`)
+    .map(([k, e]) => `${k}${e === 1 ? (k.startsWith('\\') ? '{}' : '') : `^{${e}}`}`)
     .join('');
 }
 

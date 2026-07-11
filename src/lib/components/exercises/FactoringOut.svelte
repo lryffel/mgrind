@@ -57,7 +57,6 @@
     );
   });
 
-  let cdot = $derived('\\cdot');
   let cdotOpen = $derived('\\cdot(');
   let inputKey = $derived(selectedIdx ?? 'none');
 
@@ -84,34 +83,40 @@
 <ExerciseShell {exercise} {feedback} submitAnswer={handleSubmit} {onNext} {validationError}>
   <p class="prompt-label">{_('exercise.factoringOut.prompt')}</p>
   {#if feedback === null}
+    <label class="config-label">
+      {_('exercise.factoringOut.commonVariable')}
+      <select bind:value={selectedIdx} class="factor-select" onchange={onSelectChange}>
+        <option value={null}>--</option>
+        <option value={-1}>{_('exercise.factoringOut.noFactor')}</option>
+        {#each data.factorOptions as opt, i (opt.text)}
+          <option value={i}>{opt.text}</option>
+        {/each}
+      </select>
+    </label>
+
     <div class="prompt-row">
       <Math expression={exercise.prompt} display />
-      <span class="continuation">
-        <Math expression="=" />
-        {#if selectedIdx != null && selectedIdx >= 0}
-          <NumericInput bind:value={coeffA} context="coefficient" />
-          <Math expression={cdot} />
-        {/if}
-        <select bind:value={selectedIdx} class="factor-select" onchange={onSelectChange}>
-          <option value={null}>--</option>
-          <option value={-1}>{_('exercise.factoringOut.noFactor')}</option>
-          {#each data.factorOptions as opt, i (opt.text)}
-            <option value={i}>{opt.text}</option>
-          {/each}
-        </select>
-        {#if selectedIdx != null && selectedIdx >= 0}
+      {#if selectedIdx != null && selectedIdx >= 0}
+        <span class="continuation">
+          <Math expression="=" />
+          <NumericInput bind:value={coeffA} variablePart={currentOption?.latex ?? ''} context="coefficient" blockSign />
           {#key inputKey}
             <Math expression={cdotOpen} />
             {#each currentInnerVarParts as part, i (i)}
               {#if i > 0}
                 <Math expression="+" />
               {/if}
-              <NumericInput bind:value={coeffs[i]} variablePart={part} context="coefficient" />
-            {/each}
+            <NumericInput bind:value={coeffs[i]} variablePart={part} context="coefficient" blockSign />
+          {/each}
             <Math expression=")" />
           {/key}
-        {/if}
-      </span>
+        </span>
+      {:else if selectedIdx === -1}
+        <span class="continuation">
+          <Math expression="=" />
+          <span class="no-factor-hint">{_('exercise.factoringOut.noFactor')}</span>
+        </span>
+      {/if}
     </div>
   {:else}
     <div class="prompt-row">
@@ -133,10 +138,28 @@
 </ExerciseShell>
 
 <style>
+  .config-label {
+    display: block;
+    font-size: 0.85em;
+    color: var(--c-text-muted);
+    margin: 0.5rem 0;
+    text-align: left;
+  }
+
+  .config-label select {
+    margin-left: 0.4rem;
+  }
+
   .factor-select {
     width: auto;
     min-width: auto;
     text-align: center;
+  }
+
+  .no-factor-hint {
+    font-style: italic;
+    color: var(--c-text-muted);
+    margin: 0;
   }
 
   .no-factor-feedback {
