@@ -249,6 +249,10 @@ const dict = {
     en: 'Cannot be computed with the Pythagorean theorem',
     de: 'Kann nicht mit dem Satz des Pythagoras berechnet werden',
   },
+  'feedback.pythagoras.cannotCompute': {
+    en: 'Correct! Since no right angle is shown, the Pythagorean theorem cannot be applied.',
+    de: 'Richtig! Da kein rechter Winkel eingezeichnet ist, kann der Satz des Pythagoras nicht angewendet werden.',
+  },
   'exercise.pythagoras.cannotComputeShort': {
     en: "Doesn't work",
     de: 'Geht nicht',

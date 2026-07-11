@@ -175,7 +175,7 @@
             <NumericInput bind:value={userInput} placeholder="?" />
           {:else if s.isMissing && feedback !== null}
             {#if exercise.answer === 'cannot_compute'}
-              <span class="user-answer">{cannotComputeShort}</span>
+              <span class="user-answer">?</span>
             {:else}
               <span class="user-answer"><KaTeX expression={userAnswerLatex(userInput)} /></span>
             {/if}
@@ -190,7 +190,7 @@
   {#if feedback !== null}
     {#if exercise.answer === 'cannot_compute'}
       <div class="feedback-row">
-        <Feedback {feedback} textAnswer={cannotComputeShort} />
+        <Feedback {feedback} correctMessage={_('feedback.pythagoras.cannotCompute')} />
       </div>
     {:else}
       <div class="feedback-row">
