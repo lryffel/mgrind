@@ -67,8 +67,8 @@
       <option value={0}>{_('exercise.factoringBinomialFormulas.noFormula')}</option>
     </select>
 
-    <p class="prompt fraction-prompt">
-      <Math expression={exercise.prompt} />
+    <div class="prompt-row">
+      <Math expression={exercise.prompt} display />
       {#if selectedFormula !== null && selectedFormula !== 0}
         <span class="continuation">
           <Math expression="=" />
@@ -96,22 +96,30 @@
           <span class="no-formula-hint">{_('exercise.factoringBinomialFormulas.noFormulaHint')}</span>
         </span>
       {/if}
-    </p>
+    </div>
   {:else}
-    <p class="prompt fraction-prompt">
-      <Math expression={exercise.prompt} />
+    <div class="prompt-row">
+      <Math expression={exercise.prompt} display />
       <span class="continuation">
         {#if userLatex}
           <Math expression="=" />
           <span class="user-answer"><Math expression={userLatex} /></span>
         {/if}
       </span>
-    </p>
+    </div>
     <Feedback {feedback} {correctLatex} {textAnswer} />
   {/if}
 </ExerciseShell>
 
 <style>
+  .prompt-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+  }
+
   .formula-select {
     width: auto;
     min-width: 8rem;

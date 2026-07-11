@@ -46,25 +46,25 @@
     <p class="hint">{_('exercise.substitution.reduceHint')}</p>
   {/if}
   {#if feedback === null}
-    <p class="prompt fraction-prompt">
-      <Math expression={term} />
+    <div class="prompt-row">
+      <Math expression={term} display />
       <Math expression="=" />
       {#if answerIsFraction}
         <NumericInput bind:num={frac.num} bind:den={frac.den} fraction numPlaceholder="0" denPlaceholder="1" />
       {:else}
         <NumericInput bind:value={input} />
       {/if}
-    </p>
+    </div>
   {:else}
-    <p class="prompt fraction-prompt">
-      <Math expression={term} />
+    <div class="prompt-row">
+      <Math expression={term} display />
       <Math expression="=" />
       {#if answerIsFraction}
         <span class="user-answer"><Math expression={userLatex} /></span>
       {:else}
         <span class="user-answer"><Math expression={userLatex} /></span>
       {/if}
-    </p>
+    </div>
     <Feedback {feedback} {correctLatex} {textAnswer} />
   {/if}
 </ExerciseShell>
@@ -77,7 +77,11 @@
     text-align: left;
   }
 
-  .user-answer {
-    font-size: 1.5rem;
+  .prompt-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    flex-wrap: wrap;
   }
 </style>

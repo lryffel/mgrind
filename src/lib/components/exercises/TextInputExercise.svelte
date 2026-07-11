@@ -19,11 +19,11 @@
   {#if feedback === null}
     {#if exercise.prompt.includes('?')}
       {@const parts = exercise.prompt.split('?')}
-      <p class="prompt">
-        <Math expression={parts[0]} />
-        <NumericInput bind:value={userInput} />
-        <Math expression={parts[1] ?? ''} />
-      </p>
+      <div class="prompt-row">
+        <Math expression={parts[0]} display />
+        <NumericInput bind:value={userInput} align="center" />
+        <Math expression={parts[1] ?? ''} display />
+      </div>
     {:else}
       <p class="prompt">
         <Math expression={exercise.prompt} />
@@ -35,11 +35,11 @@
   {:else}
     {#if exercise.prompt.includes('?')}
       {@const parts = exercise.prompt.split('?')}
-      <p class="prompt">
-        <Math expression={parts[0]} />
+      <div class="prompt-row">
+        <Math expression={parts[0]} display />
         <span class="user-answer"><Math expression={userInput} /></span>
-        <Math expression={parts[1] ?? ''} />
-      </p>
+        <Math expression={parts[1] ?? ''} display />
+      </div>
     {:else}
       <p class="prompt">
         <Math expression={exercise.prompt} />
@@ -52,5 +52,13 @@
 <style>
   .answer-row {
     margin-top: 0.5rem;
+  }
+
+  .prompt-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    flex-wrap: wrap;
   }
 </style>

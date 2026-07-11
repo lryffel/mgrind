@@ -116,8 +116,8 @@
         </label>
       </div>
 
-      <p class="prompt fraction-prompt">
-        <Math expression={exercise.prompt} />
+      <div class="prompt-row">
+        <Math expression={exercise.prompt} display />
         <span class="continuation">
           <Math expression="=" />
           {#if selectedGcfIdx != null}
@@ -153,11 +153,11 @@
             <span class="no-formula-hint">{_('exercise.factoringBinomialFormulas.noFormulaHint')}</span>
           {/if}
         </span>
-      </p>
+      </div>
     </div>
   {:else}
-    <p class="prompt fraction-prompt">
-      <Math expression={exercise.prompt} />
+    <div class="prompt-row">
+      <Math expression={exercise.prompt} display />
       {#if data.isTrap && feedback === 'correct'}
         <span class="no-formula-feedback">{_('exercise.factoringBinomialFormulas.noFormulaFeedback')}</span>
       {:else if data.isTrap}
@@ -174,12 +174,20 @@
           <span class="user-answer"><Math expression={userLatex} /></span>
         </span>
       {/if}
-    </p>
+    </div>
     <Feedback {feedback} correctLatex={correctFactoredLatex} />
   {/if}
 </ExerciseShell>
 
 <style>
+  .prompt-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+  }
+
   .answer-group {
     display: inline-flex;
     flex-direction: column;

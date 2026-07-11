@@ -55,32 +55,20 @@
     {#if promptKey}
       <p class="prompt-label">{_(promptKey)}</p>
     {/if}
-    <p class="prompt fraction-prompt">
-      {#if isBinary}
-        <Math expression={`\\frac{${num1}}{${den1}}`} />
-        <Math expression={displayOp} />
-        <Math expression={`\\frac{${num2}}{${den2}}`} />
-      {:else}
-        <Math expression={exercise.prompt} display />
-      {/if}
+    <div class="fraction-prompt-row">
+      <Math expression={isBinary ? `\\frac{${num1}}{${den1}} ${displayOp} \\frac{${num2}}{${den2}}` : exercise.prompt} display />
       <Math expression="=" />
       <NumericInput bind:num={frac.num} bind:den={frac.den} fraction numPlaceholder="0" denPlaceholder="1" />
-    </p>
+    </div>
   {:else}
     {#if promptKey}
       <p class="prompt-label">{_(promptKey)}</p>
     {/if}
-    <p class="prompt fraction-prompt">
-      {#if isBinary}
-        <Math expression={`\\frac{${num1}}{${den1}}`} />
-        <Math expression={displayOp} />
-        <Math expression={`\\frac{${num2}}{${den2}}`} />
-      {:else}
-        <Math expression={exercise.prompt} display />
-      {/if}
+    <div class="fraction-prompt-row">
+      <Math expression={isBinary ? `\\frac{${num1}}{${den1}} ${displayOp} \\frac{${num2}}{${den2}}` : exercise.prompt} display />
       <Math expression="=" />
       <span class="user-answer"><Math expression={frac.userLatex} /></span>
-    </p>
+    </div>
     <Feedback {feedback} {correctLatex} />
     {#if hasNegativeDenominator}
       <p class="feedback warning">
@@ -94,3 +82,14 @@
     {/if}
   {/if}
 </ExerciseShell>
+
+<style>
+  .fraction-prompt-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    margin: 0.5rem 0;
+  }
+</style>

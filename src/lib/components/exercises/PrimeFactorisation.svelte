@@ -55,8 +55,8 @@
 >
   <p class="prompt-label">{_('exercise.primeFactorisation.prompt')}</p>
   {#if feedback === null}
-    <p class="prompt fraction-prompt">
-      <Math expression={exercise.prompt} />
+    <div class="prompt-row">
+      <Math expression={exercise.prompt} display />
       <span class="continuation">
         <Math expression="=" />
         {#each primes as prime, i (prime)}
@@ -74,10 +74,10 @@
           </span>
         {/each}
       </span>
-    </p>
+    </div>
   {:else}
-    <p class="prompt fraction-prompt">
-      <Math expression={exercise.prompt} />
+    <div class="prompt-row">
+      <Math expression={exercise.prompt} display />
       <span class="continuation">
         <Math expression="=" />
         {#if displayed.length === 0}
@@ -97,12 +97,20 @@
           {/each}
         {/if}
       </span>
-    </p>
+    </div>
     <Feedback {feedback} {correctLatex} />
   {/if}
 </ExerciseShell>
 
 <style>
+  .prompt-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+  }
+
   .prime-term {
     display: inline-flex;
     align-items: center;

@@ -12,10 +12,10 @@
   let coeffInput = $state('');
   let expInput = $state('');
 
-  const cdot = '\\cdot';
   const subType = $derived(exercise.data?.subType);
   const isMultiInput = $derived(subType !== 'sciToDec');
   const promptKey = $derived(exercise.data?.promptKey ?? null);
+  const promptParts = $derived(exercise.prompt.split('= ?'));
 
   let validationError = $derived(
     isMultiInput
@@ -45,60 +45,44 @@
 </script>
 
 <ExerciseShell {exercise} {feedback} submitAnswer={handleSubmit} {onNext} {validationError}>
+  {#if promptKey}
+    <p class="prompt-label">{_(promptKey)}</p>
+  {/if}
   {#if feedback === null}
-    {#if promptKey}
-      <p class="prompt-label">{_(promptKey)}</p>
-    {/if}
-    <p class="prompt">
-      <Math expression={exercise.prompt} />
-    </p>
-    {#if isMultiInput}
-      <div class="sci-row">
-        <NumericInput bind:value={coeffInput} align="right" context="coefficient" />
-        <Math expression={cdot} />
+    <div class="prompt-row">
+      <Math expression={promptParts[0]} display />
+      <Math expression="=" />
+      {#if isMultiInput}
+        <NumericInput bind:value={coeffInput} context="coefficient" />
+        <Math expression={'\\cdot'} />
         <Math expression="10" />
-        <NumericInput bind:value={expInput} superscript context="exponent" align="left" />
-      </div>
-    {:else}
-      <div class="answer-row">
+        <NumericInput bind:value={expInput} superscript context="exponent" />
+      {:else}
         <NumericInput bind:value={userInput} />
-      </div>
-    {/if}
+      {/if}
+    </div>
   {:else}
-    {#if promptKey}
-      <p class="prompt-label">{_(promptKey)}</p>
-    {/if}
-    <p class="prompt">
-      <Math expression={exercise.prompt} />
-    </p>
-    {#if isMultiInput}
-      <div class="sci-row">
+    <div class="prompt-row">
+      <Math expression={promptParts[0]} display />
+      <Math expression="=" />
+      {#if isMultiInput}
         <span class="user-answer">
           <Math expression={`${coeffInput} \\cdot 10^{${expInput || '0'}}`} />
         </span>
-      </div>
-    {:else}
-      <div class="answer-row">
+      {:else}
         <span class="user-answer"><Math expression={userInput} /></span>
-      </div>
-    {/if}
+      {/if}
+    </div>
     <Feedback {feedback} {correctLatex} {textAnswer} />
   {/if}
 </ExerciseShell>
 
 <style>
-  .sci-row {
+  .prompt-row {
     display: flex;
     align-items: center;
-    justify-content: flex-start;
-    gap: 6px;
-    font-size: 1.25rem;
-    margin: 1rem 0;
-  }
-
-  .user-answer {
-    text-align: left;
-    font-size: 1.25rem;
-    margin: 0.5rem 0;
+    justify-content: center;
+    gap: 0.5rem;
+    flex-wrap: wrap;
   }
 </style>

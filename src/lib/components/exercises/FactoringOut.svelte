@@ -84,8 +84,8 @@
 <ExerciseShell {exercise} {feedback} submitAnswer={handleSubmit} {onNext} {validationError}>
   <p class="prompt-label">{_('exercise.factoringOut.prompt')}</p>
   {#if feedback === null}
-    <p class="prompt fraction-prompt">
-      <Math expression={exercise.prompt} />
+    <div class="prompt-row">
+      <Math expression={exercise.prompt} display />
       <span class="continuation">
         <Math expression="=" />
         {#if selectedIdx != null && selectedIdx >= 0}
@@ -112,10 +112,10 @@
           {/key}
         {/if}
       </span>
-    </p>
+    </div>
   {:else}
-    <p class="prompt fraction-prompt">
-      <Math expression={exercise.prompt} />
+    <div class="prompt-row">
+      <Math expression={exercise.prompt} display />
       <span class="continuation">
         <Math expression="=" />
         {#if data.isTrap && feedback === 'correct'}
@@ -127,12 +127,20 @@
           <span class="user-answer"><Math expression={userLatex} /></span>
         {/if}
       </span>
-    </p>
+    </div>
     <Feedback {feedback} {correctLatex} />
   {/if}
 </ExerciseShell>
 
 <style>
+  .prompt-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+  }
+
   .factor-select {
     width: auto;
     min-width: auto;

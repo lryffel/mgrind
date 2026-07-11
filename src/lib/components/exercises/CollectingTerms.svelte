@@ -33,8 +33,8 @@
     <p class="prompt-label">{_(promptKey)}</p>
   {/if}
   {#if feedback === null}
-    <p class="prompt fraction-prompt">
-      <Math expression={exercise.prompt} />
+    <div class="prompt-row">
+      <Math expression={exercise.prompt} display />
       <span class="continuation">
         <Math expression="=" />
         {#each fields as { variablePart }, i (i)}
@@ -44,15 +44,25 @@
           <NumericInput bind:value={values[i]} {variablePart} context={contexts[i]} />
         {/each}
       </span>
-    </p>
+    </div>
   {:else}
-    <p class="prompt fraction-prompt">
-      <Math expression={exercise.prompt} />
+    <div class="prompt-row">
+      <Math expression={exercise.prompt} display />
       <span class="continuation">
         <Math expression="=" />
         <span class="user-answer"><Math expression={userLatex} /></span>
       </span>
-    </p>
+    </div>
     <Feedback {feedback} {correctLatex} />
   {/if}
 </ExerciseShell>
+
+<style>
+  .prompt-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+  }
+</style>

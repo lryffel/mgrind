@@ -23,31 +23,39 @@
         'exercise.linearEquations.promptAfter',
       )}
     </p>
-    <p class="prompt">
-      <Math expression={exercise.prompt} />
-    </p>
-    <p class="answer-row">
+    <div class="prompt-row">
+      <Math expression={exercise.prompt} display />
+    </div>
+    <div class="answer-row">
       <Math expression={`${variable} = `} />
       <NumericInput bind:value={userInput} />
-    </p>
+    </div>
   {:else}
     <p class="prompt-label">
       {_('exercise.linearEquations.promptBefore')}<Math expression={variable} />{_(
         'exercise.linearEquations.promptAfter',
       )}
     </p>
-    <p class="prompt">
-      <Math expression={exercise.prompt} />
-    </p>
-    <p class="answer-row">
+    <div class="prompt-row">
+      <Math expression={exercise.prompt} display />
+    </div>
+    <div class="answer-row">
       <Math expression={`${variable} = `} />
       <span class="user-answer"><Math expression={userInput} /></span>
-    </p>
+    </div>
     <Feedback {feedback} {correctLatex} />
   {/if}
 </ExerciseShell>
 
 <style>
+  .prompt-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+  }
+
   .answer-row {
     margin-top: 0.5rem;
   }
