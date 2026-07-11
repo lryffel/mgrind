@@ -2,10 +2,10 @@ export function cmd(s: string): string {
   return s.startsWith('\\') ? s + '{}' : s;
 }
 
-/** Render a fraction for a prompt; skips \frac when den === 1. */
+/** Render a fraction for a prompt; skips \dfrac when den === 1. */
 export function promptFraction(num: number, den: number): string {
   if (den === 1) return String(num);
-  return `\\frac{${num}}{${den}}`;
+  return `\\dfrac{${num}}{${den}}`;
 }
 
 export function coeffLatex(num: number, den: number, varPart: string): string {

@@ -19,7 +19,7 @@ describe('generateSimplifyFraction', () => {
   it('prompt is a LaTeX fraction', () => {
     for (let seed = 0; seed < 100; seed++) {
       const ex = generateSimplifyFraction(seed, 4);
-      expect(ex.prompt).toMatch(/^\\frac\{\d+\}\{\d+\}$/);
+      expect(ex.prompt).toMatch(/^\\(?:frac|dfrac)\{\d+\}\{\d+\}$/);
     }
   });
 
@@ -47,7 +47,7 @@ describe('generateSimplifyFraction', () => {
   it('the common factor is >= 2', () => {
     for (let seed = 0; seed < 500; seed++) {
       const ex = generateSimplifyFraction(seed, 4);
-      const match = ex.prompt.match(/^\\frac\{(\d+)\}\{(\d+)\}$/);
+      const match = ex.prompt.match(/^\\(?:frac|dfrac)\{(\d+)\}\{(\d+)\}$/);
       expect(match).not.toBeNull();
       const num = parseInt(match![1]);
       const den = parseInt(match![2]);
@@ -63,7 +63,7 @@ describe('generateSimplifyFraction', () => {
   it('the unreduced fraction equals the simplified fraction', () => {
     for (let seed = 0; seed < 500; seed++) {
       const ex = generateSimplifyFraction(seed, 6);
-      const match = ex.prompt.match(/^\\frac\{(\d+)\}\{(\d+)\}$/);
+      const match = ex.prompt.match(/^\\(?:frac|dfrac)\{(\d+)\}\{(\d+)\}$/);
       expect(match).not.toBeNull();
       const num = parseInt(match![1]);
       const den = parseInt(match![2]);
@@ -75,7 +75,7 @@ describe('generateSimplifyFraction', () => {
   it('numerator and denominator values stay within bounds per complexity', () => {
     for (let seed = 0; seed < 200; seed++) {
       const ex = generateSimplifyFraction(seed, 0);
-      const match = ex.prompt.match(/^\\frac\{(\d+)\}\{(\d+)\}$/);
+      const match = ex.prompt.match(/^\\(?:frac|dfrac)\{(\d+)\}\{(\d+)\}$/);
       expect(match).not.toBeNull();
       const num = parseInt(match![1]);
       const den = parseInt(match![2]);
@@ -84,7 +84,7 @@ describe('generateSimplifyFraction', () => {
     }
     for (let seed = 0; seed < 200; seed++) {
       const ex = generateSimplifyFraction(seed, 10);
-      const match = ex.prompt.match(/^\\frac\{(\d+)\}\{(\d+)\}$/);
+      const match = ex.prompt.match(/^\\(?:frac|dfrac)\{(\d+)\}\{(\d+)\}$/);
       expect(match).not.toBeNull();
       const num = parseInt(match![1]);
       const den = parseInt(match![2]);

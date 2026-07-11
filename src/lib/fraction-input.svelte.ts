@@ -15,9 +15,18 @@ export function useFractionInput(): FractionInput {
 
   let _validationError = $derived(_num.includes(',') || _den.includes(',') ? _('error.decimalComma') : null);
 
-  let _userLatex = $derived(
-    (!_den || _den === '0' || _den === '1') ? `${_num || '0'}` : `\\frac{${_num || '0'}}{${_den}}`,
-  );
+  let _userLatex = $derived.by(() => {
+    if (!_den || _den === '0' || _den === '1') {
+      const n = Number(_num);
+      return isNaN(n) ? (_num || '0') : coeffLatex(n, 1, '');
+    }
+    const n = Number(_num);
+    const d = Number(_den);
+    if (!isNaN(n) && !isNaN(d) && d !== 0) {
+      return coeffLatex(n, d, '').replace('\\frac', '\\dfrac');
+    }
+    return `\\dfrac{${_num || '0'}}{${_den}}`;
+  });
 
   function getSubmitValue(separator = ','): string {
     return `${_num || '0'}${separator}${!_den || _den === '0' ? '1' : _den}`;
@@ -54,5 +63,5 @@ export function fractionLatex(num: string, den: string): string {
   if (!isNaN(n) && !isNaN(dn)) {
     return coeffLatex(n, dn, '');
   }
-  return `\\frac{${num}}{${d}}`;
+  return `\\dfrac{${num}}{${d}}`;
 }

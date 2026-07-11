@@ -25,7 +25,7 @@ describe('generateAdditionFraction', () => {
   });
 
   function termRegex(): string {
-    return `(?:\\\\frac\{(\\d+)\}\{(\\d+)\}|(\\d+))`;
+    return `(?:(?:\\\\frac|\\\\dfrac)\{(\\d+)\}\{(\\d+)\}|(\\d+))`;
   }
 
   function parseFracs(prompt: string): number[] {

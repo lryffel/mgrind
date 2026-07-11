@@ -32,7 +32,7 @@
   const normalizedWarningLatex = $derived.by(() => {
     if (!hasNegativeDenominator) return '';
     const [n, d] = normalizeFraction(numVal, denVal);
-    return coeffLatex(n, d, '');
+    return coeffLatex(n, d, '').replace('\\frac', '\\dfrac');
   });
 
   const rawNum = $derived(parseInt(frac.num || '0', 10));
@@ -67,7 +67,7 @@
     <div class="fraction-prompt-row">
       <Math expression={isBinary ? `${promptFraction(num1!, den1!)} ${displayOp} ${promptFraction(num2!, den2!)}` : exercise.prompt} display />
       <Math expression="=" />
-      <span class="user-answer"><Math expression={frac.userLatex} /></span>
+      <span class="user-answer"><Math expression={frac.userLatex} display /></span>
     </div>
     <Feedback {feedback} {correctLatex} />
     {#if hasNegativeDenominator}

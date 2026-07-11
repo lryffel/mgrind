@@ -37,7 +37,7 @@
     </p>
   {:else if correctLatex}
     <p class="feedback incorrect" role="status">
-      {_('feedback.incorrect.prefix')}<Math expression={correctLatex} />
+      {_('feedback.incorrect.prefix')}<Math expression={correctLatex} display />
     </p>
   {:else}
     <p class="feedback incorrect" role="status">

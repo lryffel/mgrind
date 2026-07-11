@@ -2,8 +2,13 @@ import { describe, it, expect } from 'vitest';
 import { generateMultiplicationFraction } from './multiplicationFraction';
 import { gcd } from '../math/number';
 
+function termRegex(): string {
+  return `(?:(?:\\\\frac|\\\\dfrac)\{(\\d+)\}\{(\\d+)\}|(\\d+))`;
+}
+
 function parseFracs(prompt: string): number[] {
-  const match = prompt.match(/^\\frac\{(\d+)\}\{(\d+)\} \\cdot \\frac\{(\d+)\}\{(\d+)\}$/);
+  const re = /^(?:\\frac|\\dfrac)\{(\d+)\}\{(\d+)\} \\cdot (?:\\frac|\\dfrac)\{(\d+)\}\{(\d+)\}$/;
+  const match = prompt.match(re);
   expect(match).not.toBeNull();
   return [parseInt(match![1]), parseInt(match![2]), parseInt(match![3]), parseInt(match![4])];
 }
@@ -33,7 +38,9 @@ describe('generateMultiplicationFraction', () => {
   it('prompt has two fractions joined by cdot', () => {
     for (let seed = 0; seed < 100; seed++) {
       const ex = generateMultiplicationFraction(seed, 4);
-      expect(ex.prompt).toMatch(/^\\frac\{\d+\}\{\d+\} \\cdot \\frac\{\d+\}\{\d+\}$/);
+      const vals = parseFracs(ex.prompt);
+      expect(vals).toHaveLength(4);
+      vals.forEach((v) => expect(Number.isInteger(v)).toBe(true));
     }
   });
 
