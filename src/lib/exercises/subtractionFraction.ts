@@ -2,22 +2,7 @@ import type { Exercise } from '../types';
 import { mulberry32 } from '../prng';
 import { gcd } from '../math/number';
 import { promptFraction } from '../math/latex';
-
-/** Generate a nice number (prime factors only 2, 5, optionally 3) not exceeding maxVal. */
-function niceNum(rng: () => number, maxVal: number): number {
-  for (let attempt = 0; attempt < 50; attempt++) {
-    const a = Math.floor(rng() * 4); // 0..3 → 1,2,4,8
-    const b = Math.floor(rng() * 3); // 0..2 → 1,5,25
-    const c = rng() < 0.3 ? 1 : 0;
-    const n = 2 ** a * 5 ** b * 3 ** c;
-    if (n <= maxVal && n >= 2) return n;
-  }
-  return 2;
-}
-
-function niceMax(clamped: number): number {
-  return 7 + Math.floor(clamped * 1.5);
-}
+import { niceNum, niceMax } from '../math/fraction';
 
 export function generateSubtractionFraction(seed: number, complexity: number): Exercise {
   const clamped = Math.min(Math.max(complexity, 0), 10);

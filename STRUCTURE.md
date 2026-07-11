@@ -21,8 +21,8 @@ Also typed `ExerciseProps`, `ExerciseFeedback`, and `ExerciseComponent = Compone
 
 | File                       | Role                                                                     |
 | -------------------------- | ------------------------------------------------------------------------ |
-| `src/lib/math/number.ts`   | `gcd`, `lcm`, `areCoprime`, `randomCoprimePair`                          |
-| `src/lib/math/fraction.ts` | `Fraction`, `reduceFrac`, `parseFrac`, `fracEqual`, `normalizeFraction`  |
+| `src/lib/math/number.ts`   | `gcd`, `areCoprime`, `randomCoprimePair`, `bumpPastThreshold`            |
+| `src/lib/math/fraction.ts` | `Fraction`, `reduceFrac`, `parseFrac`, `fracEqual`, `normalizeFraction`, `niceNum`, `niceMax` |
 | `src/lib/math/rng.ts`      | `randInt`, `pick`, `shuffle`, `randCoeff`, `pickExclude`, `pickDistinct` |
 | `src/lib/katex.ts`         | `renderMath(expr)` — wraps `katex.renderToString`                        |
 | `src/lib/validation.ts`    | `trimCompare`, `validateFractionAnswer` — shared validators              |
@@ -38,6 +38,10 @@ Also typed `ExerciseProps`, `ExerciseFeedback`, and `ExerciseComponent = Compone
 ## Exercise generators (`src/lib/exercises/`)
 
 One file per type. Uses `mulberry32` from `src/lib/prng.ts` and helper functions from `src/lib/math/`.
+
+| File                          | Role                                    |
+| ----------------------------- | --------------------------------------- |
+| `src/lib/exercises/termAlgebra.ts` | `Term`, `multiplyTerms`, `expandProduct`, `collectTerms` — shared by `expand.ts` / `expandAndCollect.ts` |
 
 ## Exercise session (`src/lib/exerciseSession.svelte.ts`)
 
@@ -92,8 +96,7 @@ Each exercise type has a corresponding Svelte component under `exercises/`. All 
 | `SubtractionFraction.svelte`       | subtractionFraction                                                      |
 | `MultiplicationFraction.svelte`    | multiplicationFraction                                                   |
 | `SubstitutionExercise.svelte`      | substitution                                                             |
-| `BinomialFormulas.svelte`          | binomialFormulas                                                         |
-| `CollectingTerms.svelte`           | collectingTerms                                                          |
+| `MultiFieldExercise.svelte`        | collectingTerms, binomialFormulas, expand, expandAndCollect              |
 | `FactoringBinomialFormulas.svelte` | factoringBinomialFormulas                                                |
 
 ## Routing

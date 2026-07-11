@@ -4,7 +4,8 @@ import { randInt, pick, pickExclude, randCoeff } from '../math/rng';
 import { reduceFrac, fracEqual } from '../math/fraction';
 import { cmd, coeffLatex } from '../math/latex';
 import type { VarMap, FactorOption } from '../math/varmap';
-import { varMapMultiply, varMapLatex, buildFactorOptions, varMapUnicode, gcd } from '../math/varmap';
+import { varMapMultiply, varMapLatex, buildFactorOptions, varMapUnicode } from '../math/varmap';
+import { gcd } from '../math/number';
 import { formatFactoredLatex } from './factoringBinomialFormulas';
 
 const INNER_VARS = ['a', 'b', 'c', 'd', 'k', '\\ell', 'm', 'n', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w'];

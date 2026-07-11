@@ -11,8 +11,6 @@ export interface ExerciseProps {
   feedback: ExerciseFeedback;
 }
 
-export type ExerciseComponent = Component<ExerciseProps>;
-
 export interface ExerciseData {
   num1?: number;
   den1?: number;
@@ -65,7 +63,7 @@ export interface ExerciseType {
   maxComplexity: number;
   generate: (seed: number, complexity: number) => Exercise;
   validate: (answer: string, exercise: Exercise) => boolean;
-  component: ExerciseComponent;
+  component: Component<ExerciseProps>;
   prerequisites?: Prerequisite[];
   instructionComponent?: Component;
 }

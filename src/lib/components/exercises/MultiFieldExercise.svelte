@@ -5,12 +5,13 @@
   import ExerciseShell from '../ExerciseShell.svelte';
   import Feedback from '../Feedback.svelte';
   import NumericInput from './NumericInput.svelte';
-  import { buildExpandedLatex } from '../../exercises/binomialFormulas';
+  import { formatCollectingAnswer } from '../../exercises/collectingTerms';
   import { normalizeCoeff } from '../../validation';
 
   let { exercise, onSubmit, onNext, feedback }: ExerciseProps = $props();
 
   let fields = $derived(exercise.data?.fields ?? []);
+  let promptKey = $derived(exercise.data?.promptKey ?? null);
   let variableParts = $derived(fields.map((f) => f.variablePart));
   // eslint-disable-next-line svelte/prefer-writable-derived
   let values = $state<string[]>([]);
@@ -23,12 +24,14 @@
 
   let contexts = $derived(fields.map((f) => (f.variablePart === '' ? 'summand' : 'coefficient')));
   let normValues = $derived(values.map((v, i) => normalizeCoeff(v, contexts[i])));
-  let userLatex = $derived(buildExpandedLatex(normValues, variableParts));
-  let correctLatex = $derived(buildExpandedLatex(exercise.answer.split(','), variableParts));
+  let userLatex = $derived(formatCollectingAnswer(normValues, variableParts));
+  let correctLatex = $derived(formatCollectingAnswer(exercise.answer.split(','), variableParts));
 </script>
 
 <ExerciseShell {exercise} {feedback} submitAnswer={() => onSubmit(normValues.join(','))} {onNext} {validationError}>
-  <p class="prompt-label">{_('exercise.binomialFormulas.prompt')}</p>
+  {#if promptKey}
+    <p class="prompt-label">{_(promptKey)}</p>
+  {/if}
   {#if feedback === null}
     <div class="prompt-row">
       <Math expression={exercise.prompt} display />
@@ -53,13 +56,3 @@
     <Feedback {feedback} {correctLatex} />
   {/if}
 </ExerciseShell>
-
-<style>
-  .prompt-row {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.5rem;
-    flex-wrap: wrap;
-  }
-</style>

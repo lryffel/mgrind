@@ -118,12 +118,7 @@ export function varMapDivisors(v: VarMap): VarMap[] {
   return results;
 }
 
-export function gcd(a: number, b: number): number {
-  while (b) {
-    [a, b] = [b, a % b];
-  }
-  return Math.abs(a);
-}
+import { gcd } from './number';
 
 export function gcdArray(arr: number[]): number {
   return arr.reduce(gcd, 0);

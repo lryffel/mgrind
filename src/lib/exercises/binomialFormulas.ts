@@ -1,7 +1,7 @@
 import type { Exercise } from '../types';
 import { mulberry32 } from '../prng';
 import { randInt, pick, randCoeff } from '../math/rng';
-import { reduceFrac } from '../math/fraction';
+import { reduceFrac, fracEqual } from '../math/fraction';
 
 function mulCoeff(a: [number, number], b: [number, number]): [number, number] {
   return reduceFrac(a[0] * b[0], a[1] * b[1]);
@@ -159,14 +159,22 @@ export function generateBinomialFormulas(seed: number, complexity: number): Exer
       });
 
       if (denomsOk) {
-        return { prompt: result.prompt, answer: result.answer, data: { fields: result.fields } };
+        return {
+          prompt: result.prompt,
+          answer: result.answer,
+          data: { fields: result.fields, promptKey: 'exercise.binomialFormulas.prompt' },
+        };
       }
     }
 
     const fallbackA = randInt(rng, 1, 3);
     const fallbackB = randInt(rng, 1, 3);
     const fallback = genSquareSum2(fallbackA, 1, fallbackB, 1, v1, v2);
-    return { prompt: fallback.prompt, answer: fallback.answer, data: { fields: fallback.fields } };
+    return {
+      prompt: fallback.prompt,
+      answer: fallback.answer,
+      data: { fields: fallback.fields, promptKey: 'exercise.binomialFormulas.prompt' },
+    };
   };
 
   const genSingleVar = (allowFrac: boolean): Exercise => {
@@ -195,14 +203,22 @@ export function generateBinomialFormulas(seed: number, complexity: number): Exer
       });
 
       if (denomsOk) {
-        return { prompt: result.prompt, answer: result.answer, data: { fields: result.fields } };
+        return {
+          prompt: result.prompt,
+          answer: result.answer,
+          data: { fields: result.fields, promptKey: 'exercise.binomialFormulas.prompt' },
+        };
       }
     }
 
     const fallbackA = randInt(rng, 1, 3);
     const fallbackB = randInt(rng, 1, 3);
     const fallback = genSquareSum(fallbackA, 1, fallbackB, 1, v);
-    return { prompt: fallback.prompt, answer: fallback.answer, data: { fields: fallback.fields } };
+    return {
+      prompt: fallback.prompt,
+      answer: fallback.answer,
+      data: { fields: fallback.fields, promptKey: 'exercise.binomialFormulas.prompt' },
+    };
   };
 
   if (clamped <= 4) {
@@ -222,37 +238,4 @@ export function validateBinomialFormulas(answer: string, exercise: Exercise): bo
     if (!fracEqual(userParts[i], correctParts[i])) return false;
   }
   return true;
-}
-
-import { parseFrac, fracEqual } from '../math/fraction';
-
-export function buildExpandedLatex(coeffStrs: string[], variableParts: string[]): string {
-  const displayTerms: string[] = [];
-
-  for (let i = 0; i < coeffStrs.length; i++) {
-    const c = coeffStrs[i];
-    if (!c || c === '0') continue;
-
-    const parsed = parseFrac(c);
-    if (parsed === null) continue;
-    const [num, den] = parsed;
-    if (num === 0) continue;
-
-    const absNum = Math.abs(num);
-    const varPart = variableParts[i] ?? '';
-
-    let coeffDisplay: string;
-    if (den === 1) {
-      coeffDisplay = absNum === 1 && varPart ? '' : String(absNum);
-    } else {
-      coeffDisplay = `\\frac{${absNum}}{${den}}`;
-    }
-
-    const termBody = coeffDisplay + varPart;
-    const sign = num < 0 ? (displayTerms.length === 0 ? '-' : ' - ') : displayTerms.length === 0 ? '' : ' + ';
-
-    displayTerms.push(sign + termBody);
-  }
-
-  return displayTerms.join('') || '0';
 }

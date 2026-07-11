@@ -94,12 +94,4 @@
 </ExerciseShell>
 
 <style>
-  .fraction-prompt-row {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.5rem;
-    flex-wrap: wrap;
-    margin: 0.5rem 0;
-  }
 </style>

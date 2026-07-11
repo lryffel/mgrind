@@ -1,6 +1,7 @@
 import { describe, it, expect } from 'vitest';
 import type { Exercise } from '../types';
-import { generateBinomialFormulas, validateBinomialFormulas, buildExpandedLatex } from './binomialFormulas';
+import { generateBinomialFormulas, validateBinomialFormulas } from './binomialFormulas';
+import { formatCollectingAnswer } from './collectingTerms';
 
 function getFields(ex: Exercise): { variablePart: string }[] {
   return ex.data?.fields ?? [];
@@ -105,7 +106,7 @@ describe('generateBinomialFormulas', () => {
         const ex = generateBinomialFormulas(seed + c * 1000, c);
         const parts = ex.answer.split(',');
         const fields = getFields(ex);
-        const latex = buildExpandedLatex(
+        const latex = formatCollectingAnswer(
           parts,
           fields.map((f) => f.variablePart),
         );

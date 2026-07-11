@@ -3,7 +3,7 @@ import { loadStored, saveStored } from './storage';
 
 const STORAGE_KEY = 'mgrind-disabled';
 
-export const disabledTypes = $state<Record<string, boolean>>({});
+const disabledTypes = $state<Record<string, boolean>>({});
 
 export function initDisabledTypes() {
   const stored = loadStored<Record<string, boolean>>(STORAGE_KEY);

@@ -133,14 +133,6 @@
 </ExerciseShell>
 
 <style>
-  .prompt-row {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.5rem;
-    flex-wrap: wrap;
-  }
-
   .factor-select {
     width: auto;
     min-width: auto;

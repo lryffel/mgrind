@@ -13,10 +13,9 @@ import TextInputExercise from '../components/exercises/TextInputExercise.svelte'
 import PrimeFactorisation from '../components/exercises/PrimeFactorisation.svelte';
 import FractionExercise from '../components/exercises/FractionExercise.svelte';
 import SubstitutionExercise from '../components/exercises/SubstitutionExercise.svelte';
-import BinomialFormulas from '../components/exercises/BinomialFormulas.svelte';
 import { generateBinomialFormulas, validateBinomialFormulas } from '../exercises/binomialFormulas';
 import { generateCollectingTerms, validateCollectingTerms } from '../exercises/collectingTerms';
-import CollectingTerms from '../components/exercises/CollectingTerms.svelte';
+import MultiFieldExercise from '../components/exercises/MultiFieldExercise.svelte';
 import { generateScientificNotation } from '../exercises/scientificNotation';
 import ScientificNotationExercise from '../components/exercises/ScientificNotationExercise.svelte';
 import {
@@ -180,7 +179,7 @@ export const exerciseTypes: Record<string, ExerciseType> = {
     maxComplexity: 10,
     generate: generateCollectingTerms,
     validate: validateCollectingTerms,
-    component: CollectingTerms,
+    component: MultiFieldExercise,
     instructionComponent: CollectingTermsInstructions,
   },
   binomialFormulas: {
@@ -190,7 +189,7 @@ export const exerciseTypes: Record<string, ExerciseType> = {
     maxComplexity: 10,
     generate: generateBinomialFormulas,
     validate: validateBinomialFormulas,
-    component: BinomialFormulas,
+    component: MultiFieldExercise,
     instructionComponent: BinomialFormulasInstructions,
   },
   scientificNotation: {
@@ -245,7 +244,7 @@ export const exerciseTypes: Record<string, ExerciseType> = {
     maxComplexity: 10,
     generate: generateExpand,
     validate: validateExpand,
-    component: CollectingTerms,
+    component: MultiFieldExercise,
     prerequisites: [{ typeId: 'collectingTerms', complexity: 3 }],
     instructionComponent: ExpandInstructions,
   },
@@ -256,7 +255,7 @@ export const exerciseTypes: Record<string, ExerciseType> = {
     maxComplexity: 10,
     generate: generateExpandAndCollect,
     validate: validateExpandAndCollect,
-    component: CollectingTerms,
+    component: MultiFieldExercise,
     prerequisites: [{ typeId: 'expand', complexity: 3 }],
     instructionComponent: ExpandAndCollectInstructions,
   },

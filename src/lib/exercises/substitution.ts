@@ -11,12 +11,6 @@ function fracDisplay(num: number, den: number): string {
   return coeffLatex(num, den, '');
 }
 
-function fracCoeffDisplay(num: number, den: number): string {
-  if (den === 1) return String(num);
-  if (num % den === 0) return String(num / den);
-  return coeffLatex(num, den, '');
-}
-
 function randomFrac(rng: () => number): [number, number] {
   const den = randInt(rng, 2, 5);
   const num = randInt(rng, 1, 8);
@@ -44,13 +38,6 @@ const ADD_TRIPLES: [number, number, number][] = [
   [9, 40, 41],
   [12, 16, 20],
   [15, 20, 25],
-  // [15, 36, 39],
-  // [16, 30, 34],
-  // [20, 21, 29],
-  // [21, 28, 35],
-  // [24, 32, 40],
-  // [27, 36, 45],
-  // [30, 40, 50],
 ];
 
 interface GenInput {
@@ -97,7 +84,7 @@ function genAX2(input: GenInput): GenOutput {
     if (resultDen <= 20 && ansDen !== 0) {
       const answer = reduceFrac(ansNum, ansDen);
       return {
-        term: `${fracCoeffDisplay(coeffNum, coeffDen)}\\cdot ${v}^{2}`,
+        term: `${fracDisplay(coeffNum, coeffDen)}\\cdot ${v}^{2}`,
         answer: [answer[0], answer[1]].join('/').replace(/\/1$/, ''),
         subValue: fracDisplay(subNum, subDen),
         hasFractionAnswer: answer[1] > 1,
@@ -148,7 +135,7 @@ function genAMinusBX(input: GenInput): GenOutput {
     if (resultDen <= 20) {
       const answer = reduceFrac(ansNum, ansDen);
       return {
-        term: `${fracDisplay(aNum, aDen)} - ${fracCoeffDisplay(bNum, bDen)}\\cdot ${v}`,
+        term: `${fracDisplay(aNum, aDen)} - ${fracDisplay(bNum, bDen)}\\cdot ${v}`,
         answer: [answer[0], answer[1]].join('/').replace(/\/1$/, ''),
         subValue: fracDisplay(subNum, subDen),
         hasFractionAnswer: answer[1] > 1,

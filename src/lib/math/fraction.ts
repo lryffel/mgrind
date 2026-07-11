@@ -2,6 +2,22 @@ import { gcd } from './number';
 
 export type Fraction = [number, number];
 
+/** Generate a nice number (prime factors only 2, 5, optionally 3) not exceeding maxVal. */
+export function niceNum(rng: () => number, maxVal: number): number {
+  for (let attempt = 0; attempt < 50; attempt++) {
+    const a = Math.floor(rng() * 4);
+    const b = Math.floor(rng() * 3);
+    const c = rng() < 0.3 ? 1 : 0;
+    const n = 2 ** a * 5 ** b * 3 ** c;
+    if (n <= maxVal && n >= 2) return n;
+  }
+  return 2;
+}
+
+export function niceMax(clamped: number): number {
+  return 7 + Math.floor(clamped * 1.5);
+}
+
 export function normalizeFraction(num: number, den: number): Fraction {
   if (den < 0) {
     num = -num;
@@ -15,12 +31,6 @@ export function reduceFrac(num: number, den: number): Fraction {
   if (num === 0) return [0, 1];
   const g = gcd(Math.abs(num), den);
   return [num / g, den / g];
-}
-
-export function fracToString(num: number, den: number): string {
-  const [n, d] = reduceFrac(num, den);
-  if (d === 1) return String(n);
-  return `${n}/${d}`;
 }
 
 export function parseFrac(s: string): Fraction | null {

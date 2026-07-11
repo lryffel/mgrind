@@ -7,11 +7,7 @@ export function gcd(a: number, b: number): number {
   return Math.abs(a);
 }
 
-export function lcm(a: number, b: number): number {
-  return Math.abs(a * b) / gcd(a, b);
-}
-
-export function areCoprime(a: number, b: number): boolean {
+function areCoprime(a: number, b: number): boolean {
   return gcd(a, b) === 1;
 }
 

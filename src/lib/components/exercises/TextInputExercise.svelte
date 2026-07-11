@@ -53,12 +53,4 @@
   .answer-row {
     margin-top: 0.5rem;
   }
-
-  .prompt-row {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.5rem;
-    flex-wrap: wrap;
-  }
 </style>
