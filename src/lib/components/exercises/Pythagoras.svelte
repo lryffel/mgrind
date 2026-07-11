@@ -133,7 +133,7 @@
     return answer;
   }
 
-  const cannotCompute = $derived(_('exercise.pythagoras.cannotCompute'));
+  const cannotComputeShort = $derived(_('exercise.pythagoras.cannotComputeShort'));
 
   function handleSubmit() {
     onSubmit(userInput.trim());
@@ -168,7 +168,7 @@
             <NumericInput bind:value={userInput} placeholder="?" />
           {:else if s.isMissing && feedback !== null}
             {#if exercise.answer === 'cannot_compute'}
-              <span class="user-answer">{cannotCompute}</span>
+              <span class="user-answer">{cannotComputeShort}</span>
             {:else}
               <span class="user-answer"><KaTeX expression={userAnswerLatex(userInput)} /></span>
             {/if}
@@ -181,15 +181,15 @@
   </SvgContainer>
 
   {#if isNonRight && feedback === null}
-    <button class="cannot-compute-link" onclick={handleCannotCompute} title={_('exercise.pythagoras.cannotCompute')}>
-      {cannotCompute}
+    <button class="cannot-compute-link" onclick={handleCannotCompute} title={cannotComputeShort}>
+      {cannotComputeShort}
     </button>
   {/if}
 
   {#if feedback !== null}
     {#if exercise.answer === 'cannot_compute'}
       <div class="feedback-row">
-        <Feedback {feedback} textAnswer={cannotCompute} />
+        <Feedback {feedback} textAnswer={cannotComputeShort} />
       </div>
     {:else}
       <div class="feedback-row">
