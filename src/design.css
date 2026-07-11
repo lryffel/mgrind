@@ -633,6 +633,11 @@ html.modal-is-open {
   border-left-color: var(--c-incorrect);
 }
 
+.exercise-card .progress-bar {
+  height: 0.375rem;
+  margin-bottom: 0.75rem;
+}
+
 .exercise-content {
   display: flex;
   flex-direction: row;

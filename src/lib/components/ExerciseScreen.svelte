@@ -1,17 +1,28 @@
 <script lang="ts">
   import type { Discipline } from '../types';
   import { _ } from '../i18n.svelte';
-  import { getDisciplineProgress } from '../progress.svelte';
+  import { getComplexity, getDisciplineProgress } from '../progress.svelte';
   import { exerciseTypes } from '../data/exerciseTypes';
   import { disciplines } from '../data/disciplines';
   import { ExerciseSession } from '../exerciseSession.svelte';
   import { instructionContext } from '../instructionContext.svelte';
+  import { exerciseProgress } from '../exerciseProgressContext.svelte';
 
   let { disciplineId, onBack, typeId }: { disciplineId: string; onBack: () => void; typeId?: string } = $props();
 
   let discipline = $derived(disciplines.find((d: Discipline) => d.id === disciplineId)!);
-  let disciplineProgress = $derived(getDisciplineProgress(discipline, exerciseTypes));
   let session = $state<ExerciseSession>();
+
+  let barProgress = $derived.by(() => {
+    if (session?.currentTypeId) {
+      const type = exerciseTypes[session.currentTypeId];
+      if (!type) return 0;
+      return getComplexity(session.currentTypeId) / type.maxComplexity;
+    }
+    return getDisciplineProgress(discipline, exerciseTypes);
+  });
+
+  $effect(() => { exerciseProgress.value = barProgress; });
 
   $effect(() => {
     if (!session || disciplineId !== session.disciplineId) {
@@ -24,23 +35,6 @@
 <nav>
   <ul>
     <li><button class="outline" onclick={onBack}>{_('back')}</button></li>
-  </ul>
-  <ul>
-    <li>
-      <div
-        class="progress-bar"
-        class:full={disciplineProgress >= 1}
-        role="progressbar"
-        aria-valuenow={disciplineProgress}
-        aria-valuemin="0"
-        aria-valuemax="1"
-      >
-        <div
-          class="progress-gradient"
-          style="clip-path: inset(0 {100 - disciplineProgress * 100}% 0 0 round 0.3125rem)"
-        ></div>
-      </div>
-    </li>
   </ul>
 </nav>
 
