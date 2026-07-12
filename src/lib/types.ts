@@ -43,6 +43,13 @@ export interface ExerciseData {
   sideCDen?: number;
   missingSide?: string;
   answerLatex?: string;
+  triviaType?: string;
+  triviaA?: number;
+  triviaB?: number;
+  triviaExpressionLatex?: string;
+  triviaOptionsLatex?: string[];
+  triviaOptionsText?: string[];
+  triviaSubType?: string;
 }
 
 export interface Exercise {

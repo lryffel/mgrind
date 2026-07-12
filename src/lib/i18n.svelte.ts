@@ -263,6 +263,106 @@ const dict = {
     en: 'Please use a period (.) instead of a comma (,)',
     de: 'Bitte benutze einen Punkt (.) anstelle eines Kommas (,)',
   },
+  'exercise.fractionTrivia.name': { en: 'Trivia: Fractions', de: 'Wissen: Brüche' },
+  'exercise.fractionTrivia.desc': {
+    en: 'Test your knowledge about fractions',
+    de: 'Teste dein Wissen über Brüche',
+  },
+  'exercise.fractionTrivia.type.fractionTerms.prompt': {
+    en: 'What are the terms for the top and bottom numbers in a fraction?',
+    de: 'Wie heissen die obere und die untere Zahl eines Bruchs?',
+  },
+  'exercise.fractionTrivia.type.integerFractions.prompt': {
+    en: 'Which of these fractions are always integers whenever n is an integer?',
+    de: 'Welche dieser Brüche sind für jede ganze Zahl n ganzzahlig?',
+  },
+  'exercise.fractionTrivia.type.mediant.promptBefore': {
+    en: 'For two fractions ',
+    de: 'Für zwei Brüche ',
+  },
+  'exercise.fractionTrivia.type.mediant.promptMiddle': {
+    en: ' and ',
+    de: ' und ',
+  },
+  'exercise.fractionTrivia.type.mediant.promptAfter': {
+    en: ', what can you say about ',
+    de: ', was gilt für ',
+  },
+  'exercise.fractionTrivia.type.mediant.promptSuffix': {
+    en: '?',
+    de: '?',
+  },
+  'exercise.fractionTrivia.type.fractionDivision.promptBefore': {
+    en: 'Write ',
+    de: 'Schreibe ',
+  },
+  'exercise.fractionTrivia.type.fractionDivision.promptAfter': {
+    en: ' as a fraction with integer numerator and denominator.',
+    de: ' als Bruch mit ganzzahligem Zähler und Nenner.',
+  },
+  'exercise.fractionTrivia.type.equalFractions.promptBefore': {
+    en: 'Which of these fractions is equal to ',
+    de: 'Welche dieser Brüche sind gleich ',
+  },
+  'exercise.fractionTrivia.type.equalFractions.promptSuffix': {
+    en: '?',
+    de: '?',
+  },
+  'exercise.fractionTrivia.type.denominatorRestriction.prompt': {
+    en: 'What number are denominators never allowed to be?',
+    de: 'Welche Zahl darf im Nenner nie stehen?',
+  },
+  'exercise.fractionTrivia.type.doubleFraction.halveMC.prompt': {
+    en: 'How do you halve a fraction?',
+    de: 'Wie halbiert man einen Bruch?',
+  },
+  'exercise.fractionTrivia.type.doubleFraction.doubleMC.prompt': {
+    en: 'How do you double a fraction?',
+    de: 'Wie verdoppelt man einen Bruch?',
+  },
+  'exercise.fractionTrivia.type.multiplySame.prompt': {
+    en: 'What happens to the value of a fraction when you multiply both numerator and denominator by the same non-zero number?',
+    de: 'Was passiert mit dem Wert eines Bruchs, wenn man Zähler und Nenner mit derselben Zahl multipliziert?',
+  },
+  'exercise.fractionTrivia.type.fractionBar.prompt': {
+    en: 'Which mathematical operation does the fraction bar represent?',
+    de: 'Welche Rechenoperation stellt der Bruchstrich dar?',
+  },
+  'exercise.fractionTrivia.option.mediant.0': { en: 'Sum', de: 'Summe' },
+  'exercise.fractionTrivia.option.mediant.1': { en: 'Product', de: 'Produkt' },
+  'exercise.fractionTrivia.option.mediant.2': { en: 'Average', de: 'Mittelwert' },
+  'exercise.fractionTrivia.option.mediant.3': { en: 'Between the two', de: 'Zwischen den beiden' },
+  'exercise.fractionTrivia.option.mediant.4': { en: 'None of the above', de: 'Keines davon' },
+  'exercise.fractionTrivia.option.halveFraction.0': { en: 'Halve the numerator', de: 'Zähler halbieren' },
+  'exercise.fractionTrivia.option.halveFraction.1': { en: 'Double the denominator', de: 'Nenner verdoppeln' },
+  'exercise.fractionTrivia.option.halveFraction.2': { en: 'Double the numerator', de: 'Zähler verdoppeln' },
+  'exercise.fractionTrivia.option.halveFraction.3': { en: 'Halve the denominator', de: 'Nenner halbieren' },
+  'exercise.fractionTrivia.option.halveFraction.4': { en: 'Double both numerator and denominator', de: 'Zähler und Nenner verdoppeln' },
+  'exercise.fractionTrivia.option.halveFraction.5': { en: 'Halve both numerator and denominator', de: 'Zähler und Nenner halbieren' },
+  'exercise.fractionTrivia.option.halveFraction.6': { en: 'None of the above', de: 'Keines davon' },
+  'exercise.fractionTrivia.option.multiplySame.0': { en: 'It stays the same', de: 'Er bleibt gleich' },
+  'exercise.fractionTrivia.option.multiplySame.1': { en: 'It doubles', de: 'Er verdoppelt sich' },
+  'exercise.fractionTrivia.option.multiplySame.2': { en: 'It halves', de: 'Er halbiert sich' },
+  'exercise.fractionTrivia.option.multiplySame.3': { en: 'It becomes 1', de: 'Er wird 1' },
+  'exercise.fractionTrivia.option.fractionBar.0': { en: 'Addition', de: 'Addition' },
+  'exercise.fractionTrivia.option.fractionBar.1': { en: 'Subtraction', de: 'Subtraktion' },
+  'exercise.fractionTrivia.option.fractionBar.2': { en: 'Multiplication', de: 'Multiplikation' },
+  'exercise.fractionTrivia.option.fractionBar.3': { en: 'Division', de: 'Division' },
+  'exercise.fractionTrivia.type.reducibleFractions.prompt': {
+    en: 'Which of these fractions can always be reduced?',
+    de: 'Welche dieser Brüche kann man immer kürzen?',
+  },
+  'exercise.fractionTrivia.option.reducibleFractions.0': { en: '', de: '' },
+  'exercise.fractionTrivia.option.reducibleFractions.1': { en: '', de: '' },
+  'exercise.fractionTrivia.option.reducibleFractions.2': { en: '', de: '' },
+  'exercise.fractionTrivia.option.reducibleFractions.3': { en: '', de: '' },
+  'exercise.fractionTrivia.option.reducibleFractions.4': { en: '', de: '' },
+  'exercise.fractionTrivia.option.reducibleFractions.5': { en: '', de: '' },
+  'exercise.fractionTrivia.option.reducibleFractions.6': { en: 'None of the above', de: 'Keines davon' },
+  'exercise.fractionTrivia.option.fractionTerms.top': { en: 'Top', de: 'Oben' },
+  'exercise.fractionTrivia.option.fractionTerms.topAnswer': { en: 'numerator', de: 'Zähler' },
+  'exercise.fractionTrivia.option.fractionTerms.bottom': { en: 'Bottom', de: 'Unten' },
+  'exercise.fractionTrivia.option.fractionTerms.bottomAnswer': { en: 'denominator', de: 'Nenner' },
 } satisfies Record<string, Record<Lang, string>>;
 
 export const state = $state({ lang: 'en' as Lang });

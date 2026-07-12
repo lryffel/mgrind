@@ -54,9 +54,11 @@ import { generateExpandAndCollect, validateExpandAndCollect } from '../exercises
 import { generateLinearEquations, validateLinearEquations } from '../exercises/linearEquations';
 import LinearEquationsExercise from '../components/exercises/LinearEquationsExercise.svelte';
 import { generateInteriorAngles } from '../exercises/interiorAngles';
+import { generateFractionTrivia, validateFractionTrivia } from '../exercises/fractionTrivia';
 import { generatePythagoras, validatePythagoras } from '../exercises/pythagoras';
 import InteriorAngles from '../components/exercises/InteriorAngles.svelte';
 import Pythagoras from '../components/exercises/Pythagoras.svelte';
+import FractionTrivia from '../components/exercises/FractionTrivia.svelte';
 import InteriorAnglesInstructions from '../components/exerciseInstructions/InteriorAnglesInstructions.svelte';
 import PythagorasInstructions from '../components/exerciseInstructions/PythagorasInstructions.svelte';
 import { trimCompare, validateFractionAnswer, validateFractionReduced } from '../validation';
@@ -313,5 +315,14 @@ export const exerciseTypes: Record<string, ExerciseType> = {
     validate: trimCompare,
     component: InteriorAngles,
     instructionComponent: InteriorAnglesInstructions,
+  },
+  fractionTrivia: {
+    id: 'fractionTrivia',
+    nameKey: 'exercise.fractionTrivia.name',
+    descriptionKey: 'exercise.fractionTrivia.desc',
+    maxComplexity: 10,
+    generate: generateFractionTrivia,
+    validate: validateFractionTrivia,
+    component: FractionTrivia,
   },
 };
