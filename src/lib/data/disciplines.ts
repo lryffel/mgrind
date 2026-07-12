@@ -15,6 +15,7 @@ export const disciplines: Discipline[] = [
       'subtractionFraction',
       'multiplicationFraction',
       'scientificNotation',
+      'compareFractions',
     ],
   },
   {
@@ -26,6 +27,7 @@ export const disciplines: Discipline[] = [
       'subtractionFraction',
       'multiplicationFraction',
       'fractionTrivia',
+      'compareFractions',
       'simplifySymbolicFraction',
     ],
   },

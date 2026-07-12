@@ -375,6 +375,22 @@ const dict = {
     en: 'Simplify.',
     de: 'Kürze.',
   },
+  'exercise.compareFractions.name': {
+    en: 'Compare Fractions',
+    de: 'Brüche vergleichen',
+  },
+  'exercise.compareFractions.desc': {
+    en: 'Compare two fractions using <, >, or =',
+    de: 'Vergleiche zwei Brüche mit <, > oder =',
+  },
+  'exercise.compareFractions.prompt': {
+    en: 'Choose the correct comparison symbol.',
+    de: 'Wähle das richtige Vergleichszeichen.',
+  },
+  'exercise.compareFractions.operatorSelect': {
+    en: 'Comparison',
+    de: 'Vergleich',
+  },
 } satisfies Record<string, Record<Lang, string>>;
 
 export const state = $state({ lang: 'en' as Lang });
