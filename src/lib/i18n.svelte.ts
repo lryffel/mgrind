@@ -324,6 +324,10 @@ const dict = {
     en: 'What happens to the value of a fraction when you multiply both numerator and denominator by the same non-zero number?',
     de: 'Was passiert mit dem Wert eines Bruchs, wenn man Zähler und Nenner mit derselben Zahl multipliziert?',
   },
+  'exercise.fractionTrivia.type.multiplySame.reciprocal.prompt': {
+    en: 'What happens when you multiply a fraction by its reciprocal?',
+    de: 'Was passiert, wenn man einen Bruch mit seinem Kehrwert multipliziert?',
+  },
   'exercise.fractionTrivia.type.fractionBar.prompt': {
     en: 'Which mathematical operation does the fraction bar represent?',
     de: 'Welche Rechenoperation stellt der Bruchstrich dar?',
@@ -332,7 +336,7 @@ const dict = {
   'exercise.fractionTrivia.option.mediant.1': { en: 'Product', de: 'Produkt' },
   'exercise.fractionTrivia.option.mediant.2': { en: 'Average', de: 'Mittelwert' },
   'exercise.fractionTrivia.option.mediant.3': { en: 'Between the two', de: 'Zwischen den beiden' },
-  'exercise.fractionTrivia.option.mediant.4': { en: 'None of the above', de: 'Keines davon' },
+
   'exercise.fractionTrivia.option.halveFraction.0': { en: 'Halve the numerator', de: 'Zähler halbieren' },
   'exercise.fractionTrivia.option.halveFraction.1': { en: 'Double the denominator', de: 'Nenner verdoppeln' },
   'exercise.fractionTrivia.option.halveFraction.2': { en: 'Double the numerator', de: 'Zähler verdoppeln' },
@@ -363,6 +367,34 @@ const dict = {
   'exercise.fractionTrivia.option.fractionTerms.topAnswer': { en: 'numerator', de: 'Zähler' },
   'exercise.fractionTrivia.option.fractionTerms.bottom': { en: 'Bottom', de: 'Unten' },
   'exercise.fractionTrivia.option.fractionTerms.bottomAnswer': { en: 'denominator', de: 'Nenner' },
+  'exercise.fractionTrivia.type.zeroNumerator.promptBefore': {
+    en: 'What is ',
+    de: 'Was ist ',
+  },
+  'exercise.fractionTrivia.type.zeroNumerator.promptAfter': {
+    en: ' for any non-zero integer n?',
+    de: ' für eine ganze Zahl n ≠ 0?',
+  },
+  'exercise.fractionTrivia.type.reciprocalProduct.promptBefore': {
+    en: 'What is ',
+    de: 'Was ist ',
+  },
+  'exercise.fractionTrivia.type.reciprocalProduct.promptAfter': {
+    en: '?',
+    de: '?',
+  },
+  'exercise.fractionTrivia.type.reciprocalProduct.var.prompt': {
+    en: 'What is a/b × b/a for non-zero integers a, b?',
+    de: 'Was ist a/b × b/a für ganze Zahlen a, b ≠ 0?',
+  },
+  'exercise.fractionTrivia.type.negativeSignPlacement.promptBefore': {
+    en: 'Which of these fractions is equal to ',
+    de: 'Welche dieser Brüche sind gleich ',
+  },
+  'exercise.fractionTrivia.type.negativeSignPlacement.promptSuffix': {
+    en: '?',
+    de: '?',
+  },
   'exercise.simplifySymbolicFraction.name': {
     en: 'Simplify Symbolic Fractions',
     de: 'Symbolische Brüche kürzen',

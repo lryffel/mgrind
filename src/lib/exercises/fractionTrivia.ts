@@ -30,11 +30,19 @@ const MEDIANT_VARIANTS = [
     latex: '\\frac{ad+bc}{2bd}',
     correctIndices: [2, 3],
   },
-  {
-    latex: '\\frac{a+b}{c+d}',
-    correctIndices: [4],
-  },
 ];
+
+function negativeSignOptions(useNumbers: boolean, a: number, b: number) {
+  const va = useNumbers ? String(a) : 'a';
+  const vb = useNumbers ? String(b) : 'b';
+  return [
+    { latex: `\\frac{-${va}}{${vb}}`, correct: true },
+    { latex: `\\frac{${va}}{-${vb}}`, correct: true },
+    { latex: `\\frac{-${va}}{-${vb}}`, correct: false },
+    { latex: `-\\frac{-${va}}{${vb}}`, correct: false },
+    { latex: `-\\frac{${va}}{-${vb}}`, correct: false },
+  ];
+}
 
 function equalFractionsSignOptions(useNumbers: boolean, a: number, b: number) {
   const va = useNumbers ? String(a) : 'a';
@@ -53,9 +61,9 @@ export function generateFractionTrivia(seed: number, complexity: number): Exerci
   const clamped = clampComplexity(complexity, 10);
   const rng = mulberry32(seed);
 
-  const basic = ['fractionTerms', 'integerFractions', 'denominatorRestriction', 'doubleFraction', 'fractionBar'];
-  const mid = ['fractionDivision', 'multiplySame'];
-  const hard = ['mediant', 'reducibleFractions'];
+  const basic = ['fractionTerms', 'integerFractions', 'denominatorRestriction', 'doubleFraction', 'fractionBar', 'zeroNumerator'];
+  const mid = ['fractionDivision', 'multiplySame', 'reciprocalProduct'];
+  const hard = ['mediant', 'reducibleFractions', 'negativeSignPlacement'];
   const hardest = ['equalFractions'];
 
   const pool: string[] = [];
@@ -116,11 +124,6 @@ export function generateFractionTrivia(seed: number, complexity: number): Exerci
       });
 
       const optionsLatex = shown.map((o) => o.latex);
-      optionsLatex.push('none');
-
-      if (correctIndices.length === 0) {
-        correctIndices.push(showCount);
-      }
 
       return {
         prompt: '',
@@ -186,12 +189,14 @@ export function generateFractionTrivia(seed: number, complexity: number): Exerci
       };
     }
 
-    case 'multiplySame':
+    case 'multiplySame': {
+      const isReciprocal = clamped >= 5 && rng() < 0.5;
       return {
         prompt: '',
-        answer: '0',
-        data: { triviaType: 'multiplySame' },
+        answer: isReciprocal ? '3' : '0',
+        data: { triviaType: 'multiplySame', triviaSubType: isReciprocal ? 'reciprocal' : undefined },
       };
+    }
 
     case 'fractionBar':
       return {
@@ -199,6 +204,55 @@ export function generateFractionTrivia(seed: number, complexity: number): Exerci
         answer: '3',
         data: { triviaType: 'fractionBar' },
       };
+
+    case 'zeroNumerator':
+      return {
+        prompt: '',
+        answer: '0',
+        data: { triviaType: 'zeroNumerator' },
+      };
+
+    case 'reciprocalProduct': {
+      const useNumeric = clamped <= 4 || rng() < 0.5;
+      if (useNumeric) {
+        const [a, b] = randomCoprimePair(rng, 2, 9);
+        return {
+          prompt: '',
+          answer: '1',
+          data: { triviaType: 'reciprocalProduct', triviaSubType: 'num', triviaA: a, triviaB: b },
+        };
+      }
+      return {
+        prompt: '',
+        answer: '1',
+        data: { triviaType: 'reciprocalProduct', triviaSubType: 'var' },
+      };
+    }
+
+    case 'negativeSignPlacement': {
+      const useNumbers = rng() < 0.75;
+      const numA = randInt(rng, 2, 5);
+      const numB = pick(rng, [2, 3, 4, 5, 7].filter((n) => n !== numA));
+
+      const all = negativeSignOptions(useNumbers, numA, numB);
+      const shuffled = shuffle(rng, all);
+
+      const showCount = clamped <= 5 ? 3 : 4;
+      const shown = shuffled.slice(0, showCount);
+
+      const correctIndices: number[] = [];
+      shown.forEach((opt, idx) => {
+        if (opt.correct) correctIndices.push(idx);
+      });
+
+      const optionsLatex = shown.map((o) => o.latex);
+
+      return {
+        prompt: '',
+        answer: correctIndices.map(String).join(','),
+        data: { triviaType: 'negativeSignPlacement', triviaOptionsLatex: optionsLatex, triviaA: useNumbers ? numA : undefined, triviaB: useNumbers ? numB : undefined },
+      };
+    }
 
     default:
       return {
@@ -239,10 +293,17 @@ export function validateFractionTrivia(answer: string, exercise: Exercise): bool
 
     case 'multiplySame':
     case 'fractionBar':
+    case 'zeroNumerator':
       return answer.trim() === exercise.answer;
+
+    case 'reciprocalProduct':
+      return answer.trim() === '1';
 
     case 'fractionDivision':
       return validateFractionTriviaFraction(answer, exercise);
+
+    case 'negativeSignPlacement':
+      return normalizeIndexAnswer(answer) === normalizeIndexAnswer(exercise.answer);
 
     case 'denominatorRestriction':
       return answer.trim() === '0';

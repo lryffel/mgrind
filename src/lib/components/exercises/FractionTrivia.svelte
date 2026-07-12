@@ -45,6 +45,8 @@
     if (data.triviaType === 'equalFractions') return 6;
     if (data.triviaType === 'reducibleFractions' && data.triviaOptionsLatex) return data.triviaOptionsLatex.length;
     if (data.triviaType === 'reducibleFractions') return 6;
+    if (data.triviaType === 'negativeSignPlacement' && data.triviaOptionsLatex) return data.triviaOptionsLatex.length;
+    if (data.triviaType === 'negativeSignPlacement') return 6;
     if (data.triviaType === 'doubleFraction' && (data.triviaSubType === 'halveMC' || data.triviaSubType === 'doubleMC') && data.triviaOptionsText) return data.triviaOptionsText.length;
     return 0;
   }
@@ -73,6 +75,7 @@
       case 'equalFractions':
       case 'mediant':
       case 'reducibleFractions':
+      case 'negativeSignPlacement':
         return selectedCheckboxes.some(Boolean);
       case 'doubleFraction':
         if (data.triviaSubType === 'halveMC' || data.triviaSubType === 'doubleMC') return selectedCheckboxes.some(Boolean);
@@ -83,6 +86,8 @@
       case 'fractionDivision':
         return frac.num !== '' && frac.den !== '';
       case 'denominatorRestriction':
+      case 'zeroNumerator':
+      case 'reciprocalProduct':
         return textValue.trim() !== '';
       default:
         return false;
@@ -104,10 +109,11 @@
       case 'equalFractions':
       case 'mediant':
       case 'reducibleFractions':
+      case 'negativeSignPlacement':
         answer = selectedCheckboxes.map((checked, i) => checked ? i : -1).filter(i => i >= 0).sort((a, b) => a - b).join(',');
         break;
       case 'doubleFraction':
-        if (data.triviaSubType === 'halveMC') {
+        if (data.triviaSubType === 'halveMC' || data.triviaSubType === 'doubleMC') {
           answer = selectedCheckboxes.map((checked, i) => checked ? i : -1).filter(i => i >= 0).sort((a, b) => a - b).join(',');
         } else {
           answer = String(selectedIndex);
@@ -121,6 +127,8 @@
         answer = frac.getSubmitValue();
         break;
       case 'denominatorRestriction':
+      case 'zeroNumerator':
+      case 'reciprocalProduct':
         answer = textValue.trim();
         break;
     }
@@ -154,6 +162,9 @@
     if (data.triviaType === 'reducibleFractions') {
       return data.triviaOptionsLatex ?? ['\\frac{ab}{a}', '\\frac{a+b}{a}', '\\frac{a}{ab}', '\\frac{a-b}{a}', '\\frac{a}{a+b}', '\\frac{a}{a-b}'];
     }
+    if (data.triviaType === 'negativeSignPlacement') {
+      return data.triviaOptionsLatex ?? ['\\frac{-a}{b}', '\\frac{a}{-b}', '\\frac{-a}{-b}', '-\\frac{-a}{b}', '-\\frac{a}{-b}'];
+    }
     return undefined;
   }
 
@@ -164,7 +175,7 @@
     const opts = correctOptionsLatex();
     if (opts) {
       return correctIndices
-        .filter((i) => i < opts.length && opts[i] !== 'none')
+        .filter((i) => i < opts.length)
         .map((i) => opts[i])
         .join(',\\;');
     }
@@ -175,14 +186,16 @@
     if (feedback !== 'correct') {
       switch (data.triviaType) {
         case 'denominatorRestriction':
+        case 'zeroNumerator':
           return '0';
+        case 'reciprocalProduct':
+          return '1';
         case 'mediant': {
           const labels = [
             _('exercise.fractionTrivia.option.mediant.0'),
             _('exercise.fractionTrivia.option.mediant.1'),
             _('exercise.fractionTrivia.option.mediant.2'),
             _('exercise.fractionTrivia.option.mediant.3'),
-            _('exercise.fractionTrivia.option.mediant.4'),
           ];
           return correctIndices.map((i) => labels[i]).join(', ');
         }
@@ -223,6 +236,11 @@
     return '';
   });
 
+  function termColor(correct: boolean): string {
+    const key = correct ? '--c-correct' : '--c-incorrect';
+    return getComputedStyle(document.documentElement).getPropertyValue(key).trim();
+  }
+
   let userAnswerCorrect = $derived(feedback === 'correct');
 </script>
 
@@ -230,9 +248,18 @@
   {#if data.triviaType === 'fractionTerms'}
     <p class="prompt-label">{_('exercise.fractionTrivia.type.fractionTerms.prompt')}</p>
 
-    <div class="fraction-terms-input">
-      <NumericInput fraction bind:num={topValue} bind:den={bottomValue} numPlaceholder="&hellip;" denPlaceholder="&hellip;" readonly={feedback !== null} />
-    </div>
+    {#if feedback === null}
+      <div class="fraction-terms-input">
+        <NumericInput fraction bind:num={topValue} bind:den={bottomValue} numPlaceholder="&hellip;" denPlaceholder="&hellip;" />
+      </div>
+    {:else}
+      <div class="fraction-terms-input">
+        <Math
+          expression={'\\dfrac{\\color{' + termColor(q1TopCorrect) + '}{\\text{' + topValue + '}}}{\\color{' + termColor(q1BottomCorrect) + '}{\\text{' + bottomValue + '}}}'}
+          display
+        />
+      </div>
+    {/if}
 
     {#if feedback !== null}
       <div class="feedback-spacer">
@@ -240,10 +267,7 @@
           {#if feedback === 'correct'}
             {_('feedback.correct')}
           {:else}
-            <span>{_('feedback.incorrect.prefix')}
-              <span class="user-word" class:word-correct={q1TopCorrect} class:word-incorrect={!q1TopCorrect}>{topValue}</span>,
-              <span class="user-word" class:word-correct={q1BottomCorrect} class:word-incorrect={!q1BottomCorrect}>{bottomValue}</span>
-            </span>
+            {_('feedback.incorrect.prefix')}
           {/if}
         </p>
         <p class="correct-answer">
@@ -293,7 +317,7 @@
     </p>
 
     <div class="option-grid" role="group">
-      {#each [0, 1, 2, 3, 4] as i (i)}
+      {#each [0, 1, 2, 3] as i (i)}
         {#if feedback === null}
           <button
             class={'choice-checkbox' + (selectedCheckboxes[i] ? ' selected' : '')}
@@ -364,19 +388,11 @@
             role="checkbox"
             aria-checked={selectedCheckboxes[i]}
           >
-            {#if latex === 'none'}
-              {_('exercise.fractionTrivia.option.mediant.4')}
-            {:else}
-              <Math expression={latex} />
-            {/if}
+            <Math expression={latex} />
           </button>
         {:else}
           <span class="option-feedback-row" class:correct-option={correctIndices.includes(i) && selectedCheckboxes[i]} class:wrong-option={!correctIndices.includes(i) && selectedCheckboxes[i]}>
-            {#if latex === 'none'}
-              {_('exercise.fractionTrivia.option.mediant.4')}
-            {:else}
-              <Math expression={latex} />
-            {/if}
+            <Math expression={latex} />
           </span>
         {/if}
       {/each}
@@ -433,6 +449,52 @@
       </div>
     {/if}
 
+  {:else if data.triviaType === 'zeroNumerator'}
+    <p class="prompt-label">
+      {_('exercise.fractionTrivia.type.zeroNumerator.promptBefore')}
+      <Math expression={'\\frac{0}{n}'} />
+      {_('exercise.fractionTrivia.type.zeroNumerator.promptAfter')}
+    </p>
+
+    {#if feedback === null}
+      <NumericInput bind:value={textValue} context="plain" placeholder="&hellip;" />
+    {:else}
+      <span class="user-answer" class:correct={userAnswerCorrect} class:incorrect={!userAnswerCorrect}>
+        <Math expression={textValue || '0'} />
+      </span>
+    {/if}
+
+    {#if feedback !== null}
+      <div class="feedback-spacer">
+        <Feedback {feedback} textAnswer={correctTextAnswer} />
+      </div>
+    {/if}
+
+  {:else if data.triviaType === 'reciprocalProduct'}
+    {#if data.triviaSubType === 'num'}
+      <p class="prompt-label">
+        {_('exercise.fractionTrivia.type.reciprocalProduct.promptBefore')}
+        <Math expression={'\\frac{' + (data.triviaA ?? 0) + '}{' + (data.triviaB ?? 1) + '}\\cdot\\frac{' + (data.triviaB ?? 1) + '}{' + (data.triviaA ?? 0) + '}'} />
+        {_('exercise.fractionTrivia.type.reciprocalProduct.promptAfter')}
+      </p>
+    {:else}
+      <p class="prompt-label">{_('exercise.fractionTrivia.type.reciprocalProduct.var.prompt')}</p>
+    {/if}
+
+    {#if feedback === null}
+      <NumericInput bind:value={textValue} context="plain" placeholder="&hellip;" />
+    {:else}
+      <span class="user-answer" class:correct={userAnswerCorrect} class:incorrect={!userAnswerCorrect}>
+        <Math expression={textValue || '1'} />
+      </span>
+    {/if}
+
+    {#if feedback !== null}
+      <div class="feedback-spacer">
+        <Feedback {feedback} textAnswer={correctTextAnswer} />
+      </div>
+    {/if}
+
   {:else if data.triviaType === 'doubleFraction'}
     {@const mcSub = data.triviaSubType === 'halveMC' ? 'halveMC' : 'doubleMC'}
     <p class="prompt-label">{_(`exercise.fractionTrivia.type.doubleFraction.${mcSub}.prompt`)}</p>
@@ -467,7 +529,13 @@
     {/if}
 
   {:else if data.triviaType === 'multiplySame'}
-    <p class="prompt-label">{_('exercise.fractionTrivia.type.multiplySame.prompt')}</p>
+    <p class="prompt-label">
+      {#if data.triviaSubType === 'reciprocal'}
+        {_('exercise.fractionTrivia.type.multiplySame.reciprocal.prompt')}
+      {:else}
+        {_('exercise.fractionTrivia.type.multiplySame.prompt')}
+      {/if}
+    </p>
 
     <div class="option-grid" role="radiogroup">
       {#each [0, 1, 2, 3] as i (i)}
@@ -527,6 +595,42 @@
         {:else}
           <Feedback {feedback} textAnswer={correctTextAnswer} />
         {/if}
+      </div>
+    {/if}
+
+  {:else if data.triviaType === 'negativeSignPlacement'}
+    <p class="prompt-label">
+      {_('exercise.fractionTrivia.type.negativeSignPlacement.promptBefore')}
+      {#if data.triviaA !== undefined && data.triviaB !== undefined}
+        <Math expression={'-\\frac{' + data.triviaA + '}{' + data.triviaB + '}'} />
+      {:else}
+        <Math expression={'-\\frac{a}{b}'} />
+      {/if}
+      {_('exercise.fractionTrivia.type.negativeSignPlacement.promptSuffix')}
+    </p>
+
+    <div class="option-grid" role="group">
+      {#each correctOptionsLatex() as latex, i (i)}
+        {#if feedback === null}
+          <button
+            class={'choice-checkbox' + (selectedCheckboxes[i] ? ' selected' : '')}
+            onclick={() => toggleIndex(i)}
+            role="checkbox"
+            aria-checked={selectedCheckboxes[i]}
+          >
+            <Math expression={latex} />
+          </button>
+        {:else}
+          <span class="option-feedback-row" class:correct-option={correctIndices.includes(i) && selectedCheckboxes[i]} class:wrong-option={!correctIndices.includes(i) && selectedCheckboxes[i]}>
+            <Math expression={latex} />
+          </span>
+        {/if}
+      {/each}
+    </div>
+
+    {#if feedback !== null}
+      <div class="feedback-spacer">
+        <Feedback {feedback} {correctLatex} />
       </div>
     {/if}
   {/if}
@@ -658,18 +762,6 @@
 
   .feedback-spacer {
     margin-top: 1.5rem;
-  }
-
-  .feedback :global(.user-word) {
-    font-weight: 600;
-  }
-
-  .feedback :global(.user-word.word-correct) {
-    color: var(--c-correct);
-  }
-
-  .feedback :global(.user-word.word-incorrect) {
-    color: var(--c-incorrect);
   }
 
   .feedback :global(.correct-answer) {
