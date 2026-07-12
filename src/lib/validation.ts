@@ -1,5 +1,5 @@
 import type { Exercise, InputContext } from './types';
-import { reduceFrac } from './math/fraction';
+import { reduceFrac, fracEqual } from './math/fraction';
 
 const DEFAULTS: Record<InputContext, string> = {
   coefficient: '1',
@@ -53,4 +53,14 @@ function isReduced(answer: string): boolean {
 export function validateFractionReduced(answer: string, exercise: Exercise): boolean {
   if (!validateFractionAnswer(answer, exercise)) return false;
   return isReduced(answer);
+}
+
+export function validateMultiField(answer: string, exercise: Exercise): boolean {
+  const userParts = answer.split(',').map((s) => s.trim());
+  const correctParts = exercise.answer.split(',').map((s) => s.trim());
+  if (userParts.length !== correctParts.length) return false;
+  for (let i = 0; i < userParts.length; i++) {
+    if (!fracEqual(userParts[i], correctParts[i])) return false;
+  }
+  return true;
 }

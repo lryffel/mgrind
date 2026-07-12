@@ -1,5 +1,9 @@
 import { mulberry32 } from '../prng';
 
+export function clampComplexity(complexity: number, max: number): number {
+  return Math.min(Math.max(complexity, 0), max);
+}
+
 export function gcd(a: number, b: number): number {
   while (b) {
     [a, b] = [b, a % b];

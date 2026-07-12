@@ -1,8 +1,8 @@
 import type { Exercise } from '../types';
 import { mulberry32 } from '../prng';
+import { clampComplexity } from '../math/number';
 import { randInt, pick } from '../math/rng';
 import { formatExpandedTerm, varMapLatex, varMapText } from '../math/varmap';
-import { fracEqual } from '../math/fraction';
 import { expandProduct, collectTerms, type Term } from './termAlgebra';
 
 const VAR_SETS = [['x'], ['x', 'y'], ['a'], ['a', 'b'], ['m'], ['m', 'n']];
@@ -202,7 +202,7 @@ function genBinomTrinomial(rng: () => number, maxDegree: number): Exercise {
 
 export function generateExpand(seed: number, complexity: number): Exercise {
   const rng = mulberry32(seed);
-  const clamped = Math.min(Math.max(complexity, 0), 10);
+  const clamped = clampComplexity(complexity, 10);
 
   const maxDegree = clamped <= 2 ? 1 : clamped <= 5 ? 2 : clamped <= 8 ? 3 : 4;
 
@@ -222,14 +222,4 @@ export function generateExpand(seed: number, complexity: number): Exercise {
   }
 }
 
-export function validateExpand(answer: string, exercise: Exercise): boolean {
-  const userParts = answer.split(',').map((s) => s.trim());
-  const correctParts = exercise.answer.split(',').map((s) => s.trim());
-
-  if (userParts.length !== correctParts.length) return false;
-
-  for (let i = 0; i < userParts.length; i++) {
-    if (!fracEqual(userParts[i], correctParts[i])) return false;
-  }
-  return true;
-}
+export { validateMultiField as validateExpand } from '../validation';

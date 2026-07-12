@@ -1,5 +1,6 @@
 import type { Exercise } from '../types';
 import { mulberry32 } from '../prng';
+import { clampComplexity } from '../math/number';
 
 export interface InteriorAnglesAngle {
   value: number;
@@ -52,7 +53,7 @@ function interiorAngleDeg(
 }
 
 export function generateInteriorAngles(seed: number, complexity: number): Exercise {
-  const clamped = Math.min(Math.max(complexity, 0), 9);
+  const clamped = clampComplexity(complexity, 9);
   const rng = mulberry32(seed);
 
   const sides = clamped <= 2 ? 3 : clamped <= 5 ? 4 : 5;

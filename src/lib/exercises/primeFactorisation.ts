@@ -1,5 +1,6 @@
 import type { Exercise } from '../types';
 import { mulberry32 } from '../prng';
+import { clampComplexity } from '../math/number';
 
 const PRIMES = [2, 3, 5, 7, 11, 13, 17];
 const PRIME_COUNT: Record<number, number> = {
@@ -45,7 +46,7 @@ function factorise(n: number): Map<number, number> {
 }
 
 export function generatePrimeFactorisation(seed: number, complexity: number): Exercise {
-  const clamped = Math.min(Math.max(complexity, 0), 10);
+  const clamped = clampComplexity(complexity, 10);
   const count = PRIME_COUNT[clamped];
   const primes = PRIMES.slice(0, count);
   const allowed = new Set(primes);

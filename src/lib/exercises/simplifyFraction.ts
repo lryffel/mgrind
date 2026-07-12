@@ -1,10 +1,10 @@
 import type { Exercise } from '../types';
 import { mulberry32 } from '../prng';
-import { randomCoprimePair } from '../math/number';
+import { randomCoprimePair, clampComplexity } from '../math/number';
 import { promptFraction } from '../math/latex';
 
 export function generateSimplifyFraction(seed: number, complexity: number): Exercise {
-  const clamped = Math.min(Math.max(complexity, 0), 10);
+  const clamped = clampComplexity(complexity, 10);
   const rng = mulberry32(seed);
 
   const minFactor = 2 + Math.floor((clamped * 3) / 10);

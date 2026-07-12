@@ -1,6 +1,7 @@
 import type { Exercise } from '../types';
 import { mulberry32 } from '../prng';
 import { randInt } from '../math/rng';
+import { clampComplexity } from '../math/number';
 
 function formatDecimal(tenths: number, exponent: number): string {
   const shift = exponent - 1;
@@ -141,7 +142,7 @@ function generateAdd(rng: () => number): Exercise {
 
 export function generateScientificNotation(seed: number, complexity: number): Exercise {
   const rng = mulberry32(seed);
-  const clamped = Math.min(Math.max(complexity, 0), 9);
+  const clamped = clampComplexity(complexity, 10);
 
   if (clamped <= 3) {
     return generateSciToDec(rng);

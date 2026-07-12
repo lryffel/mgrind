@@ -1,6 +1,7 @@
 import type { Exercise } from '../types';
 import { mulberry32 } from '../prng';
-import { reduceFrac, parseFrac, fracEqual } from '../math/fraction';
+import { clampComplexity } from '../math/number';
+import { reduceFrac, parseFrac } from '../math/fraction';
 import { randInt, pick, pickDistinct, shuffle } from '../math/rng';
 
 interface Monomial {
@@ -102,7 +103,7 @@ export function formatCollectingAnswer(coeffStrs: string[], variableParts: strin
 
 export function generateCollectingTerms(seed: number, complexity: number): Exercise {
   const rng = mulberry32(seed);
-  const clamped = Math.min(Math.max(complexity, 0), 10);
+  const clamped = clampComplexity(complexity, 10);
 
   const maxDegree = clamped <= 2 ? 1 : clamped <= 5 ? 2 : 3;
   const numTypes = clamped <= 1 ? 2 : randInt(rng, 2, 4);
@@ -214,14 +215,4 @@ function tryGenerate(
   };
 }
 
-export function validateCollectingTerms(answer: string, exercise: Exercise): boolean {
-  const userParts = answer.split(',').map((s) => s.trim());
-  const correctParts = exercise.answer.split(',').map((s) => s.trim());
-
-  if (userParts.length !== correctParts.length) return false;
-
-  for (let i = 0; i < userParts.length; i++) {
-    if (!fracEqual(userParts[i], correctParts[i])) return false;
-  }
-  return true;
-}
+export { validateMultiField as validateCollectingTerms } from '../validation';

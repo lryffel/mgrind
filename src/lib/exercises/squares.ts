@@ -1,8 +1,9 @@
 import type { Exercise } from '../types';
 import { mulberry32 } from '../prng';
+import { clampComplexity } from '../math/number';
 
 export function generateSquares(seed: number, complexity: number): Exercise {
-  const clamped = Math.min(Math.max(complexity, 0), 9);
+  const clamped = clampComplexity(complexity, 10);
   const rng = mulberry32(seed);
   const minBase = 2 + Math.floor((clamped * 8) / 9);
   const maxBase = 10 + Math.floor((clamped * 40) / 9);

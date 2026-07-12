@@ -1,7 +1,7 @@
 import type { Exercise } from '../types';
 import { mulberry32 } from '../prng';
 import { pick, randInt, shuffle } from '../math/rng';
-import { randomCoprimePair } from '../math/number';
+import { randomCoprimePair, clampComplexity } from '../math/number';
 
 export interface FractionTriviaData {
   triviaType?: string;
@@ -50,7 +50,7 @@ function equalFractionsSignOptions(useNumbers: boolean, a: number, b: number) {
 }
 
 export function generateFractionTrivia(seed: number, complexity: number): Exercise {
-  const clamped = Math.min(Math.max(complexity, 0), 9);
+  const clamped = clampComplexity(complexity, 10);
   const rng = mulberry32(seed);
 
   const basic = ['fractionTerms', 'integerFractions', 'denominatorRestriction', 'doubleFraction', 'fractionBar'];

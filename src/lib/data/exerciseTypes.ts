@@ -1,4 +1,5 @@
-import type { Exercise, ExerciseType } from '../types';
+import type { Component } from 'svelte';
+import type { Exercise, ExerciseType, ExerciseProps, Prerequisite } from '../types';
 import { generateMultiplication } from '../exercises/multiplication';
 import { generateDivision } from '../exercises/division';
 import { generatePrimeFactorisation } from '../exercises/primeFactorisation';
@@ -67,169 +68,167 @@ function validateSubtractionFraction(answer: string, exercise: Exercise): boolea
   return validateFractionAnswer(answer, exercise);
 }
 
+function defineExerciseType(config: {
+  id: string;
+  nameKey: string;
+  descriptionKey: string;
+  generate: (seed: number, complexity: number) => Exercise;
+  validate?: (answer: string, exercise: Exercise) => boolean;
+  component?: Component<ExerciseProps>;
+  maxComplexity?: number;
+  prerequisites?: Prerequisite[];
+  instructionComponent?: Component;
+}): ExerciseType {
+  return {
+    id: config.id,
+    nameKey: config.nameKey,
+    descriptionKey: config.descriptionKey,
+    maxComplexity: config.maxComplexity ?? 10,
+    generate: config.generate,
+    validate: config.validate ?? trimCompare,
+    component: config.component ?? TextInputExercise,
+    ...(config.prerequisites ? { prerequisites: config.prerequisites } : {}),
+    ...(config.instructionComponent ? { instructionComponent: config.instructionComponent } : {}),
+  };
+}
+
 export const exerciseTypes: Record<string, ExerciseType> = {
-  multiplication: {
+  multiplication: defineExerciseType({
     id: 'multiplication',
     nameKey: 'exercise.multiplication.name',
     descriptionKey: 'exercise.multiplication.desc',
-    maxComplexity: 10,
     generate: generateMultiplication,
-    validate: trimCompare,
-    component: TextInputExercise,
-  },
-  division: {
+  }),
+  division: defineExerciseType({
     id: 'division',
     nameKey: 'exercise.division.name',
     descriptionKey: 'exercise.division.desc',
-    maxComplexity: 10,
     generate: generateDivision,
-    validate: trimCompare,
-    component: TextInputExercise,
-  },
-  squares: {
+  }),
+  squares: defineExerciseType({
     id: 'squares',
     nameKey: 'exercise.squares.name',
     descriptionKey: 'exercise.squares.desc',
-    maxComplexity: 10,
     generate: generateSquares,
-    validate: trimCompare,
-    component: TextInputExercise,
     instructionComponent: SquaresInstructions,
-  },
-  orderOfOperations: {
+  }),
+  orderOfOperations: defineExerciseType({
     id: 'orderOfOperations',
     nameKey: 'exercise.orderOfOperations.name',
     descriptionKey: 'exercise.orderOfOperations.desc',
-    maxComplexity: 10,
     generate: generateOrderOfOperations,
-    validate: trimCompare,
-    component: TextInputExercise,
     prerequisites: [{ typeId: 'squares', complexity: 5 }],
     instructionComponent: OrderOfOperationsInstructions,
-  },
-  primeFactorisation: {
+  }),
+  primeFactorisation: defineExerciseType({
     id: 'primeFactorisation',
     nameKey: 'exercise.primeFactorisation.name',
     descriptionKey: 'exercise.primeFactorisation.desc',
-    maxComplexity: 10,
     generate: generatePrimeFactorisation,
-    validate: trimCompare,
     component: PrimeFactorisation,
     prerequisites: [
       { typeId: 'multiplication', complexity: 7 },
       { typeId: 'division', complexity: 7 },
     ],
     instructionComponent: PrimeFactorisationInstructions,
-  },
-  simplifyFraction: {
+  }),
+  simplifyFraction: defineExerciseType({
     id: 'simplifyFraction',
     nameKey: 'exercise.simplifyFraction.name',
     descriptionKey: 'exercise.simplifyFraction.desc',
-    maxComplexity: 10,
     generate: generateSimplifyFraction,
     validate: validateFractionReduced,
     component: FractionExercise,
     instructionComponent: SimplifyFractionInstructions,
-  },
-  additionFraction: {
+  }),
+  additionFraction: defineExerciseType({
     id: 'additionFraction',
     nameKey: 'exercise.additionFraction.name',
     descriptionKey: 'exercise.additionFraction.desc',
-    maxComplexity: 10,
     generate: generateAdditionFraction,
     validate: validateFractionAnswer,
     component: FractionExercise,
     prerequisites: [{ typeId: 'simplifyFraction', complexity: 5 }],
     instructionComponent: AdditionFractionInstructions,
-  },
-  subtractionFraction: {
+  }),
+  subtractionFraction: defineExerciseType({
     id: 'subtractionFraction',
     nameKey: 'exercise.subtractionFraction.name',
     descriptionKey: 'exercise.subtractionFraction.desc',
-    maxComplexity: 10,
     generate: generateSubtractionFraction,
     validate: validateSubtractionFraction,
     component: FractionExercise,
     prerequisites: [{ typeId: 'simplifyFraction', complexity: 5 }],
     instructionComponent: SubtractionFractionInstructions,
-  },
-  multiplicationFraction: {
+  }),
+  multiplicationFraction: defineExerciseType({
     id: 'multiplicationFraction',
     nameKey: 'exercise.multiplicationFraction.name',
     descriptionKey: 'exercise.multiplicationFraction.desc',
-    maxComplexity: 10,
     generate: generateMultiplicationFraction,
     validate: validateFractionAnswer,
     component: FractionExercise,
     prerequisites: [{ typeId: 'simplifyFraction', complexity: 5 }],
     instructionComponent: MultiplicationFractionInstructions,
-  },
-  substitution: {
+  }),
+  substitution: defineExerciseType({
     id: 'substitution',
     nameKey: 'exercise.substitution.name',
     descriptionKey: 'exercise.substitution.desc',
-    maxComplexity: 10,
     generate: generateSubstitution,
     validate: validateSubstitution,
     component: SubstitutionExercise,
     instructionComponent: SubstitutionInstructions,
-  },
-  collectingTerms: {
+  }),
+  collectingTerms: defineExerciseType({
     id: 'collectingTerms',
     nameKey: 'exercise.collectingTerms.name',
     descriptionKey: 'exercise.collectingTerms.desc',
-    maxComplexity: 10,
     generate: generateCollectingTerms,
     validate: validateCollectingTerms,
     component: MultiFieldExercise,
     instructionComponent: CollectingTermsInstructions,
-  },
-  binomialFormulas: {
+  }),
+  binomialFormulas: defineExerciseType({
     id: 'binomialFormulas',
     nameKey: 'exercise.binomialFormulas.name',
     descriptionKey: 'exercise.binomialFormulas.desc',
-    maxComplexity: 10,
     generate: generateBinomialFormulas,
     validate: validateBinomialFormulas,
     component: MultiFieldExercise,
     instructionComponent: BinomialFormulasInstructions,
-  },
-  scientificNotation: {
+  }),
+  scientificNotation: defineExerciseType({
     id: 'scientificNotation',
     nameKey: 'exercise.scientificNotation.name',
     descriptionKey: 'exercise.scientificNotation.desc',
-    maxComplexity: 10,
     generate: generateScientificNotation,
-    validate: trimCompare,
     component: ScientificNotationExercise,
     instructionComponent: ScientificNotationInstructions,
-  },
-  factoringBinomialFormulas: {
+  }),
+  factoringBinomialFormulas: defineExerciseType({
     id: 'factoringBinomialFormulas',
     nameKey: 'exercise.factoringBinomialFormulas.name',
     descriptionKey: 'exercise.factoringBinomialFormulas.desc',
-    maxComplexity: 10,
     generate: generateFactoringBinomialFormulas,
     validate: validateFactoringBinomialFormulas,
     component: FactoringBinomialFormulas,
     prerequisites: [{ typeId: 'binomialFormulas', complexity: 5 }],
     instructionComponent: FactoringBinomialFormulasInstructions,
-  },
-  factoringOut: {
+  }),
+  factoringOut: defineExerciseType({
     id: 'factoringOut',
     nameKey: 'exercise.factoringOut.name',
     descriptionKey: 'exercise.factoringOut.desc',
-    maxComplexity: 10,
     generate: generateFactoringOut,
     validate: validateFactoringOut,
     component: FactoringOut,
     instructionComponent: FactoringOutInstructions,
-  },
-  factoringOutAndBinomial: {
+  }),
+  factoringOutAndBinomial: defineExerciseType({
     id: 'factoringOutAndBinomial',
     nameKey: 'exercise.factoringOutAndBinomial.name',
     descriptionKey: 'exercise.factoringOutAndBinomial.desc',
-    maxComplexity: 10,
     generate: generateFactoringOutAndBinomial,
     validate: validateFactoringOutAndBinomial,
     component: FactoringOutAndBinomial,
@@ -238,44 +237,40 @@ export const exerciseTypes: Record<string, ExerciseType> = {
       { typeId: 'binomialFormulas', complexity: 3 },
     ],
     instructionComponent: FactoringOutAndBinomialInstructions,
-  },
-  expand: {
+  }),
+  expand: defineExerciseType({
     id: 'expand',
     nameKey: 'exercise.expand.name',
     descriptionKey: 'exercise.expand.desc',
-    maxComplexity: 10,
     generate: generateExpand,
     validate: validateExpand,
     component: MultiFieldExercise,
     prerequisites: [{ typeId: 'collectingTerms', complexity: 3 }],
     instructionComponent: ExpandInstructions,
-  },
-  expandAndCollect: {
+  }),
+  expandAndCollect: defineExerciseType({
     id: 'expandAndCollect',
     nameKey: 'exercise.expandAndCollect.name',
     descriptionKey: 'exercise.expandAndCollect.desc',
-    maxComplexity: 10,
     generate: generateExpandAndCollect,
     validate: validateExpandAndCollect,
     component: MultiFieldExercise,
     prerequisites: [{ typeId: 'expand', complexity: 3 }],
     instructionComponent: ExpandAndCollectInstructions,
-  },
-  linearEquations: {
+  }),
+  linearEquations: defineExerciseType({
     id: 'linearEquations',
     nameKey: 'exercise.linearEquations.name',
     descriptionKey: 'exercise.linearEquations.desc',
-    maxComplexity: 10,
     generate: generateLinearEquations,
     validate: validateLinearEquations,
     component: LinearEquationsExercise,
     instructionComponent: LinearEquationsInstructions,
-  },
-  factorEquations: {
+  }),
+  factorEquations: defineExerciseType({
     id: 'factorEquations',
     nameKey: 'exercise.factorEquations.name',
     descriptionKey: 'exercise.factorEquations.desc',
-    maxComplexity: 10,
     generate: generateFactorEquations,
     validate: validateFactorEquations,
     component: FactorEquations,
@@ -285,44 +280,40 @@ export const exerciseTypes: Record<string, ExerciseType> = {
       { typeId: 'linearEquations', complexity: 3 },
     ],
     instructionComponent: FactorEquationsInstructions,
-  },
-  necessityOfParentheses: {
+  }),
+  necessityOfParentheses: defineExerciseType({
     id: 'necessityOfParentheses',
     nameKey: 'exercise.necessityOfParentheses.name',
     descriptionKey: 'exercise.necessityOfParentheses.desc',
-    maxComplexity: 10,
     generate: generateNecessityOfParentheses,
     validate: validateNecessityOfParentheses,
     component: NecessityOfParentheses,
-  },
-  pythagoras: {
+  }),
+  pythagoras: defineExerciseType({
     id: 'pythagoras',
     nameKey: 'exercise.pythagoras.name',
     descriptionKey: 'exercise.pythagoras.desc',
-    maxComplexity: 10,
     generate: generatePythagoras,
     validate: validatePythagoras,
     component: Pythagoras,
     instructionComponent: PythagorasInstructions,
     prerequisites: [{ typeId: 'squares', complexity: 5 }],
-  },
-  interiorAngles: {
+  }),
+  interiorAngles: defineExerciseType({
     id: 'interiorAngles',
     nameKey: 'exercise.interiorAngles.name',
     descriptionKey: 'exercise.interiorAngles.desc',
     maxComplexity: 9,
     generate: generateInteriorAngles,
-    validate: trimCompare,
     component: InteriorAngles,
     instructionComponent: InteriorAnglesInstructions,
-  },
-  fractionTrivia: {
+  }),
+  fractionTrivia: defineExerciseType({
     id: 'fractionTrivia',
     nameKey: 'exercise.fractionTrivia.name',
     descriptionKey: 'exercise.fractionTrivia.desc',
-    maxComplexity: 10,
     generate: generateFractionTrivia,
     validate: validateFractionTrivia,
     component: FractionTrivia,
-  },
+  }),
 };

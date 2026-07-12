@@ -1,5 +1,6 @@
 import type { Exercise } from '../types';
 import { mulberry32 } from '../prng';
+import { clampComplexity } from '../math/number';
 import { randInt } from '../math/rng';
 import type { VarMap, FactorOption } from '../math/varmap';
 import { varMapMultiply, varMapUnicode, gcdArray, buildFactorOptions, formatExpandedTerm } from '../math/varmap';
@@ -176,7 +177,7 @@ function generateNormal(rng: () => number, numTerms: number, maxDegree: number, 
 
 export function generateFactoringOut(seed: number, complexity: number): Exercise {
   const rng = mulberry32(seed);
-  const clamped = Math.min(Math.max(complexity, 0), 10);
+  const clamped = clampComplexity(complexity, 10);
 
   const maxDegree = clamped <= 2 ? 1 : clamped <= 5 ? 2 : clamped <= 8 ? 3 : 4;
   const hasCoefficient = clamped >= 7 && rng() > 0.5;

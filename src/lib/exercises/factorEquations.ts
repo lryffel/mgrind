@@ -1,5 +1,6 @@
 import type { Exercise } from '../types';
 import { mulberry32 } from '../prng';
+import { clampComplexity } from '../math/number';
 import { randInt, pick } from '../math/rng';
 
 const VARS = ['x', 'y', 'z', 't', 'u', 'v', 'w'];
@@ -162,7 +163,7 @@ const TYPE_POOLS: Record<number, EqType[]> = {
 
 export function generateFactorEquations(seed: number, complexity: number): Exercise {
   const rng = mulberry32(seed);
-  const clamped = Math.min(Math.max(complexity, 0), 10);
+  const clamped = clampComplexity(complexity, 10);
 
   const variable = pick(rng, VARS);
   const pool = TYPE_POOLS[clamped] ?? TYPE_POOLS[0];

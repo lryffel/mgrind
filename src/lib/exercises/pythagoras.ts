@@ -1,6 +1,6 @@
 import type { Exercise } from '../types';
 import { mulberry32 } from '../prng';
-import { gcd } from '../math/number';
+import { gcd, clampComplexity } from '../math/number';
 import { reduceFrac, fracEqual } from '../math/fraction';
 import { pick } from '../math/rng';
 
@@ -73,7 +73,7 @@ const nonRightTriples: [number, number, number][] = [
 ];
 
 export function generatePythagoras(seed: number, complexity: number): Exercise {
-  const clamped = Math.min(Math.max(complexity, 0), 9);
+  const clamped = clampComplexity(complexity, 10);
   const rng = mulberry32(seed);
 
   const scales: [number, number][] = [[1, 1]];

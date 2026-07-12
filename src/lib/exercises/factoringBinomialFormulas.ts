@@ -1,5 +1,6 @@
 import type { Exercise } from '../types';
 import { mulberry32 } from '../prng';
+import { clampComplexity } from '../math/number';
 import { randInt, pick, pickExclude, randCoeff } from '../math/rng';
 import { reduceFrac, fracEqual } from '../math/fraction';
 import { cmd, coeffLatex } from '../math/latex';
@@ -95,7 +96,7 @@ function generateTrap(rng: () => number, allowFrac: boolean, aMayHaveVar: boolea
 
 export function generateFactoringBinomialFormulas(seed: number, complexity: number): Exercise {
   const rng = mulberry32(seed);
-  const clamped = Math.min(Math.max(complexity, 0), 9);
+  const clamped = clampComplexity(complexity, 10);
   const allowFrac = clamped >= 5;
   const aMayHaveVar = clamped >= 5 && rng() > 0.5;
 

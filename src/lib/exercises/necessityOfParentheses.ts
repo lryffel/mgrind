@@ -1,5 +1,6 @@
 import type { Exercise } from '../types';
 import { mulberry32 } from '../prng';
+import { clampComplexity } from '../math/number';
 import { pick, pickDistinct, randInt } from '../math/rng';
 
 interface QuestionTemplate {
@@ -166,7 +167,7 @@ function generateExpVar(rng: () => number): string {
 
 export function generateNecessityOfParentheses(seed: number, complexity: number): Exercise {
   const rng = mulberry32(seed);
-  const clamped = Math.min(Math.max(complexity, 0), 9);
+  const clamped = clampComplexity(complexity, 10);
 
   const chosen = pickDistinct(rng, TEMPLATES, 3);
 

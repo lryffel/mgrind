@@ -1,6 +1,7 @@
 import type { Exercise } from '../types';
 import { mulberry32 } from '../prng';
 import { randInt, pick } from '../math/rng';
+import { clampComplexity } from '../math/number';
 
 const ADD_TRIPLES: [number, number, number][] = [
   [3, 4, 5],
@@ -220,7 +221,7 @@ const band7: SubGen[] = [
 
 export function generateOrderOfOperations(seed: number, complexity: number): Exercise {
   const rng = mulberry32(seed);
-  const clamp = Math.min(Math.max(complexity, 0), 9);
+  const clamp = clampComplexity(complexity, 10);
   let pool: SubGen[];
   if (clamp <= 3) {
     pool = band0;

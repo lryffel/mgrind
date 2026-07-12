@@ -24,8 +24,9 @@
   - To add a new key, add an entry to `dict` in `i18n.svelte.ts` with `en` and `de` values
 - Progress: `src/lib/progress.svelte.ts`; persisted in localStorage
 - Exercise types: `{ generate(seed, complexity): Exercise, validate(answer, exercise): boolean }`
-  - Register in `src/lib/data/exerciseTypes.ts`
-  - Generators clamp complexity: `Math.min(Math.max(complexity, 0), maxComplexity)`
+  - Register in `src/lib/data/exerciseTypes.ts` using `defineExerciseType()`
+  - Generators clamp complexity: `clampComplexity(complexity, max)` from `src/lib/math/number.ts`
+  - Multi-field validation: `validateMultiField` from `src/lib/validation.ts`
   - Use `mulberry32(seed)` as the single RNG — no inline `Math.random()`
 - Disciplines: array in `src/lib/data/disciplines.ts`
 - Exercises use deterministic PRNG (`mulberry32`); seed = `Date.now()`

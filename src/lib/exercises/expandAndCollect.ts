@@ -1,7 +1,7 @@
 import type { Exercise } from '../types';
 import { mulberry32 } from '../prng';
+import { clampComplexity } from '../math/number';
 import { randInt, pick } from '../math/rng';
-import { fracEqual } from '../math/fraction';
 import { formatExpandedTerm, varMapLatex, varMapText } from '../math/varmap';
 import type { VarMap } from '../math/varmap';
 import { expandProduct, collectTerms, type Term } from './termAlgebra';
@@ -288,7 +288,7 @@ function buildResult(parts: ExprPart[]): Exercise {
 
 export function generateExpandAndCollect(seed: number, complexity: number): Exercise {
   const rng = mulberry32(seed);
-  const clamped = Math.min(Math.max(complexity, 0), 10);
+  const clamped = clampComplexity(complexity, 10);
 
   for (let attempt = 0; attempt < 50; attempt++) {
     const localRng = mulberry32(seed + attempt * 31 + clamped * 17);
@@ -348,14 +348,4 @@ export function generateExpandAndCollect(seed: number, complexity: number): Exer
   };
 }
 
-export function validateExpandAndCollect(answer: string, exercise: Exercise): boolean {
-  const userParts = answer.split(',').map((s) => s.trim());
-  const correctParts = exercise.answer.split(',').map((s) => s.trim());
-
-  if (userParts.length !== correctParts.length) return false;
-
-  for (let i = 0; i < userParts.length; i++) {
-    if (!fracEqual(userParts[i], correctParts[i])) return false;
-  }
-  return true;
-}
+export { validateMultiField as validateExpandAndCollect } from '../validation';

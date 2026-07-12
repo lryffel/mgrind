@@ -3,249 +3,159 @@ name: new-exercise
 description: Create a new exercise type
 ---
 
-Triggered when the user asks you to "create a new exercise type" or "add a new exercise". Follow these steps in order.
+Steps to add a new exercise type.
 
-## Step 1: Create the generator
+## 1. Generator — `src/lib/exercises/<name>.ts`
 
-Write a file at `src/lib/exercises/<name>.ts`. Export a `generate<Name>(seed: number, complexity: number): Exercise` function. Use `mulberry32` from `src/lib/prng.ts` for deterministic randomness.
-
-The `Exercise` interface:
-
-```ts
-interface Exercise {
-  prompt: string; // displayed to the user
-  answer: string; // expected answer
-  data?: Record<string, unknown>; // optional type-specific payload
-}
-```
-
-Simple text-input types (single number/word answer) return just `{ prompt, answer }`.
-
-Multi-input types (e.g. prime factorisation) store extra info in `data` — the component reads it from `exercise.data`.
-
-**Example** (`src/lib/exercises/multiplication.ts`):
+Export `function generate<Name>(seed: number, complexity: number): Exercise`.
 
 ```ts
 import type { Exercise } from '../types';
 import { mulberry32 } from '../prng';
+import { clampComplexity } from '../math/number';
 
 export function generateMultiplication(seed: number, complexity: number): Exercise {
-  const maxFactor = 10 + complexity;
+  const clamped = clampComplexity(complexity, 10);
   const rng = mulberry32(seed);
-  const a = Math.floor(rng() * (maxFactor - 1)) + 2;
-  const b = Math.floor(rng() * (maxFactor - 1)) + 2;
-  return { prompt: `${a} · ${b} = ?`, answer: String(a * b) };
+  const a = Math.floor(rng() * (9 + clamped)) + 2;
+  const b = Math.floor(rng() * (9 + clamped)) + 2;
+  return { prompt: `${a} \\cdot ${b} = ?`, answer: String(a * b) };
 }
 ```
 
-## Step 2: Choose or create the component
+- Use `clampComplexity(complexity, max)` — never `Math.min(Math.max(...))`.
+- Use `mulberry32(seed)` as the single RNG — no `Math.random()`.
+- `Exercise`: `{ prompt: string, answer: string, data?: ExerciseData }`.
+  - Multi-input types: store `data.fields: { variablePart: string }[]` (see `collectingTerms`, `expand`).
+  - Fraction types: store `data.num1, den1, num2, den2` for binary ops (see `additionFraction`).
+- The prompt is LaTeX displayed via `<Math>`. Render all math through LaTeX — never raw symbols outside KaTeX.
 
-### Option A — Reuse `TextInputExercise`
+### Default complexity max
 
-If the user just types an answer into a single text field, reuse `TextInputExercise`.
+Use `10` unless you have a specific reason for fewer levels. The registry's `maxComplexity` must match this value.
 
-### Option B — Create a custom component
+### Validation
 
-Write a file at `src/lib/components/exercises/<Name>.svelte`. The component **must** accept these `$props()`:
+- **Simple trim compare**: use `trimCompare` from `../validation` (the default in `defineExerciseType`).
+- **Fraction answer**: use `validateFractionAnswer` or `validateFractionReduced`.
+- **Multi-field** (comma-separated with `fracEqual`): use `validateMultiField` from `../validation`.
+- **Custom**: export `function validate<Name>(answer: string, exercise: Exercise): boolean`.
+
+## 2. Component — `src/lib/components/exercises/`
+
+### Option A — Reuse existing
+
+| Use case            | Component              |
+| ------------------- | ---------------------- |
+| Single text input   | `TextInputExercise`    |
+| Fraction input      | `FractionExercise`     |
+| Multi-field (terms) | `MultiFieldExercise`   |
+
+### Option B — Custom component
+
+Write `src/lib/components/exercises/<Name>.svelte`. Accept `ExerciseProps`:
 
 ```ts
-let {
-  exercise, // : Exercise
-  onSubmit, // : (answer: string) => void
-  onNext, // : () => void
-  feedback, // : 'correct' | 'incorrect' | null
-} = $props();
+let { exercise, onSubmit, onNext, feedback }: ExerciseProps = $props();
 ```
 
-**Patterns to follow:**
+**Pattern**:
 
-- Use `<svelte:window onkeydown={handleKeydown} />` to handle Enter key (submit when `feedback === null`, advance otherwise).
-- Show input when `feedback === null`, show feedback otherwise.
-- Call `onSubmit(userAnswerString)` on submit.
-- Use `_(key)` for all user-facing strings (import from `../../i18n.svelte` or relative path).
-- Use `$derived`, `$state`, `$effect` (Svelte 5 runes). Do not use `$:` or `export let`.
+- Input mode (`feedback === null`): show prompt + input. Call `onSubmit(answer)`.
+- Feedback mode (`feedback !== null`): show prompt + `<Feedback>`.
+- Use `<ExerciseShell>` wrapper (handles Enter key, focus, submit/next buttons).
+- Use `<NumericInput>` for all user input — no raw `<input>`.
 
-**Input rules — use `NumericInput` for everything.**
+### Feedback guidelines
 
-No raw `<input>` tags anywhere outside `NumericInput.svelte`. All exercise input must go through `NumericInput`.
-
-**Single-value input** — just bind `value`:
+- Pass `correctLatex` (LaTeX string) to `<Feedback>` for math-formatted correct answer.
+- Pass `textAnswer` (plain string) to `<Feedback>` if no LaTeX version exists.
+- Pass `correctMessage` (i18n key result) to override the default "Correct!" message.
+- Show extra warnings below `<Feedback>` (reducible fractions, sign conventions, etc.).
+- Use `validationError` on `<ExerciseShell>` for input errors (e.g. decimal comma).
 
 ```svelte
-<NumericInput bind:value={myVar} />
+<ExerciseShell {exercise} {feedback} submitAnswer={() => onSubmit(answer)} {onNext} {validationError}>
+  {#if feedback === null}
+    <Math expression={exercise.prompt} display />
+    <NumericInput bind:value={userInput} />
+  {:else}
+    <Math expression={exercise.prompt} display />
+    <Feedback {feedback} correctLatex={correctAnswerLatex} />
+    {#if warningCondition}
+      <p class="feedback warning"><Math expression={warningLatex} /></p>
+    {/if}
+  {/if}
+</ExerciseShell>
 ```
 
-**Fraction input** — use the `useFractionInput()` composable from
-`src/lib/fraction-input.svelte.ts`:
+### Input composables
 
-```svelte
-<script lang="ts">
-  import { useFractionInput, fractionLatex } from '../../fraction-input.svelte';
-  let frac = useFractionInput();
-</script>
-
-<!-- input -->
-<NumericInput bind:num={frac.num} bind:den={frac.den} fraction numPlaceholder="0" denPlaceholder="1" />
-
-<!-- submit -->
-submitAnswer={() => onSubmit(frac.getSubmitValue())}
-
-<!-- validation -->
-validationError={frac.validationError}
-
-<!-- user-answer feedback -->
-<Math expression={frac.userLatex} />
-
-<!-- correct-answer feedback -->
-let correctLatex = $derived(fractionLatex(numPart, denPart));
-```
-
-The composable handles normalising empty fields, collapsing oneths (den=1 →
-just the numerator), and comma validation. `getSubmitValue()` takes an optional
-separator (default `','`); pass `'/'` for slash-delimited answers.
-
-**Superscript mode** (exponents):
-
-```svelte
-<NumericInput bind:value={val} superscript context="exponent" />
-```
-
-The `<sup>` is styled with `position: relative; top: -0.65em` for a raised
-appearance regardless of parent flex alignment.
-
-**Multi-input polynomial exercises** (collecting terms, binomial formulas,
-etc.):
-
-- One `<NumericInput bind:value={val} variablePart={latex} context="coefficient" />` per term.
+- **Fraction**: `useFractionInput()` from `../../fraction-input.svelte` → `num`, `den`, `getSubmitValue()`, `userLatex`.
+- **Superscript** (exponents): `<NumericInput bind:value={val} superscript context="exponent" />`.
+- **Coefficient** (polynomial terms): `<NumericInput bind:value={val} variablePart={latex} context="coefficient" />`.
 - Normalise with `normalizeCoeff(s, context)` from `../../validation`.
-- Submit as comma-separated string: `values.map(v => normalizeCoeff(v, 'coefficient')).join(',')`.
 
-**Available `context` prop values** (from `InputContext` in `src/types.ts`,
-sets the input placeholder):
+## 3. Instructions (optional)
 
-| Context       | Placeholder |
-| ------------- | ----------- |
-| `coefficient` | `1`         |
-| `exponent`    | `0`         |
-| `summand`     | `0`         |
-| `numerator`   | `0`         |
-| `denominator` | `1`         |
-| `plain`       | `?`         |
-
-Other `NumericInput` props: `align` (`'center'`/`'right'`/`'left'`),
-`onkeydown` (arrow keys), `readonly`.
-
-**Style**: `.coeff-input` is defined globally in `design.css` — compact
-`padding: 0.2rem 0.4rem` with `field-sizing: content`. No per-component input
-sizing needed.
-
-For examples, see: `FractionExercise.svelte` (fraction),
-`PrimeFactorisation.svelte` (superscript + arrow keys),
-`ScientificNotationExercise.svelte` (both), `CollectingTerms.svelte`
-(multi-input polynomial).
-
-## Step 3: (Optional) Add instruction component
-
-If the exercise type needs a help modal with solving instructions:
-
-Create `src/lib/components/exerciseInstructions/<Name>Instructions.svelte`. It's a regular Svelte component with full control over HTML, KaTeX via `<Math>`, and bilingual content. Define KaTeX expressions in `<script>` to share them across languages.
-
-**Example** (`src/lib/components/exerciseInstructions/AdditionFractionInstructions.svelte`):
+Create `src/lib/components/exerciseInstructions/<Name>Instructions.svelte` for the help modal.
 
 ```svelte
 <script lang="ts">
   import { state } from '../../i18n.svelte';
   import Math from '../Math.svelte';
-
-  const ex = '\\frac{2}{3} + \\frac{3}{4}';
 </script>
 
 {#if state.lang === 'en'}
-  <p>English instructions with <Math expression={ex} /></p>
+  <p>English instructions</p>
 {:else}
-  <p>Deutsche Anleitung mit <Math expression={ex} /></p>
+  <p>Deutsche Anleitung</p>
 {/if}
 ```
 
-Then register it in `src/lib/data/exerciseTypes.ts`:
+Register via `instructionComponent` in step 4. The `?` button appears automatically.
 
-1. Import the component.
-2. Add `instructionComponent: <Name>Instructions` to the exercise type entry.
+## 4. i18n — `src/lib/i18n.svelte.ts`
 
-The `?` button appears automatically on the exercise card. If `instructionComponent` is not set, no button is shown.
+Add to `dict`:
 
-## Step 4: Add i18n keys
+| Key | Purpose |
+| --- | ------- |
+| `exercise.<id>.name` | Display name |
+| `exercise.<id>.desc` | Short description |
+| `exercise.<id>.prompt` | Imperative label (e.g. "Simplify.") |
 
-Edit `src/lib/i18n.svelte.ts` — add entries for:
+Use Swiss orthography (no "ß", always "ss": "gross", "Masse").
 
-| Key                    | Purpose                 |
-| ---------------------- | ----------------------- |
-| `exercise.<id>.name`   | Display name            |
-| `exercise.<id>.desc`   | Short description       |
-| `exercise.<id>.prompt` | (Optional) prompt label |
+To show a prompt label in the component, set `data.promptKey: 'exercise.<id>.prompt'` in the generator and render with `{_(promptKey)}` with class `prompt-label`.
 
-### Prompt label guidelines
-
-Every exercise type should show a short, imperative instruction above the math expression (e.g. "Simplify.", "Expand.", "Collect terms."). To add one:
-
-1. **Add an i18n key** `exercise.<id>.prompt` with en/de values.
-2. **Set `promptKey`** in the generator's `ExerciseData`:
-
-   ```ts
-   return { prompt, answer, data: { promptKey: 'exercise.<id>.prompt' } };
-   ```
-
-3. **In the component**, read and render the prompt label:
-
-   ```svelte
-   let promptKey = $derived(exercise.data?.promptKey ?? null);
-   ```
-
-   ```svelte
-   {#if promptKey}
-     <p class="prompt-label">{_(promptKey)}</p>
-   {/if}
-   ```
-
-The `.prompt-label` class is already defined in `src/app.css` with `text-align: left` and `align-self: flex-start` to keep it left-aligned inside the centered exercise card.
-
-If the component serves a single exercise type (not shared), you can hardcode the i18n key instead of reading from data:
-
-```svelte
-<p class="prompt-label">{_('exercise.<id>.prompt')}</p>
-```
-
-If the prompt depends on the exercise subtype (e.g. scientific notation has different instructions for conversion vs. computation), store separate `promptKey` values per subtype.
-
-## Step 5: Register in `exerciseTypes.ts`
-
-Edit `src/lib/data/exerciseTypes.ts`:
-
-1. Import the generator and component.
-2. Add an entry to the `exerciseTypes` record:
+## 5. Register — `src/lib/data/exerciseTypes.ts`
 
 ```ts
-<id>: {
+import { generate<Name>, validate<Name> } from '../exercises/<name>';
+import <Name>Component from '../components/exercises/<Name>.svelte';
+
+// ... in exerciseTypes:
+<id>: defineExerciseType({
   id: '<id>',
   nameKey: 'exercise.<id>.name',
   descriptionKey: 'exercise.<id>.desc',
-  maxComplexity: 10,
   generate: generate<Name>,
-  validate: trimCompare,
-  component: <Component>,
-},
+  // validate — defaults to trimCompare
+  // component — defaults to TextInputExercise
+  // maxComplexity — defaults to 10
+  // prerequisites?: Prerequisite[]
+  // instructionComponent?: Component
+}),
 ```
 
-- `trimCompare` compares `answer.trim() === exercise.answer` — use unless the type needs custom validation.
-- `maxComplexity` determines the number of difficulty levels (levels go from 0 to maxComplexity-1).
+`defineExerciseType` provides sensible defaults — only specify what differs from defaults.
 
-## Step 6: (Optional) Assign to a discipline
+## 6. Discipline — `src/lib/data/disciplines.ts`
 
-If the type should appear in a discipline, add its `id` to the discipline's `exerciseTypeIds` array in `src/lib/data/disciplines.ts`.
+Add the type's `id` to one or more discipline's `exerciseTypeIds` arrays.
 
-## Verification
-
-Run these commands to confirm everything works:
+## 7. Verify
 
 ```sh
 npm run check

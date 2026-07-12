@@ -1,5 +1,6 @@
 import type { Exercise } from '../types';
 import { mulberry32 } from '../prng';
+import { clampComplexity } from '../math/number';
 import { randInt, pick } from '../math/rng';
 import { reduceFrac, parseFrac } from '../math/fraction';
 import { coeffLatex } from '../math/latex';
@@ -122,7 +123,7 @@ function parseAnswer(s: string): [number, number] | null {
 export function generateLinearEquations(seed: number, complexity: number): Exercise {
   const rng = mulberry32(seed);
   const variable = pick(rng, ALL_VARS);
-  const clamped = Math.min(Math.max(complexity, 0), 10);
+  const clamped = clampComplexity(complexity, 10);
 
   const isLow = clamped < 5;
 

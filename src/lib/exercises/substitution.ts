@@ -2,7 +2,7 @@ import type { Exercise } from '../types';
 import { mulberry32 } from '../prng';
 import { randInt, pick } from '../math/rng';
 import { reduceFrac, parseFrac } from '../math/fraction';
-import { gcd } from '../math/number';
+import { gcd, clampComplexity } from '../math/number';
 import { coeffLatex } from '../math/latex';
 
 function fracDisplay(num: number, den: number): string {
@@ -375,7 +375,7 @@ export function generateSubstitution(seed: number, complexity: number): Exercise
   const rng = mulberry32(seed);
   const variable = pick(rng, ALL_VARS);
   const integerOnly = INTEGER_ONLY.has(variable);
-  const clamped = Math.min(Math.max(complexity, 0), 9);
+  const clamped = clampComplexity(complexity, 10);
 
   const pool = poolFor(clamped, integerOnly);
 

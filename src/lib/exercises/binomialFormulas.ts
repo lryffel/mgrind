@@ -1,6 +1,7 @@
 import type { Exercise } from '../types';
 import { mulberry32 } from '../prng';
 import { randInt, pick, randCoeff } from '../math/rng';
+import { clampComplexity } from '../math/number';
 import { reduceFrac, fracEqual } from '../math/fraction';
 
 function mulCoeff(a: [number, number], b: [number, number]): [number, number] {
@@ -129,7 +130,7 @@ function genMixed(anum: number, aden: number, bnum: number, bden: number, v1: st
 
 export function generateBinomialFormulas(seed: number, complexity: number): Exercise {
   const rng = mulberry32(seed);
-  const clamped = Math.min(Math.max(complexity, 0), 9);
+  const clamped = clampComplexity(complexity, 10);
 
   const genTwoVar = (): Exercise => {
     const [v1, v2] = pick(rng, VAR_PAIRS);

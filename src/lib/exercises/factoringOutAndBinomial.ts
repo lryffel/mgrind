@@ -1,6 +1,7 @@
 import type { Exercise } from '../types';
 import { mulberry32 } from '../prng';
 import { randInt, pick, pickExclude, randCoeff } from '../math/rng';
+import { clampComplexity } from '../math/number';
 import { reduceFrac, fracEqual } from '../math/fraction';
 import { cmd, coeffLatex } from '../math/latex';
 import type { VarMap, FactorOption } from '../math/varmap';
@@ -268,7 +269,7 @@ function generateTrap(rng: () => number, allowGcfVar: boolean): Exercise {
 
 export function generateFactoringOutAndBinomial(seed: number, complexity: number): Exercise {
   const rng = mulberry32(seed);
-  const clamped = Math.min(Math.max(complexity, 0), 9);
+  const clamped = clampComplexity(complexity, 10);
   const allowGcfVar = clamped >= 7;
   const useAllFormulas = clamped >= 4;
 

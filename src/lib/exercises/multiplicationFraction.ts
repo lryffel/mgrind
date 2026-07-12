@@ -1,10 +1,10 @@
 import type { Exercise } from '../types';
 import { mulberry32 } from '../prng';
-import { gcd } from '../math/number';
+import { gcd, clampComplexity } from '../math/number';
 import { promptFraction } from '../math/latex';
 
 export function generateMultiplicationFraction(seed: number, complexity: number): Exercise {
-  const clamped = Math.min(Math.max(complexity, 0), 10);
+  const clamped = clampComplexity(complexity, 10);
   const rng = mulberry32(seed);
   const maxVal = Math.max(10 + clamped, 10);
 

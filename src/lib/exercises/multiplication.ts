@@ -1,9 +1,9 @@
 import type { Exercise } from '../types';
 import { mulberry32 } from '../prng';
-import { bumpPastThreshold } from '../math/number';
+import { bumpPastThreshold, clampComplexity } from '../math/number';
 
 export function generateMultiplication(seed: number, complexity: number): Exercise {
-  const clamped = Math.min(Math.max(complexity, 0), 10);
+  const clamped = clampComplexity(complexity, 10);
   const maxFactor = 10 + clamped;
   const rng = mulberry32(seed);
   let a = Math.floor(rng() * (maxFactor - 1)) + 2;
