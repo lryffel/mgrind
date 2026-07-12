@@ -3,7 +3,7 @@ name: new-exercise
 description: Create a new exercise type
 ---
 
-Steps to add a new exercise type.
+Steps to add a new exercise type. If asked to design it, first form an idea and check with the designer subagent whether it is pedagogically appropriate.
 
 ## 1. Generator — `src/lib/exercises/<name>.ts`
 
