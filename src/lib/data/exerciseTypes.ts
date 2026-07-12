@@ -63,6 +63,8 @@ import FractionTrivia from '../components/exercises/FractionTrivia.svelte';
 import InteriorAnglesInstructions from '../components/exerciseInstructions/InteriorAnglesInstructions.svelte';
 import PythagorasInstructions from '../components/exerciseInstructions/PythagorasInstructions.svelte';
 import { trimCompare, validateFractionAnswer, validateFractionReduced } from '../validation';
+import { generateSimplifySymbolicFraction, validateSimplifySymbolicFraction } from '../exercises/simplifySymbolicFraction';
+import SimplifySymbolicFractionInstructions from '../components/exerciseInstructions/SimplifySymbolicFractionInstructions.svelte';
 
 function validateSubtractionFraction(answer: string, exercise: Exercise): boolean {
   return validateFractionAnswer(answer, exercise);
@@ -315,5 +317,14 @@ export const exerciseTypes: Record<string, ExerciseType> = {
     generate: generateFractionTrivia,
     validate: validateFractionTrivia,
     component: FractionTrivia,
+  }),
+  simplifySymbolicFraction: defineExerciseType({
+    id: 'simplifySymbolicFraction',
+    nameKey: 'exercise.simplifySymbolicFraction.name',
+    descriptionKey: 'exercise.simplifySymbolicFraction.desc',
+    generate: generateSimplifySymbolicFraction,
+    validate: validateSimplifySymbolicFraction,
+    component: MultiFieldExercise,
+    instructionComponent: SimplifySymbolicFractionInstructions,
   }),
 };

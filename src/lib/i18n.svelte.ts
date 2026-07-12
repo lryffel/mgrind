@@ -363,6 +363,18 @@ const dict = {
   'exercise.fractionTrivia.option.fractionTerms.topAnswer': { en: 'numerator', de: 'Zähler' },
   'exercise.fractionTrivia.option.fractionTerms.bottom': { en: 'Bottom', de: 'Unten' },
   'exercise.fractionTrivia.option.fractionTerms.bottomAnswer': { en: 'denominator', de: 'Nenner' },
+  'exercise.simplifySymbolicFraction.name': {
+    en: 'Simplify Symbolic Fractions',
+    de: 'Symbolische Brüche kürzen',
+  },
+  'exercise.simplifySymbolicFraction.desc': {
+    en: 'Simplify fractions with variables using factoring, binomial formulas, and sign rules',
+    de: 'Kürze Brüche mit Variablen durch Ausklammern, binomische Formeln und Vorzeichenregeln',
+  },
+  'exercise.simplifySymbolicFraction.prompt': {
+    en: 'Simplify.',
+    de: 'Kürze.',
+  },
 } satisfies Record<string, Record<Lang, string>>;
 
 export const state = $state({ lang: 'en' as Lang });
