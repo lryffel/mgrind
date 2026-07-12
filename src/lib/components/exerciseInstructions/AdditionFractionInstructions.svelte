@@ -2,48 +2,49 @@
   import { state } from '../../i18n.svelte';
   import Math from '../Math.svelte';
 
-  const ex = '\\frac{1}{10} + \\frac{1}{2}';
-  const step1a = '\\frac{1}{10}';
-  const step1b = '\\frac{1 \\cdot 5}{2 \\cdot 5} = \\frac{5}{10}';
-  const step2 = '\\frac{1}{10} + \\frac{5}{10} = \\frac{1 + 5}{10} = \\frac{6}{10}';
-  const step3 = '\\frac{6}{10} = \\frac{3}{5}';
-  const result = '\\frac{3}{5}';
+  const ex = '\\dfrac{1}{2} + \\dfrac{1}{3} - \\dfrac{1}{4}';
+  const step1a = '\\dfrac{1}{2} = \\dfrac{6}{12}';
+  const step1b = '\\dfrac{1}{3} = \\dfrac{4}{12}';
+  const step1c = '\\dfrac{1}{4} = \\dfrac{3}{12}';
+  const step2 = '\\dfrac{6}{12} + \\dfrac{4}{12} - \\dfrac{3}{12} = \\dfrac{6 + 4 - 3}{12} = \\dfrac{7}{12}';
+  const result = '\\dfrac{7}{12}';
 </script>
 
 {#if state.lang === 'en'}
-  <p>To add fractions, follow these steps:</p>
+  <p>To add and subtract fractions, follow these steps:</p>
   <ol>
     <li>
       <strong>Make the denominators the same</strong> — find the least common multiple (lcm) of the denominators.
-      Consider <Math expression={ex} />. The lcm of 10 and 2 is 10, so only the second fraction needs to be expanded:
-      <Math expression={step1b} />
+      Consider <Math expression={ex} />. The lcm of 2, 3, and 4 is 12:
+      <Math expression={step1a} />, <Math expression={step1b} />, <Math expression={step1c} />
     </li>
     <li>
-      <strong>Add the numerators</strong> — the denominator stays the same:
+      <strong>Add and subtract the numerators</strong> — the denominator stays the same:
       <Math expression={step2} />
     </li>
     <li>
-      <strong>Simplify</strong> — reduce the fraction if possible:
-      <Math expression={step3} />
+      <strong>Simplify</strong> — reduce the fraction if possible.
     </li>
   </ol>
   <p>The result is <Math expression={result} />.</p>
+  <p>Enter your answer as a reduced fraction: <em>numerator,denominator</em> (e.g. <Math expression="\\dfrac{7}{12}" /> → <code>7,12</code>).</p>
 {:else}
-  <p>Um Brüche zu addieren, gehe folgendermassen vor:</p>
+  <p>Um Brüche zu addieren und zu subtrahieren, gehe folgendermassen vor:</p>
   <ol>
     <li>
       <strong>Gleichnamig machen</strong> — finde das kleinste gemeinsame Vielfache (kgV) der Nenner. Betrachte <Math
         expression={ex}
-      />. Das kgV von 10 und 2 ist 10, also muss nur der zweite Bruch erweitert werden: <Math expression={step1b} />
+      />. Das kgV von 2, 3 und 4 ist 12:
+      <Math expression={step1a} />, <Math expression={step1b} />, <Math expression={step1c} />
     </li>
     <li>
-      <strong>Zähler addieren</strong> — der Nenner bleibt gleich:
+      <strong>Zähler addieren und subtrahieren</strong> — der Nenner bleibt gleich:
       <Math expression={step2} />
     </li>
     <li>
-      <strong>Kürzen</strong> — falls möglich, den Bruch kürzen:
-      <Math expression={step3} />
+      <strong>Kürzen</strong> — falls möglich, den Bruch kürzen.
     </li>
   </ol>
   <p>Das Ergebnis ist <Math expression={result} />.</p>
+  <p>Gib deine Antwort als gekürzten Bruch ein: <em>Zähler,Nenner</em> (z.B. <Math expression="\\dfrac{7}{12}" /> → <code>7,12</code>).</p>
 {/if}

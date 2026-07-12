@@ -12,7 +12,6 @@ export const disciplines: Discipline[] = [
       'primeFactorisation',
       'simplifyFraction',
       'additionFraction',
-      'subtractionFraction',
       'multiplicationFraction',
       'compareFractions',
       'scientificNotation',
@@ -24,7 +23,6 @@ export const disciplines: Discipline[] = [
     exerciseTypeIds: [
       'simplifyFraction',
       'additionFraction',
-      'subtractionFraction',
       'multiplicationFraction',
       'compareFractions',
       'simplifySymbolicFraction',

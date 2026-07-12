@@ -175,16 +175,6 @@ describe('exercise type validation integration', () => {
     }
   });
 
-  it('subtractionFraction accepts unreduced equivalent answer', () => {
-    const type = exerciseTypes['subtractionFraction'];
-    for (let seed = 0; seed < 50; seed++) {
-      const ex = type.generate(seed, 5);
-      const [num, den] = ex.answer.split(',').map(Number);
-      const unreduced = `${num * 2},${den * 2}`;
-      expect(type.validate(unreduced, ex)).toBe(true);
-    }
-  });
-
   it('trimCompare-based types still trim whitespace', () => {
     const types = [
       'multiplication',

@@ -7,7 +7,7 @@ import { generateSquares } from '../exercises/squares';
 import { generateOrderOfOperations } from '../exercises/orderOfOperations';
 import { generateAdditionFraction } from '../exercises/additionFraction';
 import { generateSimplifyFraction } from '../exercises/simplifyFraction';
-import { generateSubtractionFraction } from '../exercises/subtractionFraction';
+
 import { generateMultiplicationFraction } from '../exercises/multiplicationFraction';
 import { generateSubstitution, validateSubstitution } from '../exercises/substitution';
 import TextInputExercise from '../components/exercises/TextInputExercise.svelte';
@@ -33,7 +33,7 @@ import FactorEquations from '../components/exercises/FactorEquations.svelte';
 import { generateNecessityOfParentheses, validateNecessityOfParentheses } from '../exercises/necessityOfParentheses';
 import NecessityOfParentheses from '../components/exercises/NecessityOfParentheses.svelte';
 import AdditionFractionInstructions from '../components/exerciseInstructions/AdditionFractionInstructions.svelte';
-import SubtractionFractionInstructions from '../components/exerciseInstructions/SubtractionFractionInstructions.svelte';
+
 import SquaresInstructions from '../components/exerciseInstructions/SquaresInstructions.svelte';
 import OrderOfOperationsInstructions from '../components/exerciseInstructions/OrderOfOperationsInstructions.svelte';
 import PrimeFactorisationInstructions from '../components/exerciseInstructions/PrimeFactorisationInstructions.svelte';
@@ -68,10 +68,6 @@ import SimplifySymbolicFractionInstructions from '../components/exerciseInstruct
 import { generateCompareFractions, validateCompareFractions } from '../exercises/compareFractions';
 import CompareFractions from '../components/exercises/CompareFractions.svelte';
 import CompareFractionsInstructions from '../components/exerciseInstructions/CompareFractionsInstructions.svelte';
-
-function validateSubtractionFraction(answer: string, exercise: Exercise): boolean {
-  return validateFractionAnswer(answer, exercise);
-}
 
 function defineExerciseType(config: {
   id: string;
@@ -155,16 +151,6 @@ export const exerciseTypes: Record<string, ExerciseType> = {
     component: FractionExercise,
     prerequisites: [{ typeId: 'simplifyFraction', complexity: 5 }],
     instructionComponent: AdditionFractionInstructions,
-  }),
-  subtractionFraction: defineExerciseType({
-    id: 'subtractionFraction',
-    nameKey: 'exercise.subtractionFraction.name',
-    descriptionKey: 'exercise.subtractionFraction.desc',
-    generate: generateSubtractionFraction,
-    validate: validateSubtractionFraction,
-    component: FractionExercise,
-    prerequisites: [{ typeId: 'simplifyFraction', complexity: 5 }],
-    instructionComponent: SubtractionFractionInstructions,
   }),
   multiplicationFraction: defineExerciseType({
     id: 'multiplicationFraction',

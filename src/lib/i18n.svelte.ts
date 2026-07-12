@@ -16,11 +16,11 @@ const dict = {
   'exercise.simplifyFraction.name': { en: 'Simplify Fractions', de: 'Brüche kürzen' },
   'exercise.simplifyFraction.desc': { en: 'Simplify fractions to their lowest terms', de: 'Kürze Brüche vollständig' },
   'exercise.additionFraction.name': { en: 'Adding Fractions', de: 'Brüche addieren' },
-  'exercise.additionFraction.desc': { en: 'Add fractions and simplify', de: 'Addiere und kürze Brüche' },
-  'exercise.additionFraction.prompt': { en: 'Add and simplify.', de: 'Addiere und kürze.' },
-  'exercise.subtractionFraction.name': { en: 'Subtracting Fractions', de: 'Brüche subtrahieren' },
-  'exercise.subtractionFraction.desc': { en: 'Subtract fractions and simplify', de: 'Subtrahiere und kürze Brüche' },
-  'exercise.subtractionFraction.prompt': { en: 'Subtract and simplify.', de: 'Subtrahiere und kürze.' },
+  'exercise.additionFraction.desc': {
+    en: 'Add and subtract fractions and simplify',
+    de: 'Addiere und subtrahiere Brüche und kürze',
+  },
+  'exercise.additionFraction.prompt': { en: 'Calculate and simplify.', de: 'Berechne und kürze.' },
   'exercise.multiplicationFraction.name': { en: 'Multiplying Fractions', de: 'Brüche multiplizieren' },
   'exercise.multiplicationFraction.desc': {
     en: 'Multiply fractions and simplify',
