@@ -472,7 +472,11 @@
         {_('exercise.fractionTrivia.type.reciprocalProduct.promptAfter')}
       </p>
     {:else}
-      <p class="prompt-label">{_('exercise.fractionTrivia.type.reciprocalProduct.var.prompt')}</p>
+      <p class="prompt-label">
+        {_('exercise.fractionTrivia.type.reciprocalProduct.promptBefore')}
+        <Math expression={'\\frac{a}{b}\\cdot\\frac{b}{a}'} />
+        {_('exercise.fractionTrivia.type.reciprocalProduct.promptAfter')}
+      </p>
     {/if}
 
     <TriviaTextInput bind:value={textValue} {feedback} placeholder="&hellip;" context="plain" label="Reciprocal product answer" fallback="1" />
