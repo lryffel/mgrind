@@ -74,6 +74,7 @@ import CompareFractionsInstructions from '../components/exerciseInstructions/Com
 import { generateSigns, validateSigns } from '../exercises/signs';
 import Signs from '../components/exercises/Signs.svelte';
 import SignsInstructions from '../components/exerciseInstructions/SignsInstructions.svelte';
+import { generateRoundingSigfigs } from '../exercises/roundingSigfigs';
 
 function defineExerciseType(config: {
   id: string;
@@ -340,5 +341,11 @@ export const exerciseTypes: Record<string, ExerciseType> = {
     validate: validateSimplifySymbolicFraction,
     component: MultiFieldExercise,
     instructionComponent: SimplifySymbolicFractionInstructions,
+  }),
+  roundingSigfigs: defineExerciseType({
+    id: 'roundingSigfigs',
+    nameKey: 'exercise.roundingSigfigs.name',
+    descriptionKey: 'exercise.roundingSigfigs.desc',
+    generate: generateRoundingSigfigs,
   }),
 };
