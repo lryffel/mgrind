@@ -1,7 +1,7 @@
 ---
 id: '012'
 title: 'Extract reusable trivia UI components from FractionTrivia'
-status: 'todo'
+status: 'review'
 assignee: null
 priority: 'medium'
 created: '2026-07-13'
@@ -50,6 +50,19 @@ tags: ['refactoring', 'ui']
 8. **TypeScript**: Run `npm run check` — no type errors. Run `npm run lint` — no lint errors.
 
 ## Progress
+
+- Created `TriviaRadioGroup.svelte` with `option-grid`/`.choice-radio`/`.option-feedback-row` CSS, accepts `options`, `selectedIndex`, `correctIndices`, `feedback`, `onselect`, `name` props
+- Created `TriviaCheckboxGroup.svelte` with `.choice-checkbox` variants, accepts `options`, `selected`, `correctIndices`, `feedback`, `ontoggle` props
+- Created `TriviaTextInput.svelte` with `.user-answer` CSS, accepts `value` (`$bindable()`), `feedback`, `placeholder`, `context` (`InputContext`), `label`, `fallback`
+- Refactored `FractionTrivia.svelte` (855→611 lines):
+  - `integerFractions`, `mediant`, `equalFractions`, `reducibleFractions`, `negativeSignPlacement`, `doubleFraction` MC → `TriviaCheckboxGroup`
+  - `multiplySame`, `fractionBar` → `TriviaRadioGroup`
+  - `denominatorRestriction`, `zeroNumerator`, `reciprocalProduct` → `TriviaTextInput`
+  - Kept `fractionTerms` and `fractionDivision` inline (specialized patterns)
+  - Moved CSS to components; kept only `.fraction-terms-input`, `.fraction-input-wrapper`, `.feedback-spacer`, `.frac-answer` in FractionTrivia
+- `npm run check` — 0 errors
+- `npm run lint` — clean
+- `npm run test` — 567/568 passed (1 pre-existing failure in `factoringOutAndBinomial.test.ts`)
 
 ## Blockers
 
