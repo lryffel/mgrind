@@ -1,8 +1,8 @@
 ---
 id: '007'
 title: 'Symbolic fraction operations exercise'
-status: 'todo'
-assignee: null
+status: 'review'
+assignee: 'agent-007'
 priority: 'medium'
 created: '2026-07-13'
 updated: '2026-07-13'
@@ -131,6 +131,22 @@ symbolicFractionOps: defineExerciseType({
 - Validation: accepts correct answer, rejects wrong answer, rejects wrong part count, rejects empty
 
 ## Progress
+
+- Created generator `src/lib/exercises/symbolicFractionOps.ts` with operations across all complexity bands:
+  - 0–2: same-denominator add/sub
+  - 3–4: different-denominator add/sub (50% chance of same-den)
+  - 5–6: multiplication (single/double variable, squares)
+  - 7–8: double fractions, multiply-then-add chains
+  - 9–10: mixed chains (multiply+subtract, double+add, double fractions with vars, powers)
+- Created validator `validateSymbolicFractionOps` — numeric parts use `fracEqual`, symbolic parts use exact string match
+- Created custom component `src/lib/components/exercises/SymbolicFractionOps.svelte` with plain `<input>` elements
+- Created instructions `src/lib/components/exerciseInstructions/SymbolicFractionOpsInstructions.svelte`
+- Added i18n keys: `exercise.symbolicFractionOps.{name,desc,prompt}`
+- Registered in `exerciseTypes.ts` with prerequisites (simplify/addition/multiplication fractions at lvl 3)
+- Added to disciplines `fractions` and `termTransformations`
+- 20 tests passing: determinism, variation, prompt format, answer format, per-complexity-band coverage, validation edge cases
+- `npm run check` — 0 errors
+- `npm run lint` — 0 errors
 
 ## Blockers
 

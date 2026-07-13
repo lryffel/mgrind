@@ -1,7 +1,7 @@
 ---
 id: '005'
 title: 'Design rounding to significant digits exercise'
-status: 'todo'
+status: 'review'
 assignee: null
 priority: 'medium'
 created: '2026-07-13'
@@ -71,6 +71,15 @@ Design an exercise about rounding to a given number of significant digits.
 - **Trailing decimal zeros**: Rounding 1.005 to 3 sigfigs produces `"1.00"`.
 
 ## Progress
+
+- [x] Created `src/lib/exercises/roundingSigfigs.ts` — generator with `roundToSigFigs()` and `generateRoundingSigfigs()`
+- [x] Created `src/lib/exercises/roundingSigfigs.test.ts` — 14 tests covering edge cases, determinism, seed variation, and all complexity levels
+- [x] Registered in `src/lib/data/exerciseTypes.ts` as `roundingSigfigs` via `defineExerciseType`
+- [x] Added `'roundingSigfigs'` to `numbers` discipline in `src/lib/data/disciplines.ts`
+- [x] Added i18n keys in `src/lib/i18n.svelte.ts`
+- [x] Typecheck (`npm run check`): 0 errors
+- [x] Lint (`npm run lint`): 0 errors
+- [x] All 14 new tests pass
 
 ## Blockers
 
