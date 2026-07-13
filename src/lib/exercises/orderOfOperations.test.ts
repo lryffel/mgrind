@@ -44,6 +44,63 @@ function computeExpected(prompt: string): number | null {
   const m14 = prompt.match(/^2\^{(\d+) - (\d+)} = \?$/);
   if (m14) return Math.pow(2, parseInt(m14[1]) - parseInt(m14[2]));
 
+  const m31 = prompt.match(/^\((\d+) \+ (\d+)\)\^\{2\} - (\d+) = \?$/);
+  if (m31) return Math.pow(parseInt(m31[1]) + parseInt(m31[2]), 2) - parseInt(m31[3]);
+
+  const m32 = prompt.match(/^(\d+) \\cdot \((\d+) \+ (\d+) \\cdot (\d+)\) = \?$/);
+  if (m32) return parseInt(m32[1]) * (parseInt(m32[2]) + parseInt(m32[3]) * parseInt(m32[4]));
+
+  const m33 = prompt.match(/^\(\((\d+) \+ (\d+)\) \\cdot (\d+)\)\^\{2\} = \?$/);
+  if (m33) return Math.pow((parseInt(m33[1]) + parseInt(m33[2])) * parseInt(m33[3]), 2);
+
+  const m34 = prompt.match(/^\(\\sqrt{(\d+)} \+ (\d+)\) \\cdot (\d+) = \?$/);
+  if (m34) return (Math.sqrt(parseInt(m34[1])) + parseInt(m34[2])) * parseInt(m34[3]);
+
+  const m35 = prompt.match(/^\\sqrt{(\d+)\^\{2\} \+ (\d+)\^\{2\}} \+ (\d+) \\cdot (\d+) = \?$/);
+  if (m35) {
+    const d = Math.sqrt(parseInt(m35[1]) * parseInt(m35[1]) + parseInt(m35[2]) * parseInt(m35[2]));
+    return d + parseInt(m35[3]) * parseInt(m35[4]);
+  }
+
+  const m36 = prompt.match(/^(\d+) \+ (\d+) \\cdot \\sqrt{(\d+)} - (\d+) = \?$/);
+  if (m36) return parseInt(m36[1]) + parseInt(m36[2]) * Math.sqrt(parseInt(m36[3])) - parseInt(m36[4]);
+
+  const m37 = prompt.match(/^\\sqrt{(\d+) \\cdot (\d+)} \+ \\sqrt{(\d+)} \\cdot (\d+) = \?$/);
+  if (m37) return Math.sqrt(parseInt(m37[1]) * parseInt(m37[2])) + Math.sqrt(parseInt(m37[3])) * parseInt(m37[4]);
+
+  const m38 = prompt.match(/^\((\d+) - (\d+)\)\^\{2\} \+ (\d+) \\cdot (\d+) = \?$/);
+  if (m38) return Math.pow(parseInt(m38[1]) - parseInt(m38[2]), 2) + parseInt(m38[3]) * parseInt(m38[4]);
+
+  const m39 = prompt.match(/^\((\d+) \+ \\sqrt{(\d+)\^\{2\} \+ (\d+)\^\{2\}}\) \\cdot (\d+) = \?$/);
+  if (m39) {
+    const h = Math.sqrt(parseInt(m39[2]) * parseInt(m39[2]) + parseInt(m39[3]) * parseInt(m39[3]));
+    return (parseInt(m39[1]) + h) * parseInt(m39[4]);
+  }
+
+  const m40 = prompt.match(/^\\sqrt{(\d+)\^\{2\} \+ (\d+)\^\{2\}} \\cdot (\d+) \+ (\d+) = \?$/);
+  if (m40) {
+    const h = Math.sqrt(parseInt(m40[1]) * parseInt(m40[1]) + parseInt(m40[2]) * parseInt(m40[2]));
+    return h * parseInt(m40[3]) + parseInt(m40[4]);
+  }
+
+  const m41 = prompt.match(/^\(\\sqrt{(\d+)\^\{2\} \+ (\d+)\^\{2\}} \+ \\sqrt{(\d+)}\) \\cdot (\d+) = \?$/);
+  if (m41) {
+    const h = Math.sqrt(parseInt(m41[1]) * parseInt(m41[1]) + parseInt(m41[2]) * parseInt(m41[2]));
+    return (h + Math.sqrt(parseInt(m41[3]))) * parseInt(m41[4]);
+  }
+
+  const m42 = prompt.match(/^\\sqrt{(\d+)\^\{2\} - (\d+)\^\{2\}} \\cdot (\d+) \+ (\d+) \\cdot (\d+) = \?$/);
+  if (m42) {
+    const h = Math.sqrt(parseInt(m42[1]) * parseInt(m42[1]) - parseInt(m42[2]) * parseInt(m42[2]));
+    return h * parseInt(m42[3]) + parseInt(m42[4]) * parseInt(m42[5]);
+  }
+
+  const m43 = prompt.match(/^(\d+) \\cdot \\sqrt{(\d+)\^\{2\} \+ (\d+)\^\{2\}} - (\d+)\^\{2\} \+ (\d+) = \?$/);
+  if (m43) {
+    const h = Math.sqrt(parseInt(m43[2]) * parseInt(m43[2]) + parseInt(m43[3]) * parseInt(m43[3]));
+    return parseInt(m43[1]) * h - Math.pow(parseInt(m43[4]), 2) + parseInt(m43[5]);
+  }
+
   const m15 = prompt.match(/^(\d+) \+ \\sqrt{(\d+)\^\{2\} \+ (\d+)\^\{2\}} = \?$/);
   if (m15) {
     const d = Math.sqrt(parseInt(m15[2]) * parseInt(m15[2]) + parseInt(m15[3]) * parseInt(m15[3]));

@@ -7,19 +7,8 @@ const ADD_TRIPLES: [number, number, number][] = [
   [3, 4, 5],
   [5, 12, 13],
   [6, 8, 10],
-  [7, 24, 25],
   [8, 15, 17],
   [9, 12, 15],
-  [9, 40, 41],
-  [12, 16, 20],
-  [15, 20, 25],
-  [15, 36, 39],
-  [16, 30, 34],
-  [20, 21, 29],
-  [21, 28, 35],
-  [24, 32, 40],
-  [27, 36, 45],
-  [30, 40, 50],
 ];
 
 const SUB_TRIPLES: [number, number, number][] = [
@@ -31,14 +20,6 @@ const SUB_TRIPLES: [number, number, number][] = [
   [13, 12, 5],
   [15, 9, 12],
   [15, 12, 9],
-  [17, 8, 15],
-  [17, 15, 8],
-  [20, 12, 16],
-  [20, 16, 12],
-  [25, 7, 24],
-  [25, 15, 20],
-  [25, 20, 15],
-  [25, 24, 7],
 ];
 
 type SubGen = (rng: () => number) => Exercise;
@@ -128,6 +109,13 @@ function genAMinusBCSq(rng: () => number): Exercise {
   return { prompt: `${a} - (2 \\cdot 2)^{2} = ?`, answer: String(a - 16) };
 }
 
+const band4: SubGen[] = [
+  genAPlusBC2,
+  genAMinusBC2,
+  genAPlusBCSq,
+  genAMinusBCSq,
+];
+
 function genAPlusBPlusCSq(rng: () => number): Exercise {
   const b = randInt(rng, 1, 2);
   const c = randInt(rng, 1, 3 - b);
@@ -157,21 +145,125 @@ function gen2PowNMinusM(rng: () => number): Exercise {
   return { prompt: `2^{${n} - ${m}} = ?`, answer: String(Math.pow(2, n - m)) };
 }
 
-const band4: SubGen[] = [
-  genAPlusBC2,
-  genAMinusBC2,
-  genAPlusBCSq,
-  genAMinusBCSq,
+function genFreshmanTrap(rng: () => number): Exercise {
+  for (let i = 0; i < 100; i++) {
+    const a = randInt(rng, 2, 6);
+    const b = randInt(rng, 2, 6);
+    const sum = a + b;
+    if (sum > 10) continue;
+    const sumSq = sum * sum;
+    const c = randInt(rng, 1, Math.min(sumSq - 2, 25));
+    return { prompt: `(${a} + ${b})^{2} - ${c} = ?`, answer: String(sumSq - c) };
+  }
+  return { prompt: `(2 + 2)^{2} - 1 = ?`, answer: '15' };
+}
+
+function genNestedParens(rng: () => number): Exercise {
+  for (let i = 0; i < 100; i++) {
+    const a = randInt(rng, 2, 5);
+    const b = randInt(rng, 1, 9);
+    const c = randInt(rng, 2, 6);
+    const d = randInt(rng, 1, 6);
+    const result = a * (b + c * d);
+    if (result > 100) continue;
+    return { prompt: `${a} \\cdot (${b} + ${c} \\cdot ${d}) = ?`, answer: String(result) };
+  }
+  return { prompt: `2 \\cdot (1 + 2 \\cdot 3) = ?`, answer: '14' };
+}
+
+function genDoubleWrapped(rng: () => number): Exercise {
+  for (let i = 0; i < 100; i++) {
+    const a = randInt(rng, 1, 5);
+    const b = randInt(rng, 1, 5);
+    const sum = a + b;
+    if (sum < 2 || sum > 8) continue;
+    const c = randInt(rng, 2, 5);
+    const inner = sum * c;
+    if (inner < 3 || inner > 10) continue;
+    return { prompt: `((${a} + ${b}) \\cdot ${c})^{2} = ?`, answer: String(inner * inner) };
+  }
+  return { prompt: `((1 + 2) \\cdot 3)^{2} = ?`, answer: '81' };
+}
+
+function genRadicalPlusParens(rng: () => number): Exercise {
+  const sq = pick(rng, [4, 9, 16, 25]);
+  const root = Math.sqrt(sq);
+  const b = randInt(rng, 1, 9);
+  const c = randInt(rng, 2, 6);
+  const result = (root + b) * c;
+  return { prompt: `(\\sqrt{${sq}} + ${b}) \\cdot ${c} = ?`, answer: String(result) };
+}
+
+function genBridgePythagoras(rng: () => number): Exercise {
+  const [a, b, d] = pick(rng, [[3, 4, 5], [4, 3, 5], [6, 8, 10], [8, 6, 10]]);
+  const c = randInt(rng, 2, 6);
+  const e = randInt(rng, 1, 6);
+  return { prompt: `\\sqrt{${a}^{2} + ${b}^{2}} + ${c} \\cdot ${e} = ?`, answer: String(d + c * e) };
+}
+
+function genThreeOpSqrt(rng: () => number): Exercise {
+  const sq = pick(rng, [4, 9, 16, 25]);
+  const root = Math.sqrt(sq);
+  for (let i = 0; i < 100; i++) {
+    const a = randInt(rng, 10, 19);
+    const b = randInt(rng, 2, 6);
+    const d = randInt(rng, 1, Math.min(a + b * root - 1, 19));
+    const result = a + b * root - d;
+    if (result < 1) continue;
+    return { prompt: `${a} + ${b} \\cdot \\sqrt{${sq}} - ${d} = ?`, answer: String(result) };
+  }
+  return { prompt: `10 + 2 \\cdot \\sqrt{4} - 1 = ?`, answer: '13' };
+}
+
+const TWO_RADICAL_PAIRS: [number, number, number][] = [
+  [2, 8, 4],
+  [8, 2, 4],
+  [2, 18, 6],
+  [3, 12, 6],
+  [12, 3, 6],
+  [18, 2, 6],
+];
+
+function genTwoRadicals(rng: () => number): Exercise {
+  const [a, b, r] = pick(rng, TWO_RADICAL_PAIRS);
+  const sq2 = pick(rng, [4, 9, 16]);
+  const d = randInt(rng, 1, 6);
+  return { prompt: `\\sqrt{${a} \\cdot ${b}} + \\sqrt{${sq2}} \\cdot ${d} = ?`, answer: String(r + Math.sqrt(sq2) * d) };
+}
+
+function genDiffSqDistractor(rng: () => number): Exercise {
+  for (let i = 0; i < 100; i++) {
+    const a = randInt(rng, 5, 9);
+    const b = randInt(rng, 1, a - 2);
+    const diffSq = (a - b) * (a - b);
+    const c = randInt(rng, 2, 6);
+    const d = randInt(rng, 1, 6);
+    const result = diffSq + c * d;
+    if (result > 100) continue;
+    return { prompt: `(${a} - ${b})^{2} + ${c} \\cdot ${d} = ?`, answer: String(result) };
+  }
+  return { prompt: `(5 - 1)^{2} + 2 \\cdot 1 = ?`, answer: '18' };
+}
+
+const band6: SubGen[] = [
   genAPlusBPlusCSq,
   genAPlusBMinusCSq,
   gen2PowNPlusM,
   gen2PowNMinusM,
+  genFreshmanTrap,
+  genNestedParens,
+  genDoubleWrapped,
+  genRadicalPlusParens,
+  genBridgePythagoras,
+  genThreeOpSqrt,
+  genTwoRadicals,
+  genDiffSqDistractor,
 ];
 
 function genCPlusSqrtA2PmB2(rng: () => number): Exercise {
   const useAdd = rng() > 0.5;
   const [a, b, d] = pick(rng, useAdd ? ADD_TRIPLES : SUB_TRIPLES);
-  const c = randInt(rng, 1, 15);
+  const c = randInt(rng, 1, 10);
   const inner = useAdd ? `${a}^{2} + ${b}^{2}` : `${a}^{2} - ${b}^{2}`;
   return { prompt: `${c} + \\sqrt{${inner}} = ?`, answer: String(c + d) };
 }
@@ -179,7 +271,7 @@ function genCPlusSqrtA2PmB2(rng: () => number): Exercise {
 function genCMinusSqrtA2PmB2(rng: () => number): Exercise {
   const useAdd = rng() > 0.5;
   const [a, b, d] = pick(rng, useAdd ? ADD_TRIPLES : SUB_TRIPLES);
-  const c = randInt(rng, d + 1, d + 10);
+  const c = randInt(rng, d + 1, d + 5);
   const inner = useAdd ? `${a}^{2} + ${b}^{2}` : `${a}^{2} - ${b}^{2}`;
   return { prompt: `${c} - \\sqrt{${inner}} = ?`, answer: String(c - d) };
 }
@@ -187,7 +279,7 @@ function genCMinusSqrtA2PmB2(rng: () => number): Exercise {
 function genSqrtA2PmB2PlusC(rng: () => number): Exercise {
   const useAdd = rng() > 0.5;
   const [a, b, d] = pick(rng, useAdd ? ADD_TRIPLES : SUB_TRIPLES);
-  const c = randInt(rng, 1, 15);
+  const c = randInt(rng, 1, 10);
   const inner = useAdd ? `${a}^{2} + ${b}^{2}` : `${a}^{2} - ${b}^{2}`;
   return { prompt: `\\sqrt{${inner}} + ${c} = ?`, answer: String(d + c) };
 }
@@ -195,7 +287,7 @@ function genSqrtA2PmB2PlusC(rng: () => number): Exercise {
 function genSqrtA2PmB2MinusC(rng: () => number): Exercise {
   const useAdd = rng() > 0.5;
   const [a, b, d] = pick(rng, useAdd ? ADD_TRIPLES : SUB_TRIPLES);
-  const c = d <= 1 ? 0 : randInt(rng, 1, d - 1);
+  const c = randInt(rng, 1, Math.min(d - 1, 8));
   if (c === 0) {
     return genSqrtA2PmB2PlusC(rng);
   }
@@ -211,12 +303,60 @@ function genCTimesSqrtA2PmB2(rng: () => number): Exercise {
   return { prompt: `${c} \\cdot \\sqrt{${inner}} = ?`, answer: String(c * d) };
 }
 
-const band7: SubGen[] = [
+function genHypotenuseOuterParens(rng: () => number): Exercise {
+  const [b, c, h] = pick(rng, [[3, 4, 5], [4, 3, 5], [6, 8, 10], [8, 6, 10]]);
+  const a = randInt(rng, 1, 9);
+  const d = randInt(rng, 2, 6);
+  return { prompt: `(${a} + \\sqrt{${b}^{2} + ${c}^{2}}) \\cdot ${d} = ?`, answer: String((a + h) * d) };
+}
+
+function genHypotenuseTimesPlus(rng: () => number): Exercise {
+  const [a, b, h] = pick(rng, [[3, 4, 5], [4, 3, 5], [5, 12, 13], [12, 5, 13], [6, 8, 10], [8, 6, 10]]);
+  const c = randInt(rng, 2, 6);
+  const d = randInt(rng, 1, 19);
+  return { prompt: `\\sqrt{${a}^{2} + ${b}^{2}} \\cdot ${c} + ${d} = ?`, answer: String(h * c + d) };
+}
+
+function genTwoRootsParen(rng: () => number): Exercise {
+  const [a, b, h] = pick(rng, [[3, 4, 5], [4, 3, 5], [6, 8, 10], [8, 6, 10]]);
+  const sq = pick(rng, [4, 9, 16, 25]);
+  const root = Math.sqrt(sq);
+  const d = randInt(rng, 2, 6);
+  return { prompt: `(\\sqrt{${a}^{2} + ${b}^{2}} + \\sqrt{${sq}}) \\cdot ${d} = ?`, answer: String((h + root) * d) };
+}
+
+function genDiffInsideTimes(rng: () => number): Exercise {
+  const [a, b, d] = pick(rng, [[5, 3, 4], [10, 6, 8], [10, 8, 6]]);
+  const c = randInt(rng, 2, 5);
+  const e = randInt(rng, 1, 5);
+  const f = randInt(rng, 1, 5);
+  return { prompt: `\\sqrt{${a}^{2} - ${b}^{2}} \\cdot ${c} + ${e} \\cdot ${f} = ?`, answer: String(d * c + e * f) };
+}
+
+function genClimax(rng: () => number): Exercise {
+  for (let i = 0; i < 100; i++) {
+    const [b, c, h] = pick(rng, [[3, 4, 5], [4, 3, 5], [6, 8, 10], [8, 6, 10]]);
+    const a = randInt(rng, 2, 6);
+    const d = randInt(rng, 2, 4);
+    const e = randInt(rng, 1, 19);
+    const result = a * h - d * d + e;
+    if (result < 1 || result > 100) continue;
+    return { prompt: `${a} \\cdot \\sqrt{${b}^{2} + ${c}^{2}} - ${d}^{2} + ${e} = ?`, answer: String(result) };
+  }
+  return { prompt: `2 \\cdot \\sqrt{3^{2} + 4^{2}} - 2^{2} + 1 = ?`, answer: '7' };
+}
+
+const band8: SubGen[] = [
   genCPlusSqrtA2PmB2,
   genCMinusSqrtA2PmB2,
   genSqrtA2PmB2PlusC,
   genSqrtA2PmB2MinusC,
   genCTimesSqrtA2PmB2,
+  genHypotenuseOuterParens,
+  genHypotenuseTimesPlus,
+  genTwoRootsParen,
+  genDiffInsideTimes,
+  genClimax,
 ];
 
 export function generateOrderOfOperations(seed: number, complexity: number): Exercise {
@@ -225,10 +365,12 @@ export function generateOrderOfOperations(seed: number, complexity: number): Exe
   let pool: SubGen[];
   if (clamp <= 3) {
     pool = band0;
-  } else if (clamp <= 6) {
+  } else if (clamp <= 5) {
     pool = [...band0, ...band4];
+  } else if (clamp <= 7) {
+    pool = [...band0, ...band4, ...band6];
   } else {
-    pool = [...band0, ...band4, ...band7];
+    pool = [...band0, ...band4, ...band6, ...band8];
   }
   const gen = pick(rng, pool);
   return gen(rng);
