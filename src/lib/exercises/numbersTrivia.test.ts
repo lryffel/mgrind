@@ -1,9 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import {
-  generateNumbersTrivia,
-  validateNumbersTrivia,
-  NUMBERS_TRIVIA_TRUE_FALSE,
-} from './numbersTrivia';
+import { generateNumbersTrivia, validateNumbersTrivia, NUMBERS_TRIVIA_TRUE_FALSE } from './numbersTrivia';
 import { expectDeterministic, expectSeedVariation, expectHasPromptAndAnswer } from '../test-utils';
 
 const ALL_SUB_TYPES = ['trueFalse', 'isNatural', 'isInteger', 'isRational', 'divisibilityRules', 'primeDivisors'];

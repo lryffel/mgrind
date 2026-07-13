@@ -68,6 +68,12 @@ export interface ExerciseData {
   numberQuestions?: { latex: string; isNatural: boolean; isInteger: boolean; isRational: boolean }[];
   numberSet?: string;
   ruleTexts?: { en: string; de: string }[];
+  lawNameKey?: string;
+  lawOperationKey?: string;
+  ordinalKey?: string;
+  hintKey?: string;
+  statementsLatex?: string[];
+  correctAnswers?: boolean[];
 }
 
 export interface Exercise {

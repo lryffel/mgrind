@@ -49,25 +49,75 @@ interface TrueFalseStmt {
 }
 
 export const NUMBERS_TRIVIA_TRUE_FALSE: TrueFalseStmt[] = [
-  { en: 'Zero is allowed in the denominator of a fraction.', de: 'Die Null ist im Nenner eines Bruchs erlaubt.', correct: false, min: 0 },
+  {
+    en: 'Zero is allowed in the denominator of a fraction.',
+    de: 'Die Null ist im Nenner eines Bruchs erlaubt.',
+    correct: false,
+    min: 0,
+  },
   { en: '1 is a prime number.', de: '1 ist eine Primzahl.', correct: false, min: 0 },
 
-  { en: 'The sum of two even numbers is always even.', de: 'Die Summe zweier gerader Zahlen ist immer gerade.', correct: true, min: 0 },
+  {
+    en: 'The sum of two even numbers is always even.',
+    de: 'Die Summe zweier gerader Zahlen ist immer gerade.',
+    correct: true,
+    min: 0,
+  },
   { en: 'Every prime number is odd.', de: 'Jede Primzahl ist ungerade.', correct: false, min: 0 },
   { en: 'Every integer is a rational number.', de: 'Jede ganze Zahl ist eine rationale Zahl.', correct: true, min: 2 },
   { en: '-a is always negative.', de: '-a ist immer negativ.', latex: '-a', correct: false, min: 1 },
-  { en: 'The sum of two odd numbers is always even.', de: 'Die Summe zweier ungerader Zahlen ist immer gerade.', correct: true, min: 1 },
-  { en: 'The product of two negative numbers is negative.', de: 'Das Produkt zweier negativer Zahlen ist negativ.', correct: false, min: 1 },
-  { en: 'The sum of two negative numbers is negative.', de: 'Die Summe zweier negativer Zahlen ist negativ.', correct: true, min: 1 },
+  {
+    en: 'The sum of two odd numbers is always even.',
+    de: 'Die Summe zweier ungerader Zahlen ist immer gerade.',
+    correct: true,
+    min: 1,
+  },
+  {
+    en: 'The product of two negative numbers is negative.',
+    de: 'Das Produkt zweier negativer Zahlen ist negativ.',
+    correct: false,
+    min: 1,
+  },
+  {
+    en: 'The sum of two negative numbers is negative.',
+    de: 'Die Summe zweier negativer Zahlen ist negativ.',
+    correct: true,
+    min: 1,
+  },
   { en: 'There are infinitely many prime numbers.', de: 'Es gibt unendlich viele Primzahlen.', correct: true, min: 6 },
-  { en: 'The square root of 2 is a rational number.', de: 'Die Quadratwurzel von 2 ist eine rationale Zahl.', correct: false, min: 8 },
+  {
+    en: 'The square root of 2 is a rational number.',
+    de: 'Die Quadratwurzel von 2 ist eine rationale Zahl.',
+    correct: false,
+    min: 8,
+  },
   { en: 'Every natural number is an integer.', de: 'Jede natürliche Zahl ist eine ganze Zahl.', correct: true, min: 2 },
-  { en: 'Every natural number is a rational number.', de: 'Jede natürliche Zahl ist eine rationale Zahl.', correct: true, min: 3 },
+  {
+    en: 'Every natural number is a rational number.',
+    de: 'Jede natürliche Zahl ist eine rationale Zahl.',
+    correct: true,
+    min: 3,
+  },
   { en: 'Every integer is a natural number.', de: 'Jede ganze Zahl ist eine natürliche Zahl.', correct: false, min: 2 },
   { en: 'Every integer is a real number.', de: 'Jede ganze Zahl ist eine reelle Zahl.', correct: true, min: 5 },
-  { en: 'Every rational number is an integer.', de: 'Jede rationale Zahl ist eine ganze Zahl.', correct: false, min: 3 },
-  { en: 'Every rational number is a real number.', de: 'Jede rationale Zahl ist eine reelle Zahl.', correct: true, min: 5 },
-  { en: 'Every real number is a rational number.', de: 'Jede reelle Zahl ist eine rationale Zahl.', correct: false, min: 7 },
+  {
+    en: 'Every rational number is an integer.',
+    de: 'Jede rationale Zahl ist eine ganze Zahl.',
+    correct: false,
+    min: 3,
+  },
+  {
+    en: 'Every rational number is a real number.',
+    de: 'Jede rationale Zahl ist eine reelle Zahl.',
+    correct: true,
+    min: 5,
+  },
+  {
+    en: 'Every real number is a rational number.',
+    de: 'Jede reelle Zahl ist eine rationale Zahl.',
+    correct: false,
+    min: 7,
+  },
 ];
 
 interface CorrectRule {
@@ -83,9 +133,19 @@ const CORRECT_DIV_RULES: CorrectRule[] = [
   { en: 'The last digit is 0.', de: 'Die letzte Ziffer ist 0.', k: 10, min: 1 },
   { en: 'The sum of the digits is divisible by 3.', de: 'Die Quersumme ist durch 3 teilbar.', k: 3, min: 3 },
   { en: 'The sum of the digits is divisible by 9.', de: 'Die Quersumme ist durch 9 teilbar.', k: 9, min: 3 },
-  { en: 'The last two digits form a number divisible by 4.', de: 'Die letzten zwei Ziffern bilden eine durch 4 teilbare Zahl.', k: 4, min: 6 },
+  {
+    en: 'The last two digits form a number divisible by 4.',
+    de: 'Die letzten zwei Ziffern bilden eine durch 4 teilbare Zahl.',
+    k: 4,
+    min: 6,
+  },
   { en: 'The number is divisible by 2 and 3.', de: 'Die Zahl ist durch 2 und 3 teilbar.', k: 6, min: 6 },
-  { en: 'The last three digits form a number divisible by 8.', de: 'Die letzten drei Ziffern bilden eine durch 8 teilbare Zahl.', k: 8, min: 7 },
+  {
+    en: 'The last three digits form a number divisible by 8.',
+    de: 'Die letzten drei Ziffern bilden eine durch 8 teilbare Zahl.',
+    k: 8,
+    min: 7,
+  },
 ];
 
 function isPerfectSquare(n: number): boolean {
@@ -151,8 +211,10 @@ function generateSetQuestions(
   if (!hasYes) questions[0] = { latex: '1', isNatural: true, isInteger: true, isRational: true };
   if (!hasNo) {
     const noIdx = questions.length - 1;
-    if (set === 'natural') questions[noIdx] = { latex: '\\frac{1}{2}', isNatural: false, isInteger: false, isRational: true };
-    else if (set === 'integer') questions[noIdx] = { latex: '\\frac{1}{2}', isNatural: false, isInteger: false, isRational: true };
+    if (set === 'natural')
+      questions[noIdx] = { latex: '\\frac{1}{2}', isNatural: false, isInteger: false, isRational: true };
+    else if (set === 'integer')
+      questions[noIdx] = { latex: '\\frac{1}{2}', isNatural: false, isInteger: false, isRational: true };
     else questions[noIdx] = { latex: '\\sqrt{2}', isNatural: false, isInteger: false, isRational: false };
   }
   return {
@@ -200,12 +262,9 @@ export function generateNumbersTrivia(seed: number, complexity: number): Exercis
       const kChoices = clamped <= 3 ? [2, 5, 10] : clamped <= 6 ? [2, 3, 5, 9, 10] : [2, 3, 4, 5, 6, 8, 9, 10];
       const k = pick(rng, kChoices);
 
-      const correctRule = CORRECT_DIV_RULES.find(
-        (r) => r.k === k && r.min <= clamped,
-      )!;
+      const correctRule = CORRECT_DIV_RULES.find((r) => r.k === k && r.min <= clamped)!;
 
-      const isKAccidentallyCorrect = (en: string): boolean =>
-        CORRECT_DIV_RULES.some((r) => r.k === k && r.en === en);
+      const isKAccidentallyCorrect = (en: string): boolean => CORRECT_DIV_RULES.some((r) => r.k === k && r.en === en);
 
       const wrongTemplates: ((k: number) => { en: string; de: string })[] = [
         (n) => ({

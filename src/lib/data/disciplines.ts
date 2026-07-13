@@ -47,6 +47,7 @@ export const disciplines: Discipline[] = [
       'simplifySymbolicFraction',
       'necessityOfParentheses',
       'linearEquations',
+      'termTransformationsTrivia',
     ],
   },
   {

@@ -30,12 +30,17 @@
   $effect(() => {
     textValue = '';
     selectedIndex = -1;
-    if ((data.subType === 'isNatural' || data.subType === 'isInteger' || data.subType === 'isRational') && data.numberQuestions) {
+    if (
+      (data.subType === 'isNatural' || data.subType === 'isInteger' || data.subType === 'isRational') &&
+      data.numberQuestions
+    ) {
       setAnswers = data.numberQuestions.map(() => '');
     }
   });
 
-  let isSetSubType = $derived(data.subType === 'isNatural' || data.subType === 'isInteger' || data.subType === 'isRational');
+  let isSetSubType = $derived(
+    data.subType === 'isNatural' || data.subType === 'isInteger' || data.subType === 'isRational',
+  );
 
   let canSubmit = $derived.by(() => {
     switch (data.subType) {
@@ -99,10 +104,14 @@
 
   let setPromptKey = $derived.by(() => {
     switch (data.subType) {
-      case 'isNatural': return 'exercise.numbersTrivia.type.isNatural.prompt';
-      case 'isInteger': return 'exercise.numbersTrivia.type.isInteger.prompt';
-      case 'isRational': return 'exercise.numbersTrivia.type.isRational.prompt';
-      default: return '';
+      case 'isNatural':
+        return 'exercise.numbersTrivia.type.isNatural.prompt';
+      case 'isInteger':
+        return 'exercise.numbersTrivia.type.isInteger.prompt';
+      case 'isRational':
+        return 'exercise.numbersTrivia.type.isRational.prompt';
+      default:
+        return '';
     }
   });
 </script>
@@ -137,7 +146,6 @@
         {/if}
       </div>
     {/if}
-
   {:else if isSetSubType}
     <p class="prompt-label">{_(setPromptKey)}</p>
 
@@ -148,16 +156,10 @@
         </span>
         {#if feedback === null}
           <div class="button-group" role="group">
-            <button
-              class={setAnswers[i] === 'yes' ? '' : 'outline'}
-              onclick={() => (setAnswers[i] = 'yes')}
-            >
+            <button class={setAnswers[i] === 'yes' ? '' : 'outline'} onclick={() => (setAnswers[i] = 'yes')}>
               {_('answer.yes')}
             </button>
-            <button
-              class={setAnswers[i] === 'no' ? '' : 'outline'}
-              onclick={() => (setAnswers[i] = 'no')}
-            >
+            <button class={setAnswers[i] === 'no' ? '' : 'outline'} onclick={() => (setAnswers[i] = 'no')}>
               {_('answer.no')}
             </button>
           </div>
@@ -176,7 +178,6 @@
     {#if feedback === 'correct'}
       <Feedback {feedback} />
     {/if}
-
   {:else if data.subType === 'primeDivisors'}
     <p class="prompt-label">{_('exercise.numbersTrivia.type.primeDivisors.prompt')}</p>
 
@@ -194,7 +195,6 @@
         <Feedback {feedback} textAnswer="2" />
       </div>
     {/if}
-
   {:else if data.subType === 'divisibilityRules'}
     <p class="prompt-label">
       {_('exercise.numbersTrivia.type.divisibilityRules.promptBefore')}
@@ -218,7 +218,8 @@
         {#if feedback === 'correct'}
           <Feedback {feedback} />
         {:else}
-          <Feedback {feedback}
+          <Feedback
+            {feedback}
             textAnswer={(data.ruleTexts ?? [])
               .filter((_: unknown, i: number) => correctIndices.includes(i))
               .map((r: { en: string; de: string }) => (langState.lang === 'de' ? r.de : r.en))

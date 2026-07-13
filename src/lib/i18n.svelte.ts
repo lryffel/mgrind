@@ -457,6 +457,52 @@ const dict = {
   'common.no': { en: 'No', de: 'Nein' },
   'common.true': { en: 'True', de: 'Wahr' },
   'common.false': { en: 'False', de: 'Falsch' },
+  'exercise.termTransformationsTrivia.name': { en: 'Trivia: Term Transformations', de: 'Wissen: Termumformungen' },
+  'exercise.termTransformationsTrivia.desc': {
+    en: 'Test your knowledge of term transformations and laws',
+    de: 'Teste dein Wissen über Termumformungen und Gesetze',
+  },
+  'exercise.termTransformationsTrivia.whichLaw': {
+    en: 'Which is the {0} {1}?',
+    de: 'Welches ist das {0} {1}?',
+  },
+  'exercise.termTransformationsTrivia.whichLawNoOp': {
+    en: 'Which is the {0}?',
+    de: 'Welches ist das {0}?',
+  },
+  'exercise.termTransformationsTrivia.associativeLaw': { en: 'associative law', de: 'Assoziativgesetz' },
+  'exercise.termTransformationsTrivia.commutativeLaw': { en: 'commutative law', de: 'Kommutativgesetz' },
+  'exercise.termTransformationsTrivia.distributiveLaw': { en: 'distributive law', de: 'Distributivgesetz' },
+  'exercise.termTransformationsTrivia.forAddition': { en: 'for addition', de: 'für die Addition' },
+  'exercise.termTransformationsTrivia.forMultiplication': { en: 'for multiplication', de: 'für die Multiplikation' },
+  'exercise.termTransformationsTrivia.whichAreValid': {
+    en: 'Which of the following are valid laws? Mark each as yes or no.',
+    de: 'Welche der folgenden Gesetze sind gültig? Markiere jedes mit Ja oder Nein.',
+  },
+  'exercise.termTransformationsTrivia.whatIsPowerLaw': {
+    en: 'What is the {0} power law?',
+    de: 'Was ist das {0} Potenzgesetz?',
+  },
+  'exercise.termTransformationsTrivia.first': { en: 'first', de: 'erste' },
+  'exercise.termTransformationsTrivia.second': { en: 'second', de: 'zweite' },
+  'exercise.termTransformationsTrivia.third': { en: 'third', de: 'dritte' },
+  'exercise.termTransformationsTrivia.hintLabel': { en: 'Hint', de: 'Hinweis' },
+  'exercise.termTransformationsTrivia.hintProductSameBase': {
+    en: 'Product of powers with the same base',
+    de: 'Produkt von Potenzen mit gleicher Basis',
+  },
+  'exercise.termTransformationsTrivia.hintProductSameExp': {
+    en: 'Product of powers with the same exponent',
+    de: 'Produkt von Potenzen mit gleichem Exponenten',
+  },
+  'exercise.termTransformationsTrivia.hintPowerOfPower': {
+    en: 'Power of a power',
+    de: 'Potenz einer Potenz',
+  },
+  'exercise.termTransformationsTrivia.trueFalseCorrect': {
+    en: 'See the correct answers above.',
+    de: 'Siehe die richtigen Antworten oben.',
+  },
   'exercise.numbersTrivia.name': { en: 'Trivia: Numbers', de: 'Wissen: Zahlen' },
   'exercise.numbersTrivia.desc': {
     en: 'Test your knowledge of number concepts',

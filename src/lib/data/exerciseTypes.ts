@@ -80,6 +80,11 @@ import RoundingSigfigsExercise from '../components/exercises/RoundingSigfigsExer
 import RoundingSigfigsInstructions from '../components/exerciseInstructions/RoundingSigfigsInstructions.svelte';
 import { generateNumbersTrivia, validateNumbersTrivia } from '../exercises/numbersTrivia';
 import NumbersTrivia from '../components/exercises/NumbersTrivia.svelte';
+import {
+  generateTermTransformationsTrivia,
+  validateTermTransformationsTrivia,
+} from '../exercises/termTransformationsTrivia';
+import TermTransformationsTrivia from '../components/exercises/TermTransformationsTrivia.svelte';
 
 function defineExerciseType(config: {
   id: string;
@@ -362,5 +367,13 @@ export const exerciseTypes: Record<string, ExerciseType> = {
     generate: generateNumbersTrivia,
     validate: validateNumbersTrivia,
     component: NumbersTrivia,
+  }),
+  termTransformationsTrivia: defineExerciseType({
+    id: 'termTransformationsTrivia',
+    nameKey: 'exercise.termTransformationsTrivia.name',
+    descriptionKey: 'exercise.termTransformationsTrivia.desc',
+    generate: generateTermTransformationsTrivia,
+    validate: validateTermTransformationsTrivia,
+    component: TermTransformationsTrivia,
   }),
 };

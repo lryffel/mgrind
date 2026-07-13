@@ -86,8 +86,7 @@
       case 'negativeSignPlacement':
         return true;
       case 'doubleFraction':
-        if (data.triviaSubType === 'halveMC' || data.triviaSubType === 'doubleMC')
-          return true;
+        if (data.triviaSubType === 'halveMC' || data.triviaSubType === 'doubleMC') return true;
         return selectedIndex >= 0;
       case 'multiplySame':
       case 'fractionBar':
@@ -418,7 +417,16 @@
     <p class="prompt-label">{_('exercise.fractionTrivia.type.reducibleFractions.prompt')}</p>
 
     <TriviaCheckboxGroup
-      options={(data.triviaOptionsLatex ?? ['\\frac{ab}{a}', '\\frac{a+b}{a}', '\\frac{a}{ab}', '\\frac{a-b}{a}', '\\frac{a}{a+b}', '\\frac{a}{a-b}']).map((l) => ({ latex: l }))}
+      options={(
+        data.triviaOptionsLatex ?? [
+          '\\frac{ab}{a}',
+          '\\frac{a+b}{a}',
+          '\\frac{a}{ab}',
+          '\\frac{a-b}{a}',
+          '\\frac{a}{a+b}',
+          '\\frac{a}{a-b}',
+        ]
+      ).map((l) => ({ latex: l }))}
       selected={selectedCheckboxes}
       {correctIndices}
       {feedback}
@@ -433,7 +441,14 @@
   {:else if data.triviaType === 'denominatorRestriction'}
     <p class="prompt-label">{_('exercise.fractionTrivia.type.denominatorRestriction.prompt')}</p>
 
-    <TriviaTextInput bind:value={textValue} {feedback} placeholder="&hellip;" context="plain" label={_('exercise.fractionTrivia.type.denominatorRestriction.prompt')} fallback="0" />
+    <TriviaTextInput
+      bind:value={textValue}
+      {feedback}
+      placeholder="&hellip;"
+      context="plain"
+      label={_('exercise.fractionTrivia.type.denominatorRestriction.prompt')}
+      fallback="0"
+    />
 
     {#if feedback !== null}
       <div class="feedback-spacer">
@@ -447,7 +462,14 @@
       {_('exercise.fractionTrivia.type.zeroNumerator.promptAfter')}
     </p>
 
-    <TriviaTextInput bind:value={textValue} {feedback} placeholder="&hellip;" context="plain" label="Zero numerator answer" fallback="0" />
+    <TriviaTextInput
+      bind:value={textValue}
+      {feedback}
+      placeholder="&hellip;"
+      context="plain"
+      label="Zero numerator answer"
+      fallback="0"
+    />
 
     {#if feedback !== null}
       <div class="feedback-spacer">
@@ -479,7 +501,14 @@
       </p>
     {/if}
 
-    <TriviaTextInput bind:value={textValue} {feedback} placeholder="&hellip;" context="plain" label="Reciprocal product answer" fallback="1" />
+    <TriviaTextInput
+      bind:value={textValue}
+      {feedback}
+      placeholder="&hellip;"
+      context="plain"
+      label="Reciprocal product answer"
+      fallback="1"
+    />
 
     {#if feedback !== null}
       <div class="feedback-spacer">
