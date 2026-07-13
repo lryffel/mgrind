@@ -53,6 +53,18 @@ export interface ExerciseData {
   triviaOptionsText?: string[];
   triviaSubType?: string;
   sigfigsCount?: number;
+  numberA?: number;
+  numberB?: number;
+  candidates?: number[];
+  correctIndices?: number[];
+  promptLatex?: string;
+  statementIndex?: number;
+  ruleIndices?: number[];
+  ruleK?: number;
+  isNaturalQuestions?: { latex: string; isNatural: boolean }[];
+  numberQuestions?: { latex: string; isNatural: boolean; isInteger: boolean; isRational: boolean }[];
+  numberSet?: string;
+  ruleTexts?: { en: string; de: string }[];
 }
 
 export interface Exercise {

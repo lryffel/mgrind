@@ -453,6 +453,43 @@ const dict = {
     en: 'Expression',
     de: 'Term',
   },
+  'common.yes': { en: 'Yes', de: 'Ja' },
+  'common.no': { en: 'No', de: 'Nein' },
+  'common.true': { en: 'True', de: 'Wahr' },
+  'common.false': { en: 'False', de: 'Falsch' },
+  'exercise.numbersTrivia.name': { en: 'Trivia: Numbers', de: 'Wissen: Zahlen' },
+  'exercise.numbersTrivia.desc': {
+    en: 'Test your knowledge of number concepts',
+    de: 'Teste dein Wissen über Zahlen',
+  },
+  'exercise.numbersTrivia.type.smallestNatural.prompt': {
+    en: 'What is the smallest natural number?',
+    de: 'Was ist die kleinste natürliche Zahl?',
+  },
+  'exercise.numbersTrivia.type.isNatural.prompt': {
+    en: 'Are the following numbers natural?',
+    de: 'Sind folgende Zahlen natürlich?',
+  },
+  'exercise.numbersTrivia.type.isInteger.prompt': {
+    en: 'Are the following numbers integers?',
+    de: 'Sind folgende Zahlen ganze Zahlen?',
+  },
+  'exercise.numbersTrivia.type.isRational.prompt': {
+    en: 'Are the following numbers rational?',
+    de: 'Sind folgende Zahlen rationale Zahlen?',
+  },
+  'exercise.numbersTrivia.type.primeDivisors.prompt': {
+    en: 'How many positive divisors does a prime number have?',
+    de: 'Wie viele positive Teiler hat eine Primzahl?',
+  },
+  'exercise.numbersTrivia.type.divisibilityRules.promptBefore': {
+    en: 'Which of the following correctly determines whether a number is divisible by ',
+    de: 'Welche der folgenden Aussagen bestimmt korrekt, ob eine Zahl durch ',
+  },
+  'exercise.numbersTrivia.type.divisibilityRules.promptAfter': {
+    en: '?',
+    de: ' teilbar ist?',
+  },
 } satisfies Record<string, Record<Lang, string>>;
 
 export const state = $state({ lang: 'en' as Lang });

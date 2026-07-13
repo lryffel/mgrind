@@ -17,6 +17,7 @@ export const disciplines: Discipline[] = [
       'scientificNotation',
       'signs',
       'roundingSigfigs',
+      'numbersTrivia',
     ],
   },
   {
