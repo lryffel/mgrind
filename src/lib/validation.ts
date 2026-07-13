@@ -39,7 +39,7 @@ export function validateFractionAnswer(answer: string, exercise: Exercise): bool
   return user[0] * correct[1] === correct[0] * user[1];
 }
 
-function isReduced(answer: string): boolean {
+export function isReduced(answer: string): boolean {
   const trimmed = answer.trim();
   if (!trimmed) return false;
   const parts = trimmed.split(',');

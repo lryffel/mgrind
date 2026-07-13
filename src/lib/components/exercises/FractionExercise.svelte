@@ -21,7 +21,7 @@
   const num2 = $derived(data.num2);
   const den2 = $derived(data.den2);
   const op = $derived(data.op);
-  const isBinary = $derived(num1 !== undefined && den1 !== undefined && num2 !== undefined && den2 !== undefined);
+  const isBinary = $derived(data.op === '*');
   const promptKey = $derived(data.promptKey);
   const displayOp = $derived(op === '*' ? '\\cdot' : (op ?? ''));
 
