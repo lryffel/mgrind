@@ -109,11 +109,31 @@ function genAMinusBCSq(rng: () => number): Exercise {
   return { prompt: `${a} - (2 \\cdot 2)^{2} = ?`, answer: String(a - 16) };
 }
 
+function genNegPowerTrap(rng: () => number): Exercise {
+  const a = randInt(rng, 2, 5);
+  const n = pick(rng, [2, 3]);
+  return { prompt: `-${a}^{${n}} = ?`, answer: String(-Math.pow(a, n)) };
+}
+
+function genPowerThenAddNegBase(rng: () => number): Exercise {
+  const a = randInt(rng, 2, 4);
+  const n = pick(rng, [2, 3]);
+  const absPower = Math.pow(a, n);
+  const powerValue = n % 2 === 0 ? absPower : -absPower;
+  const minK = Math.max(1, -20 - powerValue);
+  const maxK = Math.min(30, 80 - powerValue);
+  const k = randInt(rng, minK, maxK);
+  const result = powerValue + k;
+  return { prompt: `(-${a})^{${n}} + ${k} = ?`, answer: String(result) };
+}
+
 const band4: SubGen[] = [
   genAPlusBC2,
   genAMinusBC2,
   genAPlusBCSq,
   genAMinusBCSq,
+  genNegPowerTrap,
+  genPowerThenAddNegBase,
 ];
 
 function genAPlusBPlusCSq(rng: () => number): Exercise {
@@ -195,7 +215,12 @@ function genRadicalPlusParens(rng: () => number): Exercise {
 }
 
 function genBridgePythagoras(rng: () => number): Exercise {
-  const [a, b, d] = pick(rng, [[3, 4, 5], [4, 3, 5], [6, 8, 10], [8, 6, 10]]);
+  const [a, b, d] = pick(rng, [
+    [3, 4, 5],
+    [4, 3, 5],
+    [6, 8, 10],
+    [8, 6, 10],
+  ]);
   const c = randInt(rng, 2, 6);
   const e = randInt(rng, 1, 6);
   return { prompt: `\\sqrt{${a}^{2} + ${b}^{2}} + ${c} \\cdot ${e} = ?`, answer: String(d + c * e) };
@@ -228,7 +253,10 @@ function genTwoRadicals(rng: () => number): Exercise {
   const [a, b, r] = pick(rng, TWO_RADICAL_PAIRS);
   const sq2 = pick(rng, [4, 9, 16]);
   const d = randInt(rng, 1, 6);
-  return { prompt: `\\sqrt{${a} \\cdot ${b}} + \\sqrt{${sq2}} \\cdot ${d} = ?`, answer: String(r + Math.sqrt(sq2) * d) };
+  return {
+    prompt: `\\sqrt{${a} \\cdot ${b}} + \\sqrt{${sq2}} \\cdot ${d} = ?`,
+    answer: String(r + Math.sqrt(sq2) * d),
+  };
 }
 
 function genDiffSqDistractor(rng: () => number): Exercise {
@@ -245,6 +273,22 @@ function genDiffSqDistractor(rng: () => number): Exercise {
   return { prompt: `(5 - 1)^{2} + 2 \\cdot 1 = ?`, answer: '18' };
 }
 
+function genPowerDiffNegBases(rng: () => number): Exercise {
+  for (let i = 0; i < 100; i++) {
+    const a = randInt(rng, 1, 4);
+    const b = randInt(rng, 1, 4);
+    const n = pick(rng, [2, 3]);
+    const m = pick(rng, [2, 3]);
+    const valA = (n % 2 === 0 ? 1 : -1) * Math.pow(a, n);
+    const valB = (m % 2 === 0 ? 1 : -1) * Math.pow(b, m);
+    const result = valA - valB;
+    if (result !== 0 && Math.abs(result) <= 100) {
+      return { prompt: `(-${a})^{${n}} - (-${b})^{${m}} = ?`, answer: String(result) };
+    }
+  }
+  return { prompt: '(-2)^{2} - (-1)^{3} = ?', answer: '5' };
+}
+
 const band6: SubGen[] = [
   genAPlusBPlusCSq,
   genAPlusBMinusCSq,
@@ -258,6 +302,7 @@ const band6: SubGen[] = [
   genThreeOpSqrt,
   genTwoRadicals,
   genDiffSqDistractor,
+  genPowerDiffNegBases,
 ];
 
 function genCPlusSqrtA2PmB2(rng: () => number): Exercise {
@@ -304,21 +349,38 @@ function genCTimesSqrtA2PmB2(rng: () => number): Exercise {
 }
 
 function genHypotenuseOuterParens(rng: () => number): Exercise {
-  const [b, c, h] = pick(rng, [[3, 4, 5], [4, 3, 5], [6, 8, 10], [8, 6, 10]]);
+  const [b, c, h] = pick(rng, [
+    [3, 4, 5],
+    [4, 3, 5],
+    [6, 8, 10],
+    [8, 6, 10],
+  ]);
   const a = randInt(rng, 1, 9);
   const d = randInt(rng, 2, 6);
   return { prompt: `(${a} + \\sqrt{${b}^{2} + ${c}^{2}}) \\cdot ${d} = ?`, answer: String((a + h) * d) };
 }
 
 function genHypotenuseTimesPlus(rng: () => number): Exercise {
-  const [a, b, h] = pick(rng, [[3, 4, 5], [4, 3, 5], [5, 12, 13], [12, 5, 13], [6, 8, 10], [8, 6, 10]]);
+  const [a, b, h] = pick(rng, [
+    [3, 4, 5],
+    [4, 3, 5],
+    [5, 12, 13],
+    [12, 5, 13],
+    [6, 8, 10],
+    [8, 6, 10],
+  ]);
   const c = randInt(rng, 2, 6);
   const d = randInt(rng, 1, 19);
   return { prompt: `\\sqrt{${a}^{2} + ${b}^{2}} \\cdot ${c} + ${d} = ?`, answer: String(h * c + d) };
 }
 
 function genTwoRootsParen(rng: () => number): Exercise {
-  const [a, b, h] = pick(rng, [[3, 4, 5], [4, 3, 5], [6, 8, 10], [8, 6, 10]]);
+  const [a, b, h] = pick(rng, [
+    [3, 4, 5],
+    [4, 3, 5],
+    [6, 8, 10],
+    [8, 6, 10],
+  ]);
   const sq = pick(rng, [4, 9, 16, 25]);
   const root = Math.sqrt(sq);
   const d = randInt(rng, 2, 6);
@@ -326,16 +388,41 @@ function genTwoRootsParen(rng: () => number): Exercise {
 }
 
 function genDiffInsideTimes(rng: () => number): Exercise {
-  const [a, b, d] = pick(rng, [[5, 3, 4], [10, 6, 8], [10, 8, 6]]);
+  const [a, b, d] = pick(rng, [
+    [5, 3, 4],
+    [10, 6, 8],
+    [10, 8, 6],
+  ]);
   const c = randInt(rng, 2, 5);
   const e = randInt(rng, 1, 5);
   const f = randInt(rng, 1, 5);
   return { prompt: `\\sqrt{${a}^{2} - ${b}^{2}} \\cdot ${c} + ${e} \\cdot ${f} = ?`, answer: String(d * c + e * f) };
 }
 
+function genPowerMultSubNegBase(rng: () => number): Exercise {
+  for (let i = 0; i < 100; i++) {
+    const a = randInt(rng, 1, 3);
+    const n = pick(rng, [2, 3]);
+    const b = randInt(rng, 2, 6);
+    const c = randInt(rng, 1, 50);
+    const absPower = Math.pow(a, n);
+    const powerValue = n % 2 === 0 ? absPower : -absPower;
+    const result = powerValue * b - c;
+    if (result > -100 && result < 100) {
+      return { prompt: `(-${a})^{${n}} \\cdot ${b} - ${c} = ?`, answer: String(result) };
+    }
+  }
+  return { prompt: '(-2)^{2} \\cdot 3 - 1 = ?', answer: '11' };
+}
+
 function genClimax(rng: () => number): Exercise {
   for (let i = 0; i < 100; i++) {
-    const [b, c, h] = pick(rng, [[3, 4, 5], [4, 3, 5], [6, 8, 10], [8, 6, 10]]);
+    const [b, c, h] = pick(rng, [
+      [3, 4, 5],
+      [4, 3, 5],
+      [6, 8, 10],
+      [8, 6, 10],
+    ]);
     const a = randInt(rng, 2, 6);
     const d = randInt(rng, 2, 4);
     const e = randInt(rng, 1, 19);
@@ -357,6 +444,7 @@ const band8: SubGen[] = [
   genTwoRootsParen,
   genDiffInsideTimes,
   genClimax,
+  genPowerMultSubNegBase,
 ];
 
 export function generateOrderOfOperations(seed: number, complexity: number): Exercise {

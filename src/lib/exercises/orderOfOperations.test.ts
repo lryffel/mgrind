@@ -101,6 +101,28 @@ function computeExpected(prompt: string): number | null {
     return parseInt(m43[1]) * h - Math.pow(parseInt(m43[4]), 2) + parseInt(m43[5]);
   }
 
+  const m44 = prompt.match(/^-(\d+)\^\{(\d+)\} = \?$/);
+  if (m44) return -Math.pow(parseInt(m44[1]), parseInt(m44[2]));
+
+  const m45 = prompt.match(/^\(-(\d+)\)\^\{(\d+)\} \+ (\d+) = \?$/);
+  if (m45) {
+    const power = parseInt(m45[2]) % 2 === 0 ? 1 : -1;
+    return power * Math.pow(parseInt(m45[1]), parseInt(m45[2])) + parseInt(m45[3]);
+  }
+
+  const m46 = prompt.match(/^\(-(\d+)\)\^\{(\d+)\} - \(-(\d+)\)\^\{(\d+)\} = \?$/);
+  if (m46) {
+    const valA = (parseInt(m46[2]) % 2 === 0 ? 1 : -1) * Math.pow(parseInt(m46[1]), parseInt(m46[2]));
+    const valB = (parseInt(m46[4]) % 2 === 0 ? 1 : -1) * Math.pow(parseInt(m46[3]), parseInt(m46[4]));
+    return valA - valB;
+  }
+
+  const m47 = prompt.match(/^\(-(\d+)\)\^\{(\d+)\} \\cdot (\d+) - (\d+) = \?$/);
+  if (m47) {
+    const power = (parseInt(m47[2]) % 2 === 0 ? 1 : -1) * Math.pow(parseInt(m47[1]), parseInt(m47[2]));
+    return power * parseInt(m47[3]) - parseInt(m47[4]);
+  }
+
   const m15 = prompt.match(/^(\d+) \+ \\sqrt{(\d+)\^\{2\} \+ (\d+)\^\{2\}} = \?$/);
   if (m15) {
     const d = Math.sqrt(parseInt(m15[2]) * parseInt(m15[2]) + parseInt(m15[3]) * parseInt(m15[3]));

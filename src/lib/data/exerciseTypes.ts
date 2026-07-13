@@ -63,11 +63,17 @@ import FractionTrivia from '../components/exercises/FractionTrivia.svelte';
 import InteriorAnglesInstructions from '../components/exerciseInstructions/InteriorAnglesInstructions.svelte';
 import PythagorasInstructions from '../components/exerciseInstructions/PythagorasInstructions.svelte';
 import { trimCompare, validateFractionAnswer, validateFractionReduced } from '../validation';
-import { generateSimplifySymbolicFraction, validateSimplifySymbolicFraction } from '../exercises/simplifySymbolicFraction';
+import {
+  generateSimplifySymbolicFraction,
+  validateSimplifySymbolicFraction,
+} from '../exercises/simplifySymbolicFraction';
 import SimplifySymbolicFractionInstructions from '../components/exerciseInstructions/SimplifySymbolicFractionInstructions.svelte';
 import { generateCompareFractions, validateCompareFractions } from '../exercises/compareFractions';
 import CompareFractions from '../components/exercises/CompareFractions.svelte';
 import CompareFractionsInstructions from '../components/exerciseInstructions/CompareFractionsInstructions.svelte';
+import { generateSigns, validateSigns } from '../exercises/signs';
+import Signs from '../components/exercises/Signs.svelte';
+import SignsInstructions from '../components/exerciseInstructions/SignsInstructions.svelte';
 
 function defineExerciseType(config: {
   id: string;
@@ -316,6 +322,15 @@ export const exerciseTypes: Record<string, ExerciseType> = {
     component: CompareFractions,
     instructionComponent: CompareFractionsInstructions,
     maxComplexity: 10,
+  }),
+  signs: defineExerciseType({
+    id: 'signs',
+    nameKey: 'exercise.signs.name',
+    descriptionKey: 'exercise.signs.desc',
+    generate: generateSigns,
+    validate: validateSigns,
+    component: Signs,
+    instructionComponent: SignsInstructions,
   }),
   simplifySymbolicFraction: defineExerciseType({
     id: 'simplifySymbolicFraction',

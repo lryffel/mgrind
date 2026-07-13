@@ -341,8 +341,14 @@ const dict = {
   'exercise.fractionTrivia.option.halveFraction.1': { en: 'Double the denominator', de: 'Nenner verdoppeln' },
   'exercise.fractionTrivia.option.halveFraction.2': { en: 'Double the numerator', de: 'Zähler verdoppeln' },
   'exercise.fractionTrivia.option.halveFraction.3': { en: 'Halve the denominator', de: 'Nenner halbieren' },
-  'exercise.fractionTrivia.option.halveFraction.4': { en: 'Double both numerator and denominator', de: 'Zähler und Nenner verdoppeln' },
-  'exercise.fractionTrivia.option.halveFraction.5': { en: 'Halve both numerator and denominator', de: 'Zähler und Nenner halbieren' },
+  'exercise.fractionTrivia.option.halveFraction.4': {
+    en: 'Double both numerator and denominator',
+    de: 'Zähler und Nenner verdoppeln',
+  },
+  'exercise.fractionTrivia.option.halveFraction.5': {
+    en: 'Halve both numerator and denominator',
+    de: 'Zähler und Nenner halbieren',
+  },
   'exercise.fractionTrivia.option.halveFraction.6': { en: 'None of the above', de: 'Keines davon' },
   'exercise.fractionTrivia.option.multiplySame.0': { en: 'It stays the same', de: 'Er bleibt gleich' },
   'exercise.fractionTrivia.option.multiplySame.1': { en: 'It doubles', de: 'Er verdoppelt sich' },
@@ -422,6 +428,22 @@ const dict = {
   'exercise.compareFractions.operatorSelect': {
     en: 'Comparison',
     de: 'Vergleich',
+  },
+  'exercise.signs.name': {
+    en: 'Signs',
+    de: 'Vorzeichen',
+  },
+  'exercise.signs.desc': {
+    en: 'Determine the sign of expressions with negative numbers',
+    de: 'Bestimme das Vorzeichen von Termen mit negativen Zahlen',
+  },
+  'exercise.signs.prompt': {
+    en: 'Determine the sign.',
+    de: 'Bestimme das Vorzeichen.',
+  },
+  'signs.select': {
+    en: 'Expression',
+    de: 'Term',
   },
 } satisfies Record<string, Record<Lang, string>>;
 
