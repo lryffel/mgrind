@@ -163,7 +163,6 @@ export function generateFractionTrivia(seed: number, complexity: number): Exerci
         { key: 'exercise.fractionTrivia.option.halveFraction.3', correctForHalve: false, correctForDouble: true },
         { key: 'exercise.fractionTrivia.option.halveFraction.4', correctForHalve: false, correctForDouble: false },
         { key: 'exercise.fractionTrivia.option.halveFraction.5', correctForHalve: false, correctForDouble: false },
-        { key: 'exercise.fractionTrivia.option.halveFraction.6', correctForHalve: false, correctForDouble: false },
       ];
       const withCorrect = allOptions.map((o) => ({
         key: o.key,

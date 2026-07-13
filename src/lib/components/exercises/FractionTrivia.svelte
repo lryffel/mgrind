@@ -84,10 +84,10 @@
       case 'mediant':
       case 'reducibleFractions':
       case 'negativeSignPlacement':
-        return selectedCheckboxes.some(Boolean);
+        return true;
       case 'doubleFraction':
         if (data.triviaSubType === 'halveMC' || data.triviaSubType === 'doubleMC')
-          return selectedCheckboxes.some(Boolean);
+          return true;
         return selectedIndex >= 0;
       case 'multiplySame':
       case 'fractionBar':
