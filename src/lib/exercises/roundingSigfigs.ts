@@ -124,7 +124,8 @@ export function generateRoundingSigfigs(seed: number, complexity: number): Exerc
   const { value, n } = gen(rng);
   const answer = roundToSigFigs(value, n);
   return {
-    prompt: `\\text{Round } ${formatNumberForPrompt(value)} \\text{ to } ${n} \\text{ significant digits.}`,
+    prompt: formatNumberForPrompt(value),
     answer,
+    data: { sigfigsCount: n },
   };
 }

@@ -75,6 +75,8 @@ import { generateSigns, validateSigns } from '../exercises/signs';
 import Signs from '../components/exercises/Signs.svelte';
 import SignsInstructions from '../components/exerciseInstructions/SignsInstructions.svelte';
 import { generateRoundingSigfigs } from '../exercises/roundingSigfigs';
+import RoundingSigfigsExercise from '../components/exercises/RoundingSigfigsExercise.svelte';
+import RoundingSigfigsInstructions from '../components/exerciseInstructions/RoundingSigfigsInstructions.svelte';
 
 function defineExerciseType(config: {
   id: string;
@@ -347,5 +349,7 @@ export const exerciseTypes: Record<string, ExerciseType> = {
     nameKey: 'exercise.roundingSigfigs.name',
     descriptionKey: 'exercise.roundingSigfigs.desc',
     generate: generateRoundingSigfigs,
+    component: RoundingSigfigsExercise,
+    instructionComponent: RoundingSigfigsInstructions,
   }),
 };

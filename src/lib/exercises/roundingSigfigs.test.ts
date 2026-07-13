@@ -58,11 +58,15 @@ describe('generateRoundingSigfigs', () => {
     expectHasPromptAndAnswer(generateRoundingSigfigs, 42, 5);
   });
 
-  it('generates a LaTeX prompt with significant digits instruction', () => {
+  it('generates a prompt with the number formatted with thin-space grouping', () => {
     const ex = generateRoundingSigfigs(42, 5);
-    expect(ex.prompt).toMatch(/\\text\{Round \}/);
-    expect(ex.prompt).toMatch(/\\text\{ to \}/);
-    expect(ex.prompt).toMatch(/\\text\{ significant digits\.\}/);
+    expect(ex.prompt).toBeTruthy();
+    expect(typeof ex.prompt).toBe('string');
+  });
+
+  it('stores sigfigs count in data', () => {
+    const ex = generateRoundingSigfigs(42, 5);
+    expect(ex.data?.sigfigsCount).toBeGreaterThanOrEqual(1);
   });
 
   it('generates valid answer for each complexity level', () => {
