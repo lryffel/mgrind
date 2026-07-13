@@ -39,6 +39,10 @@ const dict = {
     en: 'Substitute ',
     de: 'Setze ',
   },
+  'exercise.substitution.and': {
+    en: ' and ',
+    de: ' und ',
+  },
   'exercise.substitution.promptAfter': {
     en: '',
     de: ' ein',

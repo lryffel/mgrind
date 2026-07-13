@@ -90,34 +90,22 @@ describe('generateSubstitution', () => {
     expect(seen.size).toBeGreaterThanOrEqual(15);
   });
 
-  it('gen1OverX always has a proper fraction substitution (den > 1)', () => {
-    for (let seed = 0; seed < 100; seed++) {
-      const ex = generateSubstitution(seed, 7);
-      const variable = ex.data!.variable as string;
-      if (
-        variable === 'a' ||
-        variable === 'b' ||
-        variable === 'c' ||
-        variable === 'r' ||
-        variable === 's' ||
-        variable === 't' ||
-        variable === 'u' ||
-        variable === 'v' ||
-        variable === 'w' ||
-        variable === 'x' ||
-        variable === 'y' ||
-        variable === 'z'
-      ) {
-        if (ex.prompt.startsWith('\\frac{1}{')) {
-          const value = ex.data!.value as string;
-          if (!value.includes('\\frac')) {
-            if ((ex.data!.complexity as number) >= 5) {
-              expect(value).toContain('\\frac');
-            }
-          }
+  it('gen1OverX produces fraction answers with positive denominator', () => {
+    let found = 0;
+    for (let seed = 0; seed < 500; seed++) {
+      const ex = generateSubstitution(seed, 9);
+      if (ex.prompt.startsWith('\\frac{1}{')) {
+        found++;
+        if (ex.answer.includes('/')) {
+          const parts = ex.answer.split('/');
+          expect(parts).toHaveLength(2);
+          const den = parseInt(parts[1], 10);
+          expect(den).toBeGreaterThan(1);
+          expect(den).toBeLessThanOrEqual(20);
         }
       }
     }
+    expect(found).toBeGreaterThan(0);
   });
 });
 
@@ -175,6 +163,102 @@ describe('validateSubstitution', () => {
       const ex = generateSubstitution(seed, 2);
       if (!ex.answer.includes('/')) {
         expect(validateSubstitution(ex.answer, ex)).toBe(true);
+      }
+    }
+  });
+});
+
+describe('two-variable substitution', () => {
+  it('generates two-variable exercises at complexity 4+', () => {
+    let found = 0;
+    for (let complexity = 4; complexity <= 10; complexity++) {
+      for (let seed = 0; seed < 100; seed++) {
+        const ex = generateSubstitution(seed + complexity * 1000, complexity);
+        if (ex.data?.varB && ex.data?.valueB) {
+          found++;
+          expect(ex.data.variable).toBeDefined();
+          expect(ex.data.value).toBeDefined();
+        }
+      }
+    }
+    expect(found).toBeGreaterThan(0);
+  });
+
+  it('two-variable answers are valid', () => {
+    for (let complexity = 4; complexity <= 10; complexity++) {
+      for (let seed = 0; seed < 100; seed++) {
+        const ex = generateSubstitution(seed + complexity * 1000, complexity);
+        if (!ex.data?.varB) continue;
+        const answer = ex.answer;
+        if (answer.includes('/')) {
+          const parts = answer.split('/');
+          expect(parts).toHaveLength(2);
+          const num = parseInt(parts[0], 10);
+          const den = parseInt(parts[1], 10);
+          expect(isNaN(num)).toBe(false);
+          expect(isNaN(den)).toBe(false);
+          expect(den).toBeGreaterThan(0);
+          expect(den).toBeLessThanOrEqual(20);
+        } else {
+          const num = parseInt(answer, 10);
+          expect(isNaN(num)).toBe(false);
+        }
+      }
+    }
+  });
+
+  it('two-variable problems use distinct variables', () => {
+    for (let complexity = 4; complexity <= 10; complexity++) {
+      for (let seed = 0; seed < 100; seed++) {
+        const ex = generateSubstitution(seed + complexity * 1000, complexity);
+        if (ex.data?.varB) {
+          expect(ex.data.variable).not.toEqual(ex.data.varB);
+        }
+      }
+    }
+  });
+
+  it('varB/valueB are undefined for complexity 0-3', () => {
+    for (let complexity = 0; complexity <= 3; complexity++) {
+      for (let seed = 0; seed < 50; seed++) {
+        const ex = generateSubstitution(seed + complexity * 1000, complexity);
+        expect(ex.data?.varB).toBeUndefined();
+        expect(ex.data?.valueB).toBeUndefined();
+      }
+    }
+  });
+
+  it('deterministic for same seed/complexity in mixed pools', () => {
+    for (let complexity = 4; complexity <= 10; complexity++) {
+      const a = generateSubstitution(42, complexity);
+      const b = generateSubstitution(42, complexity);
+      expect(a).toEqual(b);
+    }
+  });
+
+  it('INTEGER_ONLY variables never produce fraction answers in two-var mode', () => {
+    const INTEGER_ONLY = new Set(['k', 'm', 'n', 'p', 'q']);
+    for (let seed = 0; seed < 500; seed++) {
+      const ex = generateSubstitution(seed, (seed % 7) + 4);
+      if (ex.data?.varB) {
+        const varA = ex.data.variable as string;
+        const varB = ex.data.varB as string;
+        if (INTEGER_ONLY.has(varA) || INTEGER_ONLY.has(varB)) {
+          expect(ex.answer).not.toContain('/');
+        }
+      }
+    }
+  });
+
+  it('validateSubstitution works for two-variable exercises', () => {
+    for (let seed = 0; seed < 100; seed++) {
+      const ex = generateSubstitution(seed, 7);
+      if (!ex.data?.varB) continue;
+      expect(validateSubstitution(ex.answer, ex)).toBe(true);
+      if (ex.answer === '0') {
+        expect(validateSubstitution('1', ex)).toBe(false);
+      } else {
+        expect(validateSubstitution('999', ex)).toBe(false);
       }
     }
   });

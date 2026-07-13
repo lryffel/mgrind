@@ -38,9 +38,11 @@
 
 <ExerciseShell {exercise} {feedback} {submitAnswer} {onNext} {validationError}>
   <p class="prompt-label">
-    {_('exercise.substitution.promptBefore')}<Math expression={`${variable} = ${value}`} />{_(
-      'exercise.substitution.promptAfter',
-    )}
+    {_('exercise.substitution.promptBefore')}<Math expression={`${variable} = ${value}`} />
+    {#if exercise.data?.varB && exercise.data?.valueB}
+      {_('exercise.substitution.and')}<Math expression={`${exercise.data.varB} = ${exercise.data.valueB}`} />
+    {/if}
+    {_('exercise.substitution.promptAfter')}
   </p>
   {#if complexity >= 5 && answerIsFraction}
     <p class="hint">{_('exercise.substitution.reduceHint')}</p>

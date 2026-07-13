@@ -1,6 +1,6 @@
 import type { Exercise } from '../types';
 import { mulberry32 } from '../prng';
-import { randInt, pick } from '../math/rng';
+import { randInt, pick, pickExclude } from '../math/rng';
 import { reduceFrac, parseFrac } from '../math/fraction';
 import { gcd, clampComplexity } from '../math/number';
 import { coeffLatex } from '../math/latex';
@@ -16,6 +16,20 @@ function randomFrac(rng: () => number): [number, number] {
   const num = randInt(rng, 1, 8);
   const g = gcd(num, den);
   return [num / g, den / g];
+}
+
+function pickSubValue(rng: () => number, allowFrac: boolean): [number, number] {
+  let subNum: number;
+  let subDen: number;
+  if (allowFrac && rng() > 0.5) {
+    subDen = randInt(rng, 2, 5);
+    subNum = randInt(rng, 1, Math.min(6, subDen * 2));
+  } else {
+    subNum = randInt(rng, 0, 5);
+    subDen = 1;
+  }
+  const g = gcd(subNum, subDen);
+  return [subNum / g, subDen / g];
 }
 
 function randomCoeff(rng: () => number, allowFrac: boolean): [number, number] {
@@ -55,6 +69,24 @@ interface GenOutput {
 }
 
 type GenFunc = (input: GenInput) => GenOutput;
+
+interface Gen2Input {
+  rng: () => number;
+  varA: string;
+  varB: string;
+  complexity: number;
+  integerOnly: boolean;
+}
+
+interface Gen2Output {
+  term: string;
+  answer: string;
+  valueA: string;
+  valueB: string;
+  hasFractionAnswer: boolean;
+}
+
+type Gen2Func = (input: Gen2Input) => Gen2Output;
 
 function genAX2(input: GenInput): GenOutput {
   const { rng, variable: v, complexity, integerOnly } = input;
@@ -340,6 +372,313 @@ function genSqrtA2PlusX2(input: GenInput): GenOutput {
   };
 }
 
+function gen2LinearSum(input: Gen2Input): Gen2Output {
+  const { rng, varA: a, varB: b, complexity, integerOnly } = input;
+  const allowFrac = !integerOnly && complexity >= 5;
+
+  for (let attempt = 0; attempt < 30; attempt++) {
+    const [aNum, aDen] = randomCoeff(rng, allowFrac);
+    const [bNum, bDen] = randomCoeff(rng, allowFrac);
+
+    const [subANum, subADen] = pickSubValue(rng, allowFrac);
+    const [subBNum, subBDen] = pickSubValue(rng, allowFrac);
+
+    const axNum = aNum * subANum;
+    const axDen = aDen * subADen;
+    const byNum = bNum * subBNum;
+    const byDen = bDen * subBDen;
+
+    const ansNum = axNum * byDen + byNum * axDen;
+    const ansDen = axDen * byDen;
+
+    if (ansDen === 0) continue;
+    const g = gcd(Math.abs(ansNum), ansDen);
+    const resultDen = ansDen / g;
+
+    if (resultDen <= 20) {
+      const answer = reduceFrac(ansNum, ansDen);
+      return {
+        term: `${coeffLatex(aNum, aDen, a)} + ${coeffLatex(bNum, bDen, b)}`,
+        answer: [answer[0], answer[1]].join('/').replace(/\/1$/, ''),
+        valueA: fracDisplay(subANum, subADen),
+        valueB: fracDisplay(subBNum, subBDen),
+        hasFractionAnswer: answer[1] > 1,
+      };
+    }
+  }
+
+  const x = randInt(rng, 0, 5);
+  const y = randInt(rng, 0, 5);
+  const ac = randInt(rng, 1, 9);
+  const bc = randInt(rng, 1, 9);
+  return {
+    term: `${coeffLatex(ac, 1, a)} + ${coeffLatex(bc, 1, b)}`,
+    answer: String(ac * x + bc * y),
+    valueA: String(x),
+    valueB: String(y),
+    hasFractionAnswer: false,
+  };
+}
+
+function gen2LinearSquare(input: Gen2Input): Gen2Output {
+  const { rng, varA: a, varB: b, complexity, integerOnly } = input;
+  const allowFrac = !integerOnly && complexity >= 5;
+
+  for (let attempt = 0; attempt < 30; attempt++) {
+    const [aNum, aDen] = randomCoeff(rng, allowFrac);
+    const [bNum, bDen] = randomCoeff(rng, allowFrac);
+    const [subANum, subADen] = pickSubValue(rng, allowFrac);
+    const [subBNum, subBDen] = pickSubValue(rng, allowFrac);
+
+    const axNum = aNum * subANum;
+    const axDen = aDen * subADen;
+    const by2Num = bNum * subBNum * subBNum;
+    const by2Den = bDen * subBDen * subBDen;
+
+    const ansNum = axNum * by2Den + by2Num * axDen;
+    const ansDen = axDen * by2Den;
+
+    if (ansDen === 0) continue;
+    const g = gcd(Math.abs(ansNum), ansDen);
+    const resultDen = ansDen / g;
+
+    if (resultDen <= 20) {
+      const answer = reduceFrac(ansNum, ansDen);
+      return {
+        term: `${coeffLatex(aNum, aDen, a)} + ${coeffLatex(bNum, bDen, `${b}^{2}`)}`,
+        answer: [answer[0], answer[1]].join('/').replace(/\/1$/, ''),
+        valueA: fracDisplay(subANum, subADen),
+        valueB: fracDisplay(subBNum, subBDen),
+        hasFractionAnswer: answer[1] > 1,
+      };
+    }
+  }
+
+  const x = randInt(rng, 0, 5);
+  const y = randInt(rng, 0, 5);
+  const ac = randInt(rng, 1, 9);
+  const bc = randInt(rng, 1, 9);
+  return {
+    term: `${coeffLatex(ac, 1, a)} + ${coeffLatex(bc, 1, `${b}^{2}`)}`,
+    answer: String(ac * x + bc * y * y),
+    valueA: String(x),
+    valueB: String(y),
+    hasFractionAnswer: false,
+  };
+}
+
+function gen2BothSquared(input: Gen2Input): Gen2Output {
+  const { rng, varA: a, varB: b, complexity, integerOnly } = input;
+  const allowFrac = !integerOnly && complexity >= 5;
+
+  for (let attempt = 0; attempt < 30; attempt++) {
+    const [aNum, aDen] = randomCoeff(rng, allowFrac);
+    const [bNum, bDen] = randomCoeff(rng, allowFrac);
+    const [subANum, subADen] = pickSubValue(rng, allowFrac);
+    const [subBNum, subBDen] = pickSubValue(rng, allowFrac);
+
+    const ax2Num = aNum * subANum * subANum;
+    const ax2Den = aDen * subADen * subADen;
+    const by2Num = bNum * subBNum * subBNum;
+    const by2Den = bDen * subBDen * subBDen;
+
+    const ansNum = ax2Num * by2Den + by2Num * ax2Den;
+    const ansDen = ax2Den * by2Den;
+
+    if (ansDen === 0) continue;
+    const g = gcd(Math.abs(ansNum), ansDen);
+    const resultDen = ansDen / g;
+
+    if (resultDen <= 20) {
+      const answer = reduceFrac(ansNum, ansDen);
+      return {
+        term: `${coeffLatex(aNum, aDen, `${a}^{2}`)} + ${coeffLatex(bNum, bDen, `${b}^{2}`)}`,
+        answer: [answer[0], answer[1]].join('/').replace(/\/1$/, ''),
+        valueA: fracDisplay(subANum, subADen),
+        valueB: fracDisplay(subBNum, subBDen),
+        hasFractionAnswer: answer[1] > 1,
+      };
+    }
+  }
+
+  const x = randInt(rng, 0, 5);
+  const y = randInt(rng, 0, 5);
+  const ac = randInt(rng, 1, 9);
+  const bc = randInt(rng, 1, 9);
+  return {
+    term: `${coeffLatex(ac, 1, `${a}^{2}`)} + ${coeffLatex(bc, 1, `${b}^{2}`)}`,
+    answer: String(ac * x * x + bc * y * y),
+    valueA: String(x),
+    valueB: String(y),
+    hasFractionAnswer: false,
+  };
+}
+
+function gen2Product(input: Gen2Input): Gen2Output {
+  const { rng, varA: a, varB: b } = input;
+  const scaled = rng() > 0.5;
+
+  for (let attempt = 0; attempt < 20; attempt++) {
+    const subA = randInt(rng, 1, 6);
+    const subB = randInt(rng, 1, 6);
+
+    if (scaled) {
+      const coeff = randInt(rng, 1, 5);
+      const ans = coeff * subA * subB;
+      return {
+        term: `${coeff} \\cdot ${a} \\cdot ${b}`,
+        answer: String(ans),
+        valueA: String(subA),
+        valueB: String(subB),
+        hasFractionAnswer: false,
+      };
+    }
+
+    const ans = subA * subB;
+    return {
+      term: `${a} \\cdot ${b}`,
+      answer: String(ans),
+      valueA: String(subA),
+      valueB: String(subB),
+      hasFractionAnswer: false,
+    };
+  }
+
+  return {
+    term: `${a} \\cdot ${b}`,
+    answer: '1',
+    valueA: '1',
+    valueB: '1',
+    hasFractionAnswer: false,
+  };
+}
+
+function gen2Quotient(input: Gen2Input): Gen2Output {
+  const { rng, varA: a, varB: b, complexity, integerOnly } = input;
+  const allowFrac = !integerOnly && complexity >= 5;
+
+  for (let attempt = 0; attempt < 30; attempt++) {
+    const [aNum, aDen] = randomCoeff(rng, allowFrac);
+    const [bNum, bDen] = randomCoeff(rng, allowFrac);
+    const [subANum, subADen] = pickSubValue(rng, allowFrac);
+    const [subBNum, subBDen] = pickSubValue(rng, allowFrac);
+
+    const ansNum = aNum * subANum * bDen * subBDen;
+    const ansDen = aDen * subADen * bNum * subBNum;
+
+    if (ansDen === 0) continue;
+    const g = gcd(Math.abs(ansNum), ansDen);
+    const resultDen = ansDen / g;
+
+    if (resultDen <= 20) {
+      const answer = reduceFrac(ansNum, ansDen);
+      return {
+        term: `\\frac{${coeffLatex(aNum, aDen, a)}}{${coeffLatex(bNum, bDen, b)}}`,
+        answer: [answer[0], answer[1]].join('/').replace(/\/1$/, ''),
+        valueA: fracDisplay(subANum, subADen),
+        valueB: fracDisplay(subBNum, subBDen),
+        hasFractionAnswer: answer[1] > 1,
+      };
+    }
+  }
+
+  const x = randInt(rng, 1, 5);
+  const y = randInt(rng, 1, 5);
+  const ac = randInt(rng, 1, 5);
+  const bc = randInt(rng, 1, 5);
+  const ansNum = ac * x;
+  const ansDen = bc * y;
+  const fracGcd = gcd(ansNum, ansDen);
+  return {
+    term: `\\frac{${ac}${a}}{${bc}${b}}`,
+    answer: `${ansNum / fracGcd}/${ansDen / fracGcd}`,
+    valueA: String(x),
+    valueB: String(y),
+    hasFractionAnswer: ansDen / fracGcd > 1,
+  };
+}
+
+function gen2BinomialSquare(input: Gen2Input): Gen2Output {
+  const { rng, varA: a, varB: b } = input;
+  const x = randInt(rng, 1, 7);
+  const y = randInt(rng, 1, 7);
+  const sum = x + y;
+  return {
+    term: `(${a} + ${b})^{2}`,
+    answer: String(sum * sum),
+    valueA: String(x),
+    valueB: String(y),
+    hasFractionAnswer: false,
+  };
+}
+
+function gen2ReciprocalSum(input: Gen2Input): Gen2Output {
+  const { rng, varA: a, varB: b } = input;
+
+  for (let attempt = 0; attempt < 20; attempt++) {
+    const aNum = randInt(rng, 2, 12);
+    const divisorsA: number[] = [];
+    for (let d = 1; d <= aNum; d++) {
+      if (aNum % d === 0) divisorsA.push(d);
+    }
+    if (divisorsA.length < 2) continue;
+
+    const bNum = randInt(rng, 2, 12);
+    const divisorsB: number[] = [];
+    for (let d = 1; d <= bNum; d++) {
+      if (bNum % d === 0) divisorsB.push(d);
+    }
+    if (divisorsB.length < 2) continue;
+
+    const x = pick(
+      rng,
+      divisorsA.filter((d) => d > 1),
+    );
+    const y = pick(
+      rng,
+      divisorsB.filter((d) => d > 1),
+    );
+
+    const ans = aNum / x + bNum / y;
+    return {
+      term: `\\frac{${aNum}}{${a}} + \\frac{${bNum}}{${b}}`,
+      answer: String(ans),
+      valueA: String(x),
+      valueB: String(y),
+      hasFractionAnswer: false,
+    };
+  }
+
+  return {
+    term: `\\frac{6}{${a}} + \\frac{6}{${b}}`,
+    answer: '5',
+    valueA: '2',
+    valueB: '3',
+    hasFractionAnswer: false,
+  };
+}
+
+function gen2Pythagorean(input: Gen2Input): Gen2Output {
+  const { rng, varA: a, varB: b } = input;
+  const [p, q, r] = pick(rng, ADD_TRIPLES);
+  if (rng() > 0.5) {
+    return {
+      term: `\\sqrt{${a}^{2} + ${b}^{2}}`,
+      answer: String(r),
+      valueA: String(p),
+      valueB: String(q),
+      hasFractionAnswer: false,
+    };
+  }
+  return {
+    term: `\\sqrt{${a}^{2} + ${b}^{2}}`,
+    answer: String(r),
+    valueA: String(q),
+    valueB: String(p),
+    hasFractionAnswer: false,
+  };
+}
+
 function isValidExercise(ex: Exercise): boolean {
   const answer = ex.answer;
   if (answer.includes('/')) {
@@ -371,12 +710,52 @@ function poolFor(clamped: number, integerOnly: boolean): GenFunc[] {
   return high;
 }
 
+function twoVarPoolFor(clamped: number, integerOnly: boolean): Gen2Func[] {
+  const band4: Gen2Func[] = [gen2LinearSum, gen2LinearSquare, gen2Product];
+  if (clamped <= 5) return band4;
+
+  const band6: Gen2Func[] = [...band4, gen2BothSquared, gen2BinomialSquare];
+  if (!integerOnly) {
+    band6.push(gen2Quotient);
+  }
+  if (clamped <= 7) return band6;
+
+  const band8: Gen2Func[] = [...band6, gen2ReciprocalSum, gen2Pythagorean];
+  return band8;
+}
+
 export function generateSubstitution(seed: number, complexity: number): Exercise {
   const rng = mulberry32(seed);
-  const variable = pick(rng, ALL_VARS);
-  const integerOnly = INTEGER_ONLY.has(variable);
   const clamped = clampComplexity(complexity, 10);
 
+  if (clamped >= 4 && rng() > 0.5) {
+    const varA = pick(rng, ALL_VARS);
+    const varB = pickExclude(rng, ALL_VARS, [varA]);
+    const integerOnly = INTEGER_ONLY.has(varA) || INTEGER_ONLY.has(varB);
+    const twoVarPool = twoVarPoolFor(clamped, integerOnly);
+    if (twoVarPool.length > 0) {
+      for (let attempt = 0; attempt < 15; attempt++) {
+        const gen = pick(rng, twoVarPool);
+        const result = gen({ rng, varA, varB, complexity: clamped, integerOnly });
+        const ex: Exercise = {
+          prompt: result.term,
+          answer: result.answer,
+          data: {
+            variable: varA,
+            value: result.valueA,
+            varB,
+            valueB: result.valueB,
+            term: result.term,
+            complexity: clamped,
+          },
+        };
+        if (isValidExercise(ex)) return ex;
+      }
+    }
+  }
+
+  const variable = pick(rng, ALL_VARS);
+  const integerOnly = INTEGER_ONLY.has(variable);
   const pool = poolFor(clamped, integerOnly);
 
   if (clamped >= 5 && !integerOnly) {

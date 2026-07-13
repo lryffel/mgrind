@@ -26,6 +26,7 @@ export interface ExerciseData {
   subType?: string;
   variable?: string;
   value?: string;
+  valueB?: string;
   term?: string;
   complexity?: number;
   varA?: string | null;
