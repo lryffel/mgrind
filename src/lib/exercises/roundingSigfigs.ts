@@ -106,6 +106,17 @@ function pickGenerator(clamped: number): GeneratorFn {
   return generators[0].fn;
 }
 
+function formatNumberForPrompt(value: number): string {
+  const s = String(value);
+  const dotIdx = s.indexOf('.');
+  if (dotIdx === -1) {
+    return s.replace(/\B(?=(\d{3})+(?!\d))/g, '\\,');
+  }
+  const intPart = s.slice(0, dotIdx);
+  const decPart = s.slice(dotIdx);
+  return intPart.replace(/\B(?=(\d{3})+(?!\d))/g, '\\,') + decPart;
+}
+
 export function generateRoundingSigfigs(seed: number, complexity: number): Exercise {
   const rng = mulberry32(seed);
   const clamped = clampComplexity(complexity, 10);
@@ -113,7 +124,7 @@ export function generateRoundingSigfigs(seed: number, complexity: number): Exerc
   const { value, n } = gen(rng);
   const answer = roundToSigFigs(value, n);
   return {
-    prompt: `\\text{Round } ${value} \\text{ to } ${n} \\text{ significant digits.}`,
+    prompt: `\\text{Round } ${formatNumberForPrompt(value)} \\text{ to } ${n} \\text{ significant digits.}`,
     answer,
   };
 }
