@@ -135,29 +135,7 @@ describe('generateFactoringOutAndBinomial', () => {
   });
 
   it('variables are drawn from the shared pool (no separate GCF_VARS/INNER_VARS)', () => {
-    const poolVars = [
-      'a',
-      'b',
-      'c',
-      'd',
-      'i',
-      'j',
-      'k',
-      '\\ell',
-      'm',
-      'n',
-      'p',
-      'q',
-      'r',
-      's',
-      't',
-      'u',
-      'v',
-      'w',
-      'x',
-      'y',
-      'z',
-    ];
+    const poolVars = ['x', 'y', 'z', 'a', 'b', 'c'];
     for (let seed = 0; seed < 200; seed++) {
       const ex = generateFactoringOutAndBinomial(seed, 10);
       const data = d(ex);

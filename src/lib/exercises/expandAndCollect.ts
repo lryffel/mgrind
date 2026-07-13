@@ -11,8 +11,8 @@ interface ExprPart {
   op: '+' | '-';
 }
 
-const SINGLE_VARS: string[][] = [['x'], ['a'], ['n'], ['t'], ['m'], ['p']];
-const VAR_PAIRS: [string, string][] = [
+const SINGLE_VARS = [['x'], ['a'], ['n'], ['t'], ['m'], ['p']];
+const VAR_PAIRS = [
   ['a', 'b'],
   ['x', 'y'],
   ['m', 'n'],

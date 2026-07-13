@@ -2,11 +2,9 @@ export const VAR_POOL = [
   'a',
   'b',
   'c',
-  'd',
   'i',
   'j',
   'k',
-  '\\ell',
   'm',
   'n',
   'p',
@@ -21,5 +19,3 @@ export const VAR_POOL = [
   'y',
   'z',
 ] as const;
-
-export const INTEGER_ONLY = new Set<string>(['k', '\\ell', 'm', 'n', 'p', 'q']);

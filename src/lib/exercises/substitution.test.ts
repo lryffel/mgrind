@@ -1,7 +1,12 @@
 import { describe, it, expect } from 'vitest';
 import { generateSubstitution, validateSubstitution } from './substitution';
 import type { Exercise } from '../types';
-import { VAR_POOL, INTEGER_ONLY } from '../math/varpool';
+
+function allVariablesPresent(): Set<string> {
+  return new Set(['a', 'b', 'c', 'k', 'm', 'n', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z']);
+}
+
+const INTEGER_ONLY = new Set(['k', 'm', 'n', 'p', 'q']);
 
 describe('generateSubstitution', () => {
   it('returns a valid exercise with prompt and answer', () => {
@@ -27,7 +32,7 @@ describe('generateSubstitution', () => {
   });
 
   it('uses only valid variable names', () => {
-    const valid = new Set<string>([...VAR_POOL]);
+    const valid = allVariablesPresent();
     for (let seed = 0; seed < 200; seed++) {
       const ex = generateSubstitution(seed, seed % 10);
       expect(valid.has(ex.data!.variable as string)).toBe(true);

@@ -14,7 +14,7 @@ const VAR_PAIRS: [string, string][] = [
   ['r', 's'],
 ];
 
-const SINGLE_VARS: string[] = ['x', 'y', 'a', 'b', 'm', 'n', 'p', 'q', 's', 't', 'u', 'v'];
+const SINGLE_VARS = ['x', 'y', 'a', 'b', 'm', 'n', 'p', 'q', 's', 't', 'u', 'v'];
 
 interface TermDesc {
   coeff: number;

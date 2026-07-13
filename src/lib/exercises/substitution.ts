@@ -4,7 +4,6 @@ import { randInt, pick } from '../math/rng';
 import { reduceFrac, parseFrac } from '../math/fraction';
 import { gcd, clampComplexity } from '../math/number';
 import { coeffLatex } from '../math/latex';
-import { VAR_POOL, INTEGER_ONLY } from '../math/varpool';
 
 function fracDisplay(num: number, den: number): string {
   if (den === 1) return String(num);
@@ -25,6 +24,9 @@ function randomCoeff(rng: () => number, allowFrac: boolean): [number, number] {
   }
   return [randInt(rng, 1, 9), 1];
 }
+
+const ALL_VARS = ['a', 'b', 'c', 'k', 'm', 'n', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'];
+const INTEGER_ONLY = new Set(['k', 'm', 'n', 'p', 'q']);
 
 const ADD_TRIPLES: [number, number, number][] = [
   [3, 4, 5],
@@ -371,7 +373,7 @@ function poolFor(clamped: number, integerOnly: boolean): GenFunc[] {
 
 export function generateSubstitution(seed: number, complexity: number): Exercise {
   const rng = mulberry32(seed);
-  const variable = pick(rng, [...VAR_POOL]);
+  const variable = pick(rng, ALL_VARS);
   const integerOnly = INTEGER_ONLY.has(variable);
   const clamped = clampComplexity(complexity, 10);
 

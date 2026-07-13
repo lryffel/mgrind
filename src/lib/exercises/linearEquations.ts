@@ -4,9 +4,10 @@ import { clampComplexity } from '../math/number';
 import { randInt, pick } from '../math/rng';
 import { reduceFrac, parseFrac } from '../math/fraction';
 import { coeffLatex } from '../math/latex';
-import { VAR_POOL } from '../math/varpool';
 
 type Term = { type: 'coeff' | 'const'; num: number; den: number };
+
+const ALL_VARS = ['a', 'b', 'c', 'k', 'm', 'n', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'];
 
 const EASY_FRACTIONS: [number, number][] = [
   [1, 2],
@@ -121,7 +122,7 @@ function parseAnswer(s: string): [number, number] | null {
 
 export function generateLinearEquations(seed: number, complexity: number): Exercise {
   const rng = mulberry32(seed);
-  const variable = pick(rng, [...VAR_POOL]);
+  const variable = pick(rng, ALL_VARS);
   const clamped = clampComplexity(complexity, 10);
 
   const isLow = clamped < 5;
