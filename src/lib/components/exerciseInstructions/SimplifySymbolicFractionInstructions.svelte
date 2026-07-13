@@ -40,28 +40,26 @@
   <p><strong>Examples:</strong></p>
   <ul>
     <li>
-      <Math expression={frac1} /> simplifies to <Math expression="-1" /> → enter <Math
-        expression="-1" />
+      <Math expression={frac1} /> simplifies to <Math expression="-1" /> → enter <Math expression="-1" />
     </li>
     <li>
-      <Math expression={frac2} /> simplifies to <Math expression={half} /> → enter <Math
-        expression={half} />
+      <Math expression={frac2} /> simplifies to <Math expression={half} /> → enter <Math expression={half} />
     </li>
     <li>
-      <Math expression={frac3} /> simplifies to <Math expression="a+b" /> → enter <Math
-        expression="1" /> for <Math expression="a" /> and <Math expression="1" /> for <Math
-        expression="b" />
+      <Math expression={frac3} /> simplifies to <Math expression="a+b" /> → enter <Math expression="1" /> for <Math
+        expression="a"
+      /> and <Math expression="1" /> for <Math expression="b" />
     </li>
     <li>
-      <Math expression={frac4} /> simplifies to <Math expression="a-b" /> → enter <Math
-        expression="1" /> for <Math expression="a" /> and <Math expression="-1" /> for <Math
-        expression="b" />
+      <Math expression={frac4} /> simplifies to <Math expression="a-b" /> → enter <Math expression="1" /> for <Math
+        expression="a"
+      /> and <Math expression="-1" /> for <Math expression="b" />
     </li>
   </ul>
 {:else}
   <p>
-    Kürze den symbolischen Bruch so weit wie möglich. Klammere gemeinsame Faktoren (Zahlen und Variablen) in Zähler
-    und Nenner aus und kürze sie. Wende wo nötig die binomischen Formeln und Vorzeichenregeln an.
+    Kürze den symbolischen Bruch so weit wie möglich. Klammere gemeinsame Faktoren (Zahlen und Variablen) in Zähler und
+    Nenner aus und kürze sie. Wende wo nötig die binomischen Formeln und Vorzeichenregeln an.
   </p>
 
   <p><strong>Binomische Formeln:</strong></p>
@@ -78,30 +76,28 @@
   </ul>
 
   <p>
-    Gib den vereinfachten Ausdruck als Koeffizienten für jeden Variablenteil ein. Bei einem konstanten Ergebnis
-    gib einfach die Zahl ein. Bei einem Monom gib den Koeffizienten ein. Bei einer Summe gib einen Koeffizienten
-    für jeden Variablenteil ein.
+    Gib den vereinfachten Ausdruck als Koeffizienten für jeden Variablenteil ein. Bei einem konstanten Ergebnis gib
+    einfach die Zahl ein. Bei einem Monom gib den Koeffizienten ein. Bei einer Summe gib einen Koeffizienten für jeden
+    Variablenteil ein.
   </p>
 
   <p><strong>Beispiele:</strong></p>
   <ul>
     <li>
-      <Math expression={frac1} /> vereinfacht zu <Math expression="-1" /> → gib <Math
-        expression="-1" /> ein
+      <Math expression={frac1} /> vereinfacht zu <Math expression="-1" /> → gib <Math expression="-1" /> ein
     </li>
     <li>
-      <Math expression={frac2} /> vereinfacht zu <Math expression={half} /> → gib <Math
-        expression={half} /> ein
+      <Math expression={frac2} /> vereinfacht zu <Math expression={half} /> → gib <Math expression={half} /> ein
     </li>
     <li>
-      <Math expression={frac3} /> vereinfacht zu <Math expression="a+b" /> → gib <Math
-        expression="1" /> für <Math expression="a" /> und <Math expression="1" /> für <Math
-        expression="b" /> ein
+      <Math expression={frac3} /> vereinfacht zu <Math expression="a+b" /> → gib <Math expression="1" /> für <Math
+        expression="a"
+      /> und <Math expression="1" /> für <Math expression="b" /> ein
     </li>
     <li>
-      <Math expression={frac4} /> vereinfacht zu <Math expression="a-b" /> → gib <Math
-        expression="1" /> für <Math expression="a" /> und <Math expression="-1" /> für <Math
-        expression="b" /> ein
+      <Math expression={frac4} /> vereinfacht zu <Math expression="a-b" /> → gib <Math expression="1" /> für <Math
+        expression="a"
+      /> und <Math expression="-1" /> für <Math expression="b" /> ein
     </li>
   </ul>
 {/if}

@@ -22,7 +22,9 @@
     return getDisciplineProgress(discipline, exerciseTypes);
   });
 
-  $effect(() => { exerciseProgress.value = barProgress; });
+  $effect(() => {
+    exerciseProgress.value = barProgress;
+  });
 
   $effect(() => {
     if (!session || disciplineId !== session.disciplineId) {

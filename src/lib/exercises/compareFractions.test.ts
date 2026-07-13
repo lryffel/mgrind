@@ -140,7 +140,10 @@ describe('validateCompareFractions', () => {
 
   it('accepts answer with extra whitespace', () => {
     const ex = generateCompareFractions(42, 3);
-    const parts = ex.answer.split(',').map((p) => ` ${p} `).join(',');
+    const parts = ex.answer
+      .split(',')
+      .map((p) => ` ${p} `)
+      .join(',');
     expect(validateCompareFractions(parts, ex)).toBe(true);
   });
 });

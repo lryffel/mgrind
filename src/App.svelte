@@ -63,5 +63,3 @@
     <ExerciseScreen disciplineId={activeDisciplineId} onBack={backToMenu} typeId={selectedTypeId ?? undefined} />
   {/if}
 </main>
-
-

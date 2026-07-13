@@ -138,11 +138,7 @@ describe('generateSimplifySymbolicFraction', () => {
     for (let seed = 0; seed < 500; seed++) {
       const ex = generateSimplifySymbolicFraction(seed, 7);
       const fields = getFields(ex);
-      if (
-        fields.length === 2 &&
-        fields[0].variablePart.includes('^{2}') &&
-        fields[1].variablePart.length === 2
-      ) {
+      if (fields.length === 2 && fields[0].variablePart.includes('^{2}') && fields[1].variablePart.length === 2) {
         seen.add(seed);
       }
     }

@@ -449,22 +449,22 @@ export function generateSimplifySymbolicFraction(seed: number, complexity: numbe
 
   if (clamped <= 7) {
     const roll = rng();
-    if (roll < 0.10) return genBinomialThird(rng);
+    if (roll < 0.1) return genBinomialThird(rng);
     if (roll < 0.25) return genBinomialSquare(rng);
     if (roll < 0.45) return genFactBinom(rng);
-    if (roll < 0.60) return genBinomialSquareAsym(rng);
-    if (roll < 0.70) return genFactoredConstantSign(rng);
-    if (roll < 0.80) return genSignMonomial(rng);
-    if (roll < 0.90) return genBinomialThirdFactor(rng);
+    if (roll < 0.6) return genBinomialSquareAsym(rng);
+    if (roll < 0.7) return genFactoredConstantSign(rng);
+    if (roll < 0.8) return genSignMonomial(rng);
+    if (roll < 0.9) return genBinomialThirdFactor(rng);
     return genFactorMonomial(rng);
   }
 
   if (clamped <= 9) {
     const roll = rng();
-    if (roll < 0.10) return genBinomialThird(rng);
-    if (roll < 0.20) return genBinomialSquare(rng);
+    if (roll < 0.1) return genBinomialThird(rng);
+    if (roll < 0.2) return genBinomialSquare(rng);
     if (roll < 0.35) return genFactBinom(rng);
-    if (roll < 0.50) return genFactBinomDen(rng);
+    if (roll < 0.5) return genFactBinomDen(rng);
     if (roll < 0.65) return genBinomialSquareAsym(rng);
     if (roll < 0.75) return genBinomialThirdFactor(rng);
     if (roll < 0.85) return genSignMonomial(rng);
@@ -472,9 +472,9 @@ export function generateSimplifySymbolicFraction(seed: number, complexity: numbe
   }
 
   const roll = rng();
-  if (roll < 0.10) return genFactBinom(rng);
+  if (roll < 0.1) return genFactBinom(rng);
   if (roll < 0.25) return genFactBinomDen(rng);
-  if (roll < 0.40) return genBinomialSquareAsym(rng);
+  if (roll < 0.4) return genBinomialSquareAsym(rng);
   if (roll < 0.52) return genBinomialThirdFactor(rng);
   if (roll < 0.62) return genBinomialSquare(rng);
   if (roll < 0.72) return genBinomialThird(rng);

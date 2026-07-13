@@ -51,28 +51,36 @@
           <Math expression={`\\dfrac{${comp.num1}}{${comp.den1}}`} />
         </span>
         {#if feedback === null}
-          <div class="button-group" role="radiogroup" aria-label="{_('exercise.compareFractions.operatorSelect')} {i + 1}">
+          <div
+            class="button-group"
+            role="radiogroup"
+            aria-label="{_('exercise.compareFractions.operatorSelect')} {i + 1}"
+          >
             <button
               class={'op-btn' + (answers[i] === '<' ? ' selected' : '')}
               onclick={() => (answers[i] = '<')}
               role="radio"
-              aria-checked={answers[i] === '<'}
-            >&lt;</button>
+              aria-checked={answers[i] === '<'}>&lt;</button
+            >
             <button
               class={'op-btn' + (answers[i] === '=' ? ' selected' : '')}
               onclick={() => (answers[i] = '=')}
               role="radio"
-              aria-checked={answers[i] === '='}
-            >=</button>
+              aria-checked={answers[i] === '='}>=</button
+            >
             <button
               class={'op-btn' + (answers[i] === '>' ? ' selected' : '')}
               onclick={() => (answers[i] = '>')}
               role="radio"
-              aria-checked={answers[i] === '>'}
-            >&gt;</button>
+              aria-checked={answers[i] === '>'}>&gt;</button
+            >
           </div>
         {:else}
-          <span class="op-result" class:correct={correctAnswers[i].correct} class:incorrect={!correctAnswers[i].correct}>
+          <span
+            class="op-result"
+            class:correct={correctAnswers[i].correct}
+            class:incorrect={!correctAnswers[i].correct}
+          >
             {answers[i]}
           </span>
         {/if}
@@ -130,7 +138,9 @@
     font-size: 1.1rem;
     font-weight: 600;
     line-height: 1;
-    transition: border-color 0.2s ease-in-out, background 0.2s ease-in-out;
+    transition:
+      border-color 0.2s ease-in-out,
+      background 0.2s ease-in-out;
   }
 
   .button-group :global(.op-btn:hover) {

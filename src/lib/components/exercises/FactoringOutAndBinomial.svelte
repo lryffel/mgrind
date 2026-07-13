@@ -121,7 +121,12 @@
         <span class="continuation">
           <Math expression="=" />
           {#if selectedGcfIdx != null}
-            <NumericInput bind:value={gcfCoeff} variablePart={currentOption?.latex ?? ''} context="coefficient" blockSign />
+            <NumericInput
+              bind:value={gcfCoeff}
+              variablePart={currentOption?.latex ?? ''}
+              context="coefficient"
+              blockSign
+            />
           {/if}
           {#if selectedGcfIdx != null && hasFormula}
             <Math expression={cdot} />

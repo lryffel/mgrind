@@ -61,7 +61,14 @@ export function generateFractionTrivia(seed: number, complexity: number): Exerci
   const clamped = clampComplexity(complexity, 10);
   const rng = mulberry32(seed);
 
-  const basic = ['fractionTerms', 'integerFractions', 'denominatorRestriction', 'doubleFraction', 'fractionBar', 'zeroNumerator'];
+  const basic = [
+    'fractionTerms',
+    'integerFractions',
+    'denominatorRestriction',
+    'doubleFraction',
+    'fractionBar',
+    'zeroNumerator',
+  ];
   const mid = ['fractionDivision', 'multiplySame', 'reciprocalProduct'];
   const hard = ['mediant', 'reducibleFractions', 'negativeSignPlacement'];
   const hardest = ['equalFractions'];
@@ -110,7 +117,10 @@ export function generateFractionTrivia(seed: number, complexity: number): Exerci
     case 'equalFractions': {
       const useNumbers = rng() < 0.75;
       const numA = randInt(rng, 2, 5);
-      const numB = pick(rng, [2, 3, 4, 5, 7].filter((n) => n !== numA));
+      const numB = pick(
+        rng,
+        [2, 3, 4, 5, 7].filter((n) => n !== numA),
+      );
 
       const all = equalFractionsSignOptions(useNumbers, numA, numB);
       const shuffled = shuffle(rng, all);
@@ -128,7 +138,12 @@ export function generateFractionTrivia(seed: number, complexity: number): Exerci
       return {
         prompt: '',
         answer: correctIndices.map(String).join(','),
-        data: { triviaType: 'equalFractions', triviaOptionsLatex: optionsLatex, triviaA: useNumbers ? numA : undefined, triviaB: useNumbers ? numB : undefined },
+        data: {
+          triviaType: 'equalFractions',
+          triviaOptionsLatex: optionsLatex,
+          triviaA: useNumbers ? numA : undefined,
+          triviaB: useNumbers ? numB : undefined,
+        },
       };
     }
 
@@ -150,7 +165,10 @@ export function generateFractionTrivia(seed: number, complexity: number): Exerci
         { key: 'exercise.fractionTrivia.option.halveFraction.5', correctForHalve: false, correctForDouble: false },
         { key: 'exercise.fractionTrivia.option.halveFraction.6', correctForHalve: false, correctForDouble: false },
       ];
-      const withCorrect = allOptions.map((o) => ({ key: o.key, correct: isHalve ? o.correctForHalve : o.correctForDouble }));
+      const withCorrect = allOptions.map((o) => ({
+        key: o.key,
+        correct: isHalve ? o.correctForHalve : o.correctForDouble,
+      }));
       const shuffled = shuffle(rng, withCorrect);
       const showCount = clamped <= 5 ? 3 : 4;
       const shown = shuffled.slice(0, showCount);
@@ -161,7 +179,11 @@ export function generateFractionTrivia(seed: number, complexity: number): Exerci
       return {
         prompt: '',
         answer: correctIndices.map(String).join(','),
-        data: { triviaType: 'doubleFraction', triviaSubType: isHalve ? 'halveMC' : 'doubleMC', triviaOptionsText: shown.map((o) => o.key) },
+        data: {
+          triviaType: 'doubleFraction',
+          triviaSubType: isHalve ? 'halveMC' : 'doubleMC',
+          triviaOptionsText: shown.map((o) => o.key),
+        },
       };
     }
 
@@ -232,7 +254,10 @@ export function generateFractionTrivia(seed: number, complexity: number): Exerci
     case 'negativeSignPlacement': {
       const useNumbers = rng() < 0.75;
       const numA = randInt(rng, 2, 5);
-      const numB = pick(rng, [2, 3, 4, 5, 7].filter((n) => n !== numA));
+      const numB = pick(
+        rng,
+        [2, 3, 4, 5, 7].filter((n) => n !== numA),
+      );
 
       const all = negativeSignOptions(useNumbers, numA, numB);
       const shuffled = shuffle(rng, all);
@@ -250,7 +275,12 @@ export function generateFractionTrivia(seed: number, complexity: number): Exerci
       return {
         prompt: '',
         answer: correctIndices.map(String).join(','),
-        data: { triviaType: 'negativeSignPlacement', triviaOptionsLatex: optionsLatex, triviaA: useNumbers ? numA : undefined, triviaB: useNumbers ? numB : undefined },
+        data: {
+          triviaType: 'negativeSignPlacement',
+          triviaOptionsLatex: optionsLatex,
+          triviaA: useNumbers ? numA : undefined,
+          triviaB: useNumbers ? numB : undefined,
+        },
       };
     }
 

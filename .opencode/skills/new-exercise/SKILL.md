@@ -45,11 +45,11 @@ Use `10` unless you have a specific reason for fewer levels. The registry's `max
 
 ### Option A — Reuse existing
 
-| Use case            | Component              |
-| ------------------- | ---------------------- |
-| Single text input   | `TextInputExercise`    |
-| Fraction input      | `FractionExercise`     |
-| Multi-field (terms) | `MultiFieldExercise`   |
+| Use case            | Component            |
+| ------------------- | -------------------- |
+| Single text input   | `TextInputExercise`  |
+| Fraction input      | `FractionExercise`   |
+| Multi-field (terms) | `MultiFieldExercise` |
 
 ### Option B — Custom component
 
@@ -119,10 +119,10 @@ Register via `instructionComponent` in step 4. The `?` button appears automatica
 
 Add to `dict`:
 
-| Key | Purpose |
-| --- | ------- |
-| `exercise.<id>.name` | Display name |
-| `exercise.<id>.desc` | Short description |
+| Key                    | Purpose                             |
+| ---------------------- | ----------------------------------- |
+| `exercise.<id>.name`   | Display name                        |
+| `exercise.<id>.desc`   | Short description                   |
 | `exercise.<id>.prompt` | Imperative label (e.g. "Simplify.") |
 
 Use Swiss orthography (no "ß", always "ss": "gross", "Masse").

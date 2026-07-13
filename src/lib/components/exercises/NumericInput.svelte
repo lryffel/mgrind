@@ -64,10 +64,10 @@
       class="coeff-input"
       style="text-align: {align}"
       bind:value={num}
-        placeholder={resolvedNumPlaceholder}
-        {readonly}
-        onkeydown={handleKeydown}
-      />
+      placeholder={resolvedNumPlaceholder}
+      {readonly}
+      onkeydown={handleKeydown}
+    />
     <span class="fraction-bar"></span>
     <input
       type="text"

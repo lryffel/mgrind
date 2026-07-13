@@ -26,6 +26,20 @@ Exercise types are programmed individually. Exercise types might belong to multi
 
 Each exercise type features a generation function that depends on a random seed as well as a given complexity. The complexity comes in discrete steps and the number of possible complexities differs for each exercise type.
 
+### Complexity
+
+Complexity can arise in a variety of ways. One way is obvious: more annoying numbers. Multiplying two two-digit numbers usually takes 3 multiplications and one addition. For example, consider the multiplication 12 * 34. A typical student might argue
+
+- 12 * 30 is ... I don't know that by heart. Let's split it up.
+- 10 * 30 is 300.
+- 2 * 30 is 60.
+- So 12 * 30 is 300 + 60 = 360.
+- Now we need to add 12 * 4.
+- I can't do this directly either. This is 10 * 4 + 2 * 4 = 40 + 8 = 48.
+- Thus, the total is 12 * 30 + 12 * 4 = 360 + 48 = 408.
+
+This computation is high complexity in this app: if a problem, once mastered, is harder than multiplying two two-digit integers then it is maximum complexity.
+
 ## Progress
 
 The progress of an exercise type is given as the current complexity divided by the maximum complexity, adjusted so that it ranges from 0 to 1. I the user manages to solve an exercise, the exercise's complexity goes up. If they fail, it goes down. The progress of a discipline is the average of all progresses of the exercise types in the discipline, displayed to the user in percent.

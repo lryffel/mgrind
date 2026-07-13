@@ -38,7 +38,7 @@ function parseOperators(prompt: string): string[] {
 }
 
 function lcm(a: number, b: number): number {
-  return a / gcd(a, b) * b;
+  return (a / gcd(a, b)) * b;
 }
 
 describe('generateAdditionFraction', () => {
@@ -81,9 +81,9 @@ describe('generateAdditionFraction', () => {
       const ex = generateAdditionFraction(seed, 5);
       expect(countTerms(ex.prompt)).toBe(3);
     }
-    const hasMinus = Array.from({ length: 50 }, (_, i) =>
-      generateAdditionFraction(i, 6).prompt.includes('-'),
-    ).some(Boolean);
+    const hasMinus = Array.from({ length: 50 }, (_, i) => generateAdditionFraction(i, 6).prompt.includes('-')).some(
+      Boolean,
+    );
     expect(hasMinus).toBe(true);
   });
 
@@ -93,13 +93,13 @@ describe('generateAdditionFraction', () => {
       const ex = generateAdditionFraction(seed, 8);
       expect(countTerms(ex.prompt)).toBe(3);
       const terms = parseTerms(ex.prompt);
-      const uniqueDens = new Set(terms.map(t => t.den));
+      const uniqueDens = new Set(terms.map((t) => t.den));
       if (uniqueDens.size > 1) hasDifferent = true;
     }
     expect(hasDifferent).toBe(true);
-    const hasMinus = Array.from({ length: 50 }, (_, i) =>
-      generateAdditionFraction(i, 8).prompt.includes('-'),
-    ).some(Boolean);
+    const hasMinus = Array.from({ length: 50 }, (_, i) => generateAdditionFraction(i, 8).prompt.includes('-')).some(
+      Boolean,
+    );
     expect(hasMinus).toBe(true);
   });
 

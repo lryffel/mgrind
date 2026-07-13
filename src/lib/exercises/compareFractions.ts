@@ -99,7 +99,12 @@ function generateLcmFriendly(rng: () => number): CompareFractionsComparison {
   }
 }
 
-function generateClosePair(rng: () => number, maxVal: number, gMin: number, gMax: number): CompareFractionsComparison | null {
+function generateClosePair(
+  rng: () => number,
+  maxVal: number,
+  gMin: number,
+  gMax: number,
+): CompareFractionsComparison | null {
   for (let attempt = 0; attempt < 100; attempt++) {
     const b = pickDen(rng, 3, maxVal);
     let d = pickDen(rng, 3, maxVal);
@@ -189,7 +194,7 @@ function generateNegativePair(rng: () => number, maxVal: number): CompareFractio
     if (den1 === den2 && num1 === num2) den2 = den2 + 1;
 
     const c = getOperator(num1, den1, num2, den2);
-    const op = c === '<' ? '>' : (c === '>' ? '<' : c);
+    const op = c === '<' ? '>' : c === '>' ? '<' : c;
     if (rng() < 0.5) {
       return { num1: -num1, den1, num2: -num2, den2, correctOperator: op };
     } else {
@@ -233,7 +238,7 @@ function pickStrategy(rng: () => number, level: number, index: number): Strategy
   const equalChance = index === 0 ? (rng() < 0.15 ? 1 : 0) : 0;
 
   if (equalChance) {
-    return pick(rng, (['sameDen', 'sameNum', 'close'] as Strategy[]));
+    return pick(rng, ['sameDen', 'sameNum', 'close'] as Strategy[]);
   }
 
   switch (level) {
@@ -279,7 +284,9 @@ function generateOne(rng: () => number, level: number, maxVal: number): CompareF
     case 'lcm':
       return generateLcmFriendly(rng);
     case 'close':
-      return generateClosePair(rng, maxVal, Math.max(1, 5 - level), Math.max(2, 10 - level)) ?? generateCloseFallback(rng);
+      return (
+        generateClosePair(rng, maxVal, Math.max(1, 5 - level), Math.max(2, 10 - level)) ?? generateCloseFallback(rng)
+      );
     case 'improper':
       return generateImproperPair(rng, maxVal);
     case 'zero':

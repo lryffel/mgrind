@@ -18,7 +18,14 @@ const ALL_TYPES = [
   'negativeSignPlacement',
 ];
 
-const BASIC_TYPES = ['fractionTerms', 'integerFractions', 'denominatorRestriction', 'doubleFraction', 'fractionBar', 'zeroNumerator'];
+const BASIC_TYPES = [
+  'fractionTerms',
+  'integerFractions',
+  'denominatorRestriction',
+  'doubleFraction',
+  'fractionBar',
+  'zeroNumerator',
+];
 
 describe('generateFractionTrivia', () => {
   it('returns a valid exercise with prompt and answer', () => {
@@ -80,7 +87,10 @@ describe('generateFractionTrivia', () => {
     for (let seed = 0; seed < 1000; seed++) {
       const ex = generateFractionTrivia(seed, 7);
       if (ex.data?.triviaType === 'mediant') {
-        ex.answer.split(',').map(Number).forEach((i) => allIndices.add(i));
+        ex.answer
+          .split(',')
+          .map(Number)
+          .forEach((i) => allIndices.add(i));
       }
     }
     expect(allIndices.has(0)).toBe(true);
@@ -149,7 +159,10 @@ describe('generateFractionTrivia', () => {
   it('halveMC and doubleMC validate their own generated answers', () => {
     for (let seed = 0; seed < 100; seed++) {
       const ex = generateFractionTrivia(seed, 1);
-      if (ex.data?.triviaType === 'doubleFraction' && (ex.data.triviaSubType === 'halveMC' || ex.data.triviaSubType === 'doubleMC')) {
+      if (
+        ex.data?.triviaType === 'doubleFraction' &&
+        (ex.data.triviaSubType === 'halveMC' || ex.data.triviaSubType === 'doubleMC')
+      ) {
         expect(validateFractionTrivia(ex.answer, ex)).toBe(true);
       }
     }
@@ -158,7 +171,10 @@ describe('generateFractionTrivia', () => {
   it('halveMC and doubleMC reject single partial selection', () => {
     for (let seed = 0; seed < 100; seed++) {
       const ex = generateFractionTrivia(seed, 1);
-      if (ex.data?.triviaType === 'doubleFraction' && (ex.data.triviaSubType === 'halveMC' || ex.data.triviaSubType === 'doubleMC')) {
+      if (
+        ex.data?.triviaType === 'doubleFraction' &&
+        (ex.data.triviaSubType === 'halveMC' || ex.data.triviaSubType === 'doubleMC')
+      ) {
         const indices = ex.answer.split(',').map(Number);
         if (indices.length > 1) {
           const partial = String(indices[0]);

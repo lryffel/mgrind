@@ -47,7 +47,12 @@
     if (data.triviaType === 'reducibleFractions') return 6;
     if (data.triviaType === 'negativeSignPlacement' && data.triviaOptionsLatex) return data.triviaOptionsLatex.length;
     if (data.triviaType === 'negativeSignPlacement') return 6;
-    if (data.triviaType === 'doubleFraction' && (data.triviaSubType === 'halveMC' || data.triviaSubType === 'doubleMC') && data.triviaOptionsText) return data.triviaOptionsText.length;
+    if (
+      data.triviaType === 'doubleFraction' &&
+      (data.triviaSubType === 'halveMC' || data.triviaSubType === 'doubleMC') &&
+      data.triviaOptionsText
+    )
+      return data.triviaOptionsText.length;
     return 0;
   }
 
@@ -78,7 +83,8 @@
       case 'negativeSignPlacement':
         return selectedCheckboxes.some(Boolean);
       case 'doubleFraction':
-        if (data.triviaSubType === 'halveMC' || data.triviaSubType === 'doubleMC') return selectedCheckboxes.some(Boolean);
+        if (data.triviaSubType === 'halveMC' || data.triviaSubType === 'doubleMC')
+          return selectedCheckboxes.some(Boolean);
         return selectedIndex >= 0;
       case 'multiplySame':
       case 'fractionBar':
@@ -94,9 +100,7 @@
     }
   });
 
-  let validationError = $derived(
-    data.triviaType === 'fractionDivision' ? frac.validationError : null,
-  );
+  let validationError = $derived(data.triviaType === 'fractionDivision' ? frac.validationError : null);
 
   function handleSubmit() {
     if (!canSubmit) return;
@@ -110,11 +114,19 @@
       case 'mediant':
       case 'reducibleFractions':
       case 'negativeSignPlacement':
-        answer = selectedCheckboxes.map((checked, i) => checked ? i : -1).filter(i => i >= 0).sort((a, b) => a - b).join(',');
+        answer = selectedCheckboxes
+          .map((checked, i) => (checked ? i : -1))
+          .filter((i) => i >= 0)
+          .sort((a, b) => a - b)
+          .join(',');
         break;
       case 'doubleFraction':
         if (data.triviaSubType === 'halveMC' || data.triviaSubType === 'doubleMC') {
-          answer = selectedCheckboxes.map((checked, i) => checked ? i : -1).filter(i => i >= 0).sort((a, b) => a - b).join(',');
+          answer = selectedCheckboxes
+            .map((checked, i) => (checked ? i : -1))
+            .filter((i) => i >= 0)
+            .sort((a, b) => a - b)
+            .join(',');
         } else {
           answer = String(selectedIndex);
         }
@@ -141,14 +153,7 @@
     if (data.triviaOptionsLatex && data.triviaOptionsLatex.length > 0) {
       return data.triviaOptionsLatex;
     }
-    return [
-      '\\frac{-a}{b}',
-      '\\frac{a}{-b}',
-      '\\frac{-a}{-b}',
-      '-\\frac{-a}{b}',
-      '-\\frac{a}{-b}',
-      '-\\frac{-a}{-b}',
-    ];
+    return ['\\frac{-a}{b}', '\\frac{a}{-b}', '\\frac{-a}{-b}', '-\\frac{-a}{b}', '-\\frac{a}{-b}', '-\\frac{-a}{-b}'];
   }
 
   function correctOptionsLatex(): string[] | undefined {
@@ -160,10 +165,27 @@
       return all;
     }
     if (data.triviaType === 'reducibleFractions') {
-      return data.triviaOptionsLatex ?? ['\\frac{ab}{a}', '\\frac{a+b}{a}', '\\frac{a}{ab}', '\\frac{a-b}{a}', '\\frac{a}{a+b}', '\\frac{a}{a-b}'];
+      return (
+        data.triviaOptionsLatex ?? [
+          '\\frac{ab}{a}',
+          '\\frac{a+b}{a}',
+          '\\frac{a}{ab}',
+          '\\frac{a-b}{a}',
+          '\\frac{a}{a+b}',
+          '\\frac{a}{a-b}',
+        ]
+      );
     }
     if (data.triviaType === 'negativeSignPlacement') {
-      return data.triviaOptionsLatex ?? ['\\frac{-a}{b}', '\\frac{a}{-b}', '\\frac{-a}{-b}', '-\\frac{-a}{b}', '-\\frac{a}{-b}'];
+      return (
+        data.triviaOptionsLatex ?? [
+          '\\frac{-a}{b}',
+          '\\frac{a}{-b}',
+          '\\frac{-a}{-b}',
+          '-\\frac{-a}{b}',
+          '-\\frac{a}{-b}',
+        ]
+      );
     }
     return undefined;
   }
@@ -200,16 +222,16 @@
           return correctIndices.map((i) => labels[i]).join(', ');
         }
         case 'doubleFraction': {
-        if (data.triviaSubType === 'halveMC' || data.triviaSubType === 'doubleMC') {
+          if (data.triviaSubType === 'halveMC' || data.triviaSubType === 'doubleMC') {
             const labels = (data.triviaOptionsText ?? []).map((key) => _(key));
             return correctIndices.map((i) => labels[i]).join(', ');
           }
           const sub = data.triviaSubType ?? 'doubleNum';
           const labels = [
-            _( `exercise.fractionTrivia.option.doubleFraction.${sub}.0`),
-            _( `exercise.fractionTrivia.option.doubleFraction.${sub}.1`),
-            _( `exercise.fractionTrivia.option.doubleFraction.${sub}.2`),
-            _( `exercise.fractionTrivia.option.doubleFraction.${sub}.3`),
+            _(`exercise.fractionTrivia.option.doubleFraction.${sub}.0`),
+            _(`exercise.fractionTrivia.option.doubleFraction.${sub}.1`),
+            _(`exercise.fractionTrivia.option.doubleFraction.${sub}.2`),
+            _(`exercise.fractionTrivia.option.doubleFraction.${sub}.3`),
           ];
           return labels[correctIndices[0]] ?? '';
         }
@@ -250,12 +272,26 @@
 
     {#if feedback === null}
       <div class="fraction-terms-input">
-        <NumericInput fraction bind:num={topValue} bind:den={bottomValue} numPlaceholder="&hellip;" denPlaceholder="&hellip;" />
+        <NumericInput
+          fraction
+          bind:num={topValue}
+          bind:den={bottomValue}
+          numPlaceholder="&hellip;"
+          denPlaceholder="&hellip;"
+        />
       </div>
     {:else}
       <div class="fraction-terms-input">
         <Math
-          expression={'\\dfrac{\\color{' + termColor(q1TopCorrect) + '}{\\text{' + topValue + '}}}{\\color{' + termColor(q1BottomCorrect) + '}{\\text{' + bottomValue + '}}}'}
+          expression={'\\dfrac{\\color{' +
+            termColor(q1TopCorrect) +
+            '}{\\text{' +
+            topValue +
+            '}}}{\\color{' +
+            termColor(q1BottomCorrect) +
+            '}{\\text{' +
+            bottomValue +
+            '}}}'}
           display
         />
       </div>
@@ -263,7 +299,12 @@
 
     {#if feedback !== null}
       <div class="feedback-spacer">
-        <p class="feedback" class:correct={feedback === 'correct'} class:incorrect={feedback === 'incorrect'} role="status">
+        <p
+          class="feedback"
+          class:correct={feedback === 'correct'}
+          class:incorrect={feedback === 'incorrect'}
+          role="status"
+        >
           {#if feedback === 'correct'}
             {_('feedback.correct')}
           {:else}
@@ -271,12 +312,15 @@
           {/if}
         </p>
         <p class="correct-answer">
-          {_('exercise.fractionTrivia.option.fractionTerms.top')}: {_('exercise.fractionTrivia.option.fractionTerms.topAnswer')},
-          {_('exercise.fractionTrivia.option.fractionTerms.bottom')}: {_('exercise.fractionTrivia.option.fractionTerms.bottomAnswer')}
+          {_('exercise.fractionTrivia.option.fractionTerms.top')}: {_(
+            'exercise.fractionTrivia.option.fractionTerms.topAnswer',
+          )},
+          {_('exercise.fractionTrivia.option.fractionTerms.bottom')}: {_(
+            'exercise.fractionTrivia.option.fractionTerms.bottomAnswer',
+          )}
         </p>
       </div>
     {/if}
-
   {:else if data.triviaType === 'integerFractions'}
     <p class="prompt-label">{_('exercise.fractionTrivia.type.integerFractions.prompt')}</p>
 
@@ -292,7 +336,11 @@
             <Math expression={latex} />
           </button>
         {:else}
-          <span class="option-feedback-row" class:correct-option={correctIndices.includes(i) && selectedCheckboxes[i]} class:wrong-option={!correctIndices.includes(i) && selectedCheckboxes[i]}>
+          <span
+            class="option-feedback-row"
+            class:correct-option={correctIndices.includes(i) && selectedCheckboxes[i]}
+            class:wrong-option={!correctIndices.includes(i) && selectedCheckboxes[i]}
+          >
             <Math expression={latex} />
           </span>
         {/if}
@@ -304,7 +352,6 @@
         <Feedback {feedback} {correctLatex} />
       </div>
     {/if}
-
   {:else if data.triviaType === 'mediant'}
     <p class="prompt-label">
       {_('exercise.fractionTrivia.type.mediant.promptBefore')}
@@ -328,7 +375,11 @@
             {_(`exercise.fractionTrivia.option.mediant.${i}`)}
           </button>
         {:else}
-          <span class="option-feedback-row" class:correct-option={correctIndices.includes(i) && selectedCheckboxes[i]} class:wrong-option={!correctIndices.includes(i) && selectedCheckboxes[i]}>
+          <span
+            class="option-feedback-row"
+            class:correct-option={correctIndices.includes(i) && selectedCheckboxes[i]}
+            class:wrong-option={!correctIndices.includes(i) && selectedCheckboxes[i]}
+          >
             {_(`exercise.fractionTrivia.option.mediant.${i}`)}
           </span>
         {/if}
@@ -344,7 +395,6 @@
         {/if}
       </div>
     {/if}
-
   {:else if data.triviaType === 'fractionDivision'}
     <p class="prompt-label">
       {_('exercise.fractionTrivia.type.fractionDivision.promptBefore')}
@@ -367,7 +417,6 @@
         <Feedback {feedback} {correctLatex} />
       </div>
     {/if}
-
   {:else if data.triviaType === 'equalFractions'}
     <p class="prompt-label">
       {_('exercise.fractionTrivia.type.equalFractions.promptBefore')}
@@ -391,7 +440,11 @@
             <Math expression={latex} />
           </button>
         {:else}
-          <span class="option-feedback-row" class:correct-option={correctIndices.includes(i) && selectedCheckboxes[i]} class:wrong-option={!correctIndices.includes(i) && selectedCheckboxes[i]}>
+          <span
+            class="option-feedback-row"
+            class:correct-option={correctIndices.includes(i) && selectedCheckboxes[i]}
+            class:wrong-option={!correctIndices.includes(i) && selectedCheckboxes[i]}
+          >
             <Math expression={latex} />
           </span>
         {/if}
@@ -403,7 +456,6 @@
         <Feedback {feedback} {correctLatex} />
       </div>
     {/if}
-
   {:else if data.triviaType === 'reducibleFractions'}
     <p class="prompt-label">{_('exercise.fractionTrivia.type.reducibleFractions.prompt')}</p>
 
@@ -419,7 +471,11 @@
             <Math expression={latex} />
           </button>
         {:else}
-          <span class="option-feedback-row" class:correct-option={correctIndices.includes(i) && selectedCheckboxes[i]} class:wrong-option={!correctIndices.includes(i) && selectedCheckboxes[i]}>
+          <span
+            class="option-feedback-row"
+            class:correct-option={correctIndices.includes(i) && selectedCheckboxes[i]}
+            class:wrong-option={!correctIndices.includes(i) && selectedCheckboxes[i]}
+          >
             <Math expression={latex} />
           </span>
         {/if}
@@ -431,7 +487,6 @@
         <Feedback {feedback} {correctLatex} />
       </div>
     {/if}
-
   {:else if data.triviaType === 'denominatorRestriction'}
     <p class="prompt-label">{_('exercise.fractionTrivia.type.denominatorRestriction.prompt')}</p>
 
@@ -448,7 +503,6 @@
         <Feedback {feedback} textAnswer={correctTextAnswer} />
       </div>
     {/if}
-
   {:else if data.triviaType === 'zeroNumerator'}
     <p class="prompt-label">
       {_('exercise.fractionTrivia.type.zeroNumerator.promptBefore')}
@@ -469,12 +523,21 @@
         <Feedback {feedback} textAnswer={correctTextAnswer} />
       </div>
     {/if}
-
   {:else if data.triviaType === 'reciprocalProduct'}
     {#if data.triviaSubType === 'num'}
       <p class="prompt-label">
         {_('exercise.fractionTrivia.type.reciprocalProduct.promptBefore')}
-        <Math expression={'\\frac{' + (data.triviaA ?? 0) + '}{' + (data.triviaB ?? 1) + '}\\cdot\\frac{' + (data.triviaB ?? 1) + '}{' + (data.triviaA ?? 0) + '}'} />
+        <Math
+          expression={'\\frac{' +
+            (data.triviaA ?? 0) +
+            '}{' +
+            (data.triviaB ?? 1) +
+            '}\\cdot\\frac{' +
+            (data.triviaB ?? 1) +
+            '}{' +
+            (data.triviaA ?? 0) +
+            '}'}
+        />
         {_('exercise.fractionTrivia.type.reciprocalProduct.promptAfter')}
       </p>
     {:else}
@@ -494,7 +557,6 @@
         <Feedback {feedback} textAnswer={correctTextAnswer} />
       </div>
     {/if}
-
   {:else if data.triviaType === 'doubleFraction'}
     {@const mcSub = data.triviaSubType === 'halveMC' ? 'halveMC' : 'doubleMC'}
     <p class="prompt-label">{_(`exercise.fractionTrivia.type.doubleFraction.${mcSub}.prompt`)}</p>
@@ -511,9 +573,13 @@
             {_(key)}
           </button>
         {:else}
-        <span class="option-feedback-row" class:correct-option={correctIndices.includes(i) && selectedCheckboxes[i]} class:wrong-option={!correctIndices.includes(i) && selectedCheckboxes[i]}>
-          {_(key)}
-        </span>
+          <span
+            class="option-feedback-row"
+            class:correct-option={correctIndices.includes(i) && selectedCheckboxes[i]}
+            class:wrong-option={!correctIndices.includes(i) && selectedCheckboxes[i]}
+          >
+            {_(key)}
+          </span>
         {/if}
       {/each}
     </div>
@@ -527,7 +593,6 @@
         {/if}
       </div>
     {/if}
-
   {:else if data.triviaType === 'multiplySame'}
     <p class="prompt-label">
       {#if data.triviaSubType === 'reciprocal'}
@@ -549,7 +614,11 @@
             {_(`exercise.fractionTrivia.option.multiplySame.${i}`)}
           </button>
         {:else}
-          <span class="option-feedback-row" class:correct-option={correctIndices.includes(i) && selectedIndex === i} class:wrong-option={!correctIndices.includes(i) && selectedIndex === i}>
+          <span
+            class="option-feedback-row"
+            class:correct-option={correctIndices.includes(i) && selectedIndex === i}
+            class:wrong-option={!correctIndices.includes(i) && selectedIndex === i}
+          >
             {_(`exercise.fractionTrivia.option.multiplySame.${i}`)}
           </span>
         {/if}
@@ -565,7 +634,6 @@
         {/if}
       </div>
     {/if}
-
   {:else if data.triviaType === 'fractionBar'}
     <p class="prompt-label">{_('exercise.fractionTrivia.type.fractionBar.prompt')}</p>
 
@@ -581,7 +649,11 @@
             {_(`exercise.fractionTrivia.option.fractionBar.${i}`)}
           </button>
         {:else}
-          <span class="option-feedback-row" class:correct-option={correctIndices.includes(i) && selectedIndex === i} class:wrong-option={!correctIndices.includes(i) && selectedIndex === i}>
+          <span
+            class="option-feedback-row"
+            class:correct-option={correctIndices.includes(i) && selectedIndex === i}
+            class:wrong-option={!correctIndices.includes(i) && selectedIndex === i}
+          >
             {_(`exercise.fractionTrivia.option.fractionBar.${i}`)}
           </span>
         {/if}
@@ -597,7 +669,6 @@
         {/if}
       </div>
     {/if}
-
   {:else if data.triviaType === 'negativeSignPlacement'}
     <p class="prompt-label">
       {_('exercise.fractionTrivia.type.negativeSignPlacement.promptBefore')}
@@ -621,7 +692,11 @@
             <Math expression={latex} />
           </button>
         {:else}
-          <span class="option-feedback-row" class:correct-option={correctIndices.includes(i) && selectedCheckboxes[i]} class:wrong-option={!correctIndices.includes(i) && selectedCheckboxes[i]}>
+          <span
+            class="option-feedback-row"
+            class:correct-option={correctIndices.includes(i) && selectedCheckboxes[i]}
+            class:wrong-option={!correctIndices.includes(i) && selectedCheckboxes[i]}
+          >
             <Math expression={latex} />
           </span>
         {/if}

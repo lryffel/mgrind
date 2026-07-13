@@ -27,7 +27,10 @@
     </li>
   </ol>
   <p>The result is <Math expression={result} />.</p>
-  <p>Enter your answer as a reduced fraction: <em>numerator,denominator</em> (e.g. <Math expression="\\dfrac{7}{12}" /> → <code>7,12</code>).</p>
+  <p>
+    Enter your answer as a reduced fraction: <em>numerator,denominator</em> (e.g. <Math expression="\\dfrac{7}{12}" /> →
+    <code>7,12</code>).
+  </p>
 {:else}
   <p>Um Brüche zu addieren und zu subtrahieren, gehe folgendermassen vor:</p>
   <ol>
@@ -46,5 +49,8 @@
     </li>
   </ol>
   <p>Das Ergebnis ist <Math expression={result} />.</p>
-  <p>Gib deine Antwort als gekürzten Bruch ein: <em>Zähler,Nenner</em> (z.B. <Math expression="\\dfrac{7}{12}" /> → <code>7,12</code>).</p>
+  <p>
+    Gib deine Antwort als gekürzten Bruch ein: <em>Zähler,Nenner</em> (z.B. <Math expression="\\dfrac{7}{12}" /> →
+    <code>7,12</code>).
+  </p>
 {/if}

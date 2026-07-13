@@ -50,7 +50,7 @@ type Term = { num: number; den: number };
 type Op = '+' | '-';
 
 function lcm(a: number, b: number): number {
-  return a / gcd(a, b) * b;
+  return (a / gcd(a, b)) * b;
 }
 
 function computeResult(terms: Term[], ops: Op[]): Term {
@@ -78,10 +78,7 @@ function generateOperators(rng: () => number, count: number, maxMinus: number): 
   const ops: Op[] = [];
   if (count <= 1) return ops;
 
-  const numMinus =
-    maxMinus === 0 ? 0 :
-    maxMinus === 1 ? (rng() < 0.4 ? 1 : 0) :
-    rng() < 0.3 ? 2 : rng() < 0.5 ? 1 : 0;
+  const numMinus = maxMinus === 0 ? 0 : maxMinus === 1 ? (rng() < 0.4 ? 1 : 0) : rng() < 0.3 ? 2 : rng() < 0.5 ? 1 : 0;
 
   const indices = Array.from({ length: count - 1 }, (_, i) => i);
   for (let i = indices.length - 1; i > 0; i--) {
@@ -113,11 +110,11 @@ export function generateAdditionFraction(seed: number, complexity: number): Exer
       const divs = LCD_DIVISORS[lcd];
       dens = Array.from({ length: count }, () => divs[Math.floor(rng() * divs.length)]);
       if (new Set(dens).size < 2 && divs.length >= 2) {
-        dens[1] = divs.find(d => d !== dens[0])!;
+        dens[1] = divs.find((d) => d !== dens[0])!;
       }
     }
 
-    const terms: Term[] = dens.map(d => ({ num: numerator(d, rng), den: d }));
+    const terms: Term[] = dens.map((d) => ({ num: numerator(d, rng), den: d }));
     const ops = generateOperators(rng, count, band.maxMinus);
     const result = computeResult(terms, ops);
 

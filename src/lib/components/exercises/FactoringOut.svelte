@@ -106,8 +106,8 @@
               {#if i > 0}
                 <Math expression="+" />
               {/if}
-            <NumericInput bind:value={coeffs[i]} variablePart={part} context="coefficient" blockSign />
-          {/each}
+              <NumericInput bind:value={coeffs[i]} variablePart={part} context="coefficient" blockSign />
+            {/each}
             <Math expression=")" />
           {/key}
         </span>
