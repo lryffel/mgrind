@@ -16,6 +16,7 @@
 - `npm run format:check` — prettier --check
 - `npm run lint` — eslint
 - `npm run lint:fix` — eslint --fix
+- Pre-commit hooks (husky + lint-staged) auto-format with prettier. Use `git commit --no-verify` to skip if needed.
 - `src/test-setup.ts` mocks `localStorage` globally for tests
 
 - Svelte 5 runes: `$state`, `$derived`, `$effect`, `$props`, `mount`
