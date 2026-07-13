@@ -1,7 +1,7 @@
 ---
 id: '012'
 title: 'Extract reusable trivia UI components from FractionTrivia'
-status: 'review'
+status: 'done'
 assignee: null
 priority: 'medium'
 created: '2026-07-13'
