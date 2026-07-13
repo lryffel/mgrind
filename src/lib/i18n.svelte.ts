@@ -441,6 +441,14 @@ const dict = {
     en: 'Determine the sign.',
     de: 'Bestimme das Vorzeichen.',
   },
+  'exercise.roundingSigfigs.name': { en: 'Significant digits', de: 'Signifikante Stellen' },
+  'exercise.roundingSigfigs.desc': {
+    en: 'Round numbers to a given number of significant digits.',
+    de: 'Zahlen auf eine bestimmte Anzahl signifikanter Stellen runden.',
+  },
+  'exercise.roundingSigfigs.promptBefore': { en: 'Round ', de: 'Runde ' },
+  'exercise.roundingSigfigs.promptBetween': { en: ' to ', de: ' auf ' },
+  'exercise.roundingSigfigs.promptAfter': { en: ' significant digits.', de: ' signifikante Stellen.' },
   'signs.select': {
     en: 'Expression',
     de: 'Term',

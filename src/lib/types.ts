@@ -52,6 +52,7 @@ export interface ExerciseData {
   triviaOptionsLatex?: string[];
   triviaOptionsText?: string[];
   triviaSubType?: string;
+  sigfigsCount?: number;
 }
 
 export interface Exercise {
