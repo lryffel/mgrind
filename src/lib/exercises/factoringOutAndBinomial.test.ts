@@ -7,6 +7,7 @@ import {
 } from './factoringOutAndBinomial';
 import type { FactoringOutAndBinomialData } from './factoringOutAndBinomial';
 import { cmd } from '../math/latex';
+import { VAR_POOL } from '../math/varpool';
 import { expectDeterministic, expectSeedVariation, expectHasPromptAndAnswer } from '../test-utils';
 
 function d(ex: Exercise): FactoringOutAndBinomialData {
@@ -135,13 +136,12 @@ describe('generateFactoringOutAndBinomial', () => {
   });
 
   it('variables are drawn from the shared pool (no separate GCF_VARS/INNER_VARS)', () => {
-    const poolVars = ['x', 'y', 'z', 'a', 'b', 'c'];
     for (let seed = 0; seed < 200; seed++) {
       const ex = generateFactoringOutAndBinomial(seed, 10);
       const data = d(ex);
       if (data.isTrap) continue;
-      if (data.varA) expect(poolVars).toContain(data.varA);
-      expect(poolVars).toContain(data.varB);
+      if (data.varA) expect(VAR_POOL).toContain(data.varA);
+      expect(VAR_POOL).toContain(data.varB);
     }
   });
 });
