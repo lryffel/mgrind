@@ -56,6 +56,14 @@ export interface ExerciseData {
   triviaOptionsLatex?: string[];
   triviaOptionsText?: string[];
   triviaSubType?: string;
+  aLatex?: string;
+  bLatex?: string;
+  gcdExponents?: string;
+  lcmExponents?: string;
+  a?: number;
+  b?: number;
+  gcd?: string;
+  lcm?: string;
   sigfigsCount?: number;
   numberA?: number;
   numberB?: number;

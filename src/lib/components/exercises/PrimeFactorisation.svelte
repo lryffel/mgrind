@@ -4,7 +4,7 @@
   import Math from '../Math.svelte';
   import ExerciseShell from '../ExerciseShell.svelte';
   import Feedback from '../Feedback.svelte';
-  import NumericInput from './NumericInput.svelte';
+  import PrimeFactorInput from './PrimeFactorInput.svelte';
 
   let { exercise, onSubmit, onNext, feedback }: ExerciseProps = $props();
 
@@ -59,20 +59,7 @@
       <Math expression={exercise.prompt} display />
       <span class="continuation">
         <Math expression="=" />
-        {#each primes as prime, i (prime)}
-          {#if i > 0}
-            <Math expression="\cdot" />
-          {/if}
-          <span class="prime-term">
-            <Math expression={String(prime)} />
-            <NumericInput
-              bind:value={values[i]}
-              superscript
-              context="exponent"
-              onkeydown={(e: KeyboardEvent) => handleKeydown(i, e)}
-            />
-          </span>
-        {/each}
+        <PrimeFactorInput {primes} bind:values onkeydown={handleKeydown} />
       </span>
     </div>
   {:else}
@@ -101,11 +88,3 @@
     <Feedback {feedback} {correctLatex} />
   {/if}
 </ExerciseShell>
-
-<style>
-  .prime-term {
-    display: inline-flex;
-    align-items: center;
-    gap: 2px;
-  }
-</style>

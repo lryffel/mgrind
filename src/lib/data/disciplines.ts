@@ -10,6 +10,7 @@ export const disciplines: Discipline[] = [
       'squares',
       'orderOfOperations',
       'primeFactorisation',
+      'gcdLcm',
       'simplifyFraction',
       'additionFraction',
       'multiplicationFraction',

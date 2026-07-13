@@ -507,6 +507,11 @@ const dict = {
     en: 'See the correct answers above.',
     de: 'Siehe die richtigen Antworten oben.',
   },
+  'exercise.gcdLcm.name': { en: 'gcd and lcm', de: 'ggT und kgV' },
+  'exercise.gcdLcm.desc': { en: 'Find the gcd and lcm of two numbers', de: 'Bestimme ggT und kgV zweier Zahlen' },
+  'exercise.gcdLcm.prompt': { en: 'Find the gcd and lcm.', de: 'Bestimme ggT und kgV.' },
+  'exercise.gcdLcm.gcd': { en: 'gcd', de: 'ggT' },
+  'exercise.gcdLcm.lcm': { en: 'lcm', de: 'kgV' },
   'exercise.numbersTrivia.name': { en: 'Trivia: Numbers', de: 'Wissen: Zahlen' },
   'exercise.numbersTrivia.desc': {
     en: 'Test your knowledge of number concepts',
