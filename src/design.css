@@ -335,6 +335,11 @@ article footer {
 .progress-gradient {
   width: 100%;
   height: 100%;
+  background: linear-gradient(to right, #ef4444, #f97316, #eab308, #22c55e, #3b82f6, #6366f1, #a855f7);
+}
+
+/* Dark mode: less saturated rainbow */
+[data-theme='dark'] .progress-gradient {
   background: linear-gradient(to right, #f87171, #fb923c, #facc15, #4ade80, #60a5fa, #818cf8, #c084fc);
 }
 
@@ -354,9 +359,9 @@ article.discipline-card.complete {
   background-origin: padding-box, border-box;
   background-image:
     linear-gradient(var(--c-bg-card), var(--c-bg-card)),
-    linear-gradient(to right, #f87171, #fb923c, #facc15, #4ade80, #60a5fa, #818cf8, #c084fc);
+    linear-gradient(to right, #ef4444, #f97316, #eab308, #22c55e, #3b82f6, #6366f1, #a855f7);
   box-shadow:
-    0 0 12px 2px rgba(192, 132, 252, 0.25),
+    0 0 12px 2px rgba(168, 85, 247, 0.25),
     0 0 24px 6px rgba(99, 102, 241, 0.15),
     var(--shadow-sm);
   position: relative;
@@ -368,9 +373,16 @@ article.discipline-card.complete {
 
 article.discipline-card.complete:hover {
   box-shadow:
-    0 0 18px 4px rgba(192, 132, 252, 0.35),
-    0 0 36px 10px rgba(129, 140, 248, 0.2),
+    0 0 18px 4px rgba(168, 85, 247, 0.35),
+    0 0 36px 10px rgba(99, 102, 241, 0.2),
     var(--shadow-md);
+}
+
+/* Dark mode: less saturated rainbow border */
+[data-theme='dark'] article.discipline-card.complete {
+  background-image:
+    linear-gradient(var(--c-bg-card), var(--c-bg-card)),
+    linear-gradient(to right, #f87171, #fb923c, #facc15, #4ade80, #60a5fa, #818cf8, #c084fc);
 }
 
 /* Hover-only sparkle effects */
