@@ -453,6 +453,18 @@ const dict = {
     en: 'Expression',
     de: 'Term',
   },
+  'exercise.simplifySymbolicFraction.cannotSimplify': {
+    en: 'Cannot simplify',
+    de: 'Nicht vereinfachbar',
+  },
+  'feedback.simplifySymbolicFraction.cannotSimplify': {
+    en: 'Correct! This fraction cannot be simplified further.',
+    de: 'Richtig! Dieser Bruch lässt sich nicht weiter vereinfachen.',
+  },
+  'feedback.simplifySymbolicFraction.cannotSimplify.incorrect': {
+    en: 'This fraction cannot be simplified further. Click "Cannot simplify" instead.',
+    de: 'Dieser Bruch lässt sich nicht weiter vereinfachen. Klicke stattdessen auf "Nicht vereinfachbar".',
+  },
 } satisfies Record<string, Record<Lang, string>>;
 
 export const state = $state({ lang: 'en' as Lang });
