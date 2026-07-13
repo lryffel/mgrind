@@ -7,6 +7,9 @@
   import NumericInput from './NumericInput.svelte';
   import Math from '../Math.svelte';
   import { useFractionInput, fractionLatex } from '../../fraction-input.svelte';
+  import TriviaRadioGroup from './TriviaRadioGroup.svelte';
+  import TriviaCheckboxGroup from './TriviaCheckboxGroup.svelte';
+  import TriviaTextInput from './TriviaTextInput.svelte';
 
   let {
     exercise,
@@ -81,10 +84,10 @@
       case 'mediant':
       case 'reducibleFractions':
       case 'negativeSignPlacement':
-        return selectedCheckboxes.some(Boolean);
+        return true;
       case 'doubleFraction':
         if (data.triviaSubType === 'halveMC' || data.triviaSubType === 'doubleMC')
-          return selectedCheckboxes.some(Boolean);
+          return true;
         return selectedIndex >= 0;
       case 'multiplySame':
       case 'fractionBar':
@@ -324,28 +327,13 @@
   {:else if data.triviaType === 'integerFractions'}
     <p class="prompt-label">{_('exercise.fractionTrivia.type.integerFractions.prompt')}</p>
 
-    <div class="option-grid" role="group">
-      {#each ['\\frac{0}{n}', '\\frac{1}{n}', '\\frac{n}{0}', '\\frac{n}{1}'] as latex, i (i)}
-        {#if feedback === null}
-          <button
-            class={'choice-checkbox' + (selectedCheckboxes[i] ? ' selected' : '')}
-            onclick={() => toggleIndex(i)}
-            role="checkbox"
-            aria-checked={selectedCheckboxes[i]}
-          >
-            <Math expression={latex} />
-          </button>
-        {:else}
-          <span
-            class="option-feedback-row"
-            class:correct-option={correctIndices.includes(i) && selectedCheckboxes[i]}
-            class:wrong-option={!correctIndices.includes(i) && selectedCheckboxes[i]}
-          >
-            <Math expression={latex} />
-          </span>
-        {/if}
-      {/each}
-    </div>
+    <TriviaCheckboxGroup
+      options={['\\frac{0}{n}', '\\frac{1}{n}', '\\frac{n}{0}', '\\frac{n}{1}'].map((l) => ({ latex: l }))}
+      selected={selectedCheckboxes}
+      {correctIndices}
+      {feedback}
+      ontoggle={toggleIndex}
+    />
 
     {#if feedback !== null}
       <div class="feedback-spacer">
@@ -363,28 +351,13 @@
       {_('exercise.fractionTrivia.type.mediant.promptSuffix')}
     </p>
 
-    <div class="option-grid" role="group">
-      {#each [0, 1, 2, 3] as i (i)}
-        {#if feedback === null}
-          <button
-            class={'choice-checkbox' + (selectedCheckboxes[i] ? ' selected' : '')}
-            onclick={() => toggleIndex(i)}
-            role="checkbox"
-            aria-checked={selectedCheckboxes[i]}
-          >
-            {_(`exercise.fractionTrivia.option.mediant.${i}`)}
-          </button>
-        {:else}
-          <span
-            class="option-feedback-row"
-            class:correct-option={correctIndices.includes(i) && selectedCheckboxes[i]}
-            class:wrong-option={!correctIndices.includes(i) && selectedCheckboxes[i]}
-          >
-            {_(`exercise.fractionTrivia.option.mediant.${i}`)}
-          </span>
-        {/if}
-      {/each}
-    </div>
+    <TriviaCheckboxGroup
+      options={[0, 1, 2, 3].map((i) => ({ label: _(`exercise.fractionTrivia.option.mediant.${i}`) }))}
+      selected={selectedCheckboxes}
+      {correctIndices}
+      {feedback}
+      ontoggle={toggleIndex}
+    />
 
     {#if feedback !== null}
       <div class="feedback-spacer">
@@ -406,7 +379,7 @@
       {#if feedback === null}
         <NumericInput fraction bind:num={frac.num} bind:den={frac.den} numPlaceholder="0" denPlaceholder="1" />
       {:else}
-        <span class="user-answer" class:correct={userAnswerCorrect} class:incorrect={!userAnswerCorrect}>
+        <span class="frac-answer" class:correct={userAnswerCorrect} class:incorrect={!userAnswerCorrect}>
           <Math expression={frac.userLatex} />
         </span>
       {/if}
@@ -428,28 +401,13 @@
       {_('exercise.fractionTrivia.type.equalFractions.promptSuffix')}
     </p>
 
-    <div class="option-grid" role="group">
-      {#each equalFractionsOptionsLatex() as latex, i (i)}
-        {#if feedback === null}
-          <button
-            class={'choice-checkbox' + (selectedCheckboxes[i] ? ' selected' : '')}
-            onclick={() => toggleIndex(i)}
-            role="checkbox"
-            aria-checked={selectedCheckboxes[i]}
-          >
-            <Math expression={latex} />
-          </button>
-        {:else}
-          <span
-            class="option-feedback-row"
-            class:correct-option={correctIndices.includes(i) && selectedCheckboxes[i]}
-            class:wrong-option={!correctIndices.includes(i) && selectedCheckboxes[i]}
-          >
-            <Math expression={latex} />
-          </span>
-        {/if}
-      {/each}
-    </div>
+    <TriviaCheckboxGroup
+      options={equalFractionsOptionsLatex().map((l) => ({ latex: l }))}
+      selected={selectedCheckboxes}
+      {correctIndices}
+      {feedback}
+      ontoggle={toggleIndex}
+    />
 
     {#if feedback !== null}
       <div class="feedback-spacer">
@@ -459,28 +417,13 @@
   {:else if data.triviaType === 'reducibleFractions'}
     <p class="prompt-label">{_('exercise.fractionTrivia.type.reducibleFractions.prompt')}</p>
 
-    <div class="option-grid" role="group">
-      {#each data.triviaOptionsLatex ?? ['\\frac{ab}{a}', '\\frac{a+b}{a}', '\\frac{a}{ab}', '\\frac{a-b}{a}', '\\frac{a}{a+b}', '\\frac{a}{a-b}'] as latex, i (i)}
-        {#if feedback === null}
-          <button
-            class={'choice-checkbox' + (selectedCheckboxes[i] ? ' selected' : '')}
-            onclick={() => toggleIndex(i)}
-            role="checkbox"
-            aria-checked={selectedCheckboxes[i]}
-          >
-            <Math expression={latex} />
-          </button>
-        {:else}
-          <span
-            class="option-feedback-row"
-            class:correct-option={correctIndices.includes(i) && selectedCheckboxes[i]}
-            class:wrong-option={!correctIndices.includes(i) && selectedCheckboxes[i]}
-          >
-            <Math expression={latex} />
-          </span>
-        {/if}
-      {/each}
-    </div>
+    <TriviaCheckboxGroup
+      options={(data.triviaOptionsLatex ?? ['\\frac{ab}{a}', '\\frac{a+b}{a}', '\\frac{a}{ab}', '\\frac{a-b}{a}', '\\frac{a}{a+b}', '\\frac{a}{a-b}']).map((l) => ({ latex: l }))}
+      selected={selectedCheckboxes}
+      {correctIndices}
+      {feedback}
+      ontoggle={toggleIndex}
+    />
 
     {#if feedback !== null}
       <div class="feedback-spacer">
@@ -490,13 +433,7 @@
   {:else if data.triviaType === 'denominatorRestriction'}
     <p class="prompt-label">{_('exercise.fractionTrivia.type.denominatorRestriction.prompt')}</p>
 
-    {#if feedback === null}
-      <NumericInput bind:value={textValue} context="plain" placeholder="&hellip;" />
-    {:else}
-      <span class="user-answer" class:correct={userAnswerCorrect} class:incorrect={!userAnswerCorrect}>
-        <Math expression={textValue || '0'} />
-      </span>
-    {/if}
+    <TriviaTextInput bind:value={textValue} {feedback} placeholder="&hellip;" context="plain" label={_('exercise.fractionTrivia.type.denominatorRestriction.prompt')} fallback="0" />
 
     {#if feedback !== null}
       <div class="feedback-spacer">
@@ -510,13 +447,7 @@
       {_('exercise.fractionTrivia.type.zeroNumerator.promptAfter')}
     </p>
 
-    {#if feedback === null}
-      <NumericInput bind:value={textValue} context="plain" placeholder="&hellip;" />
-    {:else}
-      <span class="user-answer" class:correct={userAnswerCorrect} class:incorrect={!userAnswerCorrect}>
-        <Math expression={textValue || '0'} />
-      </span>
-    {/if}
+    <TriviaTextInput bind:value={textValue} {feedback} placeholder="&hellip;" context="plain" label="Zero numerator answer" fallback="0" />
 
     {#if feedback !== null}
       <div class="feedback-spacer">
@@ -541,16 +472,14 @@
         {_('exercise.fractionTrivia.type.reciprocalProduct.promptAfter')}
       </p>
     {:else}
-      <p class="prompt-label">{_('exercise.fractionTrivia.type.reciprocalProduct.var.prompt')}</p>
+      <p class="prompt-label">
+        {_('exercise.fractionTrivia.type.reciprocalProduct.promptBefore')}
+        <Math expression={'\\frac{a}{b}\\cdot\\frac{b}{a}'} />
+        {_('exercise.fractionTrivia.type.reciprocalProduct.promptAfter')}
+      </p>
     {/if}
 
-    {#if feedback === null}
-      <NumericInput bind:value={textValue} context="plain" placeholder="&hellip;" />
-    {:else}
-      <span class="user-answer" class:correct={userAnswerCorrect} class:incorrect={!userAnswerCorrect}>
-        <Math expression={textValue || '1'} />
-      </span>
-    {/if}
+    <TriviaTextInput bind:value={textValue} {feedback} placeholder="&hellip;" context="plain" label="Reciprocal product answer" fallback="1" />
 
     {#if feedback !== null}
       <div class="feedback-spacer">
@@ -561,28 +490,13 @@
     {@const mcSub = data.triviaSubType === 'halveMC' ? 'halveMC' : 'doubleMC'}
     <p class="prompt-label">{_(`exercise.fractionTrivia.type.doubleFraction.${mcSub}.prompt`)}</p>
 
-    <div class="option-grid" role="group">
-      {#each data.triviaOptionsText ?? [] as key, i (i)}
-        {#if feedback === null}
-          <button
-            class={'choice-checkbox' + (selectedCheckboxes[i] ? ' selected' : '')}
-            onclick={() => toggleIndex(i)}
-            role="checkbox"
-            aria-checked={selectedCheckboxes[i]}
-          >
-            {_(key)}
-          </button>
-        {:else}
-          <span
-            class="option-feedback-row"
-            class:correct-option={correctIndices.includes(i) && selectedCheckboxes[i]}
-            class:wrong-option={!correctIndices.includes(i) && selectedCheckboxes[i]}
-          >
-            {_(key)}
-          </span>
-        {/if}
-      {/each}
-    </div>
+    <TriviaCheckboxGroup
+      options={(data.triviaOptionsText ?? []).map((key) => ({ label: _(key) }))}
+      selected={selectedCheckboxes}
+      {correctIndices}
+      {feedback}
+      ontoggle={toggleIndex}
+    />
 
     {#if feedback !== null}
       <div class="feedback-spacer">
@@ -602,28 +516,14 @@
       {/if}
     </p>
 
-    <div class="option-grid" role="radiogroup">
-      {#each [0, 1, 2, 3] as i (i)}
-        {#if feedback === null}
-          <button
-            class={'choice-radio' + (selectedIndex === i ? ' selected' : '')}
-            onclick={() => (selectedIndex = i)}
-            role="radio"
-            aria-checked={selectedIndex === i}
-          >
-            {_(`exercise.fractionTrivia.option.multiplySame.${i}`)}
-          </button>
-        {:else}
-          <span
-            class="option-feedback-row"
-            class:correct-option={correctIndices.includes(i) && selectedIndex === i}
-            class:wrong-option={!correctIndices.includes(i) && selectedIndex === i}
-          >
-            {_(`exercise.fractionTrivia.option.multiplySame.${i}`)}
-          </span>
-        {/if}
-      {/each}
-    </div>
+    <TriviaRadioGroup
+      options={[0, 1, 2, 3].map((i) => ({ label: _(`exercise.fractionTrivia.option.multiplySame.${i}`) }))}
+      {selectedIndex}
+      {correctIndices}
+      {feedback}
+      onselect={(i) => (selectedIndex = i)}
+      name={_('exercise.fractionTrivia.type.multiplySame.prompt')}
+    />
 
     {#if feedback !== null}
       <div class="feedback-spacer">
@@ -637,28 +537,14 @@
   {:else if data.triviaType === 'fractionBar'}
     <p class="prompt-label">{_('exercise.fractionTrivia.type.fractionBar.prompt')}</p>
 
-    <div class="option-grid" role="radiogroup">
-      {#each [0, 1, 2, 3] as i (i)}
-        {#if feedback === null}
-          <button
-            class={'choice-radio' + (selectedIndex === i ? ' selected' : '')}
-            onclick={() => (selectedIndex = i)}
-            role="radio"
-            aria-checked={selectedIndex === i}
-          >
-            {_(`exercise.fractionTrivia.option.fractionBar.${i}`)}
-          </button>
-        {:else}
-          <span
-            class="option-feedback-row"
-            class:correct-option={correctIndices.includes(i) && selectedIndex === i}
-            class:wrong-option={!correctIndices.includes(i) && selectedIndex === i}
-          >
-            {_(`exercise.fractionTrivia.option.fractionBar.${i}`)}
-          </span>
-        {/if}
-      {/each}
-    </div>
+    <TriviaRadioGroup
+      options={[0, 1, 2, 3].map((i) => ({ label: _(`exercise.fractionTrivia.option.fractionBar.${i}`) }))}
+      {selectedIndex}
+      {correctIndices}
+      {feedback}
+      onselect={(i) => (selectedIndex = i)}
+      name={_('exercise.fractionTrivia.type.fractionBar.prompt')}
+    />
 
     {#if feedback !== null}
       <div class="feedback-spacer">
@@ -680,28 +566,13 @@
       {_('exercise.fractionTrivia.type.negativeSignPlacement.promptSuffix')}
     </p>
 
-    <div class="option-grid" role="group">
-      {#each correctOptionsLatex() as latex, i (i)}
-        {#if feedback === null}
-          <button
-            class={'choice-checkbox' + (selectedCheckboxes[i] ? ' selected' : '')}
-            onclick={() => toggleIndex(i)}
-            role="checkbox"
-            aria-checked={selectedCheckboxes[i]}
-          >
-            <Math expression={latex} />
-          </button>
-        {:else}
-          <span
-            class="option-feedback-row"
-            class:correct-option={correctIndices.includes(i) && selectedCheckboxes[i]}
-            class:wrong-option={!correctIndices.includes(i) && selectedCheckboxes[i]}
-          >
-            <Math expression={latex} />
-          </span>
-        {/if}
-      {/each}
-    </div>
+    <TriviaCheckboxGroup
+      options={(correctOptionsLatex() ?? []).map((l) => ({ latex: l }))}
+      selected={selectedCheckboxes}
+      {correctIndices}
+      {feedback}
+      ontoggle={toggleIndex}
+    />
 
     {#if feedback !== null}
       <div class="feedback-spacer">
@@ -724,117 +595,6 @@
     margin-top: 0.75rem;
   }
 
-  .option-grid {
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-    margin-top: 0.75rem;
-    align-items: flex-start;
-  }
-
-  .option-grid :global(.choice-radio),
-  .option-grid :global(.choice-checkbox) {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    padding: 0.6rem 1.125rem;
-    border-radius: 0.5rem;
-    border: 1px solid var(--c-border);
-    background: transparent;
-    color: var(--c-text);
-    cursor: pointer;
-    font-family: inherit;
-    font-size: 0.9rem;
-    font-weight: 500;
-    line-height: 1;
-    transition: border-color 0.2s ease-in-out;
-  }
-
-  .option-grid :global(.choice-radio:hover),
-  .option-grid :global(.choice-checkbox:hover) {
-    border-color: var(--c-primary);
-  }
-
-  .option-grid :global(.choice-radio.selected),
-  .option-grid :global(.choice-checkbox.selected) {
-    border-color: var(--c-primary);
-    color: var(--c-text);
-  }
-
-  .option-grid :global(.choice-radio:focus-visible),
-  .option-grid :global(.choice-checkbox:focus-visible) {
-    outline: 2px solid var(--c-primary);
-    outline-offset: 2px;
-  }
-
-  .option-grid :global(.choice-radio::before) {
-    content: '';
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 1.25rem;
-    height: 1.25rem;
-    border-radius: 50%;
-    border: 2px solid var(--c-border);
-    flex-shrink: 0;
-    font-size: 0.65rem;
-    line-height: 1;
-    transition: border-color 0.2s ease-in-out;
-    color: var(--c-primary-inverse);
-  }
-
-  .option-grid :global(.choice-radio:hover::before) {
-    border-color: var(--c-primary);
-  }
-
-  .option-grid :global(.choice-radio.selected::before) {
-    content: '\25CF';
-    border-color: var(--c-primary);
-    background: var(--c-primary);
-  }
-
-  .option-grid :global(.choice-checkbox::before) {
-    content: '';
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 1.25rem;
-    height: 1.25rem;
-    border: 2px solid var(--c-border);
-    border-radius: 0.25rem;
-    flex-shrink: 0;
-    font-size: 0.85rem;
-    line-height: 1;
-    font-weight: 700;
-    transition: border-color 0.2s ease-in-out;
-    color: var(--c-primary-inverse);
-  }
-
-  .option-grid :global(.choice-checkbox:hover::before) {
-    border-color: var(--c-primary);
-  }
-
-  .option-grid :global(.choice-checkbox.selected::before) {
-    content: '\2713';
-    border-color: var(--c-primary);
-    background: var(--c-primary);
-  }
-
-  .option-feedback-row {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.35rem;
-    font-weight: 600;
-  }
-
-  .option-feedback-row.correct-option {
-    color: var(--c-correct);
-  }
-
-  .option-feedback-row.wrong-option {
-    color: var(--c-incorrect);
-  }
-
   .feedback-spacer {
     margin-top: 1.5rem;
   }
@@ -845,11 +605,11 @@
     opacity: 0.8;
   }
 
-  .user-answer.correct :global(.katex) {
+  .frac-answer.correct :global(.katex) {
     color: var(--c-correct);
   }
 
-  .user-answer.incorrect :global(.katex) {
+  .frac-answer.incorrect :global(.katex) {
     color: var(--c-incorrect);
   }
 </style>
