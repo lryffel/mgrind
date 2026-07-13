@@ -1,16 +1,3 @@
----
-id: '003'
-title: 'Fix solution highlighting in factor equations'
-status: 'todo'
-assignee: null
-priority: 'low'
-created: '2026-07-13'
-updated: '2026-07-13'
-depends_on: []
-needs_guidance: false
-tags: ['existing-exercise', 'bug']
----
-
 # Fix solution highlighting in factor equations
 
 ## Description

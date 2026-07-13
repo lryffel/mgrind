@@ -1,16 +1,3 @@
----
-id: '008'
-title: 'Extend fraction multiplication with double fractions'
-status: 'todo'
-assignee: null
-priority: 'low'
-created: '2026-07-13'
-updated: '2026-07-13'
-depends_on: []
-needs_guidance: false
-tags: ['exercise-extension']
----
-
 # Extend fraction multiplication with double fractions
 
 ## Description

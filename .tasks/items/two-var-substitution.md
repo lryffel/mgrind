@@ -1,16 +1,3 @@
----
-id: '009'
-title: 'Extend substitution with 2 variables'
-status: 'todo'
-assignee: null
-priority: 'low'
-created: '2026-07-13'
-updated: '2026-07-13'
-depends_on: []
-needs_guidance: false
-tags: ['exercise-extension']
----
-
 # Extend substitution with 2 variables
 
 ## Description
