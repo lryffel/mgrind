@@ -81,6 +81,7 @@ import RoundingSigfigsInstructions from '../components/exerciseInstructions/Roun
 import { generateNumbersTrivia, validateNumbersTrivia } from '../exercises/numbersTrivia';
 import { generateGcdLcm, validateGcdLcm } from '../exercises/gcdLcm';
 import GcdLcmExercise from '../components/exercises/GcdLcmExercise.svelte';
+import GcdLcmInstructions from '../components/exerciseInstructions/GcdLcmInstructions.svelte';
 import NumbersTrivia from '../components/exercises/NumbersTrivia.svelte';
 import {
   generateTermTransformationsTrivia,
@@ -369,6 +370,7 @@ export const exerciseTypes: Record<string, ExerciseType> = {
     generate: generateGcdLcm,
     validate: validateGcdLcm,
     component: GcdLcmExercise,
+    instructionComponent: GcdLcmInstructions,
   }),
   numbersTrivia: defineExerciseType({
     id: 'numbersTrivia',
