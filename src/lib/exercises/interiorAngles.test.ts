@@ -48,7 +48,7 @@ describe('interiorAngles', () => {
 
   it('given angles are multiples of 5', () => {
     for (let seed = 0; seed < 100; seed++) {
-      for (let comp = 0; comp <= 9; comp++) {
+      for (let comp = 0; comp <= 10; comp++) {
         const ex = generateInteriorAngles(seed, comp);
         const data = ex.data as InteriorAnglesData;
         for (const a of data.angles) {
@@ -62,7 +62,7 @@ describe('interiorAngles', () => {
 
   it('missing angle is also a multiple of 5', () => {
     for (let seed = 0; seed < 100; seed++) {
-      for (let comp = 0; comp <= 9; comp++) {
+      for (let comp = 0; comp <= 10; comp++) {
         const ex = generateInteriorAngles(seed, comp);
         const data = ex.data as InteriorAnglesData;
         const missing = data.angles.find((a) => a.isMissing)!;
@@ -73,7 +73,7 @@ describe('interiorAngles', () => {
 
   it('all angles are positive and within plausible bounds', () => {
     for (let seed = 0; seed < 100; seed++) {
-      for (let comp = 0; comp <= 9; comp++) {
+      for (let comp = 0; comp <= 10; comp++) {
         const ex = generateInteriorAngles(seed, comp);
         const data = ex.data as InteriorAnglesData;
         for (const a of data.angles) {
@@ -104,7 +104,7 @@ describe('interiorAngles', () => {
 
   it('stores vertex positions within SVG bounds', () => {
     for (let seed = 0; seed < 50; seed++) {
-      for (let comp = 0; comp <= 9; comp++) {
+      for (let comp = 0; comp <= 10; comp++) {
         const ex = generateInteriorAngles(seed, comp);
         const data = ex.data as InteriorAnglesData;
         for (const a of data.angles) {
@@ -138,7 +138,7 @@ describe('interiorAngles', () => {
   it('at least some polygons are non-convex', () => {
     let nonConvexCount = 0;
     for (let seed = 0; seed < 200; seed++) {
-      for (let comp = 0; comp <= 9; comp++) {
+      for (let comp = 0; comp <= 10; comp++) {
         const ex = generateInteriorAngles(seed, comp);
         const data = ex.data as InteriorAnglesData;
         const verts = data.angles.map((a) => ({ x: a.vertexX, y: a.vertexY }));
@@ -161,6 +161,7 @@ describe('interiorAngles', () => {
       expect(getData(7).sides).toBe(5);
       expect(getData(8).sides).toBe(5);
       expect(getData(9).sides).toBe(5);
+      expect(getData(10).sides).toBe(5);
     }
   });
 });

@@ -300,7 +300,7 @@ export const exerciseTypes: Record<string, ExerciseType> = {
     id: 'interiorAngles',
     nameKey: 'exercise.interiorAngles.name',
     descriptionKey: 'exercise.interiorAngles.desc',
-    maxComplexity: 9,
+    maxComplexity: 10,
     generate: generateInteriorAngles,
     component: InteriorAngles,
     instructionComponent: InteriorAnglesInstructions,

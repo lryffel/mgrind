@@ -53,7 +53,7 @@ function interiorAngleDeg(
 }
 
 export function generateInteriorAngles(seed: number, complexity: number): Exercise {
-  const clamped = clampComplexity(complexity, 9);
+  const clamped = clampComplexity(complexity, 10);
   const rng = mulberry32(seed);
 
   const sides = clamped <= 2 ? 3 : clamped <= 5 ? 4 : 5;
