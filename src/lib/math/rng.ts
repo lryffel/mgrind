@@ -35,3 +35,14 @@ export function randCoeff(rng: () => number, allowFrac: boolean): [number, numbe
   }
   return [randInt(rng, 1, 5), 1];
 }
+
+export function sampleExponent(rng: () => number, maxExp: number, bias: number = 2): number {
+  const weights = Array.from({ length: maxExp + 1 }, (_, k) => 1 / (k + 1) ** bias);
+  const total = weights.reduce((a, b) => a + b, 0);
+  let r = rng() * total;
+  for (let k = 0; k <= maxExp; k++) {
+    if (r < weights[k]) return k;
+    r -= weights[k];
+  }
+  return maxExp;
+}

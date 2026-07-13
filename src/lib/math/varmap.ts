@@ -124,6 +124,29 @@ export function gcdArray(arr: number[]): number {
   return arr.reduce(gcd, 0);
 }
 
+export function varMapGCF(varMaps: VarMap[]): VarMap {
+  const result: VarMap = {};
+  if (varMaps.length === 0) return result;
+
+  const keys = new Set<string>();
+  for (const vm of varMaps) {
+    for (const k of Object.keys(vm)) {
+      keys.add(k);
+    }
+  }
+
+  for (const k of keys) {
+    let minExp = Infinity;
+    for (const vm of varMaps) {
+      const exp = vm[k] || 0;
+      if (exp < minExp) minExp = exp;
+    }
+    if (minExp > 0) result[k] = minExp;
+  }
+
+  return result;
+}
+
 export function buildFactorOptions(termVarParts: VarMap[]): FactorOption[] {
   const allDivisors = new Map<string, VarMap>();
   for (const tvp of termVarParts) {

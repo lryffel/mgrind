@@ -7,31 +7,23 @@ import {
 } from './factoringOutAndBinomial';
 import type { FactoringOutAndBinomialData } from './factoringOutAndBinomial';
 import { cmd } from '../math/latex';
+import { expectDeterministic, expectSeedVariation, expectHasPromptAndAnswer } from '../test-utils';
 
 function d(ex: Exercise): FactoringOutAndBinomialData {
   return ex.data as unknown as FactoringOutAndBinomialData;
 }
 
 describe('generateFactoringOutAndBinomial', () => {
-  it('returns a valid exercise with prompt, answer, and data', () => {
-    const ex = generateFactoringOutAndBinomial(42, 0);
-    expect(ex).toHaveProperty('prompt');
-    expect(ex).toHaveProperty('answer');
-    expect(ex).toHaveProperty('data');
-    expect(typeof ex.prompt).toBe('string');
-    expect(ex.prompt.length).toBeGreaterThan(0);
-  });
-
   it('is deterministic for the same seed and complexity', () => {
-    const a = generateFactoringOutAndBinomial(12345, 3);
-    const b = generateFactoringOutAndBinomial(12345, 3);
-    expect(a).toEqual(b);
+    expectDeterministic(generateFactoringOutAndBinomial, 12345, 3);
   });
 
   it('produces different results for different seeds', () => {
-    const a = generateFactoringOutAndBinomial(1, 5);
-    const b = generateFactoringOutAndBinomial(2, 5);
-    expect(a).not.toEqual(b);
+    expectSeedVariation(generateFactoringOutAndBinomial, 5);
+  });
+
+  it('returns a valid exercise with prompt, answer, and data', () => {
+    expectHasPromptAndAnswer(generateFactoringOutAndBinomial, 42, 0);
   });
 
   it('non-trap exercises have answer with format formula,gcfCoeff,gcfIdx,a/b,c/d', () => {
@@ -63,7 +55,7 @@ describe('generateFactoringOutAndBinomial', () => {
     expect(seenTrap).toBe(true);
   });
 
-  it('produces traps approximately 25% of the time', () => {
+  it('produces traps approximately 20% of the time', () => {
     let trapCount = 0;
     const total = 2000;
     for (let seed = 0; seed < total; seed++) {
@@ -71,7 +63,7 @@ describe('generateFactoringOutAndBinomial', () => {
       if (d(ex).isTrap) trapCount++;
     }
     expect(trapCount).toBeGreaterThan(total * 0.1);
-    expect(trapCount).toBeLessThan(total * 0.4);
+    expect(trapCount).toBeLessThan(total * 0.3);
   });
 
   it('low complexity (0-3) produces only formula type 1', () => {
@@ -85,7 +77,7 @@ describe('generateFactoringOutAndBinomial', () => {
 
   it('higher complexity (4+) produces all three formula types', () => {
     const seen = new Set<number>();
-    for (let seed = 0; seed < 1000; seed++) {
+    for (let seed = 0; seed < 2000; seed++) {
       const ex = generateFactoringOutAndBinomial(seed, 6);
       const ft = d(ex).formulaType;
       if (ft !== 0) seen.add(ft);
@@ -127,6 +119,30 @@ describe('generateFactoringOutAndBinomial', () => {
       }
     }
     expect(sawGcfVar).toBe(true);
+  });
+
+  it('GCF variable exponents can be greater than 1 at high complexity', () => {
+    let sawExpGt1 = false;
+    for (let seed = 0; seed < 1000; seed++) {
+      const ex = generateFactoringOutAndBinomial(seed, 10);
+      if (d(ex).isTrap) continue;
+      if (d(ex).gcfVarLatex.includes('^{')) {
+        sawExpGt1 = true;
+        break;
+      }
+    }
+    expect(sawExpGt1).toBe(true);
+  });
+
+  it('variables are drawn from the shared pool (no separate GCF_VARS/INNER_VARS)', () => {
+    const poolVars = ['x', 'y', 'z', 'a', 'b', 'c'];
+    for (let seed = 0; seed < 200; seed++) {
+      const ex = generateFactoringOutAndBinomial(seed, 10);
+      const data = d(ex);
+      if (data.isTrap) continue;
+      if (data.varA) expect(poolVars).toContain(data.varA);
+      expect(poolVars).toContain(data.varB);
+    }
   });
 });
 

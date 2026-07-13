@@ -1,16 +1,14 @@
 import type { Exercise } from '../types';
 import { mulberry32 } from '../prng';
-import { randInt, pick, pickExclude, randCoeff } from '../math/rng';
+import { randInt, pick, pickExclude, randCoeff, sampleExponent } from '../math/rng';
 import { clampComplexity } from '../math/number';
 import { reduceFrac, fracEqual } from '../math/fraction';
 import { cmd, coeffLatex } from '../math/latex';
 import type { VarMap, FactorOption } from '../math/varmap';
 import { varMapMultiply, varMapLatex, buildFactorOptions, varMapUnicode } from '../math/varmap';
 import { gcd } from '../math/number';
+import { VAR_POOL } from '../math/varpool';
 import { formatFactoredLatex } from './factoringBinomialFormulas';
-
-const INNER_VARS = ['a', 'b', 'c', 'd', 'k', '\\ell', 'm', 'n', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w'];
-const GCF_VARS = ['x', 'y', 'z'];
 
 export interface FactoringOutAndBinomialData {
   formulaType: number;
@@ -102,7 +100,10 @@ function formatFullFactoredLatex(
   return `${gcfStr}\\,${inner}`;
 }
 
-function generateNormal(rng: () => number, formulaType: number, allowGcfVar: boolean): Exercise {
+function generateNormal(rng: () => number, formulaType: number, allowGcfVar: boolean, clamped: number): Exercise {
+  const eMax = clamped <= 4 ? 2 : clamped <= 7 ? 3 : 4;
+  const bias = clamped <= 4 ? 2.5 : clamped <= 7 ? 2.0 : 1.5;
+
   for (let attempt = 0; attempt < 30; attempt++) {
     const [_aNum, _aDen] = randCoeff(rng, false);
     const [_bNum, _bDen] = randCoeff(rng, false);
@@ -110,10 +111,10 @@ function generateNormal(rng: () => number, formulaType: number, allowGcfVar: boo
     const aDen = _aDen;
     let bNum = _bNum;
     const bDen = _bDen;
-    const varB = pick(rng, INNER_VARS);
+    const varB = pick(rng, [...VAR_POOL]);
     let varA: string | null = null;
     if (allowGcfVar || (formulaType === 3 && rng() > 0.3)) {
-      varA = pickExclude(rng, INNER_VARS, [varB]);
+      varA = pickExclude(rng, [...VAR_POOL], [varB]);
     }
 
     let gcfCoeff = randInt(rng, 2, formulaType === 3 ? 4 : 5);
@@ -132,8 +133,14 @@ function generateNormal(rng: () => number, formulaType: number, allowGcfVar: boo
 
     let gcfVarMap: VarMap | null = null;
     if (allowGcfVar && rng() > 0.4) {
-      const gcfVarName = pickExclude(rng, GCF_VARS, [varA, varB].filter(Boolean) as string[]);
-      gcfVarMap = { [gcfVarName]: 1 };
+      const excluded = [varA, varB].filter(Boolean) as string[];
+      const available = [...VAR_POOL].filter((v) => !excluded.includes(v));
+      if (available.length > 0) {
+        const gcfVarName = pick(rng, available);
+        let gcfExp = sampleExponent(rng, eMax, bias);
+        if (gcfExp === 0) gcfExp = 1;
+        gcfVarMap = { [gcfVarName]: gcfExp };
+      }
     }
 
     const innerMaps = innerTermVarMaps(formulaType, varA, varB);
@@ -190,7 +197,7 @@ function generateNormal(rng: () => number, formulaType: number, allowGcfVar: boo
 
   const aCoeff = [randInt(rng, 1, 3), 1] as [number, number];
   const bCoeff = [randInt(rng, 1, 3), 1] as [number, number];
-  const v = pick(rng, INNER_VARS);
+  const v = pick(rng, [...VAR_POOL]);
   const prompt = buildPromptLaTeX(1, aCoeff[0], aCoeff[1], bCoeff[0], bCoeff[1], 2, null, null, v);
   const answer = `1,2,-1,${aCoeff[0]}/1,${bCoeff[0]}/1`;
   const data: FactoringOutAndBinomialData = {
@@ -211,22 +218,30 @@ function generateNormal(rng: () => number, formulaType: number, allowGcfVar: boo
   return { prompt, answer, data: data as unknown as Exercise['data'] };
 }
 
-function generateTrap(rng: () => number, allowGcfVar: boolean): Exercise {
+function generateTrap(rng: () => number, allowGcfVar: boolean, clamped: number): Exercise {
+  const eMax = clamped <= 4 ? 2 : clamped <= 7 ? 3 : 4;
+  const bias = clamped <= 4 ? 2.5 : clamped <= 7 ? 2.0 : 1.5;
   const trapType = Math.floor(rng() * 3);
   const aCoeff = randCoeff(rng, false);
   const bCoeff = randCoeff(rng, false);
-  const varB = pick(rng, INNER_VARS);
+  const varB = pick(rng, [...VAR_POOL]);
   let varA: string | null = null;
   if (allowGcfVar) {
-    varA = pickExclude(rng, INNER_VARS, [varB]);
+    varA = pickExclude(rng, [...VAR_POOL], [varB]);
   }
 
   const gcfCoeff = randInt(rng, 2, 5);
 
   let gcfVarMap: VarMap | null = null;
   if (allowGcfVar && rng() > 0.5) {
-    const gcfVarName = pickExclude(rng, GCF_VARS, [varA, varB].filter(Boolean) as string[]);
-    gcfVarMap = { [gcfVarName]: 1 };
+    const excluded = [varA, varB].filter(Boolean) as string[];
+    const available = [...VAR_POOL].filter((v) => !excluded.includes(v));
+    if (available.length > 0) {
+      const gcfVarName = pick(rng, available);
+      let gcfExp = sampleExponent(rng, eMax, bias);
+      if (gcfExp === 0) gcfExp = 1;
+      gcfVarMap = { [gcfVarName]: gcfExp };
+    }
   }
 
   const gcfVarLatexPart = gcfVarMap ? varMapLatex(gcfVarMap) : '';
@@ -273,12 +288,12 @@ export function generateFactoringOutAndBinomial(seed: number, complexity: number
   const allowGcfVar = clamped >= 7;
   const useAllFormulas = clamped >= 4;
 
-  if (rng() < 0.25) {
-    return generateTrap(rng, allowGcfVar);
+  if (rng() < 0.2) {
+    return generateTrap(rng, allowGcfVar, clamped);
   }
 
   const formulaType = useAllFormulas ? Math.floor(rng() * 3) + 1 : 1;
-  return generateNormal(rng, formulaType, allowGcfVar);
+  return generateNormal(rng, formulaType, allowGcfVar, clamped);
 }
 
 export function validateFactoringOutAndBinomial(answer: string, exercise: Exercise): boolean {
