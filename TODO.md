@@ -1,6 +1,6 @@
 ## Existing Exercise Improvements
 
-- [ ] In the factoring exercises, I never encounter the case that one variable has different powers, e.g. 3x^2z + 4x^3y. Make this happen much more frequently.
+- [x] Redesign the generator of the factoring out exercise. Randomly choose a few variables from the pool, then randomly generate exponents for each of them (with decreasing probability as the exponents increase). Adapt the "factoring out combined with binomial formulas" exercise so that the variables feel similar, but keep it likely (but not guaranteed) that it can be factored with binomial formulas.
 - [ ] Make the fractions in linear equations much easier.
 - [ ] Check what color what solutions gets highlighted in in the linear equations exercise. It's still weird if one solution is right and one is wrong.
 - [x] Make Interior Angles use 10 complexity levels instead of 9.
