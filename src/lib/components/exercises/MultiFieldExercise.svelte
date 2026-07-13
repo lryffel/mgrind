@@ -4,7 +4,7 @@
   import Math from '../Math.svelte';
   import ExerciseShell from '../ExerciseShell.svelte';
   import Feedback from '../Feedback.svelte';
-  import NumericInput from './NumericInput.svelte';
+  import CoefficientField from '../CoefficientField.svelte';
   import { formatCollectingAnswer } from '../../exercises/collectingTerms';
   import { normalizeCoeff } from '../../validation';
 
@@ -41,7 +41,7 @@
           {#if i > 0}
             <Math expression="+" />
           {/if}
-          <NumericInput bind:value={values[i]} {variablePart} context={contexts[i]} />
+          <CoefficientField bind:value={values[i]} {variablePart} />
         {/each}
       </span>
     </div>

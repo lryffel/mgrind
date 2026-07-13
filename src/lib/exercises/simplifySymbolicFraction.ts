@@ -35,9 +35,9 @@ function formatMonomial(coeff: number, varLatex: string): string {
   return `${coeff}${varLatex}`;
 }
 
-function reducedFraction(num: number, den: number): string {
+function fracAnswer(num: number, den: number): string {
   const [rNum, rDen] = reduceFrac(num, den);
-  return rDen === 1 ? String(rNum) : `${rNum}/${rDen}`;
+  return `${rNum};${rDen}`;
 }
 
 /**
@@ -84,14 +84,15 @@ function genConstantSign(rng: () => number): Exercise {
     ];
   }
 
-  const resultCoeff = reciprocal ? reduceFrac(1, c) : [-c, 1];
-  const answer = resultCoeff[1] === 1 ? String(resultCoeff[0]) : `${resultCoeff[0]}/${resultCoeff[1]}`;
+  const [rNum, rDen] = reciprocal ? reduceFrac(-1, c) : reduceFrac(-c, 1);
 
   return {
     prompt: `\\frac{${formatPoly(numTerms)}}{${formatPoly(denTerms)}}`,
-    answer,
+    answer: `${rNum};${rDen}`,
     data: {
+      mode: 'fraction',
       fields: [{ variablePart: '' }],
+      denominatorFields: [{ variablePart: '' }],
       promptKey: 'exercise.simplifySymbolicFraction.prompt',
     },
   };
@@ -106,9 +107,11 @@ function genFactorConstant(rng: () => number): Exercise {
 
   return {
     prompt: `\\frac{${formatMonomial(c1, vLatex)}}{${formatMonomial(c2, vLatex)}}`,
-    answer: reducedFraction(c1, c2),
+    answer: fracAnswer(c1, c2),
     data: {
+      mode: 'fraction',
       fields: [{ variablePart: '' }],
+      denominatorFields: [{ variablePart: '' }],
       promptKey: 'exercise.simplifySymbolicFraction.prompt',
     },
   };
@@ -127,9 +130,11 @@ function genFactorMonomial(rng: () => number): Exercise {
 
   return {
     prompt: `\\frac{${formatMonomial(c1, numVLatex)}}{${formatMonomial(c2, denVLatex)}}`,
-    answer: reducedFraction(c1, c2),
+    answer: fracAnswer(c1, c2),
     data: {
+      mode: 'fraction',
       fields: [{ variablePart: resultVLatex }],
+      denominatorFields: [{ variablePart: '' }],
       promptKey: 'exercise.simplifySymbolicFraction.prompt',
     },
   };
@@ -404,10 +409,73 @@ function genFactoredConstantSign(rng: () => number): Exercise {
 
   return {
     prompt: `\\frac{${formatPoly(numTerms)}}{${formatPoly(denTerms)}}`,
-    answer: reducedFraction(-c1, c2),
+    answer: fracAnswer(-c1, c2),
     data: {
+      mode: 'fraction',
       fields: [{ variablePart: '' }],
+      denominatorFields: [{ variablePart: '' }],
       promptKey: 'exercise.simplifySymbolicFraction.prompt',
+    },
+  };
+}
+
+const NON_REDUCIBLE_TYPES = ['sumSquares', 'irreducibleTrinomial', 'linearNoFactor', 'cubeMismatch'] as const;
+
+function genNonReducible(rng: () => number): Exercise {
+  const [v1, v2] = pick(rng, VAR_PAIRS);
+  const type = NON_REDUCIBLE_TYPES[Math.floor(rng() * NON_REDUCIBLE_TYPES.length)];
+
+  let numTerms: TermDesc[];
+  let denTerms: TermDesc[];
+
+  if (type === 'sumSquares') {
+    numTerms = [
+      { coeff: 1, vars: { [v1]: 2 } },
+      { coeff: 1, vars: { [v2]: 2 } },
+    ];
+    denTerms = [
+      { coeff: 1, vars: { [v1]: 1 } },
+      { coeff: 1, vars: { [v2]: 1 } },
+    ];
+  } else if (type === 'irreducibleTrinomial') {
+    numTerms = [
+      { coeff: 1, vars: { [v1]: 2 } },
+      { coeff: 1, vars: { [v1]: 1, [v2]: 1 } },
+      { coeff: 1, vars: { [v2]: 2 } },
+    ];
+    denTerms = [
+      { coeff: 1, vars: { [v1]: 1 } },
+      { coeff: 1, vars: { [v2]: 1 } },
+    ];
+  } else if (type === 'linearNoFactor') {
+    numTerms = [
+      { coeff: 1, vars: { [v1]: 1 } },
+      { coeff: 1, vars: { [v2]: 1 } },
+    ];
+    denTerms = [
+      { coeff: 1, vars: { [v1]: 1 } },
+      { coeff: -1, vars: { [v2]: 1 } },
+    ];
+  } else {
+    numTerms = [
+      { coeff: 1, vars: { [v1]: 3 } },
+      { coeff: 1, vars: { [v2]: 3 } },
+    ];
+    denTerms = [
+      { coeff: 1, vars: { [v1]: 2 } },
+      { coeff: 1, vars: { [v2]: 2 } },
+    ];
+  }
+
+  return {
+    prompt: `\\frac{${formatPoly(numTerms)}}{${formatPoly(denTerms)}}`,
+    answer: 'cannot_simplify',
+    data: {
+      mode: 'fraction',
+      fields: [{ variablePart: '' }],
+      denominatorFields: [{ variablePart: '' }],
+      promptKey: 'exercise.simplifySymbolicFraction.prompt',
+      cannotSimplifyType: type,
     },
   };
 }
@@ -461,26 +529,28 @@ export function generateSimplifySymbolicFraction(seed: number, complexity: numbe
 
   if (clamped <= 9) {
     const roll = rng();
-    if (roll < 0.1) return genBinomialThird(rng);
-    if (roll < 0.2) return genBinomialSquare(rng);
-    if (roll < 0.35) return genFactBinom(rng);
-    if (roll < 0.5) return genFactBinomDen(rng);
-    if (roll < 0.65) return genBinomialSquareAsym(rng);
-    if (roll < 0.75) return genBinomialThirdFactor(rng);
-    if (roll < 0.85) return genSignMonomial(rng);
+    if (roll < 0.17) return genNonReducible(rng);
+    if (roll < 0.253) return genBinomialThird(rng);
+    if (roll < 0.336) return genBinomialSquare(rng);
+    if (roll < 0.46) return genFactBinom(rng);
+    if (roll < 0.585) return genFactBinomDen(rng);
+    if (roll < 0.71) return genBinomialSquareAsym(rng);
+    if (roll < 0.795) return genBinomialThirdFactor(rng);
+    if (roll < 0.88) return genSignMonomial(rng);
     return genSignBinomial(rng);
   }
 
   const roll = rng();
-  if (roll < 0.1) return genFactBinom(rng);
-  if (roll < 0.25) return genFactBinomDen(rng);
-  if (roll < 0.4) return genBinomialSquareAsym(rng);
-  if (roll < 0.52) return genBinomialThirdFactor(rng);
-  if (roll < 0.62) return genBinomialSquare(rng);
-  if (roll < 0.72) return genBinomialThird(rng);
-  if (roll < 0.84) return genSignMonomial(rng);
-  if (roll < 0.92) return genSignBinomial(rng);
+  if (roll < 0.25) return genNonReducible(rng);
+  if (roll < 0.325) return genFactBinom(rng);
+  if (roll < 0.44) return genFactBinomDen(rng);
+  if (roll < 0.55) return genBinomialSquareAsym(rng);
+  if (roll < 0.64) return genBinomialThirdFactor(rng);
+  if (roll < 0.72) return genBinomialSquare(rng);
+  if (roll < 0.79) return genBinomialThird(rng);
+  if (roll < 0.87) return genSignMonomial(rng);
+  if (roll < 0.94) return genSignBinomial(rng);
   return genFactoredConstantSign(rng);
 }
 
-export { validateMultiField as validateSimplifySymbolicFraction } from '../validation';
+export { validateSymbolicFraction as validateSimplifySymbolicFraction } from '../validation';

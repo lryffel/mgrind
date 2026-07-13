@@ -1,5 +1,11 @@
 import { describe, it, expect } from 'vitest';
-import { normalizeCoeff, trimCompare, validateFractionAnswer, validateFractionReduced } from './validation';
+import {
+  normalizeCoeff,
+  trimCompare,
+  validateFractionAnswer,
+  validateFractionReduced,
+  validateSymbolicFraction,
+} from './validation';
 import { validateCollectingTerms } from './exercises/collectingTerms';
 import { validateBinomialFormulas } from './exercises/binomialFormulas';
 import { validateExpandAndCollect } from './exercises/expandAndCollect';
@@ -227,5 +233,47 @@ describe('multi-input validators handle negative coefficients', () => {
       data: { fields: [{ variablePart: 'x^2' }, { variablePart: 'x' }, { variablePart: '' }] },
     };
     expect(validateExpand('1,-2,1', ex)).toBe(true);
+  });
+});
+
+describe('validateSymbolicFraction', () => {
+  it('delegates to validateMultiField for polynomial mode (no mode set)', () => {
+    const ex: Exercise = {
+      prompt: '',
+      answer: '1,1',
+      data: { fields: [{ variablePart: 'a' }, { variablePart: 'b' }] },
+    };
+    expect(validateSymbolicFraction('1,1', ex)).toBe(true);
+    expect(validateSymbolicFraction('1,-1', ex)).toBe(false);
+  });
+
+  it('handles fraction mode with ; separator', () => {
+    const ex: Exercise = {
+      prompt: '',
+      answer: '3;4',
+      data: { mode: 'fraction', fields: [{ variablePart: '' }], denominatorFields: [{ variablePart: '' }] },
+    };
+    expect(validateSymbolicFraction('3;4', ex)).toBe(true);
+    expect(validateSymbolicFraction('6;8', ex)).toBe(true);
+    expect(validateSymbolicFraction('1;2', ex)).toBe(false);
+  });
+
+  it('rejects extra semicolons in fraction mode', () => {
+    const ex: Exercise = {
+      prompt: '',
+      answer: '3;4',
+      data: { mode: 'fraction', fields: [{ variablePart: '' }], denominatorFields: [{ variablePart: '' }] },
+    };
+    expect(validateSymbolicFraction('3;4;5', ex)).toBe(false);
+  });
+
+  it('validates negative fraction answers', () => {
+    const ex: Exercise = {
+      prompt: '',
+      answer: '-3;4',
+      data: { mode: 'fraction', fields: [{ variablePart: '' }], denominatorFields: [{ variablePart: '' }] },
+    };
+    expect(validateSymbolicFraction('-3;4', ex)).toBe(true);
+    expect(validateSymbolicFraction('3;-4', ex)).toBe(true);
   });
 });

@@ -33,17 +33,20 @@
   </ul>
 
   <p>
-    Enter the simplified expression as coefficients for each variable part. For a constant result, enter just the
-    number. For a monomial result, enter the coefficient. For a sum, enter a coefficient for each variable part.
+    Enter the simplified expression as coefficients for each variable part. For a fraction result, enter the numerator
+    above the fraction bar and the denominator below. For a monomial or sum result, enter a coefficient for each
+    variable part.
   </p>
 
   <p><strong>Examples:</strong></p>
   <ul>
     <li>
-      <Math expression={frac1} /> simplifies to <Math expression="-1" /> → enter <Math expression="-1" />
+      <Math expression={frac1} /> simplifies to <Math expression="-1" /> → enter <Math expression="-1" /> in the numerator
+      and <Math expression="1" /> in the denominator
     </li>
     <li>
-      <Math expression={frac2} /> simplifies to <Math expression={half} /> → enter <Math expression={half} />
+      <Math expression={frac2} /> simplifies to <Math expression={half} /> → enter <Math expression="1" /> in the numerator
+      and <Math expression="2" /> in the denominator
     </li>
     <li>
       <Math expression={frac3} /> simplifies to <Math expression="a+b" /> → enter <Math expression="1" /> for <Math
@@ -76,18 +79,22 @@
   </ul>
 
   <p>
-    Gib den vereinfachten Ausdruck als Koeffizienten für jeden Variablenteil ein. Bei einem konstanten Ergebnis gib
-    einfach die Zahl ein. Bei einem Monom gib den Koeffizienten ein. Bei einer Summe gib einen Koeffizienten für jeden
-    Variablenteil ein.
+    Gib den vereinfachten Ausdruck als Koeffizienten für jeden Variablenteil ein. Bei einem Bruch als Ergebnis gib den
+    Zähler über dem Bruchstrich und den Nenner darunter ein. Bei einem Monom oder einer Summe gib einen Koeffizienten
+    für jeden Variablenteil ein.
   </p>
 
   <p><strong>Beispiele:</strong></p>
   <ul>
     <li>
-      <Math expression={frac1} /> vereinfacht zu <Math expression="-1" /> → gib <Math expression="-1" /> ein
+      <Math expression={frac1} /> vereinfacht zu <Math expression="-1" /> → gib <Math expression="-1" /> im Zähler und <Math
+        expression="1"
+      /> im Nenner ein
     </li>
     <li>
-      <Math expression={frac2} /> vereinfacht zu <Math expression={half} /> → gib <Math expression={half} /> ein
+      <Math expression={frac2} /> vereinfacht zu <Math expression={half} /> → gib <Math expression="1" /> im Zähler und <Math
+        expression="2"
+      /> im Nenner ein
     </li>
     <li>
       <Math expression={frac3} /> vereinfacht zu <Math expression="a+b" /> → gib <Math expression="1" /> für <Math

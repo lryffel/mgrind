@@ -64,3 +64,44 @@ export function validateMultiField(answer: string, exercise: Exercise): boolean 
   }
   return true;
 }
+
+export function validateSymbolicFraction(answer: string, exercise: Exercise): boolean {
+  if (exercise.answer === 'cannot_simplify') {
+    return answer === 'cannot_simplify';
+  }
+  if (answer === 'cannot_simplify') {
+    return false;
+  }
+
+  const data = exercise.data;
+  if (!data || data.mode !== 'fraction') {
+    return validateMultiField(answer, exercise);
+  }
+
+  const [userNumStr, userDenStr, ...extra] = answer.split(';');
+  if (extra.length > 0 || userNumStr === undefined || userDenStr === undefined) return false;
+
+  const [expNumStr, expDenStr, ...expExtra] = exercise.answer.split(';');
+  if (expExtra.length > 0 || expNumStr === undefined || expDenStr === undefined) return false;
+
+  const userNumParts = userNumStr.split(',').map((s) => s.trim());
+  const userDenParts = userDenStr.split(',').map((s) => s.trim());
+  const expNumParts = expNumStr.split(',').map((s) => s.trim());
+  const expDenParts = expDenStr.split(',').map((s) => s.trim());
+
+  const numLen = data.fields?.length ?? 0;
+  const denLen = data.denominatorFields?.length ?? 0;
+
+  if (userNumParts.length !== numLen) return false;
+  if (userDenParts.length !== denLen) return false;
+  if (expNumParts.length !== numLen) return false;
+  if (expDenParts.length !== denLen) return false;
+
+  for (let i = 0; i < userNumParts.length; i++) {
+    const ud = userDenParts[userDenParts.length === 1 ? 0 : i];
+    const ed = expDenParts[expDenParts.length === 1 ? 0 : i];
+    if (!fracEqual(`${userNumParts[i]}/${ud}`, `${expNumParts[i]}/${ed}`)) return false;
+  }
+
+  return true;
+}

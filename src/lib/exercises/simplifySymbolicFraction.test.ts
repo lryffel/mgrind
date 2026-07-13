@@ -36,11 +36,12 @@ describe('generateSimplifySymbolicFraction', () => {
     for (let seed = 0; seed < 500; seed++) {
       for (let c = 0; c <= 9; c++) {
         const ex = generateSimplifySymbolicFraction(seed + c * 1000, c);
+        if (ex.answer === 'cannot_simplify') continue;
         const parts = ex.answer.split(',');
         const fields = getFields(ex);
         expect(parts.length).toBe(fields.length);
         parts.forEach((p) => {
-          expect(p).toMatch(/^-?\d+(\/\d+)?$/);
+          expect(p).toMatch(/^-?\d+(?:\/\d+)?(?:;\d+)?$/);
         });
       }
     }
@@ -114,7 +115,7 @@ describe('generateSimplifySymbolicFraction', () => {
     for (let seed = 0; seed < 500; seed++) {
       const ex = generateSimplifySymbolicFraction(seed, 10);
       const fields = getFields(ex);
-      if (fields.length === 1 && fields[0].variablePart === '' && ex.answer.includes('/')) {
+      if (fields.length === 1 && fields[0].variablePart === '' && ex.answer.includes(';')) {
         seen.add(seed);
       }
     }
@@ -126,7 +127,7 @@ describe('generateSimplifySymbolicFraction', () => {
     for (let seed = 0; seed < 300; seed++) {
       const ex = generateSimplifySymbolicFraction(seed, 5);
       const fields = getFields(ex);
-      if (fields.length === 1 && fields[0].variablePart === '' && ex.answer.includes('/')) {
+      if (fields.length === 1 && fields[0].variablePart === '' && ex.answer.includes(';')) {
         seen.add(seed);
       }
     }
@@ -287,5 +288,51 @@ describe('validateSimplifySymbolicFraction', () => {
     };
     expect(validateSimplifySymbolicFraction('3', ex)).toBe(true);
     expect(validateSimplifySymbolicFraction('6/2', ex)).toBe(true);
+  });
+
+  it('validates fraction mode answer with ; separator', () => {
+    const ex: Exercise = {
+      prompt: '',
+      answer: '3;4',
+      data: { mode: 'fraction', fields: [{ variablePart: '' }], denominatorFields: [{ variablePart: '' }] },
+    };
+    expect(validateSimplifySymbolicFraction('3;4', ex)).toBe(true);
+    expect(validateSimplifySymbolicFraction('6;8', ex)).toBe(true);
+    expect(validateSimplifySymbolicFraction('1;2', ex)).toBe(false);
+  });
+
+  it('validates fraction mode with variable part in numerator', () => {
+    const ex: Exercise = {
+      prompt: '',
+      answer: '3;2',
+      data: { mode: 'fraction', fields: [{ variablePart: 'a^{2}' }], denominatorFields: [{ variablePart: '' }] },
+    };
+    expect(validateSimplifySymbolicFraction('3;2', ex)).toBe(true);
+    expect(validateSimplifySymbolicFraction('6;4', ex)).toBe(true);
+    expect(validateSimplifySymbolicFraction('1;2', ex)).toBe(false);
+  });
+
+  it('rejects fraction mode with extra semicolons', () => {
+    const ex: Exercise = {
+      prompt: '',
+      answer: '3;4',
+      data: { mode: 'fraction', fields: [{ variablePart: '' }], denominatorFields: [{ variablePart: '' }] },
+    };
+    expect(validateSimplifySymbolicFraction('3;4;5', ex)).toBe(false);
+  });
+
+  it('validates fraction mode with multi-field numerator', () => {
+    const ex: Exercise = {
+      prompt: '',
+      answer: '1,1;2',
+      data: {
+        mode: 'fraction',
+        fields: [{ variablePart: 'a' }, { variablePart: 'b' }],
+        denominatorFields: [{ variablePart: '' }],
+      },
+    };
+    expect(validateSimplifySymbolicFraction('1;2', ex)).toBe(false);
+    expect(validateSimplifySymbolicFraction('1,1;2', ex)).toBe(true);
+    expect(validateSimplifySymbolicFraction('2,2;4', ex)).toBe(true);
   });
 });

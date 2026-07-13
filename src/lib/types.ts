@@ -19,6 +19,9 @@ export interface ExerciseData {
   op?: string;
   promptKey?: string;
   fields?: { variablePart: string }[];
+  mode?: 'fraction' | 'polynomial';
+  denominatorFields?: { variablePart: string }[];
+  cannotSimplifyType?: string;
   primes?: number[];
   subType?: string;
   variable?: string;

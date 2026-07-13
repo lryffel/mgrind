@@ -17,6 +17,7 @@ import SubstitutionExercise from '../components/exercises/SubstitutionExercise.s
 import { generateBinomialFormulas, validateBinomialFormulas } from '../exercises/binomialFormulas';
 import { generateCollectingTerms, validateCollectingTerms } from '../exercises/collectingTerms';
 import MultiFieldExercise from '../components/exercises/MultiFieldExercise.svelte';
+import SymbolicFractionExercise from '../components/exercises/SymbolicFractionExercise.svelte';
 import { generateScientificNotation } from '../exercises/scientificNotation';
 import ScientificNotationExercise from '../components/exercises/ScientificNotationExercise.svelte';
 import {
@@ -343,7 +344,7 @@ export const exerciseTypes: Record<string, ExerciseType> = {
     descriptionKey: 'exercise.simplifySymbolicFraction.desc',
     generate: generateSimplifySymbolicFraction,
     validate: validateSimplifySymbolicFraction,
-    component: MultiFieldExercise,
+    component: SymbolicFractionExercise,
     instructionComponent: SimplifySymbolicFractionInstructions,
   }),
   roundingSigfigs: defineExerciseType({
