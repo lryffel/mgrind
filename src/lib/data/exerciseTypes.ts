@@ -58,11 +58,14 @@ import LinearEquationsExercise from '../components/exercises/LinearEquationsExer
 import { generateInteriorAngles } from '../exercises/interiorAngles';
 import { generateFractionTrivia, validateFractionTrivia } from '../exercises/fractionTrivia';
 import { generatePythagoras, validatePythagoras } from '../exercises/pythagoras';
+import { generateArea, validateArea } from '../exercises/area';
 import InteriorAngles from '../components/exercises/InteriorAngles.svelte';
 import Pythagoras from '../components/exercises/Pythagoras.svelte';
+import AreaExercise from '../components/exercises/AreaExercise.svelte';
 import FractionTrivia from '../components/exercises/FractionTrivia.svelte';
 import InteriorAnglesInstructions from '../components/exerciseInstructions/InteriorAnglesInstructions.svelte';
 import PythagorasInstructions from '../components/exerciseInstructions/PythagorasInstructions.svelte';
+import AreaInstructions from '../components/exerciseInstructions/AreaInstructions.svelte';
 import { trimCompare, validateFractionAnswer, validateFractionReduced } from '../validation';
 import {
   generateSimplifySymbolicFraction,
@@ -318,6 +321,16 @@ export const exerciseTypes: Record<string, ExerciseType> = {
     generate: generateInteriorAngles,
     component: InteriorAngles,
     instructionComponent: InteriorAnglesInstructions,
+  }),
+  area: defineExerciseType({
+    id: 'area',
+    nameKey: 'exercise.area.name',
+    descriptionKey: 'exercise.area.desc',
+    maxComplexity: 10,
+    generate: generateArea,
+    validate: validateArea,
+    component: AreaExercise,
+    instructionComponent: AreaInstructions,
   }),
   fractionTrivia: defineExerciseType({
     id: 'fractionTrivia',

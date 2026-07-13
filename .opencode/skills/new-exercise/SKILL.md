@@ -89,6 +89,24 @@ let { exercise, onSubmit, onNext, feedback }: ExerciseProps = $props();
 </ExerciseShell>
 ```
 
+### SVG overlays and label positioning
+
+When rendering `<SvgContainer>` with labeled overlays:
+
+- **Label offsets must be proportional to shape size.** Static pixel offsets (like `+ 16`) look wrong because the SVG viewBox is stretched to fill the container — a small viewBox magnifies the offset. Compute offsets from the shape's bounding box, e.g.:
+
+```ts
+let labelOffset = $derived.by(() => {
+  const xs = vertices.map((v) => v.x);
+  const shapeW = Math.max(...xs) - Math.min(...xs);
+  return Math.max(8, Math.min(18, shapeW * 0.07));
+});
+```
+
+Use `labelOffset` for all dimension-label positions (above, below, left of shape edges).
+
+- **Use `vector-effect="non-scaling-stroke"`** on SVG `<polygon>`, `<line>`, and `<circle>` elements so stroke widths stay consistent regardless of viewBox scaling.
+
 ### Input composables
 
 - **Fraction**: `useFractionInput()` from `../../fraction-input.svelte` → `num`, `den`, `getSubmitValue()`, `userLatex`.
@@ -104,14 +122,17 @@ Create `src/lib/components/exerciseInstructions/<Name>Instructions.svelte` for t
 <script lang="ts">
   import { state } from '../../i18n.svelte';
   import Math from '../Math.svelte';
+  const someLatex = 'A = \\frac{1}{2} \\cdot b \\cdot h';
 </script>
 
 {#if state.lang === 'en'}
-  <p>English instructions</p>
+  <p>English instructions <Math expression={someLatex} /></p>
 {:else}
   <p>Deutsche Anleitung</p>
 {/if}
 ```
+
+⚠️ **Always use JS variables for LaTeX containing backslashes** (`\frac`, `\cdot`, `\pi`, etc.). Never put backslash sequences directly in HTML attribute strings — use a `const` in `<script>` and pass it via `{expression}` binding.
 
 Register via `instructionComponent` in step 4. The `?` button appears automatically.
 

@@ -59,6 +59,6 @@ export const disciplines: Discipline[] = [
   {
     id: 'geometry',
     nameKey: 'discipline.geometry.name',
-    exerciseTypeIds: ['interiorAngles', 'pythagoras'],
+    exerciseTypeIds: ['interiorAngles', 'pythagoras', 'area'],
   },
 ];

@@ -557,6 +557,19 @@ const dict = {
     en: 'This fraction cannot be simplified further. Click "Cannot simplify" instead.',
     de: 'Dieser Bruch lässt sich nicht weiter vereinfachen. Klicke stattdessen auf "Nicht vereinfachbar".',
   },
+  'exercise.area.name': { en: 'Areas', de: 'Flächen' },
+  'exercise.area.desc': {
+    en: 'Compute areas of geometric shapes',
+    de: 'Berechne Flächen von geometrischen Figuren',
+  },
+  'exercise.area.prompt': {
+    en: 'Calculate the area.',
+    de: 'Berechne den Flächeninhalt.',
+  },
+  'exercise.area.promptDim': {
+    en: 'Find the missing length.',
+    de: 'Finde die fehlende Länge.',
+  },
 } satisfies Record<string, Record<Lang, string>>;
 
 export const state = $state({ lang: 'en' as Lang });
