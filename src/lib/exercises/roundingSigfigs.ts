@@ -21,7 +21,7 @@ export function roundToSigFigs(value: number, n: number): string {
 
 function generateSimpleDecimal(rng: () => number): { value: number; n: number } {
   const intPart = randInt(rng, 1, 9);
-  const decPart = randInt(rng, 100, 9999);
+  const decPart = randInt(rng, 10, 999);
   const value = parseFloat(`${intPart}.${decPart}`);
   const n = randInt(rng, 1, 2);
   return { value, n };
@@ -37,7 +37,7 @@ function generateInteger(rng: () => number): { value: number; n: number } {
 
 function generateSmallDecimal(rng: () => number): { value: number; n: number } {
   const leadingZeros = randInt(rng, 1, 4);
-  const sigDigits = randInt(rng, 100, 9999);
+  const sigDigits = randInt(rng, 100, 999);
   const value = parseFloat(`0.${'0'.repeat(leadingZeros)}${sigDigits}`);
   const n = randInt(rng, 2, 3);
   const maxN = String(sigDigits).length - 1;
@@ -80,7 +80,7 @@ function generateLargeOrRollover(rng: () => number): { value: number; n: number 
     }
     return { value, n };
   }
-  const value = randInt(rng, 100000, 999999999);
+  const value = randInt(rng, 10000, 999999);
   const digitCount = String(value).length;
   const n = randInt(rng, 2, 4);
   const maxN = Math.min(4, digitCount - 1);
