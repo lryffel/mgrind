@@ -4,10 +4,12 @@
   import Math from '../Math.svelte';
   import ExerciseShell from '../ExerciseShell.svelte';
   import Feedback from '../Feedback.svelte';
+  import type { NecessityOfParenthesesData } from '../../exercises/necessityOfParentheses';
 
   let { exercise, onSubmit, onNext, feedback }: ExerciseProps = $props();
 
-  let questions = $derived((exercise.data?.questions as { latex: string; needsParens: boolean }[]) ?? []);
+  let data = $derived(exercise.data as NecessityOfParenthesesData);
+  let questions = $derived(data.questions ?? []);
 
   // eslint-disable-next-line svelte/prefer-writable-derived
   let answers = $state<string[]>([]);

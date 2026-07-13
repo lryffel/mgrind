@@ -12,83 +12,18 @@ export interface ExerciseProps {
 }
 
 export interface ExerciseData {
-  num1?: number;
-  den1?: number;
-  num2?: number;
-  den2?: number;
-  op?: string;
+  /** Properties shared across 2+ exercise types */
   promptKey?: string;
   fields?: { variablePart: string }[];
-  mode?: 'fraction' | 'polynomial';
-  denominatorFields?: { variablePart: string }[];
-  cannotSimplifyType?: string;
-  primes?: number[];
   subType?: string;
-  variable?: string;
-  value?: string;
-  valueB?: string;
-  term?: string;
-  complexity?: number;
   varA?: string | null;
   varB?: string;
-  correctFormula?: number;
-  numSolutions?: number;
-  questions?: { latex: string; needsParens: boolean }[];
-  signs?: { latex: string; sign: string }[];
-  comparisons?: { num1: number; den1: number; num2: number; den2: number; correctOperator: string }[];
-  sides?: number;
-  angles?: { value: number; isMissing: boolean }[];
-  isRight?: boolean;
-  triangleVertices?: { x: number; y: number }[];
-  rightAngleVertex?: number | null;
-  sideANum?: number;
-  sideADen?: number;
-  sideBNum?: number;
-  sideBDen?: number;
-  sideCNum?: number;
-  sideCDen?: number;
-  missingSide?: string;
-  answerLatex?: string;
-  triviaType?: string;
-  triviaA?: number;
-  triviaB?: number;
-  triviaExpressionLatex?: string;
-  triviaOptionsLatex?: string[];
-  triviaOptionsText?: string[];
-  triviaSubType?: string;
-  aLatex?: string;
-  bLatex?: string;
-  gcdExponents?: string;
-  lcmExponents?: string;
-  a?: number;
-  b?: number;
-  gcd?: string;
-  lcm?: string;
-  sigfigsCount?: number;
-  numberA?: number;
-  numberB?: number;
-  candidates?: number[];
-  correctIndices?: number[];
-  promptLatex?: string;
-  statementIndex?: number;
-  ruleIndices?: number[];
-  ruleK?: number;
-  isNaturalQuestions?: { latex: string; isNatural: boolean }[];
-  numberQuestions?: { latex: string; isNatural: boolean; isInteger: boolean; isRational: boolean }[];
-  numberSet?: string;
-  ruleTexts?: { en: string; de: string }[];
-  lawNameKey?: string;
-  lawOperationKey?: string;
-  ordinalKey?: string;
-  hintKey?: string;
-  statementsLatex?: string[];
-  correctAnswers?: boolean[];
 }
 
 export interface Exercise {
   prompt: string;
   answer: string;
-  data?: ExerciseData;
+  data?: unknown;
 }
 
 export interface Prerequisite {

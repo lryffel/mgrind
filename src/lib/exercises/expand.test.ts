@@ -1,9 +1,10 @@
 import { describe, it, expect } from 'vitest';
 import type { Exercise } from '../types';
-import { generateExpand, validateExpand } from './expand';
+import { generateExpand, validateExpand, type ExpandData } from './expand';
 
 function getFields(ex: Exercise): { variablePart: string }[] {
-  return ex.data?.fields ?? [];
+  const d = ex.data as ExpandData | undefined;
+  return d?.fields ?? [];
 }
 
 describe('generateExpand', () => {
@@ -12,7 +13,7 @@ describe('generateExpand', () => {
     expect(ex).toHaveProperty('prompt');
     expect(ex).toHaveProperty('answer');
     expect(ex).toHaveProperty('data');
-    expect(ex.data?.fields).toBeDefined();
+    expect((ex.data as ExpandData).fields).toBeDefined();
     expect(Array.isArray(getFields(ex))).toBe(true);
   });
 
@@ -135,7 +136,7 @@ describe('generateExpand', () => {
     const ex: Exercise = {
       prompt: '(x)(x + y)',
       answer: '1,1',
-      data: { fields: [{ variablePart: 'x^{2}' }, { variablePart: 'xy' }] },
+      data: { fields: [{ variablePart: 'x^{2}' }, { variablePart: 'xy' }] } as ExpandData,
     };
     expect(validateExpand('1,1', ex)).toBe(true);
     expect(validateExpand('1,2', ex)).toBe(false);

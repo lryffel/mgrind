@@ -17,7 +17,7 @@
     onNext,
     feedback,
   }: {
-    exercise: { prompt: string; answer: string; data?: FractionTriviaData };
+    exercise: { prompt: string; answer: string; data?: unknown };
     onSubmit: (answer: string) => void;
     onNext: () => void;
     feedback: ExerciseFeedback;

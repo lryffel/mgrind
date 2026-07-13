@@ -1,10 +1,11 @@
 import { describe, it, expect } from 'vitest';
 import type { Exercise } from '../types';
-import { generateBinomialFormulas, validateBinomialFormulas } from './binomialFormulas';
+import { generateBinomialFormulas, validateBinomialFormulas, type BinomialFormulasData } from './binomialFormulas';
 import { formatCollectingAnswer } from './collectingTerms';
 
 function getFields(ex: Exercise): { variablePart: string }[] {
-  return ex.data?.fields ?? [];
+  const d = ex.data as BinomialFormulasData | undefined;
+  return d?.fields ?? [];
 }
 
 describe('generateBinomialFormulas', () => {
@@ -13,7 +14,7 @@ describe('generateBinomialFormulas', () => {
     expect(ex).toHaveProperty('prompt');
     expect(ex).toHaveProperty('answer');
     expect(ex).toHaveProperty('data');
-    expect(ex.data?.fields).toBeDefined();
+    expect((ex.data as BinomialFormulasData).fields).toBeDefined();
     expect(Array.isArray(getFields(ex))).toBe(true);
   });
 
@@ -158,7 +159,7 @@ describe('validateBinomialFormulas', () => {
     const ex: Exercise = {
       prompt: '',
       answer: '1/2,3/4',
-      data: { fields: [{ variablePart: 'x' }, { variablePart: '' }] },
+      data: { fields: [{ variablePart: 'x' }, { variablePart: '' }] } as BinomialFormulasData,
     };
     expect(validateBinomialFormulas('2/4,3/4', ex)).toBe(true);
     expect(validateBinomialFormulas('1/2,6/8', ex)).toBe(true);

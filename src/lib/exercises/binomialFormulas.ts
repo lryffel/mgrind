@@ -4,6 +4,11 @@ import { randInt, pick, randCoeff } from '../math/rng';
 import { clampComplexity } from '../math/number';
 import { reduceFrac, fracEqual } from '../math/fraction';
 
+export interface BinomialFormulasData {
+  fields: { variablePart: string }[];
+  promptKey: string;
+}
+
 function mulCoeff(a: [number, number], b: [number, number]): [number, number] {
   return reduceFrac(a[0] * b[0], a[1] * b[1]);
 }

@@ -5,6 +5,10 @@ import { randInt, pick } from '../math/rng';
 import { reduceFrac, parseFrac } from '../math/fraction';
 import { coeffLatex } from '../math/latex';
 
+export interface LinearEquationsData {
+  variable: string;
+}
+
 type Term = { type: 'coeff' | 'const'; num: number; den: number };
 
 const ALL_VARS = ['a', 'b', 'c', 'k', 'm', 'n', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'];

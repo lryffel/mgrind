@@ -4,9 +4,24 @@ import { gcd, clampComplexity } from '../math/number';
 import { reduceFrac, fracEqual } from '../math/fraction';
 import { pick } from '../math/rng';
 
-interface Vertex {
+export interface Vertex {
   x: number;
   y: number;
+}
+
+export interface PythagorasData {
+  isRight: boolean;
+  triangleVertices: Vertex[];
+  rightAngleVertex: number | null;
+  sideANum: number;
+  sideADen: number;
+  sideBNum: number;
+  sideBDen: number;
+  sideCNum: number;
+  sideCDen: number;
+  missingSide: string;
+  answerLatex: string;
+  promptKey: string;
 }
 
 export function validatePythagoras(answer: string, exercise: Exercise): boolean {

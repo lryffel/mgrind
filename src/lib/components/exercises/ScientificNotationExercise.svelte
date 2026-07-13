@@ -5,16 +5,18 @@
   import ExerciseShell from '../ExerciseShell.svelte';
   import Feedback from '../Feedback.svelte';
   import NumericInput from './NumericInput.svelte';
+  import type { ScientificNotationData } from '../../exercises/scientificNotation';
 
   let { exercise, onSubmit, onNext, feedback }: ExerciseProps = $props();
 
+  let data = $derived(exercise.data as ScientificNotationData);
   let userInput = $state('');
   let coeffInput = $state('');
   let expInput = $state('');
 
-  const subType = $derived(exercise.data?.subType);
+  const subType = $derived(data.subType);
   const isMultiInput = $derived(subType !== 'sciToDec');
-  const promptKey = $derived(exercise.data?.promptKey ?? null);
+  const promptKey = $derived(data.promptKey ?? null);
   const promptParts = $derived(exercise.prompt.split('= ?'));
 
   let validationError = $derived(

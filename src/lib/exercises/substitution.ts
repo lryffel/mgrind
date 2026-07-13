@@ -5,6 +5,15 @@ import { reduceFrac, parseFrac } from '../math/fraction';
 import { gcd, clampComplexity } from '../math/number';
 import { coeffLatex } from '../math/latex';
 
+export interface SubstitutionData {
+  variable: string;
+  value: string;
+  varB?: string;
+  valueB?: string;
+  term: string;
+  complexity: number;
+}
+
 function fracDisplay(num: number, den: number): string {
   if (den === 1) return String(num);
   if (num % den === 0) return String(num / den);

@@ -7,11 +7,18 @@
   import CoefficientField from '../CoefficientField.svelte';
   import { formatCollectingAnswer } from '../../exercises/collectingTerms';
   import { normalizeCoeff } from '../../validation';
+  import type { BinomialFormulasData } from '../../exercises/binomialFormulas';
+  import type { CollectingTermsData } from '../../exercises/collectingTerms';
+  import type { ExpandData } from '../../exercises/expand';
+  import type { ExpandAndCollectData } from '../../exercises/expandAndCollect';
 
   let { exercise, onSubmit, onNext, feedback }: ExerciseProps = $props();
 
-  let fields = $derived(exercise.data?.fields ?? []);
-  let promptKey = $derived(exercise.data?.promptKey ?? null);
+  let multiData = $derived(
+    exercise.data as BinomialFormulasData | CollectingTermsData | ExpandData | ExpandAndCollectData,
+  );
+  let fields = $derived(multiData.fields ?? []);
+  let promptKey = $derived(multiData.promptKey ?? null);
   let variableParts = $derived(fields.map((f) => f.variablePart));
   // eslint-disable-next-line svelte/prefer-writable-derived
   let values = $state<string[]>([]);

@@ -3,6 +3,10 @@ import { mulberry32 } from '../prng';
 import { randInt } from '../math/rng';
 import { clampComplexity } from '../math/number';
 
+export interface RoundingSigfigsData {
+  sigfigsCount: number;
+}
+
 export function roundToSigFigs(value: number, n: number): string {
   if (value === 0) return '0';
   const absVal = Math.abs(value);

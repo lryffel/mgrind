@@ -5,10 +5,12 @@
   import ExerciseShell from '../ExerciseShell.svelte';
   import Feedback from '../Feedback.svelte';
   import PrimeFactorInput from './PrimeFactorInput.svelte';
+  import type { PrimeFactorisationData } from '../../exercises/primeFactorisation';
 
   let { exercise, onSubmit, onNext, feedback }: ExerciseProps = $props();
 
-  let primes = $derived(exercise.data?.primes ?? []);
+  let data = $derived(exercise.data as PrimeFactorisationData);
+  let primes = $derived(data.primes ?? []);
   // eslint-disable-next-line svelte/prefer-writable-derived
   let values = $state<string[]>([]);
 

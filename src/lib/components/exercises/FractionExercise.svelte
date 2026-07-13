@@ -9,18 +9,20 @@
   import { useFractionInput, fractionLatex } from '../../fraction-input.svelte';
   import { reduceFrac } from '../../math/fraction';
   import { coeffLatex, promptFraction } from '../../math/latex';
+  import type { MultiplicationFractionData } from '../../exercises/multiplicationFraction';
 
   let { exercise, onSubmit, onNext, feedback }: ExerciseProps = $props();
 
   let frac = useFractionInput();
 
-  const num1 = $derived(exercise.data?.num1);
-  const den1 = $derived(exercise.data?.den1);
-  const num2 = $derived(exercise.data?.num2);
-  const den2 = $derived(exercise.data?.den2);
-  const op = $derived(exercise.data?.op as string | undefined);
+  let data = $derived(exercise.data as MultiplicationFractionData);
+  const num1 = $derived(data.num1);
+  const den1 = $derived(data.den1);
+  const num2 = $derived(data.num2);
+  const den2 = $derived(data.den2);
+  const op = $derived(data.op);
   const isBinary = $derived(num1 !== undefined && den1 !== undefined && num2 !== undefined && den2 !== undefined);
-  const promptKey = $derived(exercise.data?.promptKey as string | undefined);
+  const promptKey = $derived(data.promptKey);
   const displayOp = $derived(op === '*' ? '\\cdot' : (op ?? ''));
 
   const correctNumDen = $derived(exercise.answer.split(','));

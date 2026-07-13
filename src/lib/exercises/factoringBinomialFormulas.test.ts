@@ -4,8 +4,13 @@ import {
   generateFactoringBinomialFormulas,
   validateFactoringBinomialFormulas,
   formatFactoredLatex,
+  type FactoringBinomialFormulasData,
 } from './factoringBinomialFormulas';
 import { cmd } from '../math/latex';
+
+function d(ex: { data?: unknown }): FactoringBinomialFormulasData {
+  return ex.data as FactoringBinomialFormulasData;
+}
 
 describe('generateFactoringBinomialFormulas', () => {
   it('returns a valid exercise with prompt, answer, and data', () => {
@@ -33,7 +38,7 @@ describe('generateFactoringBinomialFormulas', () => {
     let seenNonTrap = 0;
     for (let seed = 0; seed < 1000; seed++) {
       const ex = generateFactoringBinomialFormulas(seed, 3);
-      if (ex.data?.correctFormula !== 0) {
+      if (d(ex).correctFormula !== 0) {
         seenNonTrap++;
         const parts = ex.answer.split(',');
         expect(parts.length).toBe(3);
@@ -49,7 +54,7 @@ describe('generateFactoringBinomialFormulas', () => {
     let seenTrap = false;
     for (let seed = 0; seed < 1000; seed++) {
       const ex = generateFactoringBinomialFormulas(seed, 5);
-      if (ex.data?.correctFormula === 0) {
+      if (d(ex).correctFormula === 0) {
         seenTrap = true;
         expect(ex.answer).toBe('0');
       }
@@ -62,7 +67,7 @@ describe('generateFactoringBinomialFormulas', () => {
     const total = 2000;
     for (let seed = 0; seed < total; seed++) {
       const ex = generateFactoringBinomialFormulas(seed, 5);
-      if (ex.data?.correctFormula === 0) trapCount++;
+      if (d(ex).correctFormula === 0) trapCount++;
     }
     expect(trapCount).toBeGreaterThan(total * 0.1);
     expect(trapCount).toBeLessThan(total * 0.4);
@@ -72,7 +77,7 @@ describe('generateFactoringBinomialFormulas', () => {
     const seen = new Set<number>();
     for (let seed = 0; seed < 1000; seed++) {
       const ex = generateFactoringBinomialFormulas(seed, 3);
-      const cf = ex.data?.correctFormula as number;
+      const cf = d(ex).correctFormula as number;
       if (cf !== 0) seen.add(cf);
     }
     expect(seen.has(1)).toBe(true);
@@ -84,7 +89,7 @@ describe('generateFactoringBinomialFormulas', () => {
     for (let seed = 0; seed < 300; seed++) {
       for (let c = 0; c <= 4; c++) {
         const ex = generateFactoringBinomialFormulas(seed + c * 1000, c);
-        if (ex.data?.correctFormula === 0) continue;
+        if (d(ex).correctFormula === 0) continue;
         const parts = ex.answer.split(',');
         expect(parts[1]).toMatch(/^\d+\/1$/);
         expect(parts[2]).toMatch(/^\d+\/1$/);
@@ -97,7 +102,7 @@ describe('generateFactoringBinomialFormulas', () => {
     for (let seed = 0; seed < 500; seed++) {
       for (let c = 5; c <= 9; c++) {
         const ex = generateFactoringBinomialFormulas(seed + c * 1000, c);
-        if (ex.data?.correctFormula === 0) continue;
+        if (d(ex).correctFormula === 0) continue;
         if (ex.answer.includes('/')) sawFraction = true;
       }
     }
@@ -108,7 +113,7 @@ describe('generateFactoringBinomialFormulas', () => {
 describe('validateFactoringBinomialFormulas', () => {
   it('accepts the correct answer for a non-trap exercise', () => {
     const ex = generateFactoringBinomialFormulas(42, 0);
-    if (ex.data?.correctFormula === 0) return;
+    if (d(ex).correctFormula === 0) return;
     expect(validateFactoringBinomialFormulas(ex.answer, ex)).toBe(true);
   });
 
@@ -187,10 +192,10 @@ describe('prompt term order', () => {
   it('formula types 1 and 2 with varA: a² term precedes b² term', () => {
     for (let seed = 0; seed < 1000; seed++) {
       const ex = generateFactoringBinomialFormulas(seed, 5);
-      const cf = ex.data?.correctFormula as number;
+      const cf = d(ex).correctFormula as number;
       if (cf !== 1 && cf !== 2) continue;
-      const varA = ex.data?.varA as string | null;
-      const varB = ex.data?.varB as string;
+      const varA = d(ex).varA as string | null;
+      const varB = d(ex).varB as string;
       if (!varA || !varB) continue;
 
       expect(ex.prompt.indexOf(`${cmd(varA)}^{2}`)).toBeLessThan(ex.prompt.indexOf(`${cmd(varB)}^{2}`));
@@ -200,10 +205,10 @@ describe('prompt term order', () => {
   it('formula type 3 with varA: a² term precedes b² term', () => {
     for (let seed = 0; seed < 1000; seed++) {
       const ex = generateFactoringBinomialFormulas(seed, 5);
-      const cf = ex.data?.correctFormula as number;
+      const cf = d(ex).correctFormula as number;
       if (cf !== 3) continue;
-      const varA = ex.data?.varA as string | null;
-      const varB = ex.data?.varB as string;
+      const varA = d(ex).varA as string | null;
+      const varB = d(ex).varB as string;
       if (!varA || !varB) continue;
 
       expect(ex.prompt.indexOf(`${cmd(varA)}^{2}`)).toBeLessThan(ex.prompt.indexOf(`${cmd(varB)}^{2}`));
@@ -213,10 +218,10 @@ describe('prompt term order', () => {
   it('formula types 1 and 2 without varA: b² variable appears after the middle term', () => {
     for (let seed = 0; seed < 1000; seed++) {
       const ex = generateFactoringBinomialFormulas(seed, 3);
-      const cf = ex.data?.correctFormula as number;
+      const cf = d(ex).correctFormula as number;
       if (cf !== 1 && cf !== 2) continue;
-      const varA = ex.data?.varA as string | null;
-      const varB = ex.data?.varB as string;
+      const varA = d(ex).varA as string | null;
+      const varB = d(ex).varB as string;
       if (varA || !varB) continue;
 
       const b2Latex = `${cmd(varB)}^{2}`;
@@ -231,10 +236,10 @@ describe('prompt term order', () => {
   it('formula type 3 without varA: b² term appears after the minus sign', () => {
     for (let seed = 0; seed < 1000; seed++) {
       const ex = generateFactoringBinomialFormulas(seed, 5);
-      const cf = ex.data?.correctFormula as number;
+      const cf = d(ex).correctFormula as number;
       if (cf !== 3) continue;
-      const varA = ex.data?.varA as string | null;
-      const varB = ex.data?.varB as string;
+      const varA = d(ex).varA as string | null;
+      const varB = d(ex).varB as string;
       if (varA || !varB) continue;
 
       const minusIdx = ex.prompt.indexOf(' - ');

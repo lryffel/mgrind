@@ -1,6 +1,11 @@
 import { describe, it, expect } from 'vitest';
-import { generatePythagoras, validatePythagoras } from './pythagoras';
+import type { Exercise } from '../types';
+import { generatePythagoras, validatePythagoras, type PythagorasData } from './pythagoras';
 import { expectDeterministic, expectSeedVariation, expectHasPromptAndAnswer } from '../test-utils';
+
+function d(ex: { data?: unknown }): PythagorasData {
+  return ex.data as PythagorasData;
+}
 
 describe('pythagoras', () => {
   it('generates deterministic output', () => {
@@ -19,17 +24,7 @@ describe('pythagoras', () => {
     for (let seed = 0; seed < 200; seed++) {
       for (let comp = 0; comp < 10; comp++) {
         const ex = generatePythagoras(seed, comp);
-        const data = ex.data as unknown as {
-          isRight: boolean;
-          sideANum: number;
-          sideADen: number;
-          sideBNum: number;
-          sideBDen: number;
-          sideCNum: number;
-          sideCDen: number;
-          missingSide: string;
-          answerLatex: string;
-        };
+        const data = d(ex);
 
         if (!data.isRight) continue;
 
@@ -54,7 +49,7 @@ describe('pythagoras', () => {
     for (let seed = 0; seed < 500; seed++) {
       for (let comp = 6; comp < 10; comp++) {
         const ex = generatePythagoras(seed, comp);
-        const data = ex.data as unknown as { isRight: boolean };
+        const data = d(ex);
         if (!data.isRight) {
           foundNonRight = true;
           expect(ex.answer).toBe('cannot_compute');
@@ -65,7 +60,7 @@ describe('pythagoras', () => {
   });
 
   it('validates non-right answer correctly', () => {
-    const ex = { prompt: '', answer: 'cannot_compute', data: {} };
+    const ex: Exercise = { prompt: '', answer: 'cannot_compute', data: {} as PythagorasData };
     expect(validatePythagoras('cannot_compute', ex)).toBe(true);
     expect(validatePythagoras('5', ex)).toBe(false);
     expect(validatePythagoras('', ex)).toBe(false);
@@ -75,7 +70,7 @@ describe('pythagoras', () => {
     for (let seed = 0; seed < 50; seed++) {
       for (let comp = 0; comp < 6; comp++) {
         const ex = generatePythagoras(seed, comp);
-        const data = ex.data as unknown as { isRight: boolean };
+        const data = d(ex);
         if (!data.isRight) continue;
 
         expect(validatePythagoras(ex.answer, ex)).toBe(true);
@@ -88,14 +83,7 @@ describe('pythagoras', () => {
     for (let seed = 0; seed < 200; seed++) {
       for (let comp = 0; comp < 10; comp++) {
         const ex = generatePythagoras(seed, comp);
-        const data = ex.data as unknown as {
-          sideANum: number;
-          sideADen: number;
-          sideBNum: number;
-          sideBDen: number;
-          sideCNum: number;
-          sideCDen: number;
-        };
+        const data = d(ex);
 
         const a = data.sideANum / data.sideADen;
         const b = data.sideBNum / data.sideBDen;
@@ -134,7 +122,7 @@ describe('pythagoras', () => {
       for (let comp = 8; comp < 10; comp++) {
         totalCount++;
         const ex = generatePythagoras(seed, comp);
-        const data = ex.data as unknown as { isRight: boolean };
+        const data = d(ex);
         if (!data.isRight) nonRightCount++;
       }
     }
@@ -146,7 +134,7 @@ describe('pythagoras', () => {
     for (let seed = 0; seed < 50; seed++) {
       for (let comp = 0; comp < 10; comp++) {
         const ex = generatePythagoras(seed, comp);
-        const data = ex.data as unknown as { triangleVertices: { x: number; y: number }[] };
+        const data = d(ex);
         for (const v of data.triangleVertices) {
           expect(v.x).toBeGreaterThanOrEqual(0);
           expect(v.x).toBeLessThanOrEqual(250);
@@ -161,7 +149,7 @@ describe('pythagoras', () => {
     for (let seed = 0; seed < 100; seed++) {
       for (let comp = 0; comp < 6; comp++) {
         const ex = generatePythagoras(seed, comp);
-        const data = ex.data as unknown as { isRight: boolean; rightAngleVertex: number | null };
+        const data = d(ex);
         expect(data.rightAngleVertex).not.toBeNull();
       }
     }
@@ -171,7 +159,7 @@ describe('pythagoras', () => {
     for (let seed = 0; seed < 500; seed++) {
       for (let comp = 6; comp < 10; comp++) {
         const ex = generatePythagoras(seed, comp);
-        const data = ex.data as unknown as { isRight: boolean; rightAngleVertex: number | null };
+        const data = d(ex);
         if (!data.isRight) {
           expect(data.rightAngleVertex).toBeNull();
         }

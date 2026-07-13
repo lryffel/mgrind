@@ -7,13 +7,15 @@
   import CoefficientField from '../CoefficientField.svelte';
   import { formatCollectingAnswer } from '../../exercises/collectingTerms';
   import { normalizeCoeff } from '../../validation';
+  import type { SymbolicFractionData } from '../../exercises/simplifySymbolicFraction';
 
   let { exercise, onSubmit, onNext, feedback }: ExerciseProps = $props();
 
-  let mode = $derived(exercise.data?.mode === 'fraction' ? 'fraction' : 'polynomial');
-  let fields = $derived(exercise.data?.fields ?? []);
-  let denominatorFields = $derived(mode === 'fraction' ? (exercise.data?.denominatorFields ?? []) : []);
-  let promptKey = $derived(exercise.data?.promptKey ?? null);
+  let data = $derived(exercise.data as SymbolicFractionData);
+  let mode = $derived(data.mode === 'fraction' ? 'fraction' : 'polynomial');
+  let fields = $derived(data.fields ?? []);
+  let denominatorFields = $derived(mode === 'fraction' ? (data.denominatorFields ?? []) : []);
+  let promptKey = $derived(data.promptKey ?? null);
 
   let numValues = $state<string[]>([]);
   let denValues = $state<string[]>([]);

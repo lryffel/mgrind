@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { generateSigns, validateSigns } from './signs';
+import { generateSigns, validateSigns, type SignsData } from './signs';
 import { expectDeterministic, expectSeedVariation, expectHasPromptAndAnswer } from '../test-utils';
 
 describe('generateSigns', () => {
@@ -21,7 +21,7 @@ describe('generateSigns', () => {
     for (let c = 1; c <= 5; c++) {
       for (let seed = 0; seed < 10; seed++) {
         const ex = generateSigns(seed, c);
-        expect(ex.data?.signs).toHaveLength(3);
+        expect((ex.data as SignsData).signs).toHaveLength(3);
       }
     }
   });
@@ -30,7 +30,7 @@ describe('generateSigns', () => {
     for (let c = 6; c <= 10; c++) {
       for (let seed = 0; seed < 10; seed++) {
         const ex = generateSigns(seed, c);
-        expect(ex.data?.signs).toHaveLength(4);
+        expect((ex.data as SignsData).signs).toHaveLength(4);
       }
     }
   });
@@ -39,9 +39,9 @@ describe('generateSigns', () => {
     for (let seed = 0; seed < 50; seed++) {
       for (let c = 1; c <= 10; c++) {
         const ex = generateSigns(seed, c);
-        const signs = ex.data?.signs;
+        const signs = (ex.data as SignsData).signs;
         expect(signs).toBeDefined();
-        for (const q of signs!) {
+        for (const q of signs) {
           expect(q.latex).toBeTruthy();
           expect(['+', '-']).toContain(q.sign);
         }
@@ -53,9 +53,9 @@ describe('generateSigns', () => {
     for (let seed = 0; seed < 50; seed++) {
       for (let c = 1; c <= 10; c++) {
         const ex = generateSigns(seed, c);
-        const signs = ex.data?.signs;
+        const signs = (ex.data as SignsData).signs;
         expect(signs).toBeDefined();
-        const expected = signs!.map((q) => q.sign).join(',');
+        const expected = signs.map((q) => q.sign).join(',');
         expect(ex.answer).toBe(expected);
       }
     }

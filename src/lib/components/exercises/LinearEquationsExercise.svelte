@@ -5,14 +5,16 @@
   import ExerciseShell from '../ExerciseShell.svelte';
   import Feedback from '../Feedback.svelte';
   import NumericInput from './NumericInput.svelte';
+  import type { LinearEquationsData } from '../../exercises/linearEquations';
 
   let { exercise, onSubmit, onNext, feedback }: ExerciseProps = $props();
 
+  let data = $derived(exercise.data as LinearEquationsData);
   let userInput = $state('');
 
   let validationError = $derived(userInput.includes(',') ? _('error.decimalComma') : null);
 
-  const variable = $derived(exercise.data?.variable ?? 'x');
+  const variable = $derived(data.variable ?? 'x');
   const correctLatex = $derived(`${variable} = ${exercise.answer}`);
 </script>
 

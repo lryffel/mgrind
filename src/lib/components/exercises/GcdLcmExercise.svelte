@@ -6,10 +6,11 @@
   import Feedback from '../Feedback.svelte';
   import PrimeFactorInput from './PrimeFactorInput.svelte';
   import NumericInput from './NumericInput.svelte';
+  import type { GcdLcmData } from '../../exercises/gcdLcm';
 
   let { exercise, onSubmit, onNext, feedback }: ExerciseProps = $props();
 
-  let data = $derived(exercise.data!);
+  let data = $derived(exercise.data as GcdLcmData);
   let subType = $derived(data.subType ?? 'numbers');
   let primes = $derived((data.subType === 'factorization' ? data.primes : []) ?? []);
 

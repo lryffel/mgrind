@@ -7,25 +7,7 @@
   import KaTeX from '../Math.svelte';
   import SvgContainer from '../SvgContainer.svelte';
   import { coeffLatex } from '../../math/latex';
-
-  interface Vertex {
-    x: number;
-    y: number;
-  }
-
-  interface PythagorasData {
-    isRight: boolean;
-    triangleVertices: Vertex[];
-    rightAngleVertex: number | null;
-    sideANum: number;
-    sideADen: number;
-    sideBNum: number;
-    sideBDen: number;
-    sideCNum: number;
-    sideCDen: number;
-    missingSide: string;
-    answerLatex: string;
-  }
+  import type { PythagorasData, Vertex } from '../../exercises/pythagoras';
 
   let { exercise, onSubmit, onNext, feedback }: ExerciseProps = $props();
 

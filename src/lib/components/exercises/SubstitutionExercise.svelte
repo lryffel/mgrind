@@ -6,18 +6,20 @@
   import Feedback from '../Feedback.svelte';
   import NumericInput from './NumericInput.svelte';
   import { useFractionInput, fractionLatex } from '../../fraction-input.svelte';
+  import type { SubstitutionData } from '../../exercises/substitution';
 
   let { exercise, onSubmit, onNext, feedback }: ExerciseProps = $props();
 
   let input = $state('');
   let frac = useFractionInput();
 
+  let data = $derived(exercise.data as SubstitutionData);
   let validationError = $derived(input.includes(',') || frac.validationError !== null ? _('error.decimalComma') : null);
 
-  const variable = $derived(exercise.data?.variable ?? 'x');
-  const value = $derived(exercise.data?.value ?? '');
-  const term = $derived(exercise.data?.term ?? exercise.prompt);
-  const complexity = $derived(exercise.data?.complexity ?? 0);
+  const variable = $derived(data.variable ?? 'x');
+  const value = $derived(data.value ?? '');
+  const term = $derived(data.term ?? exercise.prompt);
+  const complexity = $derived(data.complexity ?? 0);
   const answerIsFraction = $derived(exercise.answer.includes('/'));
 
   function submitAnswer() {
@@ -39,8 +41,8 @@
 <ExerciseShell {exercise} {feedback} {submitAnswer} {onNext} {validationError}>
   <p class="prompt-label">
     {_('exercise.substitution.promptBefore')}<Math expression={`${variable} = ${value}`} />
-    {#if exercise.data?.varB && exercise.data?.valueB}
-      {_('exercise.substitution.and')}<Math expression={`${exercise.data.varB} = ${exercise.data.valueB}`} />
+    {#if data.varB && data.valueB}
+      {_('exercise.substitution.and')}<Math expression={`${data.varB} = ${data.valueB}`} />
     {/if}
     {_('exercise.substitution.promptAfter')}
   </p>

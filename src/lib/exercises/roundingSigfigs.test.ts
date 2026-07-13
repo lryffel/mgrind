@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { generateRoundingSigfigs, roundToSigFigs } from './roundingSigfigs';
+import { generateRoundingSigfigs, roundToSigFigs, type RoundingSigfigsData } from './roundingSigfigs';
 import { expectDeterministic, expectSeedVariation, expectHasPromptAndAnswer } from '../test-utils';
 
 describe('roundToSigFigs', () => {
@@ -66,7 +66,7 @@ describe('generateRoundingSigfigs', () => {
 
   it('stores sigfigs count in data', () => {
     const ex = generateRoundingSigfigs(42, 5);
-    expect(ex.data?.sigfigsCount).toBeGreaterThanOrEqual(1);
+    expect((ex.data as RoundingSigfigsData).sigfigsCount).toBeGreaterThanOrEqual(1);
   });
 
   it('generates valid answer for each complexity level', () => {

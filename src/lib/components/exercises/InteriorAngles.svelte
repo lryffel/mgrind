@@ -6,18 +6,7 @@
   import NumericInput from './NumericInput.svelte';
   import KaTeX from '../Math.svelte';
   import SvgContainer from '../SvgContainer.svelte';
-
-  interface AngleData {
-    value: number;
-    isMissing: boolean;
-    vertexX: number;
-    vertexY: number;
-  }
-
-  interface InteriorAnglesData {
-    sides: number;
-    angles: AngleData[];
-  }
+  import type { InteriorAnglesData, InteriorAnglesAngle } from '../../exercises/interiorAngles';
 
   let { exercise, onSubmit, onNext, feedback }: ExerciseProps = $props();
 
@@ -47,7 +36,7 @@
     };
   }
 
-  function arcPath(curr: AngleData, prev: AngleData, next: AngleData) {
+  function arcPath(curr: InteriorAnglesAngle, prev: InteriorAnglesAngle, next: InteriorAnglesAngle) {
     const ex1 = prev.vertexX - curr.vertexX;
     const ey1 = prev.vertexY - curr.vertexY;
     const ex2 = next.vertexX - curr.vertexX;

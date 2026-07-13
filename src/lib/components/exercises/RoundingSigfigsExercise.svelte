@@ -5,9 +5,11 @@
   import ExerciseShell from '../ExerciseShell.svelte';
   import Feedback from '../Feedback.svelte';
   import NumericInput from './NumericInput.svelte';
+  import type { RoundingSigfigsData } from '../../exercises/roundingSigfigs';
 
   let { exercise, onSubmit, onNext, feedback }: ExerciseProps = $props();
 
+  let data = $derived(exercise.data as RoundingSigfigsData);
   let userInput = $state('');
 
   let validationError = $derived(userInput.includes(',') ? _('error.decimalComma') : null);
@@ -21,7 +23,7 @@
       {_('exercise.roundingSigfigs.promptBefore')}
       <Math expression={exercise.prompt} />
       {_('exercise.roundingSigfigs.promptBetween')}
-      {exercise.data?.sigfigsCount}
+      {data.sigfigsCount}
       {_('exercise.roundingSigfigs.promptAfter')}
     </p>
     <div class="answer-row">
@@ -32,7 +34,7 @@
       {_('exercise.roundingSigfigs.promptBefore')}
       <Math expression={exercise.prompt} />
       {_('exercise.roundingSigfigs.promptBetween')}
-      {exercise.data?.sigfigsCount}
+      {data.sigfigsCount}
       {_('exercise.roundingSigfigs.promptAfter')}
     </p>
     <Feedback {feedback} {correctLatex} textAnswer={exercise.answer} />

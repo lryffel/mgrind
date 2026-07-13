@@ -17,6 +17,8 @@ Plain Vite + Svelte 5 (not SvelteKit). Two-screen SPA routed by a `$state` varia
 `Exercise`, `ExerciseData`, `ExerciseType`, `Discipline`, `Lang`, `Prerequisite`.
 Also typed `ExerciseProps`, `ExerciseFeedback`, and `ExerciseComponent = Component<ExerciseProps>` used by all exercise screens.
 
+`ExerciseData` is deliberately slim (5 shared optional properties: `promptKey`, `fields`, `subType`, `varA`, `varB`). Each exercise type defines its own data interface in its generator module (e.g. `MultiplicationFractionData`, `SubstitutionData`). `Exercise.data` is typed `unknown` — consumers must cast to the per-type interface. See the per-type data interface table in `.tasks/slim-exercise-data.md`.
+
 ## Shared utilities
 
 | File                       | Role                                                                                          |

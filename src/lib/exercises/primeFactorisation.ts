@@ -2,6 +2,10 @@ import type { Exercise } from '../types';
 import { mulberry32 } from '../prng';
 import { clampComplexity } from '../math/number';
 
+export interface PrimeFactorisationData {
+  primes: number[];
+}
+
 const PRIMES = [2, 3, 5, 7, 11, 13, 17];
 const PRIME_COUNT: Record<number, number> = {
   0: 3,

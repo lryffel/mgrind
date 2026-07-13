@@ -1,9 +1,14 @@
 import { describe, it, expect } from 'vitest';
 import type { Exercise } from '../types';
-import { generateSimplifySymbolicFraction, validateSimplifySymbolicFraction } from './simplifySymbolicFraction';
+import {
+  generateSimplifySymbolicFraction,
+  validateSimplifySymbolicFraction,
+  type SymbolicFractionData,
+} from './simplifySymbolicFraction';
 
 function getFields(ex: Exercise): { variablePart: string }[] {
-  return ex.data?.fields ?? [];
+  const d = ex.data as SymbolicFractionData | undefined;
+  return d?.fields ?? [];
 }
 
 describe('generateSimplifySymbolicFraction', () => {
@@ -12,7 +17,7 @@ describe('generateSimplifySymbolicFraction', () => {
     expect(ex).toHaveProperty('prompt');
     expect(ex).toHaveProperty('answer');
     expect(ex).toHaveProperty('data');
-    expect(ex.data?.promptKey).toBe('exercise.simplifySymbolicFraction.prompt');
+    expect((ex.data as SymbolicFractionData).promptKey).toBe('exercise.simplifySymbolicFraction.prompt');
   });
 
   it('is deterministic for the same seed and complexity', () => {
@@ -206,7 +211,7 @@ describe('validateSimplifySymbolicFraction', () => {
     const ex: Exercise = {
       prompt: '',
       answer: '1,1',
-      data: { fields: [{ variablePart: 'a' }, { variablePart: 'b' }] },
+      data: { fields: [{ variablePart: 'a' }, { variablePart: 'b' }] } as SymbolicFractionData,
     };
     expect(validateSimplifySymbolicFraction('1,1', ex)).toBe(true);
   });
@@ -215,7 +220,7 @@ describe('validateSimplifySymbolicFraction', () => {
     const ex: Exercise = {
       prompt: '',
       answer: '1,1',
-      data: { fields: [{ variablePart: 'a' }, { variablePart: 'b' }] },
+      data: { fields: [{ variablePart: 'a' }, { variablePart: 'b' }] } as SymbolicFractionData,
     };
     expect(validateSimplifySymbolicFraction('1,-1', ex)).toBe(false);
   });
@@ -224,7 +229,7 @@ describe('validateSimplifySymbolicFraction', () => {
     const ex: Exercise = {
       prompt: '',
       answer: '1/2',
-      data: { fields: [{ variablePart: '' }] },
+      data: { fields: [{ variablePart: '' }] } as SymbolicFractionData,
     };
     expect(validateSimplifySymbolicFraction('2/4', ex)).toBe(true);
     expect(validateSimplifySymbolicFraction('1/2', ex)).toBe(true);
@@ -235,7 +240,7 @@ describe('validateSimplifySymbolicFraction', () => {
     const ex: Exercise = {
       prompt: '',
       answer: '-1',
-      data: { fields: [{ variablePart: '' }] },
+      data: { fields: [{ variablePart: '' }] } as SymbolicFractionData,
     };
     expect(validateSimplifySymbolicFraction('-1', ex)).toBe(true);
     expect(validateSimplifySymbolicFraction('-2', ex)).toBe(false);
@@ -245,7 +250,7 @@ describe('validateSimplifySymbolicFraction', () => {
     const ex: Exercise = {
       prompt: '',
       answer: '1/2',
-      data: { fields: [{ variablePart: 'a' }] },
+      data: { fields: [{ variablePart: 'a' }] } as SymbolicFractionData,
     };
     expect(validateSimplifySymbolicFraction('1/2', ex)).toBe(true);
     expect(validateSimplifySymbolicFraction('2/4', ex)).toBe(true);
@@ -256,7 +261,7 @@ describe('validateSimplifySymbolicFraction', () => {
     const ex: Exercise = {
       prompt: '',
       answer: '1,1',
-      data: { fields: [{ variablePart: 'a' }, { variablePart: 'b' }] },
+      data: { fields: [{ variablePart: 'a' }, { variablePart: 'b' }] } as SymbolicFractionData,
     };
     expect(validateSimplifySymbolicFraction('1', ex)).toBe(false);
     expect(validateSimplifySymbolicFraction('1,1,1', ex)).toBe(false);
@@ -266,7 +271,7 @@ describe('validateSimplifySymbolicFraction', () => {
     const ex: Exercise = {
       prompt: '',
       answer: '1',
-      data: { fields: [{ variablePart: '' }] },
+      data: { fields: [{ variablePart: '' }] } as SymbolicFractionData,
     };
     expect(validateSimplifySymbolicFraction('', ex)).toBe(false);
   });
@@ -275,7 +280,7 @@ describe('validateSimplifySymbolicFraction', () => {
     const ex: Exercise = {
       prompt: '',
       answer: '-1/2',
-      data: { fields: [{ variablePart: '' }] },
+      data: { fields: [{ variablePart: '' }] } as SymbolicFractionData,
     };
     expect(validateSimplifySymbolicFraction('-1/2', ex)).toBe(true);
   });
@@ -284,7 +289,7 @@ describe('validateSimplifySymbolicFraction', () => {
     const ex: Exercise = {
       prompt: '',
       answer: '3',
-      data: { fields: [{ variablePart: 'a' }] },
+      data: { fields: [{ variablePart: 'a' }] } as SymbolicFractionData,
     };
     expect(validateSimplifySymbolicFraction('3', ex)).toBe(true);
     expect(validateSimplifySymbolicFraction('6/2', ex)).toBe(true);
@@ -294,7 +299,11 @@ describe('validateSimplifySymbolicFraction', () => {
     const ex: Exercise = {
       prompt: '',
       answer: '3;4',
-      data: { mode: 'fraction', fields: [{ variablePart: '' }], denominatorFields: [{ variablePart: '' }] },
+      data: {
+        mode: 'fraction',
+        fields: [{ variablePart: '' }],
+        denominatorFields: [{ variablePart: '' }],
+      } as SymbolicFractionData,
     };
     expect(validateSimplifySymbolicFraction('3;4', ex)).toBe(true);
     expect(validateSimplifySymbolicFraction('6;8', ex)).toBe(true);
@@ -305,7 +314,11 @@ describe('validateSimplifySymbolicFraction', () => {
     const ex: Exercise = {
       prompt: '',
       answer: '3;2',
-      data: { mode: 'fraction', fields: [{ variablePart: 'a^{2}' }], denominatorFields: [{ variablePart: '' }] },
+      data: {
+        mode: 'fraction',
+        fields: [{ variablePart: 'a^{2}' }],
+        denominatorFields: [{ variablePart: '' }],
+      } as SymbolicFractionData,
     };
     expect(validateSimplifySymbolicFraction('3;2', ex)).toBe(true);
     expect(validateSimplifySymbolicFraction('6;4', ex)).toBe(true);
@@ -316,7 +329,11 @@ describe('validateSimplifySymbolicFraction', () => {
     const ex: Exercise = {
       prompt: '',
       answer: '3;4',
-      data: { mode: 'fraction', fields: [{ variablePart: '' }], denominatorFields: [{ variablePart: '' }] },
+      data: {
+        mode: 'fraction',
+        fields: [{ variablePart: '' }],
+        denominatorFields: [{ variablePart: '' }],
+      } as SymbolicFractionData,
     };
     expect(validateSimplifySymbolicFraction('3;4;5', ex)).toBe(false);
   });
@@ -329,7 +346,7 @@ describe('validateSimplifySymbolicFraction', () => {
         mode: 'fraction',
         fields: [{ variablePart: 'a' }, { variablePart: 'b' }],
         denominatorFields: [{ variablePart: '' }],
-      },
+      } as SymbolicFractionData,
     };
     expect(validateSimplifySymbolicFraction('1;2', ex)).toBe(false);
     expect(validateSimplifySymbolicFraction('1,1;2', ex)).toBe(true);

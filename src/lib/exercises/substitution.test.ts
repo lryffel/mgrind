@@ -1,6 +1,10 @@
 import { describe, it, expect } from 'vitest';
-import { generateSubstitution, validateSubstitution } from './substitution';
+import { generateSubstitution, validateSubstitution, type SubstitutionData } from './substitution';
 import type { Exercise } from '../types';
+
+function d(ex: Exercise): SubstitutionData {
+  return ex.data as SubstitutionData;
+}
 
 function allVariablesPresent(): Set<string> {
   return new Set(['a', 'b', 'c', 'k', 'm', 'n', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z']);
@@ -14,9 +18,9 @@ describe('generateSubstitution', () => {
     expect(ex).toHaveProperty('prompt');
     expect(ex).toHaveProperty('answer');
     expect(ex).toHaveProperty('data');
-    expect(ex.data).toHaveProperty('variable');
-    expect(ex.data).toHaveProperty('value');
-    expect(ex.data).toHaveProperty('term');
+    expect(d(ex).variable).toBeDefined();
+    expect(d(ex).value).toBeDefined();
+    expect(d(ex).term).toBeDefined();
   });
 
   it('is deterministic for the same seed and complexity', () => {
@@ -35,7 +39,7 @@ describe('generateSubstitution', () => {
     const valid = allVariablesPresent();
     for (let seed = 0; seed < 200; seed++) {
       const ex = generateSubstitution(seed, seed % 10);
-      expect(valid.has(ex.data!.variable as string)).toBe(true);
+      expect(valid.has(d(ex).variable)).toBe(true);
     }
   });
 
@@ -64,7 +68,7 @@ describe('generateSubstitution', () => {
   it('always produces integer answers for integer-only variables', () => {
     for (let seed = 0; seed < 300; seed++) {
       const ex = generateSubstitution(seed, seed % 10);
-      const variable = ex.data!.variable as string;
+      const variable = d(ex).variable;
       if (INTEGER_ONLY.has(variable)) {
         expect(ex.answer).not.toContain('/');
       }
@@ -85,7 +89,7 @@ describe('generateSubstitution', () => {
     const seen = new Set<string>();
     for (let seed = 0; seed < 500; seed++) {
       const ex = generateSubstitution(seed, seed % 10);
-      seen.add(ex.data!.variable as string);
+      seen.add(d(ex).variable);
     }
     expect(seen.size).toBeGreaterThanOrEqual(15);
   });
@@ -153,7 +157,7 @@ describe('validateSubstitution', () => {
     const ex: Exercise = {
       prompt: 'x = 0',
       answer: '0/1',
-      data: { term: 'x', value: '0', variable: 'x', complexity: 0 },
+      data: { term: 'x', value: '0', variable: 'x', complexity: 0 } as SubstitutionData,
     };
     expect(validateSubstitution('0/1', ex)).toBe(true);
   });
@@ -174,10 +178,10 @@ describe('two-variable substitution', () => {
     for (let complexity = 4; complexity <= 10; complexity++) {
       for (let seed = 0; seed < 100; seed++) {
         const ex = generateSubstitution(seed + complexity * 1000, complexity);
-        if (ex.data?.varB && ex.data?.valueB) {
+        if (d(ex).varB && d(ex).valueB) {
           found++;
-          expect(ex.data.variable).toBeDefined();
-          expect(ex.data.value).toBeDefined();
+          expect(d(ex).variable).toBeDefined();
+          expect(d(ex).value).toBeDefined();
         }
       }
     }
@@ -188,7 +192,7 @@ describe('two-variable substitution', () => {
     for (let complexity = 4; complexity <= 10; complexity++) {
       for (let seed = 0; seed < 100; seed++) {
         const ex = generateSubstitution(seed + complexity * 1000, complexity);
-        if (!ex.data?.varB) continue;
+        if (!d(ex).varB) continue;
         const answer = ex.answer;
         if (answer.includes('/')) {
           const parts = answer.split('/');
@@ -211,8 +215,8 @@ describe('two-variable substitution', () => {
     for (let complexity = 4; complexity <= 10; complexity++) {
       for (let seed = 0; seed < 100; seed++) {
         const ex = generateSubstitution(seed + complexity * 1000, complexity);
-        if (ex.data?.varB) {
-          expect(ex.data.variable).not.toEqual(ex.data.varB);
+        if (d(ex).varB) {
+          expect(d(ex).variable).not.toEqual(d(ex).varB);
         }
       }
     }
@@ -222,8 +226,8 @@ describe('two-variable substitution', () => {
     for (let complexity = 0; complexity <= 3; complexity++) {
       for (let seed = 0; seed < 50; seed++) {
         const ex = generateSubstitution(seed + complexity * 1000, complexity);
-        expect(ex.data?.varB).toBeUndefined();
-        expect(ex.data?.valueB).toBeUndefined();
+        expect(d(ex).varB).toBeUndefined();
+        expect(d(ex).valueB).toBeUndefined();
       }
     }
   });
@@ -240,9 +244,9 @@ describe('two-variable substitution', () => {
     const INTEGER_ONLY = new Set(['k', 'm', 'n', 'p', 'q']);
     for (let seed = 0; seed < 500; seed++) {
       const ex = generateSubstitution(seed, (seed % 7) + 4);
-      if (ex.data?.varB) {
-        const varA = ex.data.variable as string;
-        const varB = ex.data.varB as string;
+      if (d(ex).varB) {
+        const varA = d(ex).variable;
+        const varB = d(ex).varB!;
         if (INTEGER_ONLY.has(varA) || INTEGER_ONLY.has(varB)) {
           expect(ex.answer).not.toContain('/');
         }
@@ -253,7 +257,7 @@ describe('two-variable substitution', () => {
   it('validateSubstitution works for two-variable exercises', () => {
     for (let seed = 0; seed < 100; seed++) {
       const ex = generateSubstitution(seed, 7);
-      if (!ex.data?.varB) continue;
+      if (!d(ex).varB) continue;
       expect(validateSubstitution(ex.answer, ex)).toBe(true);
       if (ex.answer === '0') {
         expect(validateSubstitution('1', ex)).toBe(false);

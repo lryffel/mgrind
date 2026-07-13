@@ -1,12 +1,12 @@
 import { describe, it, expect } from 'vitest';
-import { generatePrimeFactorisation } from './primeFactorisation';
-import type { ExerciseData } from '../types';
+import { generatePrimeFactorisation, type PrimeFactorisationData } from './primeFactorisation';
 
-function getPrimes(ex: { data?: ExerciseData }): number[] {
-  return ex.data?.primes ?? [];
+function getPrimes(ex: { data?: unknown }): number[] {
+  const d = ex.data as PrimeFactorisationData | undefined;
+  return d?.primes ?? [];
 }
 
-function computeProduct(ex: { prompt: string; answer: string; data?: ExerciseData }): number {
+function computeProduct(ex: { prompt: string; answer: string; data?: unknown }): number {
   const exponents = ex.answer.split(',').map(Number);
   const primes = getPrimes(ex);
   return primes.reduce((prod, p, i) => prod * Math.pow(p, exponents[i]), 1);
@@ -17,7 +17,7 @@ describe('generatePrimeFactorisation', () => {
     const ex = generatePrimeFactorisation(42, 0);
     expect(ex).toHaveProperty('prompt');
     expect(ex).toHaveProperty('answer');
-    expect(ex.data?.primes).toHaveLength(3);
+    expect((ex.data as PrimeFactorisationData).primes).toHaveLength(3);
   });
 
   it('is deterministic for the same seed and complexity', () => {
@@ -197,6 +197,6 @@ describe('generatePrimeFactorisation', () => {
 
   it('handles complexity beyond 10 by clamping', () => {
     const ex = generatePrimeFactorisation(42, 20);
-    expect(ex.data?.primes).toHaveLength(7);
+    expect((ex.data as PrimeFactorisationData).primes).toHaveLength(7);
   });
 });

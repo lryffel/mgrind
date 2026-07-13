@@ -3,6 +3,10 @@ import { mulberry32 } from '../prng';
 import { randomCoprimePair, clampComplexity } from '../math/number';
 import { promptFraction } from '../math/latex';
 
+export interface SimplifyFractionData {
+  promptKey: string;
+}
+
 export function generateSimplifyFraction(seed: number, complexity: number): Exercise {
   const clamped = clampComplexity(complexity, 10);
   const rng = mulberry32(seed);

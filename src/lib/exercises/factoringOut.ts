@@ -14,7 +14,7 @@ import {
 } from '../math/varmap';
 import { VAR_POOL } from '../math/varpool';
 
-interface FactoringOutData {
+export interface FactoringOutData {
   isTrap: boolean;
   factorOptions: FactorOption[];
   correctIdx: number;

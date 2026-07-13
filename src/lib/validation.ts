@@ -1,4 +1,5 @@
 import type { Exercise, InputContext } from './types';
+import type { SymbolicFractionData } from './exercises/simplifySymbolicFraction';
 import { reduceFrac, fracEqual } from './math/fraction';
 
 const DEFAULTS: Record<InputContext, string> = {
@@ -73,7 +74,7 @@ export function validateSymbolicFraction(answer: string, exercise: Exercise): bo
     return false;
   }
 
-  const data = exercise.data;
+  const data = exercise.data as SymbolicFractionData | undefined;
   if (!data || data.mode !== 'fraction') {
     return validateMultiField(answer, exercise);
   }

@@ -3,6 +3,11 @@ import { mulberry32 } from '../prng';
 import { clampComplexity } from '../math/number';
 import { randInt, pick } from '../math/rng';
 
+export interface FactorEquationsData {
+  variable: string;
+  numSolutions: number;
+}
+
 const VARS = ['x', 'y', 'z', 't', 'u', 'v', 'w'];
 
 type EqType = 'factoringOut' | 'diffOfSquares' | 'perfectSquare' | 'factoringOutAndBinomial' | 'cubic';
@@ -198,7 +203,7 @@ export function generateFactorEquations(seed: number, complexity: number): Exerc
   return {
     prompt,
     answer: solutions.join(','),
-    data: { variable, numSolutions: solutions.length } as unknown as Exercise['data'],
+    data: { variable, numSolutions: solutions.length },
   };
 }
 

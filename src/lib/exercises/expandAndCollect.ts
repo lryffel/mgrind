@@ -6,6 +6,11 @@ import { formatExpandedTerm, varMapLatex, varMapText } from '../math/varmap';
 import type { VarMap } from '../math/varmap';
 import { expandProduct, collectTerms, type Term } from './termAlgebra';
 
+export interface ExpandAndCollectData {
+  fields: { variablePart: string }[];
+  promptKey: string;
+}
+
 interface ExprPart {
   factors: Term[][];
   op: '+' | '-';
@@ -333,7 +338,7 @@ export function generateExpandAndCollect(seed: number, complexity: number): Exer
     }
 
     const ex = buildResult(parts);
-    const fields = ex.data?.fields ?? [];
+    const fields = (ex.data as ExpandAndCollectData | undefined)?.fields ?? [];
     if (fields.length >= 2) return ex;
   }
 

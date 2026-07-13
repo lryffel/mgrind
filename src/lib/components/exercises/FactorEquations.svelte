@@ -6,11 +6,13 @@
   import Feedback from '../Feedback.svelte';
   import NumericInput from './NumericInput.svelte';
   import { validateFactorEquationsPerRoot } from '../../exercises/factorEquations';
+  import type { FactorEquationsData } from '../../exercises/factorEquations';
 
   let { exercise, onSubmit, onNext, feedback }: ExerciseProps = $props();
 
-  let variable = $derived(exercise.data?.variable ?? 'x');
-  let numSolutions = $derived(exercise.data?.numSolutions ?? 1);
+  let data = $derived(exercise.data as FactorEquationsData);
+  let variable = $derived(data.variable ?? 'x');
+  let numSolutions = $derived(data.numSolutions ?? 1);
 
   let values = $state<string[]>([]);
   let perRootCorrect = $state<boolean[]>([]);

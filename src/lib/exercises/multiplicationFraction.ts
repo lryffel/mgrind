@@ -3,6 +3,15 @@ import { mulberry32 } from '../prng';
 import { gcd, clampComplexity } from '../math/number';
 import { promptFraction } from '../math/latex';
 
+export interface MultiplicationFractionData {
+  num1: number;
+  den1: number;
+  num2: number;
+  den2: number;
+  op: string;
+  promptKey: string;
+}
+
 export function generateMultiplicationFraction(seed: number, complexity: number): Exercise {
   const clamped = clampComplexity(complexity, 10);
   const rng = mulberry32(seed);

@@ -1,6 +1,14 @@
 import { describe, it, expect } from 'vitest';
-import { generateTermTransformationsTrivia, validateTermTransformationsTrivia } from './termTransformationsTrivia';
+import {
+  generateTermTransformationsTrivia,
+  validateTermTransformationsTrivia,
+  type TermTransformationsTriviaData,
+} from './termTransformationsTrivia';
 import { expectDeterministic, expectSeedVariation, expectHasPromptAndAnswer } from '../test-utils';
+
+function d(ex: { data?: unknown }): TermTransformationsTriviaData {
+  return ex.data as TermTransformationsTriviaData;
+}
 
 const ALL_TYPES = ['laws', 'powerLaws', 'trueFalse'];
 const LOW_TYPES = ['laws'];
@@ -22,14 +30,14 @@ describe('generateTermTransformationsTrivia', () => {
   it('has a valid type in data', () => {
     for (let seed = 0; seed < 200; seed++) {
       const ex = generateTermTransformationsTrivia(seed, 5);
-      expect(ALL_TYPES).toContain(ex.data?.triviaType);
+      expect(ALL_TYPES).toContain(d(ex).triviaType);
     }
   });
 
   it('at complexity 0-3, only generates laws', () => {
     for (let seed = 0; seed < 500; seed++) {
       const ex = generateTermTransformationsTrivia(seed, 2);
-      expect(LOW_TYPES).toContain(ex.data?.triviaType);
+      expect(LOW_TYPES).toContain(d(ex).triviaType);
     }
   });
 
@@ -37,7 +45,7 @@ describe('generateTermTransformationsTrivia', () => {
     const found = new Set<string>();
     for (let seed = 0; seed < 500; seed++) {
       const ex = generateTermTransformationsTrivia(seed, 5);
-      found.add(ex.data!.triviaType!);
+      found.add(d(ex).triviaType!);
     }
     expect(found.has('powerLaws')).toBe(true);
   });
@@ -46,7 +54,7 @@ describe('generateTermTransformationsTrivia', () => {
     const found = new Set<string>();
     for (let seed = 0; seed < 500; seed++) {
       const ex = generateTermTransformationsTrivia(seed, 8);
-      found.add(ex.data!.triviaType!);
+      found.add(d(ex).triviaType!);
     }
     expect(found.has('trueFalse')).toBe(true);
   });
@@ -55,7 +63,7 @@ describe('generateTermTransformationsTrivia', () => {
     const found = new Set<string>();
     for (let seed = 0; seed < 500; seed++) {
       const ex = generateTermTransformationsTrivia(seed, 6);
-      found.add(ex.data!.triviaType!);
+      found.add(d(ex).triviaType!);
     }
     for (const t of MID_TYPES) {
       expect(found.has(t)).toBe(true);
@@ -66,7 +74,7 @@ describe('generateTermTransformationsTrivia', () => {
     const found = new Set<string>();
     for (let seed = 0; seed < 1000; seed++) {
       const ex = generateTermTransformationsTrivia(seed, 8);
-      found.add(ex.data!.triviaType!);
+      found.add(d(ex).triviaType!);
     }
     for (const t of ALL_TYPES) {
       expect(found.has(t)).toBe(true);
@@ -76,10 +84,10 @@ describe('generateTermTransformationsTrivia', () => {
   it('laws always has exactly 4 options and one correct index', () => {
     for (let seed = 0; seed < 200; seed++) {
       const ex = generateTermTransformationsTrivia(seed, 2);
-      if (ex.data?.triviaType === 'laws') {
-        expect(ex.data.triviaOptionsLatex?.length).toBe(4);
-        expect(ex.data.correctIndices?.length).toBe(1);
-        const idx = ex.data.correctIndices![0];
+      if (d(ex).triviaType === 'laws') {
+        expect(d(ex).triviaOptionsLatex?.length).toBe(4);
+        expect(d(ex).correctIndices?.length).toBe(1);
+        const idx = d(ex).correctIndices![0];
         expect(idx).toBeGreaterThanOrEqual(0);
         expect(idx).toBeLessThan(4);
         expect(ex.answer).toBe(String(idx));
@@ -90,10 +98,10 @@ describe('generateTermTransformationsTrivia', () => {
   it('powerLaws always has exactly 4 options and one correct index', () => {
     for (let seed = 0; seed < 200; seed++) {
       const ex = generateTermTransformationsTrivia(seed, 5);
-      if (ex.data?.triviaType === 'powerLaws') {
-        expect(ex.data.triviaOptionsLatex?.length).toBe(4);
-        expect(ex.data.correctIndices?.length).toBe(1);
-        const idx = ex.data.correctIndices![0];
+      if (d(ex).triviaType === 'powerLaws') {
+        expect(d(ex).triviaOptionsLatex?.length).toBe(4);
+        expect(d(ex).correctIndices?.length).toBe(1);
+        const idx = d(ex).correctIndices![0];
         expect(idx).toBeGreaterThanOrEqual(0);
         expect(idx).toBeLessThan(4);
         expect(ex.answer).toBe(String(idx));
@@ -104,9 +112,9 @@ describe('generateTermTransformationsTrivia', () => {
   it('laws option with correct index matches correctIndices', () => {
     for (let seed = 0; seed < 100; seed++) {
       const ex = generateTermTransformationsTrivia(seed, 1);
-      if (ex.data?.triviaType === 'laws') {
-        const idx = ex.data.correctIndices![0];
-        expect(ex.data.triviaOptionsLatex![idx]).toBeDefined();
+      if (d(ex).triviaType === 'laws') {
+        const idx = d(ex).correctIndices![0];
+        expect(d(ex).triviaOptionsLatex![idx]).toBeDefined();
       }
     }
   });
@@ -114,9 +122,9 @@ describe('generateTermTransformationsTrivia', () => {
   it('powerLaws option with correct index matches correctIndices', () => {
     for (let seed = 0; seed < 100; seed++) {
       const ex = generateTermTransformationsTrivia(seed, 6);
-      if (ex.data?.triviaType === 'powerLaws') {
-        const idx = ex.data.correctIndices![0];
-        expect(ex.data.triviaOptionsLatex![idx]).toBeDefined();
+      if (d(ex).triviaType === 'powerLaws') {
+        const idx = d(ex).correctIndices![0];
+        expect(d(ex).triviaOptionsLatex![idx]).toBeDefined();
       }
     }
   });
@@ -125,8 +133,8 @@ describe('generateTermTransformationsTrivia', () => {
     const ordinals = new Set<string>();
     for (let seed = 0; seed < 200; seed++) {
       const ex = generateTermTransformationsTrivia(seed, 4);
-      if (ex.data?.triviaType === 'powerLaws') {
-        ordinals.add(ex.data.ordinalKey ?? '');
+      if (d(ex).triviaType === 'powerLaws') {
+        ordinals.add(d(ex).ordinalKey ?? '');
       }
     }
     expect(ordinals.has('exercise.termTransformationsTrivia.first')).toBe(true);
@@ -138,8 +146,8 @@ describe('generateTermTransformationsTrivia', () => {
     const ordinals = new Set<string>();
     for (let seed = 0; seed < 300; seed++) {
       const ex = generateTermTransformationsTrivia(seed, 5);
-      if (ex.data?.triviaType === 'powerLaws') {
-        ordinals.add(ex.data.ordinalKey ?? '');
+      if (d(ex).triviaType === 'powerLaws') {
+        ordinals.add(d(ex).ordinalKey ?? '');
       }
     }
     expect(ordinals.has('exercise.termTransformationsTrivia.first')).toBe(true);
@@ -151,8 +159,8 @@ describe('generateTermTransformationsTrivia', () => {
     const ordinals = new Set<string>();
     for (let seed = 0; seed < 300; seed++) {
       const ex = generateTermTransformationsTrivia(seed, 6);
-      if (ex.data?.triviaType === 'powerLaws') {
-        ordinals.add(ex.data.ordinalKey ?? '');
+      if (d(ex).triviaType === 'powerLaws') {
+        ordinals.add(d(ex).ordinalKey ?? '');
       }
     }
     expect(ordinals.has('exercise.termTransformationsTrivia.first')).toBe(true);
@@ -163,14 +171,14 @@ describe('generateTermTransformationsTrivia', () => {
   it('trueFalse generates 3 statements at complexity 7-8, 4 at 9-10', () => {
     for (let seed = 0; seed < 50; seed++) {
       const exLow = generateTermTransformationsTrivia(seed, 7);
-      if (exLow.data?.triviaType === 'trueFalse') {
-        expect(exLow.data.statementsLatex?.length).toBe(3);
-        expect(exLow.data.correctAnswers?.length).toBe(3);
+      if (d(exLow).triviaType === 'trueFalse') {
+        expect(d(exLow).statementsLatex?.length).toBe(3);
+        expect(d(exLow).correctAnswers?.length).toBe(3);
       }
       const exHigh = generateTermTransformationsTrivia(seed, 10);
-      if (exHigh.data?.triviaType === 'trueFalse') {
-        expect(exHigh.data.statementsLatex?.length).toBe(4);
-        expect(exHigh.data.correctAnswers?.length).toBe(4);
+      if (d(exHigh).triviaType === 'trueFalse') {
+        expect(d(exHigh).statementsLatex?.length).toBe(4);
+        expect(d(exHigh).correctAnswers?.length).toBe(4);
       }
     }
   });
@@ -178,8 +186,8 @@ describe('generateTermTransformationsTrivia', () => {
   it('trueFalse always has at least one correct and one incorrect', () => {
     for (let seed = 0; seed < 300; seed++) {
       const ex = generateTermTransformationsTrivia(seed, 9);
-      if (ex.data?.triviaType === 'trueFalse') {
-        const answers = ex.data.correctAnswers!;
+      if (d(ex).triviaType === 'trueFalse') {
+        const answers = d(ex).correctAnswers!;
         expect(answers.some((a: boolean) => a)).toBe(true);
         expect(answers.some((a: boolean) => !a)).toBe(true);
       }
@@ -189,11 +197,11 @@ describe('generateTermTransformationsTrivia', () => {
   it('trueFalse answer format matches correctAnswers', () => {
     for (let seed = 0; seed < 100; seed++) {
       const ex = generateTermTransformationsTrivia(seed, 7);
-      if (ex.data?.triviaType === 'trueFalse') {
+      if (d(ex).triviaType === 'trueFalse') {
         const parts = ex.answer.split(',').map((s) => s.trim());
-        expect(parts.length).toBe(ex.data.correctAnswers!.length);
+        expect(parts.length).toBe(d(ex).correctAnswers!.length);
         for (let i = 0; i < parts.length; i++) {
-          expect(parts[i]).toBe(ex.data.correctAnswers![i] ? 'yes' : 'no');
+          expect(parts[i]).toBe(d(ex).correctAnswers![i] ? 'yes' : 'no');
         }
       }
     }
@@ -203,9 +211,9 @@ describe('generateTermTransformationsTrivia', () => {
     const keys = new Set<string>();
     for (let seed = 0; seed < 1000; seed++) {
       const ex = generateTermTransformationsTrivia(seed, 1);
-      if (ex.data?.triviaType === 'laws') {
-        const op = ex.data.lawOperationKey ?? '';
-        keys.add(`${ex.data.lawNameKey ?? ''}|${op}`);
+      if (d(ex).triviaType === 'laws') {
+        const op = d(ex).lawOperationKey ?? '';
+        keys.add(`${d(ex).lawNameKey ?? ''}|${op}`);
       }
     }
     expect(keys.size).toBe(5);
@@ -214,8 +222,8 @@ describe('generateTermTransformationsTrivia', () => {
   it('trueFalse at complexity 7 excludes sqrt statements', () => {
     for (let seed = 0; seed < 100; seed++) {
       const ex = generateTermTransformationsTrivia(seed, 7);
-      if (ex.data?.triviaType === 'trueFalse') {
-        const stmts = ex.data.statementsLatex!;
+      if (d(ex).triviaType === 'trueFalse') {
+        const stmts = d(ex).statementsLatex!;
         for (const s of stmts) {
           expect(s).not.toContain('sqrt');
         }
@@ -227,8 +235,8 @@ describe('generateTermTransformationsTrivia', () => {
     const found = new Set<string>();
     for (let seed = 0; seed < 500; seed++) {
       const ex = generateTermTransformationsTrivia(seed, 10);
-      if (ex.data?.triviaType === 'trueFalse') {
-        for (const s of ex.data.statementsLatex!) {
+      if (d(ex).triviaType === 'trueFalse') {
+        for (const s of d(ex).statementsLatex!) {
           if (s.includes('sqrt')) found.add(s);
         }
       }
@@ -257,7 +265,7 @@ describe('validateTermTransformationsTrivia', () => {
     it('rejects non-numeric input', () => {
       for (let seed = 0; seed < 100; seed++) {
         const ex = generateTermTransformationsTrivia(seed, 3);
-        if (ex.data?.triviaType === 'laws') {
+        if (d(ex).triviaType === 'laws') {
           expect(validateTermTransformationsTrivia('abc', ex)).toBe(false);
           expect(validateTermTransformationsTrivia('', ex)).toBe(false);
           expect(validateTermTransformationsTrivia('-1', ex)).toBe(false);
@@ -268,7 +276,7 @@ describe('validateTermTransformationsTrivia', () => {
     it('rejects wrong index', () => {
       for (let seed = 0; seed < 100; seed++) {
         const ex = generateTermTransformationsTrivia(seed, 5);
-        if (ex.data?.triviaType === 'powerLaws') {
+        if (d(ex).triviaType === 'powerLaws') {
           const idx = parseInt(ex.answer, 10);
           const wrong = String((idx + 1) % 4);
           expect(validateTermTransformationsTrivia(wrong, ex)).toBe(false);
@@ -281,7 +289,7 @@ describe('validateTermTransformationsTrivia', () => {
     it('validates its own generated answer', () => {
       for (let seed = 0; seed < 100; seed++) {
         const ex = generateTermTransformationsTrivia(seed, 9);
-        if (ex.data?.triviaType === 'trueFalse') {
+        if (d(ex).triviaType === 'trueFalse') {
           expect(validateTermTransformationsTrivia(ex.answer, ex)).toBe(true);
         }
       }
@@ -290,8 +298,10 @@ describe('validateTermTransformationsTrivia', () => {
     it('rejects all-wrong answer', () => {
       for (let seed = 0; seed < 100; seed++) {
         const ex = generateTermTransformationsTrivia(seed, 9);
-        if (ex.data?.triviaType === 'trueFalse') {
-          const wrong = ex.data.correctAnswers!.map(() => 'no').join(',');
+        if (d(ex).triviaType === 'trueFalse') {
+          const wrong = d(ex)
+            .correctAnswers!.map(() => 'no')
+            .join(',');
           if (wrong !== ex.answer) {
             expect(validateTermTransformationsTrivia(wrong, ex)).toBe(false);
           }
@@ -302,7 +312,7 @@ describe('validateTermTransformationsTrivia', () => {
     it('rejects wrong number of parts', () => {
       for (let seed = 0; seed < 50; seed++) {
         const ex = generateTermTransformationsTrivia(seed, 9);
-        if (ex.data?.triviaType === 'trueFalse') {
+        if (d(ex).triviaType === 'trueFalse') {
           expect(validateTermTransformationsTrivia('yes', ex)).toBe(false);
           expect(validateTermTransformationsTrivia('yes,no,yes,no,yes', ex)).toBe(false);
         }

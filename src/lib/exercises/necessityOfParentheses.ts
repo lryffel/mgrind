@@ -3,6 +3,10 @@ import { mulberry32 } from '../prng';
 import { clampComplexity } from '../math/number';
 import { pick, pickDistinct, randInt } from '../math/rng';
 
+export interface NecessityOfParenthesesData {
+  questions: { latex: string; needsParens: boolean }[];
+}
+
 interface QuestionTemplate {
   latex: (vars: string[], expVars: string[]) => string;
   needsParens: boolean;

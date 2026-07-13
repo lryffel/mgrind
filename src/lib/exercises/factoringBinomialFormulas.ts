@@ -5,6 +5,12 @@ import { randInt, pick, pickExclude, randCoeff } from '../math/rng';
 import { reduceFrac, fracEqual } from '../math/fraction';
 import { cmd, coeffLatex } from '../math/latex';
 
+export interface FactoringBinomialFormulasData {
+  varA: string | null;
+  varB: string;
+  correctFormula: number;
+}
+
 export function formatFactoredLatex(
   formulaType: number,
   aNum: number,

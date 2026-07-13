@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { generateFactorEquations, validateFactorEquations } from './factorEquations';
+import { generateFactorEquations, validateFactorEquations, type FactorEquationsData } from './factorEquations';
 
 describe('factorEquations', () => {
   it('generates a valid exercise', () => {
@@ -66,13 +66,13 @@ describe('factorEquations', () => {
 
   it('has the variable in the data', () => {
     const ex = generateFactorEquations(42, 5);
-    expect(ex.data?.variable).toBeTruthy();
+    expect((ex.data as FactorEquationsData).variable).toBeTruthy();
   });
 
   it('has the number of solutions in the data', () => {
     for (let seed = 0; seed < 100; seed++) {
       const ex = generateFactorEquations(seed, 7);
-      const numSolutions = ex.data?.numSolutions;
+      const numSolutions = (ex.data as FactorEquationsData).numSolutions;
       expect(numSolutions).toBeGreaterThanOrEqual(1);
       expect(numSolutions).toBeLessThanOrEqual(3);
       expect(ex.answer.split(',')).toHaveLength(numSolutions ?? -1);
@@ -103,7 +103,7 @@ describe('factorEquations', () => {
     for (let seed = 0; seed < 100; seed++) {
       const ex = generateFactorEquations(seed, 3);
       if (ex.answer.split(',').length === 1) {
-        const v = ex.data?.variable ?? 'x';
+        const v = (ex.data as FactorEquationsData).variable ?? 'x';
         expect(ex.prompt).toContain(`${v}^{2}`);
       }
     }
@@ -169,7 +169,7 @@ describe('factorEquations', () => {
   it('generates with consistent numSolutions matching answer length', () => {
     for (let seed = 0; seed < 200; seed++) {
       const ex = generateFactorEquations(seed, 8);
-      expect(ex.answer.split(',')).toHaveLength(ex.data?.numSolutions ?? -1);
+      expect(ex.answer.split(',')).toHaveLength((ex.data as FactorEquationsData).numSolutions ?? -1);
     }
   });
 });

@@ -6,19 +6,12 @@
   import Feedback from '../Feedback.svelte';
   import NumericInput from './NumericInput.svelte';
   import { formatFactoredLatex } from '../../exercises/factoringOut';
+  import type { FactoringOutData } from '../../exercises/factoringOut';
   import { normalizeCoeff } from '../../validation';
 
   let { exercise, onSubmit, onNext, feedback }: ExerciseProps = $props();
 
-  let data = $derived(
-    exercise.data as unknown as {
-      isTrap: boolean;
-      factorOptions: { text: string; latex: string; innerVarParts: string[] }[];
-      correctIdx: number;
-      gcfCoeff: number;
-      expectedInnerCoeffs: number[];
-    },
-  );
+  let data = $derived(exercise.data as unknown as FactoringOutData);
 
   let selectedIdx = $state<number | null>(null);
   let coeffA = $state('');

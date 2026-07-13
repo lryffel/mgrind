@@ -1,9 +1,10 @@
 import { describe, it, expect } from 'vitest';
 import type { Exercise } from '../types';
-import { generateExpandAndCollect, validateExpandAndCollect } from './expandAndCollect';
+import { generateExpandAndCollect, validateExpandAndCollect, type ExpandAndCollectData } from './expandAndCollect';
 
 function getFields(ex: Exercise): { variablePart: string }[] {
-  return ex.data?.fields ?? [];
+  const d = ex.data as ExpandAndCollectData | undefined;
+  return d?.fields ?? [];
 }
 
 describe('generateExpandAndCollect', () => {
@@ -12,7 +13,7 @@ describe('generateExpandAndCollect', () => {
     expect(ex).toHaveProperty('prompt');
     expect(ex).toHaveProperty('answer');
     expect(ex).toHaveProperty('data');
-    expect(ex.data?.fields).toBeDefined();
+    expect((ex.data as ExpandAndCollectData).fields).toBeDefined();
     expect(Array.isArray(getFields(ex))).toBe(true);
   });
 
@@ -125,7 +126,7 @@ describe('generateExpandAndCollect', () => {
     const ex: Exercise = {
       prompt: 'x(x+1) + 2x(x-1)',
       answer: '3,-1',
-      data: { fields: [{ variablePart: 'x^{2}' }, { variablePart: 'x' }] },
+      data: { fields: [{ variablePart: 'x^{2}' }, { variablePart: 'x' }] } as ExpandAndCollectData,
     };
     expect(validateExpandAndCollect('3,-1', ex)).toBe(true);
     expect(validateExpandAndCollect('3,1', ex)).toBe(false);

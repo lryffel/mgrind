@@ -1,7 +1,11 @@
 import { describe, it, expect } from 'vitest';
-import { generateGcdLcm, validateGcdLcm } from './gcdLcm';
+import { generateGcdLcm, validateGcdLcm, type GcdLcmData } from './gcdLcm';
 import { expectDeterministic, expectSeedVariation } from '../test-utils';
 import { gcd } from '../math/number';
+
+function d(ex: { data?: unknown }): GcdLcmData {
+  return ex.data as GcdLcmData;
+}
 
 function factorize(n: number): Map<number, number> {
   const factors = new Map<number, number>();
@@ -23,7 +27,7 @@ describe('generateGcdLcm', () => {
     const ex = generateGcdLcm(42, 0);
     expect(ex).toHaveProperty('answer');
     expect(ex.data).toBeDefined();
-    expect(ex.data?.promptKey).toBe('exercise.gcdLcm.prompt');
+    expect(d(ex).promptKey).toBe('exercise.gcdLcm.prompt');
   });
 
   it('is deterministic for the same seed and complexity', () => {
@@ -39,8 +43,8 @@ describe('generateGcdLcm', () => {
     let foundNumbers = false;
     for (let seed = 0; seed < 100; seed++) {
       const ex = generateGcdLcm(seed, 5);
-      if (ex.data?.subType === 'factorization') foundFactorization = true;
-      if (ex.data?.subType === 'numbers') foundNumbers = true;
+      if (d(ex).subType === 'factorization') foundFactorization = true;
+      if (d(ex).subType === 'numbers') foundNumbers = true;
       if (foundFactorization && foundNumbers) break;
     }
     expect(foundFactorization).toBe(true);
@@ -51,8 +55,8 @@ describe('generateGcdLcm', () => {
     it('exponent arrays match actual gcd/lcm of the numbers', () => {
       for (let seed = 0; seed < 100; seed++) {
         const ex = generateGcdLcm(seed, 4);
-        if (ex.data?.subType !== 'factorization') continue;
-        const data = ex.data;
+        if (d(ex).subType !== 'factorization') continue;
+        const data = d(ex);
         const primes = data.primes ?? [];
         const a = data.a ?? 0;
         const b = data.b ?? 0;
@@ -77,9 +81,9 @@ describe('generateGcdLcm', () => {
     it('aLatex and bLatex are valid non-empty strings', () => {
       for (let seed = 0; seed < 50; seed++) {
         const ex = generateGcdLcm(seed, 4);
-        if (ex.data?.subType !== 'factorization') continue;
-        expect(ex.data.aLatex).toBeTruthy();
-        expect(ex.data.bLatex).toBeTruthy();
+        if (d(ex).subType !== 'factorization') continue;
+        expect(d(ex).aLatex).toBeTruthy();
+        expect(d(ex).bLatex).toBeTruthy();
       }
     });
   });
@@ -88,8 +92,8 @@ describe('generateGcdLcm', () => {
     it('gcd(a, b) matches stored gcd and lcm matches', () => {
       for (let seed = 0; seed < 100; seed++) {
         const ex = generateGcdLcm(seed, 4);
-        if (ex.data?.subType !== 'numbers') continue;
-        const data = ex.data;
+        if (d(ex).subType !== 'numbers') continue;
+        const data = d(ex);
         const a = data.a ?? 0;
         const b = data.b ?? 0;
         const expectedGcd = gcd(a, b);
@@ -118,9 +122,9 @@ describe('generateGcdLcm', () => {
       for (let complexity = 0; complexity <= 10; complexity++) {
         for (let seed = 0; seed < 30; seed++) {
           const ex = generateGcdLcm(seed, complexity);
-          if (ex.data?.subType !== 'numbers') continue;
-          expect(ex.data.a).toBeLessThanOrEqual(maxRanges[complexity]);
-          expect(ex.data.b).toBeLessThanOrEqual(maxRanges[complexity]);
+          if (d(ex).subType !== 'numbers') continue;
+          expect(d(ex).a).toBeLessThanOrEqual(maxRanges[complexity]);
+          expect(d(ex).b).toBeLessThanOrEqual(maxRanges[complexity]);
         }
       }
     });
@@ -130,12 +134,12 @@ describe('generateGcdLcm', () => {
     it('gcd is never 1', () => {
       for (let seed = 0; seed < 500; seed++) {
         const ex = generateGcdLcm(seed, 3);
-        if (ex.data?.subType === 'numbers') {
-          expect(Number(ex.data.gcd)).toBeGreaterThan(1);
-          expect(Number(ex.data.gcd)).not.toBeNaN();
+        if (d(ex).subType === 'numbers') {
+          expect(Number(d(ex).gcd)).toBeGreaterThan(1);
+          expect(Number(d(ex).gcd)).not.toBeNaN();
         } else {
-          const primes = ex.data?.primes ?? [];
-          const gcdExp = (ex.data?.gcdExponents ?? '').split(',').map(Number);
+          const primes = d(ex).primes ?? [];
+          const gcdExp = (d(ex).gcdExponents ?? '').split(',').map(Number);
           if (primes.length > 0) {
             const computedGcd = primes.reduce((prod, p, i) => prod * Math.pow(p, gcdExp[i]), 1);
             expect(computedGcd).toBeGreaterThan(1);
@@ -147,16 +151,16 @@ describe('generateGcdLcm', () => {
     it('a === b is never produced', () => {
       for (let seed = 0; seed < 500; seed++) {
         const ex = generateGcdLcm(seed, 5);
-        expect(ex.data?.a).not.toBe(ex.data?.b);
+        expect(d(ex).a).not.toBe(d(ex).b);
       }
     });
 
     it('no prime inputs in Mode B', () => {
       for (let seed = 0; seed < 500; seed++) {
         const ex = generateGcdLcm(seed, 5);
-        if (ex.data?.subType !== 'numbers') continue;
-        const a = ex.data.a ?? 0;
-        const b = ex.data.b ?? 0;
+        if (d(ex).subType !== 'numbers') continue;
+        const a = d(ex).a ?? 0;
+        const b = d(ex).b ?? 0;
         expect(a).not.toBe(1);
         expect(b).not.toBe(1);
         expect(isPrimeCheck(a)).toBe(false);
@@ -168,28 +172,28 @@ describe('generateGcdLcm', () => {
   describe('validation', () => {
     it('correct answer passes for Mode A', () => {
       const ex = generateGcdLcm(42, 4);
-      if (ex.data?.subType !== 'factorization') return;
-      const correctAnswer = `${ex.data.gcdExponents};${ex.data.lcmExponents}`;
+      if (d(ex).subType !== 'factorization') return;
+      const correctAnswer = `${d(ex).gcdExponents};${d(ex).lcmExponents}`;
       expect(validateGcdLcm(correctAnswer, ex)).toBe(true);
     });
 
     it('wrong exponent fails for Mode A', () => {
       const ex = generateGcdLcm(42, 4);
-      if (ex.data?.subType !== 'factorization') return;
-      const wrongAnswer = `0,0,0;${ex.data.lcmExponents}`;
+      if (d(ex).subType !== 'factorization') return;
+      const wrongAnswer = `0,0,0;${d(ex).lcmExponents}`;
       expect(validateGcdLcm(wrongAnswer, ex)).toBe(false);
     });
 
     it('correct answer passes for Mode B', () => {
       const ex = generateGcdLcm(42, 4);
-      if (ex.data?.subType !== 'numbers') return;
-      const correctAnswer = `${ex.data.gcd},${ex.data.lcm}`;
+      if (d(ex).subType !== 'numbers') return;
+      const correctAnswer = `${d(ex).gcd},${d(ex).lcm}`;
       expect(validateGcdLcm(correctAnswer, ex)).toBe(true);
     });
 
     it('wrong gcd/lcm fails for Mode B', () => {
       const ex = generateGcdLcm(42, 4);
-      if (ex.data?.subType !== 'numbers') return;
+      if (d(ex).subType !== 'numbers') return;
       expect(validateGcdLcm('1,999', ex)).toBe(false);
     });
   });

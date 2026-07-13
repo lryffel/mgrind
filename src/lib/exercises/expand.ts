@@ -5,6 +5,11 @@ import { randInt, pick } from '../math/rng';
 import { formatExpandedTerm, varMapLatex, varMapText } from '../math/varmap';
 import { expandProduct, collectTerms, type Term } from './termAlgebra';
 
+export interface ExpandData {
+  fields: { variablePart: string }[];
+  promptKey: string;
+}
+
 const VAR_SETS = [['x'], ['x', 'y'], ['a'], ['a', 'b'], ['m'], ['m', 'n']];
 
 function formatFactor(terms: Term[]): string {

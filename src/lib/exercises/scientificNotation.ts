@@ -3,6 +3,11 @@ import { mulberry32 } from '../prng';
 import { randInt } from '../math/rng';
 import { clampComplexity } from '../math/number';
 
+export interface ScientificNotationData {
+  subType: string;
+  promptKey: string;
+}
+
 function formatDecimal(tenths: number, exponent: number): string {
   const shift = exponent - 1;
   if (shift >= 0) {

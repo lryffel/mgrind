@@ -4,6 +4,11 @@ import { clampComplexity } from '../math/number';
 import { reduceFrac, parseFrac } from '../math/fraction';
 import { randInt, pick, pickDistinct, shuffle } from '../math/rng';
 
+export interface CollectingTermsData {
+  fields: { variablePart: string }[];
+  promptKey: string;
+}
+
 interface Monomial {
   latex: string;
   degree: number;

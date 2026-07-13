@@ -6,13 +6,15 @@
   import Feedback from '../Feedback.svelte';
   import NumericInput from './NumericInput.svelte';
   import { formatFactoredLatex } from '../../exercises/factoringBinomialFormulas';
+  import type { FactoringBinomialFormulasData } from '../../exercises/factoringBinomialFormulas';
   import { parseFrac } from '../../math/fraction';
   import { normalizeCoeff } from '../../validation';
 
   let { exercise, onSubmit, onNext, feedback }: ExerciseProps = $props();
 
-  let varA = $derived(exercise.data?.varA ?? null);
-  let varB = $derived(exercise.data?.varB ?? '');
+  let data = $derived(exercise.data as FactoringBinomialFormulasData);
+  let varA = $derived(data.varA ?? null);
+  let varB = $derived(data.varB ?? '');
   let selectedFormula = $state<number | null>(null);
   let aVal = $state('');
   let bVal = $state('');

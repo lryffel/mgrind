@@ -5,6 +5,14 @@ import { randInt, pick } from '../math/rng';
 import { formatExpandedTerm } from '../math/varmap';
 import { reduceFrac } from '../math/fraction';
 
+export interface SymbolicFractionData {
+  mode?: 'fraction' | 'polynomial';
+  fields?: { variablePart: string }[];
+  denominatorFields?: { variablePart: string }[];
+  cannotSimplifyType?: string;
+  promptKey?: string;
+}
+
 const VAR_PAIRS: [string, string][] = [
   ['a', 'b'],
   ['x', 'y'],

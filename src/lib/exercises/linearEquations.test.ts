@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { generateLinearEquations, validateLinearEquations } from './linearEquations';
+import { generateLinearEquations, validateLinearEquations, type LinearEquationsData } from './linearEquations';
 import { initLang } from '../i18n.svelte';
 
 initLang();
@@ -48,7 +48,7 @@ describe('linearEquations', () => {
 
   it('generates an equation with the variable letter in the prompt', () => {
     const ex = generateLinearEquations(42, 0);
-    expect(ex.data?.variable).toBeTruthy();
+    expect((ex.data as LinearEquationsData).variable).toBeTruthy();
   });
 
   it('works with fraction answers', () => {

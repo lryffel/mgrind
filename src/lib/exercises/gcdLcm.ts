@@ -3,6 +3,20 @@ import { mulberry32 } from '../prng';
 import { clampComplexity, gcd } from '../math/number';
 import { randInt, pickDistinct } from '../math/rng';
 
+export interface GcdLcmData {
+  subType: string;
+  promptKey?: string;
+  primes?: number[];
+  a?: number;
+  b?: number;
+  gcd?: string;
+  lcm?: string;
+  aLatex?: string;
+  bLatex?: string;
+  gcdExponents?: string;
+  lcmExponents?: string;
+}
+
 const MODE_A_CONFIG: Record<number, { pool: number[]; shared: number; onlyEach: number; emax: number }> = {
   0: { pool: [2, 3], shared: 1, onlyEach: 0, emax: 2 },
   1: { pool: [2, 3], shared: 1, onlyEach: 0, emax: 2 },
@@ -255,7 +269,7 @@ export function generateGcdLcm(seed: number, complexity: number): Exercise {
 }
 
 export function validateGcdLcm(answer: string, exercise: Exercise): boolean {
-  const data = exercise.data;
+  const data = exercise.data as GcdLcmData | undefined;
   if (!data) return false;
 
   if (data.subType === 'factorization') {

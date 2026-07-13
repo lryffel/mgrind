@@ -1,9 +1,15 @@
 import { describe, it, expect } from 'vitest';
 import type { Exercise } from '../types';
-import { generateCollectingTerms, validateCollectingTerms, formatCollectingAnswer } from './collectingTerms';
+import {
+  generateCollectingTerms,
+  validateCollectingTerms,
+  formatCollectingAnswer,
+  type CollectingTermsData,
+} from './collectingTerms';
 
 function getFields(ex: Exercise): { variablePart: string }[] {
-  return ex.data?.fields ?? [];
+  const d = ex.data as CollectingTermsData | undefined;
+  return d?.fields ?? [];
 }
 
 describe('generateCollectingTerms', () => {
@@ -12,7 +18,7 @@ describe('generateCollectingTerms', () => {
     expect(ex).toHaveProperty('prompt');
     expect(ex).toHaveProperty('answer');
     expect(ex).toHaveProperty('data');
-    expect(ex.data?.fields).toBeDefined();
+    expect((ex.data as CollectingTermsData).fields).toBeDefined();
     expect(Array.isArray(getFields(ex))).toBe(true);
   });
 
@@ -120,7 +126,7 @@ describe('generateCollectingTerms', () => {
     const ex: Exercise = {
       prompt: '1/2 a + 1/3 b',
       answer: '1/2,1/3',
-      data: { fields: [{ variablePart: 'a' }, { variablePart: 'b' }] },
+      data: { fields: [{ variablePart: 'a' }, { variablePart: 'b' }] } as CollectingTermsData,
     };
     expect(validateCollectingTerms('1/2,1/3', ex)).toBe(true);
     expect(validateCollectingTerms('2/4,1/3', ex)).toBe(true);

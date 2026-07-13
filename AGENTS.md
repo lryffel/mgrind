@@ -29,6 +29,7 @@
   - Generators clamp complexity: `clampComplexity(complexity, max)` from `src/lib/math/number.ts`
   - Multi-field validation: `validateMultiField` from `src/lib/validation.ts`
   - Use `mulberry32(seed)` as the single RNG — no inline `Math.random()`
+  - Each type defines and exports its own data interface (e.g. `MultiplicationFractionData`) in its generator module. `Exercise.data` is `unknown` — consumers must cast.
 - Disciplines: array in `src/lib/data/disciplines.ts`
 - Exercises use deterministic PRNG (`mulberry32`); seed = `Date.now()`
 - `CONCEPT.md` describes the app design — use it for guidance, don't infer

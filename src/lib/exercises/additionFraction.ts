@@ -3,6 +3,10 @@ import { mulberry32 } from '../prng';
 import { gcd, clampComplexity } from '../math/number';
 import { promptFraction } from '../math/latex';
 
+export interface AdditionFractionData {
+  promptKey: string;
+}
+
 const DENOMS = [2, 3, 4, 5, 6, 8, 10, 12];
 
 const LCD_DIVISORS: Record<number, number[]> = {
