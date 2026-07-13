@@ -10,7 +10,7 @@ interface QuestionTemplate {
   expCount: number;
 }
 
-const INT_VARS = ['k', '\\ell', 'm', 'n', 'p', 'q'];
+const INT_VARS: string[] = ['k', '\\ell', 'm', 'n', 'p', 'q'];
 
 function joinFactors(left: string, right: string): string {
   return /^\d/.test(right) ? `${left} \\cdot ${right}` : `${left}${right}`;
@@ -139,8 +139,8 @@ const TEMPLATES: QuestionTemplate[] = [
   },
 ];
 
-const SIMPLE_VARS = ['a', 'b', 'c', 'd', 'x', 'y', 'u', 'v'];
-const MONO_VAR_NAMES = ['x', 'y', 'z', 'u', 'v', 'w'];
+const SIMPLE_VARS: string[] = ['a', 'b', 'c', 'd', 'x', 'y', 'u', 'v'];
+const MONO_VAR_NAMES: string[] = ['x', 'y', 'z', 'u', 'v', 'w'];
 
 function generateBaseVar(rng: () => number, complexity: number): string {
   if (complexity <= 3) {

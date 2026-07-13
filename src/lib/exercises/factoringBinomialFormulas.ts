@@ -56,7 +56,9 @@ function buildPrompt(
   return `${coeffLatex(a2[0], a2[1], aVarPart)} - ${coeffLatex(ab[0], ab[1], abVarPart)} + ${coeffLatex(b2[0], b2[1], bVarPart)}`;
 }
 
-const VAR_NAMES = ['a', 'b', 'c', 'd', 'k', '\\ell', 'm', 'n', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w'];
+import { VAR_POOL } from '../math/varpool';
+
+const VAR_NAMES = VAR_POOL.filter((v) => v !== 'i' && v !== 'j' && v !== 'x' && v !== 'y' && v !== 'z');
 
 function generateTrap(rng: () => number, allowFrac: boolean, aMayHaveVar: boolean): Exercise {
   const trapType = Math.floor(rng() * 3);

@@ -5,7 +5,7 @@ import { randInt, pick } from '../math/rng';
 import { formatExpandedTerm, varMapLatex, varMapText } from '../math/varmap';
 import { expandProduct, collectTerms, type Term } from './termAlgebra';
 
-const VAR_SETS = [['x'], ['x', 'y'], ['a'], ['a', 'b'], ['m'], ['m', 'n']];
+const VAR_SETS: string[][] = [['x'], ['x', 'y'], ['a'], ['a', 'b'], ['m'], ['m', 'n']];
 
 function formatFactor(terms: Term[]): string {
   const parts: string[] = [];

@@ -33,7 +33,7 @@ function promptTerm(num: number, den: number, varName: string): string {
   return `\\frac{${num}}{${den}}${varName}`;
 }
 
-const SINGLE_VARS = ['x', 'n', 't', 'a', 'b', 'm', 'p', 'q', 'r', 's', 'u', 'v'];
+const SINGLE_VARS: string[] = ['x', 'n', 't', 'a', 'b', 'm', 'p', 'q', 'r', 's', 'u', 'v'];
 const VAR_PAIRS: [string, string][] = [
   ['x', 'y'],
   ['n', 'm'],

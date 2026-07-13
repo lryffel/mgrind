@@ -3,7 +3,7 @@ import { mulberry32 } from '../prng';
 import { clampComplexity } from '../math/number';
 import { randInt, pick } from '../math/rng';
 
-const VARS = ['x', 'y', 'z', 't', 'u', 'v', 'w'];
+const VARS: string[] = ['x', 'y', 'z', 't', 'u', 'v', 'w'];
 
 type EqType = 'factoringOut' | 'diffOfSquares' | 'perfectSquare' | 'factoringOutAndBinomial' | 'cubic';
 
