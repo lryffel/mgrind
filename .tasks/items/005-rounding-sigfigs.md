@@ -79,7 +79,11 @@ Design an exercise about rounding to a given number of significant digits.
 - [x] Added i18n keys in `src/lib/i18n.svelte.ts`
 - [x] Typecheck (`npm run check`): 0 errors
 - [x] Lint (`npm run lint`): 0 errors
-- [x] All 14 new tests pass
+- [x] All 15 new tests pass
+- [x] Created custom `RoundingSigfigsExercise.svelte` — renders localized prompt via i18n keys
+- [x] Created `RoundingSigfigsInstructions.svelte` — help modal with EN/DE instructions
+- [x] Prompt now stores just the formatted number; sigfigs count in `data.sigfigsCount`
+- [x] Added i18n keys `exercise.roundingSigfigs.promptBefore/Between/After` for German
 
 ## Blockers
 
