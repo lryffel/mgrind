@@ -112,22 +112,20 @@ One file per type. Uses `mulberry32` from `src/lib/prng.ts` and helper functions
 
 Types with `pattern: 'custom'` have a component in `exercises/`:
 
-| Component                           | Exercise type(s)          |
-| ----------------------------------- | ------------------------- |
-| `SubstitutionExercise.svelte`       | substitution              |
-| `FactoringBinomialFormulas.svelte`  | factoringBinomialFormulas |
-| `FactoringOut.svelte`               | factoringOut              |
-| `FactoringOutAndBinomial.svelte`    | factoringOutAndBinomial   |
-| `FactorEquations.svelte`            | factorEquations           |
-| `LinearEquationsExercise.svelte`    | linearEquations           |
-| `NecessityOfParentheses.svelte`     | necessityOfParentheses    |
-| `Pythagoras.svelte`                 | pythagoras                |
-| `AreaExercise.svelte`               | area                      |
-| `InteriorAngles.svelte`             | interiorAngles            |
-| `TermTransformationsTrivia.svelte`  | termTransformationsTrivia |
-| `PercentExercise.svelte`            | percent                   |
-| `RoundingSigfigsExercise.svelte`    | roundingSigfigs           |
-| `ScientificNotationExercise.svelte` | scientificNotation        |
+| Component | Exercise type(s) |
+| `FactoringBinomialFormulas.svelte` | factoringBinomialFormulas |
+| `FactoringOut.svelte` | factoringOut |
+| `FactoringOutAndBinomial.svelte` | factoringOutAndBinomial |
+| `FactorEquations.svelte` | factorEquations |
+| `LinearEquationsExercise.svelte` | linearEquations |
+| `NecessityOfParentheses.svelte` | necessityOfParentheses |
+| `Pythagoras.svelte` | pythagoras |
+| `AreaExercise.svelte` | area |
+| `InteriorAngles.svelte` | interiorAngles |
+| `TermTransformationsTrivia.svelte` | termTransformationsTrivia |
+| `PercentExercise.svelte` | percent |
+| `RoundingSigfigsExercise.svelte` | roundingSigfigs |
+| `ScientificNotationExercise.svelte` | scientificNotation |
 
 ## Routing
 

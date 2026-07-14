@@ -32,16 +32,16 @@ export function generateMultiplication(seed: number, complexity: number): Exerci
 
 If the type fits a pattern, `data` must match the expected shape:
 
-| Pattern          | `data` shape                                                                            | No component needed     |
-| ---------------- | --------------------------------------------------------------------------------------- | ----------------------- |
-| `text-input`     | `{ promptKey?: string; placeholder?: string }`                                          | Yes                     |
-| `fraction-input` | `{ promptKey?: string }` (plus `num1,den1,num2,den2,op` for binary operations)          | Yes                     |
-| `multi-field`    | `{ promptKey?: string; fields: { variablePart: string }[] }`                            | Yes                     |
-| `batch-choice`   | `{ promptKey?: string; rows: { latex: string; latex2?: string }[]; buttons: string[] }` | Yes                     |
-| `single-choice`  | `{ promptKey?: string; options: { label?: string; latex?: string }[] }`                 | Yes                     |
-| `multi-choice`   | `{ promptKey?: string; options: { label?: string; latex?: string }[] }`                 | Yes                     |
-| `prime-factors`  | `{ promptKey?: string; primes: number[] }`                                              | Yes                     |
-| `custom`         | Any shape (your component handles it)                                                   | No (component required) |
+| Pattern          | `data` shape                                                                                          | No component needed     |
+| ---------------- | ----------------------------------------------------------------------------------------------------- | ----------------------- |
+| `text-input`     | `{ promptKey?: string; promptArgs?: string[]; placeholder?: string }`                                 | Yes                     |
+| `fraction-input` | `{ promptKey?: string; promptArgs?: string[] }` (plus `num1,den1,num2,den2,op` for binary operations) | Yes                     |
+| `multi-field`    | `{ promptKey?: string; fields: { variablePart: string }[] }`                                          | Yes                     |
+| `batch-choice`   | `{ promptKey?: string; rows: { latex: string; latex2?: string }[]; buttons: string[] }`               | Yes                     |
+| `single-choice`  | `{ promptKey?: string; options: { label?: string; latex?: string }[] }`                               | Yes                     |
+| `multi-choice`   | `{ promptKey?: string; options: { label?: string; latex?: string }[] }`                               | Yes                     |
+| `prime-factors`  | `{ promptKey?: string; primes: number[] }`                                                            | Yes                     |
+| `custom`         | Any shape (your component handles it)                                                                 | No (component required) |
 
 ### Default complexity max
 
