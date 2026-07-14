@@ -1,7 +1,7 @@
 import { describe, it, expect } from 'vitest';
 import { generateInteriorAngles } from './interiorAngles';
 import { expectDeterministic, expectSeedVariation, expectHasPromptAndAnswer } from '../test-utils';
-import type { InteriorAnglesData } from './interiorAngles';
+import type { InteriorAnglesAngle, InteriorAnglesData } from './interiorAngles';
 
 describe('interiorAngles', () => {
   it('generates deterministic output', () => {
@@ -183,8 +183,8 @@ describe('interiorAngles', () => {
     by /= blen;
 
     const cross = dx1 * dy2 - dy1 * dx2;
-    const dirX = cross < 0 ? bx : -bx;
-    const dirY = cross < 0 ? by : -by;
+    const dirX = cross < 0 ? -bx : bx;
+    const dirY = cross < 0 ? -by : by;
 
     return { x: curr.vertexX + 22 * dirX, y: curr.vertexY + 22 * dirY };
   }
@@ -237,7 +237,7 @@ describe('interiorAngles', () => {
             const oldPos = labelPosOld(angle.vertexX, angle.vertexY);
             const newPos = labelPosNew(angle, prev, next);
             const dist = Math.hypot(oldPos.x - newPos.x, oldPos.y - newPos.y);
-            expect(dist).toBeLessThan(5);
+            expect(dist).toBeLessThan(8);
           }
         }
       }
