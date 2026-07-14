@@ -139,7 +139,6 @@ export const exerciseTypes: Record<string, ExerciseType> = {
     nameKey: 'exercise.orderOfOperations.name',
     descriptionKey: 'exercise.orderOfOperations.desc',
     generate: generateOrderOfOperations,
-    prerequisites: [{ typeId: 'squares', complexity: 5 }],
     instructionComponent: OrderOfOperationsInstructions,
   }),
   primeFactorisation: defineExerciseType({
@@ -351,6 +350,7 @@ export const exerciseTypes: Record<string, ExerciseType> = {
     generate: generateSimplifySymbolicFraction,
     validate: validateSimplifySymbolicFraction,
     component: SymbolicFractionExercise,
+    prerequisites: [{ typeId: 'simplifyFraction', complexity: 5 }],
     instructionComponent: SimplifySymbolicFractionInstructions,
   }),
   roundingSigfigs: defineExerciseType({
@@ -416,6 +416,10 @@ export const exerciseTypes: Record<string, ExerciseType> = {
     generate: generateSymbolicFractionOperations,
     validate: validateSymbolicFractionOperations,
     component: SymbolicFractionExercise,
+    prerequisites: [
+      { typeId: 'additionFraction', complexity: 4 },
+      { typeId: 'multiplicationFraction', complexity: 4 },
+    ],
     instructionComponent: SymbolicFractionOperationsInstructions,
   }),
 };
