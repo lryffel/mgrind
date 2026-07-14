@@ -15,7 +15,7 @@ interface QuestionTemplate {
   expCount: number;
 }
 
-const INT_VARS = ['k', '\\ell', 'm', 'n', 'p', 'q'];
+const INT_VARS = ['k', 'm', 'n', 'p', 'q'];
 
 function joinFactors(left: string, right: string): string {
   return /^\d/.test(right) ? `${left} \\cdot ${right}` : `${left}${right}`;

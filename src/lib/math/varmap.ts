@@ -6,12 +6,8 @@ export interface FactorOption {
   innerVarParts: string[];
 }
 
-const LATEX_VAR_NAMES: Record<string, string> = {
-  '\\ell': '\u2113',
-};
-
 function varDisplayName(key: string): string {
-  return LATEX_VAR_NAMES[key] ?? key;
+  return key;
 }
 
 const SUPERSCRIPTS: Record<string, string> = {

@@ -48,7 +48,7 @@ function makeVarSet(v1: string, v2: string, v3: string): Monomial[] {
 
 const VAR_SETS: Monomial[][] = [
   makeVarSet('a', 'b', 'c'),
-  makeVarSet('\\ell', 'm', 'n'),
+  makeVarSet('d', 'e', 'f'),
   makeVarSet('x', 'y', 'z'),
   makeVarSet('i', 'j', 'k'),
   makeVarSet('r', 's', 't'),

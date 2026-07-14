@@ -94,7 +94,7 @@ describe('generateNecessityOfParentheses', () => {
         const matches = q.latex.match(/[a-z]{2,}/g);
         if (matches) {
           for (const m of matches) {
-            if (!['sqrt', 'ell'].includes(m)) {
+            if (m !== 'sqrt') {
               expect(m.length).toBeLessThanOrEqual(2);
             }
           }

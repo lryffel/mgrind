@@ -340,9 +340,9 @@ describe('formatFullFactoredLatex', () => {
     expect(result).toBe('2\\,x\\,(a + 3b)(a - 3b)');
   });
 
-  it('handles LaTeX command variables like \\ell', () => {
-    const result = formatFullFactoredLatex(1, 3, '', 1, 1, 2, 1, '\\ell', 'm');
-    expect(result).toBe('3\\,(\\ell{} + 2m)^{2}');
+  it('handles two-variable formulas', () => {
+    const result = formatFullFactoredLatex(1, 3, '', 1, 1, 2, 1, 'a', 'b');
+    expect(result).toBe('3\\,(a + 2b)^{2}');
   });
 });
 

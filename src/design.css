@@ -948,5 +948,32 @@ html.modal-is-open {
 
 /* ---- KaTeX override ----------------------------------------- */
 .katex {
+  font-family: system-ui, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', sans-serif;
   font-size: 1em;
+}
+
+.katex .mathnormal,
+.katex .mathit,
+.katex .mathrm,
+.katex .mathbf,
+.katex .boldsymbol,
+.katex .mainrm,
+.katex .amsrm,
+.katex .mathbb,
+.katex .textbb,
+.katex .mathfrak,
+.katex .textfrak,
+.katex .mathboldfrak,
+.katex .textboldfrak,
+.katex .mathscr,
+.katex .textscr,
+.katex .mathsf,
+.katex .textsf,
+.katex .mathboldsf,
+.katex .textboldsf,
+.katex .mathsfit,
+.katex .mathitsf,
+.katex .textitsf,
+.katex .textrm {
+  font-family: inherit;
 }

@@ -285,8 +285,8 @@ describe('formatFactoredLatex', () => {
     expect(result).toBe('(1 + 5k)(1 - 5k)');
   });
 
-  it('handles LaTeX command variables like \\ell', () => {
-    const result = formatFactoredLatex(1, 1, 1, 2, 1, '\\ell', 'm');
-    expect(result).toBe('(\\ell{} + 2m)^{2}');
+  it('handles two-variable formulas', () => {
+    const result = formatFactoredLatex(1, 1, 1, 2, 1, 'a', 'b');
+    expect(result).toBe('(a + 2b)^{2}');
   });
 });
