@@ -641,13 +641,84 @@ const dict = {
     en: 'How many positive divisors does a prime number have?',
     de: 'Wie viele positive Teiler hat eine Primzahl?',
   },
-  'exercise.numbersTrivia.type.divisibilityRules.promptBefore': {
-    en: 'Which of the following correctly determines whether a number is divisible by ',
-    de: 'Welche der folgenden Aussagen bestimmt korrekt, ob eine Zahl durch ',
+  'exercise.factors.name': { en: 'Factors', de: 'Teiler' },
+  'exercise.factors.desc': {
+    en: 'Find all factors of a number',
+    de: 'Finde alle Teiler einer Zahl',
   },
-  'exercise.numbersTrivia.type.divisibilityRules.promptAfter': {
-    en: '?',
-    de: ' teilbar ist?',
+  'exercise.factors.instruction': {
+    en: 'Select all factors of n.',
+    de: 'Wähle alle Teiler von n.',
+  },
+  'exercise.numbersTrivia.divisibilityRules.prompt': {
+    en: 'Which rule checks divisibility by {0}?',
+    de: 'Welche Regel prüft die Teilbarkeit durch {0}?',
+  },
+  'exercise.numbersTrivia.trueFalse.0': {
+    en: 'Zero is allowed in the denominator of a fraction.',
+    de: 'Die Null ist im Nenner eines Bruchs erlaubt.',
+  },
+  'exercise.numbersTrivia.trueFalse.1': { en: '1 is a prime number.', de: '1 ist eine Primzahl.' },
+  'exercise.numbersTrivia.trueFalse.2': {
+    en: 'The sum of two even numbers is always even.',
+    de: 'Die Summe zweier gerader Zahlen ist immer gerade.',
+  },
+  'exercise.numbersTrivia.trueFalse.3': { en: 'Every prime number is odd.', de: 'Jede Primzahl ist ungerade.' },
+  'exercise.numbersTrivia.trueFalse.4': {
+    en: 'Every integer is a rational number.',
+    de: 'Jede ganze Zahl ist eine rationale Zahl.',
+  },
+  'exercise.numbersTrivia.trueFalse.5': {
+    en: '-a is always negative.',
+    de: '-a ist immer negativ.',
+  },
+  'exercise.numbersTrivia.trueFalse.6': {
+    en: 'The sum of two odd numbers is always even.',
+    de: 'Die Summe zweier ungerader Zahlen ist immer gerade.',
+  },
+  'exercise.numbersTrivia.trueFalse.7': {
+    en: 'The product of two negative numbers is negative.',
+    de: 'Das Produkt zweier negativer Zahlen ist negativ.',
+  },
+  'exercise.numbersTrivia.trueFalse.8': {
+    en: 'The sum of two negative numbers is negative.',
+    de: 'Die Summe zweier negativer Zahlen ist negativ.',
+  },
+  'exercise.numbersTrivia.trueFalse.9': {
+    en: 'There are infinitely many prime numbers.',
+    de: 'Es gibt unendlich viele Primzahlen.',
+  },
+  'exercise.numbersTrivia.trueFalse.10': {
+    en: 'The square root of 2 is a rational number.',
+    de: 'Die Quadratwurzel von 2 ist eine rationale Zahl.',
+  },
+  'exercise.numbersTrivia.trueFalse.11': {
+    en: 'Every natural number is an integer.',
+    de: 'Jede natürliche Zahl ist eine ganze Zahl.',
+  },
+  'exercise.numbersTrivia.trueFalse.12': {
+    en: 'Every natural number is a rational number.',
+    de: 'Jede natürliche Zahl ist eine rationale Zahl.',
+  },
+  'exercise.numbersTrivia.trueFalse.13': {
+    en: 'Every integer is a natural number.',
+    de: 'Jede ganze Zahl ist eine natürliche Zahl.',
+  },
+  'exercise.numbersTrivia.trueFalse.14': {
+    en: 'Every integer is a real number.',
+    de: 'Jede ganze Zahl ist eine reelle Zahl.',
+  },
+  'exercise.numbersTrivia.trueFalse.15': {
+    en: 'Every rational number is an integer.',
+    de: 'Jede rationale Zahl ist eine ganze Zahl.',
+  },
+  'exercise.numbersTrivia.trueFalse.16': {
+    en: 'Every rational number is a real number.',
+    de: 'Jede rationale Zahl ist eine reelle Zahl.',
+  },
+  'exercise.numbersTrivia.trueFalse.17': {
+    en: 'Every real number is a rational number.',
+    de: 'Jede reelle Zahl ist eine rationale Zahl.',
   },
   'exercise.simplifySymbolicFraction.cannotSimplify': {
     en: 'Cannot simplify',

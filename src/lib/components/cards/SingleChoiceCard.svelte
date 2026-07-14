@@ -13,6 +13,8 @@
       promptKey?: string;
       promptArgs?: (string | number)[];
       promptArgKeys?: string[];
+      promptText?: string;
+      hideCorrectFeedback?: boolean;
       options: { label?: string; latex?: string; text?: string; textDe?: string }[];
     },
   );
@@ -38,6 +40,9 @@
 </script>
 
 <ExerciseShell {exercise} {feedback} submitAnswer={handleSubmit} {onNext}>
+  {#if data.promptText}
+    <p class="prompt-label">{data.promptText}</p>
+  {/if}
   {#if promptKey}
     <p class="prompt-label">{_(promptKey, ...resolvedArgs)}</p>
   {/if}
@@ -81,7 +86,7 @@
     {/each}
   </div>
 
-  {#if feedback === 'correct'}
+  {#if feedback === 'correct' && !data.hideCorrectFeedback}
     <Feedback {feedback} />
   {:else if feedback === 'incorrect'}
     <Feedback

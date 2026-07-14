@@ -138,6 +138,21 @@ describe('generateNumbersTrivia', () => {
     expect(seenIndices.size).toBe(NUMBERS_TRIVIA_TRUE_FALSE.length);
   });
 
+  it('no divisibility-rules distractor uses the "divisible by x and y" pattern', () => {
+    for (let seed = 0; seed < 200; seed++) {
+      const ex = generateNumbersTrivia(seed, 10);
+      if (d(ex).subType === 'divisibilityRules') {
+        const texts = d(ex).ruleTexts ?? [];
+        const correctIdx = d(ex).correctIndices?.[0] ?? -1;
+        for (let i = 0; i < texts.length; i++) {
+          if (i !== correctIdx) {
+            expect(texts[i].de).not.toMatch(/^Die Zahl ist durch \d+ und \d+ teilbar\.$/);
+          }
+        }
+      }
+    }
+  });
+
   it('divisibilityRules always has exactly one correct answer', () => {
     for (let seed = 0; seed < 200; seed++) {
       const ex = generateNumbersTrivia(seed, 5);
