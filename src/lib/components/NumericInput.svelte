@@ -1,6 +1,6 @@
 <script lang="ts">
-  import Math from '../Math.svelte';
-  import type { InputContext } from '../../types';
+  import Math from './Math.svelte';
+  import type { InputContext } from '../types';
 
   let {
     value = $bindable(),

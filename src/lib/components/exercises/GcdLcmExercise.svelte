@@ -4,8 +4,8 @@
   import Math from '../Math.svelte';
   import ExerciseShell from '../ExerciseShell.svelte';
   import Feedback from '../Feedback.svelte';
-  import PrimeFactorInput from './PrimeFactorInput.svelte';
-  import NumericInput from './NumericInput.svelte';
+  import PrimeFactorInput from '../PrimeFactorInput.svelte';
+  import NumericInput from '../NumericInput.svelte';
   import type { GcdLcmData } from '../../exercises/gcdLcm';
 
   let { exercise, onSubmit, onNext, feedback }: ExerciseProps = $props();

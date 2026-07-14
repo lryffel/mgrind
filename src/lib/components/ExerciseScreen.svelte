@@ -7,6 +7,7 @@
   import { ExerciseSession } from '../exerciseSession.svelte';
   import { instructionContext } from '../instructionContext.svelte';
   import { exerciseProgress } from '../exerciseProgressContext.svelte';
+  import CardRegistry from './cards/CardRegistry.svelte';
 
   let { disciplineId, onBack, typeId }: { disciplineId: string; onBack: () => void; typeId?: string } = $props();
 
@@ -43,7 +44,16 @@
 {#if session}
   {@const s = session}
   {#key s.currentSeed}
-    {@const Comp = s.currentType.component}
-    <Comp exercise={s.exercise} onSubmit={(a: string) => s.submit(a)} onNext={() => s.next()} feedback={s.feedback} />
+    {#if s.exercise.pattern && s.exercise.pattern !== 'custom'}
+      <CardRegistry
+        exercise={s.exercise}
+        onSubmit={(a: string) => s.submit(a)}
+        onNext={() => s.next()}
+        feedback={s.feedback}
+      />
+    {:else if s.currentType.component}
+      {@const Comp = s.currentType.component}
+      <Comp exercise={s.exercise} onSubmit={(a: string) => s.submit(a)} onNext={() => s.next()} feedback={s.feedback} />
+    {/if}
   {/key}
 {/if}

@@ -29,7 +29,7 @@ function genADiffBPlusC(rng: () => number): Exercise {
   const c = randInt(rng, 1, 5);
   const sum = b + c;
   const a = randInt(rng, sum + 1, Math.min(sum + 5, 19));
-  return { prompt: `${a} - (${b} + ${c}) = ?`, answer: String(a - sum) };
+  return { prompt: `${a} - (${b} + ${c}) = ?`, answer: String(a - sum), pattern: 'text-input' };
 }
 
 function genADiffBMinusC(rng: () => number): Exercise {
@@ -37,21 +37,21 @@ function genADiffBMinusC(rng: () => number): Exercise {
   const c = randInt(rng, 1, b - 1);
   const diff = b - c;
   const a = randInt(rng, diff + 1, Math.min(diff + 5, 19));
-  return { prompt: `${a} - (${b} - ${c}) = ?`, answer: String(a - diff) };
+  return { prompt: `${a} - (${b} - ${c}) = ?`, answer: String(a - diff), pattern: 'text-input' };
 }
 
 function genATimesBPlusC(rng: () => number): Exercise {
   const a = randInt(rng, 2, 3);
   const b = randInt(rng, 1, 3);
   const c = randInt(rng, 1, 3);
-  return { prompt: `${a} \\cdot (${b} + ${c}) = ?`, answer: String(a * (b + c)) };
+  return { prompt: `${a} \\cdot (${b} + ${c}) = ?`, answer: String(a * (b + c)), pattern: 'text-input' };
 }
 
 function genATimesBMinusC(rng: () => number): Exercise {
   const a = randInt(rng, 2, 3);
   const b = randInt(rng, 2, 4);
   const c = randInt(rng, 1, b - 1);
-  return { prompt: `${a} \\cdot (${b} - ${c}) = ?`, answer: String(a * (b - c)) };
+  return { prompt: `${a} \\cdot (${b} - ${c}) = ?`, answer: String(a * (b - c)), pattern: 'text-input' };
 }
 
 function genAPlusBCTimes(rng: () => number): Exercise {
@@ -59,7 +59,7 @@ function genAPlusBCTimes(rng: () => number): Exercise {
   const c = randInt(rng, 2, 4);
   const prod = b * c;
   const a = randInt(rng, 1, 19 - prod);
-  return { prompt: `${a} + ${b} \\cdot ${c} = ?`, answer: String(a + prod) };
+  return { prompt: `${a} + ${b} \\cdot ${c} = ?`, answer: String(a + prod), pattern: 'text-input' };
 }
 
 function genAMinusBCTimes(rng: () => number): Exercise {
@@ -67,7 +67,7 @@ function genAMinusBCTimes(rng: () => number): Exercise {
   const c = randInt(rng, 2, 4);
   const prod = b * c;
   const a = randInt(rng, prod + 1, Math.min(prod + 5, 19));
-  return { prompt: `${a} - ${b} \\cdot ${c} = ?`, answer: String(a - prod) };
+  return { prompt: `${a} - ${b} \\cdot ${c} = ?`, answer: String(a - prod), pattern: 'text-input' };
 }
 
 const band0: SubGen[] = [
@@ -86,7 +86,7 @@ function genAPlusBC2(rng: () => number): Exercise {
   const b = randInt(rng, 2, bMax);
   const prod = b * c2;
   const a = randInt(rng, 1, 19 - prod);
-  return { prompt: `${a} + ${b} \\cdot ${c}^{2} = ?`, answer: String(a + prod) };
+  return { prompt: `${a} + ${b} \\cdot ${c}^{2} = ?`, answer: String(a + prod), pattern: 'text-input' };
 }
 
 function genAMinusBC2(rng: () => number): Exercise {
@@ -96,23 +96,23 @@ function genAMinusBC2(rng: () => number): Exercise {
   const b = randInt(rng, 2, bMax);
   const prod = b * c2;
   const a = randInt(rng, prod + 1, Math.min(prod + 5, 19));
-  return { prompt: `${a} - ${b} \\cdot ${c}^{2} = ?`, answer: String(a - prod) };
+  return { prompt: `${a} - ${b} \\cdot ${c}^{2} = ?`, answer: String(a - prod), pattern: 'text-input' };
 }
 
 function genAPlusBCSq(rng: () => number): Exercise {
   const a = randInt(rng, 1, 3);
-  return { prompt: `${a} + (2 \\cdot 2)^{2} = ?`, answer: String(a + 16) };
+  return { prompt: `${a} + (2 \\cdot 2)^{2} = ?`, answer: String(a + 16), pattern: 'text-input' };
 }
 
 function genAMinusBCSq(rng: () => number): Exercise {
   const a = randInt(rng, 17, 19);
-  return { prompt: `${a} - (2 \\cdot 2)^{2} = ?`, answer: String(a - 16) };
+  return { prompt: `${a} - (2 \\cdot 2)^{2} = ?`, answer: String(a - 16), pattern: 'text-input' };
 }
 
 function genNegPowerTrap(rng: () => number): Exercise {
   const a = randInt(rng, 2, 5);
   const n = pick(rng, [2, 3]);
-  return { prompt: `-${a}^{${n}} = ?`, answer: String(-Math.pow(a, n)) };
+  return { prompt: `-${a}^{${n}} = ?`, answer: String(-Math.pow(a, n)), pattern: 'text-input' };
 }
 
 function genPowerThenAddNegBase(rng: () => number): Exercise {
@@ -124,7 +124,7 @@ function genPowerThenAddNegBase(rng: () => number): Exercise {
   const maxK = Math.min(30, 80 - powerValue);
   const k = randInt(rng, minK, maxK);
   const result = powerValue + k;
-  return { prompt: `(-${a})^{${n}} + ${k} = ?`, answer: String(result) };
+  return { prompt: `(-${a})^{${n}} + ${k} = ?`, answer: String(result), pattern: 'text-input' };
 }
 
 const band4: SubGen[] = [
@@ -141,7 +141,7 @@ function genAPlusBPlusCSq(rng: () => number): Exercise {
   const c = randInt(rng, 1, 3 - b);
   const sumSq = (b + c) * (b + c);
   const a = randInt(rng, 1, 19 - sumSq);
-  return { prompt: `${a} + (${b} + ${c})^{2} = ?`, answer: String(a + sumSq) };
+  return { prompt: `${a} + (${b} + ${c})^{2} = ?`, answer: String(a + sumSq), pattern: 'text-input' };
 }
 
 function genAPlusBMinusCSq(rng: () => number): Exercise {
@@ -149,20 +149,20 @@ function genAPlusBMinusCSq(rng: () => number): Exercise {
   const c = randInt(rng, 1, b - 1);
   const diffSq = (b - c) * (b - c);
   const a = randInt(rng, 1, 19 - diffSq);
-  return { prompt: `${a} + (${b} - ${c})^{2} = ?`, answer: String(a + diffSq) };
+  return { prompt: `${a} + (${b} - ${c})^{2} = ?`, answer: String(a + diffSq), pattern: 'text-input' };
 }
 
 function gen2PowNPlusM(rng: () => number): Exercise {
   const total = randInt(rng, 2, 10);
   const n = randInt(rng, 1, total - 1);
   const m = total - n;
-  return { prompt: `2^{${n} + ${m}} = ?`, answer: String(Math.pow(2, total)) };
+  return { prompt: `2^{${n} + ${m}} = ?`, answer: String(Math.pow(2, total)), pattern: 'text-input' };
 }
 
 function gen2PowNMinusM(rng: () => number): Exercise {
   const n = randInt(rng, 2, 10);
   const m = randInt(rng, 1, n - 1);
-  return { prompt: `2^{${n} - ${m}} = ?`, answer: String(Math.pow(2, n - m)) };
+  return { prompt: `2^{${n} - ${m}} = ?`, answer: String(Math.pow(2, n - m)), pattern: 'text-input' };
 }
 
 function genFreshmanTrap(rng: () => number): Exercise {
@@ -173,9 +173,9 @@ function genFreshmanTrap(rng: () => number): Exercise {
     if (sum > 10) continue;
     const sumSq = sum * sum;
     const c = randInt(rng, 1, Math.min(sumSq - 2, 25));
-    return { prompt: `(${a} + ${b})^{2} - ${c} = ?`, answer: String(sumSq - c) };
+    return { prompt: `(${a} + ${b})^{2} - ${c} = ?`, answer: String(sumSq - c), pattern: 'text-input' };
   }
-  return { prompt: `(2 + 2)^{2} - 1 = ?`, answer: '15' };
+  return { prompt: `(2 + 2)^{2} - 1 = ?`, answer: '15', pattern: 'text-input' };
 }
 
 function genNestedParens(rng: () => number): Exercise {
@@ -186,9 +186,9 @@ function genNestedParens(rng: () => number): Exercise {
     const d = randInt(rng, 1, 6);
     const result = a * (b + c * d);
     if (result > 100) continue;
-    return { prompt: `${a} \\cdot (${b} + ${c} \\cdot ${d}) = ?`, answer: String(result) };
+    return { prompt: `${a} \\cdot (${b} + ${c} \\cdot ${d}) = ?`, answer: String(result), pattern: 'text-input' };
   }
-  return { prompt: `2 \\cdot (1 + 2 \\cdot 3) = ?`, answer: '14' };
+  return { prompt: `2 \\cdot (1 + 2 \\cdot 3) = ?`, answer: '14', pattern: 'text-input' };
 }
 
 function genDoubleWrapped(rng: () => number): Exercise {
@@ -200,9 +200,9 @@ function genDoubleWrapped(rng: () => number): Exercise {
     const c = randInt(rng, 2, 5);
     const inner = sum * c;
     if (inner < 3 || inner > 10) continue;
-    return { prompt: `((${a} + ${b}) \\cdot ${c})^{2} = ?`, answer: String(inner * inner) };
+    return { prompt: `((${a} + ${b}) \\cdot ${c})^{2} = ?`, answer: String(inner * inner), pattern: 'text-input' };
   }
-  return { prompt: `((1 + 2) \\cdot 3)^{2} = ?`, answer: '81' };
+  return { prompt: `((1 + 2) \\cdot 3)^{2} = ?`, answer: '81', pattern: 'text-input' };
 }
 
 function genRadicalPlusParens(rng: () => number): Exercise {
@@ -211,7 +211,7 @@ function genRadicalPlusParens(rng: () => number): Exercise {
   const b = randInt(rng, 1, 9);
   const c = randInt(rng, 2, 6);
   const result = (root + b) * c;
-  return { prompt: `(\\sqrt{${sq}} + ${b}) \\cdot ${c} = ?`, answer: String(result) };
+  return { prompt: `(\\sqrt{${sq}} + ${b}) \\cdot ${c} = ?`, answer: String(result), pattern: 'text-input' };
 }
 
 function genBridgePythagoras(rng: () => number): Exercise {
@@ -223,7 +223,11 @@ function genBridgePythagoras(rng: () => number): Exercise {
   ]);
   const c = randInt(rng, 2, 6);
   const e = randInt(rng, 1, 6);
-  return { prompt: `\\sqrt{${a}^{2} + ${b}^{2}} + ${c} \\cdot ${e} = ?`, answer: String(d + c * e) };
+  return {
+    prompt: `\\sqrt{${a}^{2} + ${b}^{2}} + ${c} \\cdot ${e} = ?`,
+    answer: String(d + c * e),
+    pattern: 'text-input',
+  };
 }
 
 function genThreeOpSqrt(rng: () => number): Exercise {
@@ -235,9 +239,9 @@ function genThreeOpSqrt(rng: () => number): Exercise {
     const d = randInt(rng, 1, Math.min(a + b * root - 1, 19));
     const result = a + b * root - d;
     if (result < 1) continue;
-    return { prompt: `${a} + ${b} \\cdot \\sqrt{${sq}} - ${d} = ?`, answer: String(result) };
+    return { prompt: `${a} + ${b} \\cdot \\sqrt{${sq}} - ${d} = ?`, answer: String(result), pattern: 'text-input' };
   }
-  return { prompt: `10 + 2 \\cdot \\sqrt{4} - 1 = ?`, answer: '13' };
+  return { prompt: `10 + 2 \\cdot \\sqrt{4} - 1 = ?`, answer: '13', pattern: 'text-input' };
 }
 
 const TWO_RADICAL_PAIRS: [number, number, number][] = [
@@ -268,9 +272,9 @@ function genDiffSqDistractor(rng: () => number): Exercise {
     const d = randInt(rng, 1, 6);
     const result = diffSq + c * d;
     if (result > 100) continue;
-    return { prompt: `(${a} - ${b})^{2} + ${c} \\cdot ${d} = ?`, answer: String(result) };
+    return { prompt: `(${a} - ${b})^{2} + ${c} \\cdot ${d} = ?`, answer: String(result), pattern: 'text-input' };
   }
-  return { prompt: `(5 - 1)^{2} + 2 \\cdot 1 = ?`, answer: '18' };
+  return { prompt: `(5 - 1)^{2} + 2 \\cdot 1 = ?`, answer: '18', pattern: 'text-input' };
 }
 
 function genPowerDiffNegBases(rng: () => number): Exercise {
@@ -283,10 +287,10 @@ function genPowerDiffNegBases(rng: () => number): Exercise {
     const valB = (m % 2 === 0 ? 1 : -1) * Math.pow(b, m);
     const result = valA - valB;
     if (result !== 0 && Math.abs(result) <= 100) {
-      return { prompt: `(-${a})^{${n}} - (-${b})^{${m}} = ?`, answer: String(result) };
+      return { prompt: `(-${a})^{${n}} - (-${b})^{${m}} = ?`, answer: String(result), pattern: 'text-input' };
     }
   }
-  return { prompt: '(-2)^{2} - (-1)^{3} = ?', answer: '5' };
+  return { prompt: '(-2)^{2} - (-1)^{3} = ?', answer: '5', pattern: 'text-input' };
 }
 
 const band6: SubGen[] = [
@@ -310,7 +314,7 @@ function genCPlusSqrtA2PmB2(rng: () => number): Exercise {
   const [a, b, d] = pick(rng, useAdd ? ADD_TRIPLES : SUB_TRIPLES);
   const c = randInt(rng, 1, 10);
   const inner = useAdd ? `${a}^{2} + ${b}^{2}` : `${a}^{2} - ${b}^{2}`;
-  return { prompt: `${c} + \\sqrt{${inner}} = ?`, answer: String(c + d) };
+  return { prompt: `${c} + \\sqrt{${inner}} = ?`, answer: String(c + d), pattern: 'text-input' };
 }
 
 function genCMinusSqrtA2PmB2(rng: () => number): Exercise {
@@ -318,7 +322,7 @@ function genCMinusSqrtA2PmB2(rng: () => number): Exercise {
   const [a, b, d] = pick(rng, useAdd ? ADD_TRIPLES : SUB_TRIPLES);
   const c = randInt(rng, d + 1, d + 5);
   const inner = useAdd ? `${a}^{2} + ${b}^{2}` : `${a}^{2} - ${b}^{2}`;
-  return { prompt: `${c} - \\sqrt{${inner}} = ?`, answer: String(c - d) };
+  return { prompt: `${c} - \\sqrt{${inner}} = ?`, answer: String(c - d), pattern: 'text-input' };
 }
 
 function genSqrtA2PmB2PlusC(rng: () => number): Exercise {
@@ -326,7 +330,7 @@ function genSqrtA2PmB2PlusC(rng: () => number): Exercise {
   const [a, b, d] = pick(rng, useAdd ? ADD_TRIPLES : SUB_TRIPLES);
   const c = randInt(rng, 1, 10);
   const inner = useAdd ? `${a}^{2} + ${b}^{2}` : `${a}^{2} - ${b}^{2}`;
-  return { prompt: `\\sqrt{${inner}} + ${c} = ?`, answer: String(d + c) };
+  return { prompt: `\\sqrt{${inner}} + ${c} = ?`, answer: String(d + c), pattern: 'text-input' };
 }
 
 function genSqrtA2PmB2MinusC(rng: () => number): Exercise {
@@ -337,7 +341,7 @@ function genSqrtA2PmB2MinusC(rng: () => number): Exercise {
     return genSqrtA2PmB2PlusC(rng);
   }
   const inner = useAdd ? `${a}^{2} + ${b}^{2}` : `${a}^{2} - ${b}^{2}`;
-  return { prompt: `\\sqrt{${inner}} - ${c} = ?`, answer: String(d - c) };
+  return { prompt: `\\sqrt{${inner}} - ${c} = ?`, answer: String(d - c), pattern: 'text-input' };
 }
 
 function genCTimesSqrtA2PmB2(rng: () => number): Exercise {
@@ -345,7 +349,7 @@ function genCTimesSqrtA2PmB2(rng: () => number): Exercise {
   const [a, b, d] = pick(rng, useAdd ? ADD_TRIPLES : SUB_TRIPLES);
   const c = randInt(rng, 2, 5);
   const inner = useAdd ? `${a}^{2} + ${b}^{2}` : `${a}^{2} - ${b}^{2}`;
-  return { prompt: `${c} \\cdot \\sqrt{${inner}} = ?`, answer: String(c * d) };
+  return { prompt: `${c} \\cdot \\sqrt{${inner}} = ?`, answer: String(c * d), pattern: 'text-input' };
 }
 
 function genHypotenuseOuterParens(rng: () => number): Exercise {
@@ -357,7 +361,11 @@ function genHypotenuseOuterParens(rng: () => number): Exercise {
   ]);
   const a = randInt(rng, 1, 9);
   const d = randInt(rng, 2, 6);
-  return { prompt: `(${a} + \\sqrt{${b}^{2} + ${c}^{2}}) \\cdot ${d} = ?`, answer: String((a + h) * d) };
+  return {
+    prompt: `(${a} + \\sqrt{${b}^{2} + ${c}^{2}}) \\cdot ${d} = ?`,
+    answer: String((a + h) * d),
+    pattern: 'text-input',
+  };
 }
 
 function genHypotenuseTimesPlus(rng: () => number): Exercise {
@@ -371,7 +379,11 @@ function genHypotenuseTimesPlus(rng: () => number): Exercise {
   ]);
   const c = randInt(rng, 2, 6);
   const d = randInt(rng, 1, 19);
-  return { prompt: `\\sqrt{${a}^{2} + ${b}^{2}} \\cdot ${c} + ${d} = ?`, answer: String(h * c + d) };
+  return {
+    prompt: `\\sqrt{${a}^{2} + ${b}^{2}} \\cdot ${c} + ${d} = ?`,
+    answer: String(h * c + d),
+    pattern: 'text-input',
+  };
 }
 
 function genTwoRootsParen(rng: () => number): Exercise {
@@ -384,7 +396,11 @@ function genTwoRootsParen(rng: () => number): Exercise {
   const sq = pick(rng, [4, 9, 16, 25]);
   const root = Math.sqrt(sq);
   const d = randInt(rng, 2, 6);
-  return { prompt: `(\\sqrt{${a}^{2} + ${b}^{2}} + \\sqrt{${sq}}) \\cdot ${d} = ?`, answer: String((h + root) * d) };
+  return {
+    prompt: `(\\sqrt{${a}^{2} + ${b}^{2}} + \\sqrt{${sq}}) \\cdot ${d} = ?`,
+    answer: String((h + root) * d),
+    pattern: 'text-input',
+  };
 }
 
 function genDiffInsideTimes(rng: () => number): Exercise {
@@ -396,7 +412,11 @@ function genDiffInsideTimes(rng: () => number): Exercise {
   const c = randInt(rng, 2, 5);
   const e = randInt(rng, 1, 5);
   const f = randInt(rng, 1, 5);
-  return { prompt: `\\sqrt{${a}^{2} - ${b}^{2}} \\cdot ${c} + ${e} \\cdot ${f} = ?`, answer: String(d * c + e * f) };
+  return {
+    prompt: `\\sqrt{${a}^{2} - ${b}^{2}} \\cdot ${c} + ${e} \\cdot ${f} = ?`,
+    answer: String(d * c + e * f),
+    pattern: 'text-input',
+  };
 }
 
 function genPowerMultSubNegBase(rng: () => number): Exercise {
@@ -409,10 +429,10 @@ function genPowerMultSubNegBase(rng: () => number): Exercise {
     const powerValue = n % 2 === 0 ? absPower : -absPower;
     const result = powerValue * b - c;
     if (result > -100 && result < 100) {
-      return { prompt: `(-${a})^{${n}} \\cdot ${b} - ${c} = ?`, answer: String(result) };
+      return { prompt: `(-${a})^{${n}} \\cdot ${b} - ${c} = ?`, answer: String(result), pattern: 'text-input' };
     }
   }
-  return { prompt: '(-2)^{2} \\cdot 3 - 1 = ?', answer: '11' };
+  return { prompt: '(-2)^{2} \\cdot 3 - 1 = ?', answer: '11', pattern: 'text-input' };
 }
 
 function genClimax(rng: () => number): Exercise {
@@ -428,9 +448,13 @@ function genClimax(rng: () => number): Exercise {
     const e = randInt(rng, 1, 19);
     const result = a * h - d * d + e;
     if (result < 1 || result > 100) continue;
-    return { prompt: `${a} \\cdot \\sqrt{${b}^{2} + ${c}^{2}} - ${d}^{2} + ${e} = ?`, answer: String(result) };
+    return {
+      prompt: `${a} \\cdot \\sqrt{${b}^{2} + ${c}^{2}} - ${d}^{2} + ${e} = ?`,
+      answer: String(result),
+      pattern: 'text-input',
+    };
   }
-  return { prompt: `2 \\cdot \\sqrt{3^{2} + 4^{2}} - 2^{2} + 1 = ?`, answer: '7' };
+  return { prompt: `2 \\cdot \\sqrt{3^{2} + 4^{2}} - 2^{2} + 1 = ?`, answer: '7', pattern: 'text-input' };
 }
 
 const band8: SubGen[] = [

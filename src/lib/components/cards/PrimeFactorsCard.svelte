@@ -4,13 +4,13 @@
   import Math from '../Math.svelte';
   import ExerciseShell from '../ExerciseShell.svelte';
   import Feedback from '../Feedback.svelte';
-  import PrimeFactorInput from './PrimeFactorInput.svelte';
-  import type { PrimeFactorisationData } from '../../exercises/primeFactorisation';
+  import PrimeFactorInput from '../PrimeFactorInput.svelte';
 
   let { exercise, onSubmit, onNext, feedback }: ExerciseProps = $props();
 
-  let data = $derived(exercise.data as PrimeFactorisationData);
+  let data = $derived(exercise.data as { promptKey?: string; primes: number[] });
   let primes = $derived(data.primes ?? []);
+  let promptKey = $derived(data.promptKey);
   // eslint-disable-next-line svelte/prefer-writable-derived
   let values = $state<string[]>([]);
 
@@ -55,7 +55,9 @@
   {onNext}
   {validationError}
 >
-  <p class="prompt-label">{_('exercise.primeFactorisation.prompt')}</p>
+  {#if promptKey}
+    <p class="prompt-label">{_(promptKey)}</p>
+  {/if}
   {#if feedback === null}
     <div class="prompt-row">
       <Math expression={exercise.prompt} display />

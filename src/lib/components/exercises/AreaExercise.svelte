@@ -5,7 +5,7 @@
   import ExerciseShell from '../ExerciseShell.svelte';
   import Feedback from '../Feedback.svelte';
   import CoefficientField from '../CoefficientField.svelte';
-  import NumericInput from './NumericInput.svelte';
+  import NumericInput from '../NumericInput.svelte';
   import KaTeX from '../Math.svelte';
   import SvgContainer from '../SvgContainer.svelte';
 

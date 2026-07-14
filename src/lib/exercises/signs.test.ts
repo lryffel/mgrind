@@ -21,7 +21,7 @@ describe('generateSigns', () => {
     for (let c = 1; c <= 5; c++) {
       for (let seed = 0; seed < 10; seed++) {
         const ex = generateSigns(seed, c);
-        expect((ex.data as SignsData).signs).toHaveLength(3);
+        expect((ex.data as SignsData).rows).toHaveLength(3);
       }
     }
   });
@@ -30,42 +30,34 @@ describe('generateSigns', () => {
     for (let c = 6; c <= 10; c++) {
       for (let seed = 0; seed < 10; seed++) {
         const ex = generateSigns(seed, c);
-        expect((ex.data as SignsData).signs).toHaveLength(4);
+        expect((ex.data as SignsData).rows).toHaveLength(4);
       }
     }
   });
 
-  it('each question has a non-empty latex and a valid sign', () => {
+  it('each question has a non-empty latex', () => {
     for (let seed = 0; seed < 50; seed++) {
       for (let c = 1; c <= 10; c++) {
         const ex = generateSigns(seed, c);
-        const signs = (ex.data as SignsData).signs;
-        expect(signs).toBeDefined();
-        for (const q of signs) {
-          expect(q.latex).toBeTruthy();
-          expect(['+', '-']).toContain(q.sign);
+        const rows = (ex.data as SignsData).rows;
+        expect(rows).toBeDefined();
+        for (const r of rows) {
+          expect(r.latex).toBeTruthy();
         }
       }
     }
   });
 
-  it('answer matches signs', () => {
+  it('answer count matches rows', () => {
     for (let seed = 0; seed < 50; seed++) {
       for (let c = 1; c <= 10; c++) {
         const ex = generateSigns(seed, c);
-        const signs = (ex.data as SignsData).signs;
-        expect(signs).toBeDefined();
-        const expected = signs.map((q) => q.sign).join(',');
-        expect(ex.answer).toBe(expected);
-      }
-    }
-  });
-
-  it('prompt matches answer', () => {
-    for (let seed = 0; seed < 50; seed++) {
-      for (let c = 1; c <= 10; c++) {
-        const ex = generateSigns(seed, c);
-        expect(ex.prompt).toBe(ex.answer);
+        const rows = (ex.data as SignsData).rows;
+        expect(rows).toBeDefined();
+        expect(ex.answer.split(',')).toHaveLength(rows.length);
+        for (const s of ex.answer.split(',')) {
+          expect(['+', '-']).toContain(s);
+        }
       }
     }
   });

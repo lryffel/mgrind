@@ -11,5 +11,5 @@ export function generateMultiplication(seed: number, complexity: number): Exerci
   if (clamped >= 5 && a <= 10 && b <= 10) {
     a = bumpPastThreshold(seed, clamped, 5, 10, maxFactor);
   }
-  return { prompt: `${a} \\cdot ${b} = ?`, answer: String(a * b) };
+  return { prompt: `${a} \\cdot ${b} = ?`, answer: String(a * b), pattern: 'text-input' };
 }

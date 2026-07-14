@@ -4,7 +4,7 @@
   import Math from '../Math.svelte';
   import ExerciseShell from '../ExerciseShell.svelte';
   import Feedback from '../Feedback.svelte';
-  import NumericInput from './NumericInput.svelte';
+  import NumericInput from '../NumericInput.svelte';
   import { validateFactorEquationsPerRoot } from '../../exercises/factorEquations';
   import type { FactorEquationsData } from '../../exercises/factorEquations';
 

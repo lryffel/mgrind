@@ -1,6 +1,6 @@
 <script lang="ts">
   import type { ExerciseFeedback } from '../../types';
-  import NumericInput from './NumericInput.svelte';
+  import NumericInput from '../NumericInput.svelte';
   import Math from '../Math.svelte';
 
   let {

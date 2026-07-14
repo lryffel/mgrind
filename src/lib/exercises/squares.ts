@@ -12,12 +12,12 @@ export function generateSquares(seed: number, complexity: number): Exercise {
   const sq = a * a;
   switch (variant) {
     case 0:
-      return { prompt: `${a}^{2} = ?`, answer: String(sq) };
+      return { prompt: `${a}^{2} = ?`, answer: String(sq), pattern: 'text-input' };
     case 1:
-      return { prompt: `(-${a})^{2} = ?`, answer: String(sq) };
+      return { prompt: `(-${a})^{2} = ?`, answer: String(sq), pattern: 'text-input' };
     case 2:
-      return { prompt: `-${a}^{2} = ?`, answer: String(-sq) };
+      return { prompt: `-${a}^{2} = ?`, answer: String(-sq), pattern: 'text-input' };
     default:
-      return { prompt: `${a}^{2} = ?`, answer: String(sq) };
+      return { prompt: `${a}^{2} = ?`, answer: String(sq), pattern: 'text-input' };
   }
 }

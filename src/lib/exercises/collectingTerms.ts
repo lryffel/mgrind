@@ -129,6 +129,7 @@ export function generateCollectingTerms(seed: number, complexity: number): Exerc
   return {
     prompt: `${fallbackVar} + 2${fallbackVar}`,
     answer: '3',
+    pattern: 'multi-field',
     data: { fields: [{ variablePart: fallbackVar }], promptKey: 'exercise.collectingTerms.prompt' },
   };
 }
@@ -216,6 +217,7 @@ function tryGenerate(
   return {
     prompt,
     answer: answerParts.join(','),
+    pattern: 'multi-field',
     data: { fields, promptKey: 'exercise.collectingTerms.prompt' },
   };
 }

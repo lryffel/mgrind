@@ -30,6 +30,8 @@
   - Multi-field validation: `validateMultiField` from `src/lib/validation.ts`
   - Use `mulberry32(seed)` as the single RNG — no inline `Math.random()`
   - Each type defines and exports its own data interface (e.g. `MultiplicationFractionData`) in its generator module. `Exercise.data` is `unknown` — consumers must cast.
+- Exercise card patterns: `CardPattern` type in `src/lib/types.ts`. Generators set `exercise.pattern` to select a generic card template from `src/lib/components/cards/`. Patterns: `text-input`, `fraction-input`, `multi-field`, `batch-choice`, `single-choice`, `multi-choice`, `prime-factors`, `custom`. Patterned types need zero component code. `'custom'` types need a component in `src/lib/components/exercises/`.
+- `src/lib/components/cards/` contains 7 generic card templates: `CardRegistry.svelte` routes by `exercise.pattern`. `NumericInput.svelte` and `PrimeFactorInput.svelte` live in `src/lib/components/` (shared between cards and custom components).
 - Disciplines: array in `src/lib/data/disciplines.ts`
 - Exercises use deterministic PRNG (`mulberry32`); seed = `Date.now()`
 - `CONCEPT.md` describes the app design — use it for guidance, don't infer

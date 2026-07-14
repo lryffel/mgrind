@@ -9,7 +9,8 @@ export interface SignQuestion {
 }
 
 export interface SignsData {
-  signs: SignQuestion[];
+  rows: { latex: string }[];
+  buttons: string[];
   promptKey: string;
 }
 
@@ -335,9 +336,14 @@ export function generateSigns(seed: number, complexity: number): Exercise {
   const answer = signs.map((q) => q.sign).join(',');
 
   return {
-    prompt: answer,
+    prompt: '',
     answer,
-    data: { signs, promptKey: 'exercise.signs.prompt' },
+    pattern: 'batch-choice',
+    data: {
+      promptKey: 'exercise.signs.prompt',
+      rows: signs.map((s) => ({ latex: s.latex })),
+      buttons: ['+', '-'],
+    },
   };
 }
 

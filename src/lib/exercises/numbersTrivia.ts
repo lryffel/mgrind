@@ -223,12 +223,17 @@ function generateSetQuestions(
   };
 }
 
-export function generateNumbersTrivia(seed: number, complexity: number): Exercise {
+export function generateNumbersTrivia(seed: number, complexity: number, forcedSubType?: string): Exercise {
   const clamped = clampComplexity(complexity, 10);
   const rng = mulberry32(seed);
 
-  const available = SUB_TYPES.filter((s) => s.min <= clamped && clamped <= s.max);
-  const chosen = pick(rng, available);
+  let available: SubTypeConfig[];
+  if (forcedSubType) {
+    available = SUB_TYPES.filter((s) => s.id === forcedSubType);
+  } else {
+    available = SUB_TYPES.filter((s) => s.min <= clamped && clamped <= s.max);
+  }
+  const chosen = forcedSubType ? available[0] : pick(rng, available);
 
   switch (chosen.id) {
     case 'trueFalse': {
@@ -329,6 +334,85 @@ export function generateNumbersTrivia(seed: number, complexity: number): Exercis
         data: { subType: 'primeDivisors' },
       };
   }
+}
+
+export function generateNumbersTriviaPrimeDivisors(seed: number, complexity: number): Exercise {
+  const ex = generateNumbersTrivia(seed, complexity, 'primeDivisors');
+  const origData = ex.data as NumbersTriviaData;
+  return {
+    ...ex,
+    pattern: 'text-input',
+    data: { ...origData, promptKey: 'exercise.numbersTrivia.type.primeDivisors.prompt' },
+  };
+}
+
+export function generateNumbersTriviaTrueFalse(seed: number, complexity: number): Exercise {
+  const ex = generateNumbersTrivia(seed, complexity, 'trueFalse');
+  const origData = ex.data as NumbersTriviaData;
+  return {
+    ...ex,
+    pattern: 'single-choice',
+    data: { ...origData, promptKey: undefined, options: [{ label: 'common.true' }, { label: 'common.false' }] },
+  };
+}
+
+export function generateNumbersTriviaDivisibilityRules(seed: number, complexity: number): Exercise {
+  const ex = generateNumbersTrivia(seed, complexity, 'divisibilityRules');
+  const origData = ex.data as NumbersTriviaData;
+  return {
+    ...ex,
+    pattern: 'single-choice',
+    data: {
+      ...origData,
+      promptKey: undefined,
+      options: (origData.ruleTexts ?? []).map((r) => ({ label: r.en })),
+    },
+  };
+}
+
+export function generateNumbersTriviaIsNatural(seed: number, complexity: number): Exercise {
+  const ex = generateNumbersTrivia(seed, complexity, 'isNatural');
+  const origData = ex.data as NumbersTriviaData;
+  return {
+    ...ex,
+    pattern: 'batch-choice',
+    data: {
+      ...origData,
+      promptKey: 'exercise.numbersTrivia.type.isNatural.prompt',
+      rows: (origData.numberQuestions ?? []).map((q) => ({ latex: q.latex })),
+      buttons: ['yes', 'no'],
+    },
+  };
+}
+
+export function generateNumbersTriviaIsInteger(seed: number, complexity: number): Exercise {
+  const ex = generateNumbersTrivia(seed, complexity, 'isInteger');
+  const origData = ex.data as NumbersTriviaData;
+  return {
+    ...ex,
+    pattern: 'batch-choice',
+    data: {
+      ...origData,
+      promptKey: 'exercise.numbersTrivia.type.isInteger.prompt',
+      rows: (origData.numberQuestions ?? []).map((q) => ({ latex: q.latex })),
+      buttons: ['yes', 'no'],
+    },
+  };
+}
+
+export function generateNumbersTriviaIsRational(seed: number, complexity: number): Exercise {
+  const ex = generateNumbersTrivia(seed, complexity, 'isRational');
+  const origData = ex.data as NumbersTriviaData;
+  return {
+    ...ex,
+    pattern: 'batch-choice',
+    data: {
+      ...origData,
+      promptKey: 'exercise.numbersTrivia.type.isRational.prompt',
+      rows: (origData.numberQuestions ?? []).map((q) => ({ latex: q.latex })),
+      buttons: ['yes', 'no'],
+    },
+  };
 }
 
 export function validateNumbersTrivia(answer: string, exercise: Exercise): boolean {

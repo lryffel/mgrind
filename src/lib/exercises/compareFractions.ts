@@ -12,7 +12,8 @@ export interface CompareFractionsComparison {
 }
 
 export interface CompareFractionsData {
-  comparisons: CompareFractionsComparison[];
+  rows: { latex: string; latex2: string }[];
+  buttons: string[];
   promptKey: string;
 }
 
@@ -310,9 +311,17 @@ export function generateCompareFractions(seed: number, complexity: number): Exer
   const answer = comparisons.map((c) => c.correctOperator).join(',');
 
   return {
-    prompt: answer,
+    prompt: '',
     answer,
-    data: { comparisons, promptKey: 'exercise.compareFractions.prompt' },
+    pattern: 'batch-choice',
+    data: {
+      promptKey: 'exercise.compareFractions.prompt',
+      rows: comparisons.map((c) => ({
+        latex: `\\dfrac{${c.num1}}{${c.den1}}`,
+        latex2: `\\dfrac{${c.num2}}{${c.den2}}`,
+      })),
+      buttons: ['<', '=', '>'],
+    },
   };
 }
 

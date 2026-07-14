@@ -14,10 +14,18 @@ Plain Vite + Svelte 5 (not SvelteKit). Two-screen SPA routed by a `$state` varia
 
 ## Types (`src/lib/types.ts`)
 
-`Exercise`, `ExerciseData`, `ExerciseType`, `Discipline`, `Lang`, `Prerequisite`.
-Also typed `ExerciseProps`, `ExerciseFeedback`, and `ExerciseComponent = Component<ExerciseProps>` used by all exercise screens.
+`Exercise`, `CardPattern`, `ExerciseType`, `Discipline`, `Lang`, `Prerequisite`.
+Also typed `ExerciseProps`, `ExerciseFeedback`.
 
-`ExerciseData` is deliberately slim (5 shared optional properties: `promptKey`, `fields`, `subType`, `varA`, `varB`). Each exercise type defines its own data interface in its generator module (e.g. `MultiplicationFractionData`, `SubstitutionData`). `Exercise.data` is typed `unknown` — consumers must cast to the per-type interface. See the per-type data interface table in `.tasks/slim-exercise-data.md`.
+`CardPattern` is a closed union type:
+
+```
+'text-input' | 'fraction-input' | 'multi-field' | 'batch-choice' | 'single-choice' | 'multi-choice' | 'prime-factors' | 'custom'
+```
+
+Generators set `exercise.pattern` to select which generic card template renders the exercise. `'custom'` types need a component in `src/lib/components/exercises/`.
+
+`Exercise.data` is typed `unknown` — consumers cast to the per-type interface.
 
 ## Shared utilities
 
@@ -39,7 +47,7 @@ Also typed `ExerciseProps`, `ExerciseFeedback`, and `ExerciseComponent = Compone
 
 ## Exercise generators (`src/lib/exercises/`)
 
-One file per type. Uses `mulberry32` from `src/lib/prng.ts` and helper functions from `src/lib/math/`.
+One file per type. Uses `mulberry32` from `src/lib/prng.ts` and helper functions from `src/lib/math/`. Each generator sets `exercise.pattern` to a `CardPattern` value.
 
 | File                               | Role                                                                                                     |
 | ---------------------------------- | -------------------------------------------------------------------------------------------------------- |
@@ -69,7 +77,7 @@ One file per type. Uses `mulberry32` from `src/lib/prng.ts` and helper functions
 | Component               | Role                                                                                   |
 | ----------------------- | -------------------------------------------------------------------------------------- |
 | `DisciplineCard.svelte` | Menu card: name, progress bar, percentage, type enable/disable panel                   |
-| `ExerciseScreen.svelte` | Exercise flow: top-bar with back + progress, renders current exercise component        |
+| `ExerciseScreen.svelte` | Exercise flow: top-bar with back + progress, routes via `CardRegistry` or `component`  |
 | `ExerciseShell.svelte`  | Shared exercise wrapper: card layout, focus management, Enter key, submit/next buttons |
 | `Feedback.svelte`       | Renders correct/incorrect feedback (text or LaTeX)                                     |
 
@@ -79,27 +87,47 @@ One file per type. Uses `mulberry32` from `src/lib/prng.ts` and helper functions
 | ------------------------- | ----------------------------------------------------------- |
 | `Math.svelte`             | Renders LaTeX via KaTeX (`{@html renderMath(expr)}`)        |
 | `NumericInput.svelte`     | Single text or stacked fraction input (via `fraction` prop) |
+| `PrimeFactorInput.svelte` | Prime factorisation input row                               |
 | `Modal.svelte`            | Generic modal with close + footer slot                      |
 | `ConfirmModal.svelte`     | Confirmation dialog (reset progress)                        |
 | `LanguageToggle.svelte`   | Switches en/de                                              |
 | `ThemeToggle.svelte`      | Switches light/dark theme, persisted in localStorage        |
 | `SettingsDropdown.svelte` | Settings menu (reset progress)                              |
 
-### Exercise screens (`exercises/`)
+### Card templates (`cards/`)
 
-Each exercise type has a corresponding Svelte component under `exercises/`. All receive `ExerciseProps` and render through `<ExerciseShell>`:
+7 generic card templates routed by `exercise.pattern` via `CardRegistry.svelte`:
 
-| Component                          | Exercise type(s)                                                         |
-| ---------------------------------- | ------------------------------------------------------------------------ |
-| `TextInputExercise.svelte`         | multiplication, division, squares, orderOfOperations, scientificNotation |
-| `PrimeFactorisation.svelte`        | primeFactorisation                                                       |
-| `SimplifyFraction.svelte`          | simplifyFraction                                                         |
-| `AdditionFraction.svelte`          | additionFraction                                                         |
-| `SubtractionFraction.svelte`       | subtractionFraction                                                      |
-| `MultiplicationFraction.svelte`    | multiplicationFraction                                                   |
-| `SubstitutionExercise.svelte`      | substitution                                                             |
-| `MultiFieldExercise.svelte`        | collectingTerms, binomialFormulas, expand, expandAndCollect              |
-| `FactoringBinomialFormulas.svelte` | factoringBinomialFormulas                                                |
+| Card                | Pattern(s)                                       |
+| ------------------- | ------------------------------------------------ |
+| `TextInputCard`     | `text-input` — single numeric text input         |
+| `FractionInputCard` | `fraction-input` — fraction num/den input        |
+| `MultiFieldCard`    | `multi-field` — multiple coefficient fields      |
+| `BatchChoiceCard`   | `batch-choice` — grid of rows with button groups |
+| `SingleChoiceCard`  | `single-choice` — radio group                    |
+| `MultiChoiceCard`   | `multi-choice` — checkbox group                  |
+| `PrimeFactorsCard`  | `prime-factors` — prime factor exponent inputs   |
+
+### Custom exercise screens (`exercises/`)
+
+Types with `pattern: 'custom'` have a component in `exercises/`:
+
+| Component                           | Exercise type(s)          |
+| ----------------------------------- | ------------------------- |
+| `SubstitutionExercise.svelte`       | substitution              |
+| `FactoringBinomialFormulas.svelte`  | factoringBinomialFormulas |
+| `FactoringOut.svelte`               | factoringOut              |
+| `FactoringOutAndBinomial.svelte`    | factoringOutAndBinomial   |
+| `FactorEquations.svelte`            | factorEquations           |
+| `LinearEquationsExercise.svelte`    | linearEquations           |
+| `NecessityOfParentheses.svelte`     | necessityOfParentheses    |
+| `Pythagoras.svelte`                 | pythagoras                |
+| `AreaExercise.svelte`               | area                      |
+| `InteriorAngles.svelte`             | interiorAngles            |
+| `TermTransformationsTrivia.svelte`  | termTransformationsTrivia |
+| `PercentExercise.svelte`            | percent                   |
+| `RoundingSigfigsExercise.svelte`    | roundingSigfigs           |
+| `ScientificNotationExercise.svelte` | scientificNotation        |
 
 ## Routing
 

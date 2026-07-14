@@ -3,7 +3,7 @@
   import type { ExerciseProps } from '../../types';
   import ExerciseShell from '../ExerciseShell.svelte';
   import Feedback from '../Feedback.svelte';
-  import NumericInput from './NumericInput.svelte';
+  import NumericInput from '../NumericInput.svelte';
   import KaTeX from '../Math.svelte';
   import SvgContainer from '../SvgContainer.svelte';
   import type { InteriorAnglesData, InteriorAnglesAngle } from '../../exercises/interiorAngles';

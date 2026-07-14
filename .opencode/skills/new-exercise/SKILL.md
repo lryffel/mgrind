@@ -19,16 +19,29 @@ export function generateMultiplication(seed: number, complexity: number): Exerci
   const rng = mulberry32(seed);
   const a = Math.floor(rng() * (9 + clamped)) + 2;
   const b = Math.floor(rng() * (9 + clamped)) + 2;
-  return { prompt: `${a} \\cdot ${b} = ?`, answer: String(a * b) };
+  return { prompt: `${a} \\cdot ${b} = ?`, answer: String(a * b), pattern: 'text-input' };
 }
 ```
 
 - Use `clampComplexity(complexity, max)` — never `Math.min(Math.max(...))`.
 - Use `mulberry32(seed)` as the single RNG — no `Math.random()`.
-- `Exercise`: `{ prompt: string, answer: string, data?: ExerciseData }`.
-  - Multi-input types: store `data.fields: { variablePart: string }[]` (see `collectingTerms`, `expand`).
-  - Fraction types: store `data.num1, den1, num2, den2` for binary ops (see `additionFraction`).
-- The prompt is LaTeX displayed via `<Math>`. Render all math through LaTeX — never raw symbols outside KaTeX.
+- `Exercise`: `{ prompt: string, answer: string, pattern?: CardPattern, data?: unknown }`.
+- **Set `pattern`** to the card pattern that renders this type. This determines which generic card template is used.
+
+### Pattern → data contract → no component needed
+
+If the type fits a pattern, `data` must match the expected shape:
+
+| Pattern          | `data` shape                                                                            | No component needed     |
+| ---------------- | --------------------------------------------------------------------------------------- | ----------------------- |
+| `text-input`     | `{ promptKey?: string; placeholder?: string }`                                          | Yes                     |
+| `fraction-input` | `{ promptKey?: string }` (plus `num1,den1,num2,den2,op` for binary operations)          | Yes                     |
+| `multi-field`    | `{ promptKey?: string; fields: { variablePart: string }[] }`                            | Yes                     |
+| `batch-choice`   | `{ promptKey?: string; rows: { latex: string; latex2?: string }[]; buttons: string[] }` | Yes                     |
+| `single-choice`  | `{ promptKey?: string; options: { label?: string; latex?: string }[] }`                 | Yes                     |
+| `multi-choice`   | `{ promptKey?: string; options: { label?: string; latex?: string }[] }`                 | Yes                     |
+| `prime-factors`  | `{ promptKey?: string; primes: number[] }`                                              | Yes                     |
+| `custom`         | Any shape (your component handles it)                                                   | No (component required) |
 
 ### Default complexity max
 
@@ -41,19 +54,15 @@ Use `10` unless you have a specific reason for fewer levels. The registry's `max
 - **Multi-field** (comma-separated with `fracEqual`): use `validateMultiField` from `../validation`.
 - **Custom**: export `function validate<Name>(answer: string, exercise: Exercise): boolean`.
 
-## 2. Component — `src/lib/components/exercises/`
+## 2. Component (optional)
 
-### Option A — Reuse existing
+### Pattern-based types — zero component code
 
-| Use case            | Component            |
-| ------------------- | -------------------- |
-| Single text input   | `TextInputExercise`  |
-| Fraction input      | `FractionExercise`   |
-| Multi-field (terms) | `MultiFieldExercise` |
+If your type fits one of the `CardPattern` patterns above, **no component is needed.** The generic card template in `src/lib/components/cards/` handles rendering automatically. Just set the `pattern` field in the generator.
 
-### Option B — Custom component
+### Custom component
 
-Write `src/lib/components/exercises/<Name>.svelte`. Accept `ExerciseProps`:
+Only for types that use `'custom'` pattern. Write `src/lib/components/exercises/<Name>.svelte`. Accept `ExerciseProps`:
 
 ```ts
 let { exercise, onSubmit, onNext, feedback }: ExerciseProps = $props();
@@ -65,6 +74,7 @@ let { exercise, onSubmit, onNext, feedback }: ExerciseProps = $props();
 - Feedback mode (`feedback !== null`): show prompt + `<Feedback>`.
 - Use `<ExerciseShell>` wrapper (handles Enter key, focus, submit/next buttons).
 - Use `<NumericInput>` for all user input — no raw `<input>`.
+- Import `NumericInput` from `../NumericInput.svelte` (shared component at `src/lib/components/`).
 
 ### Feedback guidelines
 
@@ -93,19 +103,8 @@ let { exercise, onSubmit, onNext, feedback }: ExerciseProps = $props();
 
 When rendering `<SvgContainer>` with labeled overlays:
 
-- **Label offsets must be proportional to shape size.** Static pixel offsets (like `+ 16`) look wrong because the SVG viewBox is stretched to fill the container — a small viewBox magnifies the offset. Compute offsets from the shape's bounding box, e.g.:
-
-```ts
-let labelOffset = $derived.by(() => {
-  const xs = vertices.map((v) => v.x);
-  const shapeW = Math.max(...xs) - Math.min(...xs);
-  return Math.max(8, Math.min(18, shapeW * 0.07));
-});
-```
-
-Use `labelOffset` for all dimension-label positions (above, below, left of shape edges).
-
-- **Use `vector-effect="non-scaling-stroke"`** on SVG `<polygon>`, `<line>`, and `<circle>` elements so stroke widths stay consistent regardless of viewBox scaling.
+- **Label offsets must be proportional to shape size.** Compute offsets from the shape's bounding box.
+- **Use `vector-effect="non-scaling-stroke"`** on SVG elements so stroke widths stay consistent.
 
 ### Input composables
 
@@ -148,13 +147,13 @@ Add to `dict`:
 
 Use Swiss orthography (no "ß", always "ss": "gross", "Masse").
 
-To show a prompt label in the component, set `data.promptKey: 'exercise.<id>.prompt'` in the generator and render with `{_(promptKey)}` with class `prompt-label`.
+To show a prompt label in the card, set `data.promptKey: 'exercise.<id>.prompt'` in the generator and render with `{_(promptKey)}` with class `prompt-label`.
 
 ## 5. Register — `src/lib/data/exerciseTypes.ts`
 
 ```ts
 import { generate<Name>, validate<Name> } from '../exercises/<name>';
-import <Name>Component from '../components/exercises/<Name>.svelte';
+// import <Name>Component from '../components/exercises/<Name>.svelte'; // only for custom types
 
 // ... in exerciseTypes:
 <id>: defineExerciseType({
@@ -163,14 +162,14 @@ import <Name>Component from '../components/exercises/<Name>.svelte';
   descriptionKey: 'exercise.<id>.desc',
   generate: generate<Name>,
   // validate — defaults to trimCompare
-  // component — defaults to TextInputExercise
+  // component — omit for patterned types; include for 'custom' types
   // maxComplexity — defaults to 10
   // prerequisites?: Prerequisite[]
   // instructionComponent?: Component
 }),
 ```
 
-`defineExerciseType` provides sensible defaults — only specify what differs from defaults.
+`defineExerciseType` provides sensible defaults — only specify what differs from defaults. If the type uses a pattern (defined in the generator), omit `component`. If the type is `'custom'`, include the component.
 
 ## 6. Discipline — `src/lib/data/disciplines.ts`
 

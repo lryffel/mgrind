@@ -4,7 +4,7 @@
   import Math from '../Math.svelte';
   import ExerciseShell from '../ExerciseShell.svelte';
   import Feedback from '../Feedback.svelte';
-  import NumericInput from './NumericInput.svelte';
+  import NumericInput from '../NumericInput.svelte';
   import { useFractionInput, fractionLatex } from '../../fraction-input.svelte';
   import type { SubstitutionData } from '../../exercises/substitution';
 

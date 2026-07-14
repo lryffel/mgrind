@@ -13,5 +13,5 @@ export function generateDivision(seed: number, complexity: number): Exercise {
   }
   const b = a * c;
   const prompt = rng() < 0.5 ? `${a} \\cdot ? = ${b}` : `\\frac{${b}}{${a}} = ?`;
-  return { prompt, answer: String(c) };
+  return { prompt, answer: String(c), pattern: 'text-input' };
 }

@@ -168,6 +168,7 @@ export function generateBinomialFormulas(seed: number, complexity: number): Exer
         return {
           prompt: result.prompt,
           answer: result.answer,
+          pattern: 'multi-field',
           data: { fields: result.fields, promptKey: 'exercise.binomialFormulas.prompt' },
         };
       }
@@ -179,6 +180,7 @@ export function generateBinomialFormulas(seed: number, complexity: number): Exer
     return {
       prompt: fallback.prompt,
       answer: fallback.answer,
+      pattern: 'multi-field',
       data: { fields: fallback.fields, promptKey: 'exercise.binomialFormulas.prompt' },
     };
   };
@@ -212,6 +214,7 @@ export function generateBinomialFormulas(seed: number, complexity: number): Exer
         return {
           prompt: result.prompt,
           answer: result.answer,
+          pattern: 'multi-field',
           data: { fields: result.fields, promptKey: 'exercise.binomialFormulas.prompt' },
         };
       }
@@ -223,6 +226,7 @@ export function generateBinomialFormulas(seed: number, complexity: number): Exer
     return {
       prompt: fallback.prompt,
       answer: fallback.answer,
+      pattern: 'multi-field',
       data: { fields: fallback.fields, promptKey: 'exercise.binomialFormulas.prompt' },
     };
   };

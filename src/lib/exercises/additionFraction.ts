@@ -128,6 +128,7 @@ export function generateAdditionFraction(seed: number, complexity: number): Exer
     return {
       prompt,
       answer: `${result.num},${result.den}`,
+      pattern: 'fraction-input',
       data: { promptKey: 'exercise.additionFraction.prompt' },
     };
   }
@@ -135,6 +136,7 @@ export function generateAdditionFraction(seed: number, complexity: number): Exer
   return {
     prompt: `${promptFraction(1, 4)} + ${promptFraction(1, 4)}`,
     answer: '1,2',
+    pattern: 'fraction-input',
     data: { promptKey: 'exercise.additionFraction.prompt' },
   };
 }

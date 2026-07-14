@@ -1,6 +1,6 @@
 <script lang="ts">
   import type { InputContext } from '../types';
-  import NumericInput from './exercises/NumericInput.svelte';
+  import NumericInput from './NumericInput.svelte';
 
   let {
     value = $bindable(),

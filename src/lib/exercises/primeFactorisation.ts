@@ -67,11 +67,17 @@ export function generatePrimeFactorisation(seed: number, complexity: number): Ex
       return {
         prompt: String(n),
         answer: exponents.join(','),
-        data: { primes },
+        pattern: 'prime-factors',
+        data: { promptKey: 'exercise.primeFactorisation.prompt', primes },
       };
     }
   }
 
   const exponents = primes.map(() => 0);
-  return { prompt: '0', answer: exponents.join(','), data: { primes } };
+  return {
+    prompt: '0',
+    answer: exponents.join(','),
+    pattern: 'prime-factors',
+    data: { promptKey: 'exercise.primeFactorisation.prompt', primes },
+  };
 }

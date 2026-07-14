@@ -4,20 +4,25 @@
   import Math from '../Math.svelte';
   import ExerciseShell from '../ExerciseShell.svelte';
   import Feedback from '../Feedback.svelte';
-  import NumericInput from './NumericInput.svelte';
+  import NumericInput from '../NumericInput.svelte';
 
   let { exercise, onSubmit, onNext, feedback }: ExerciseProps = $props();
 
   let userInput = $state('');
 
   let validationError = $derived(userInput.includes(',') ? _('error.decimalComma') : null);
-
+  let promptKey = $derived((exercise.data as any)?.promptKey);
   let correctLatex = $derived(exercise.answer);
 </script>
 
 <ExerciseShell {exercise} {feedback} submitAnswer={() => onSubmit(userInput.trim())} {onNext} {validationError}>
   {#if feedback === null}
-    {#if exercise.prompt.includes('?')}
+    {#if promptKey}
+      <p class="prompt-label">{_(promptKey)}</p>
+      <div class="answer-row">
+        <NumericInput bind:value={userInput} />
+      </div>
+    {:else if exercise.prompt.includes('?')}
       {@const parts = exercise.prompt.split('?')}
       <div class="prompt-row">
         <Math expression={parts[0]} display />
@@ -33,6 +38,9 @@
       </div>
     {/if}
   {:else}
+    {#if promptKey}
+      <p class="prompt-label">{_(promptKey)}</p>
+    {/if}
     {#if exercise.prompt.includes('?')}
       {@const parts = exercise.prompt.split('?')}
       <div class="prompt-row">

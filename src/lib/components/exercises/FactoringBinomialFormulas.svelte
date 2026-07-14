@@ -4,7 +4,7 @@
   import Math from '../Math.svelte';
   import ExerciseShell from '../ExerciseShell.svelte';
   import Feedback from '../Feedback.svelte';
-  import NumericInput from './NumericInput.svelte';
+  import NumericInput from '../NumericInput.svelte';
   import { formatFactoredLatex } from '../../exercises/factoringBinomialFormulas';
   import type { FactoringBinomialFormulasData } from '../../exercises/factoringBinomialFormulas';
   import { parseFrac } from '../../math/fraction';

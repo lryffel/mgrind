@@ -57,29 +57,34 @@ function equalFractionsSignOptions(useNumbers: boolean, a: number, b: number) {
   ];
 }
 
-export function generateFractionTrivia(seed: number, complexity: number): Exercise {
+export function generateFractionTrivia(seed: number, complexity: number, forcedType?: string): Exercise {
   const clamped = clampComplexity(complexity, 10);
   const rng = mulberry32(seed);
 
-  const basic = [
-    'fractionTerms',
-    'integerFractions',
-    'denominatorRestriction',
-    'doubleFraction',
-    'fractionBar',
-    'zeroNumerator',
-  ];
-  const mid = ['fractionDivision', 'multiplySame', 'reciprocalProduct'];
-  const hard = ['mediant', 'reducibleFractions', 'negativeSignPlacement'];
-  const hardest = ['equalFractions'];
+  let type: string;
+  if (forcedType) {
+    type = forcedType;
+  } else {
+    const basic = [
+      'fractionTerms',
+      'integerFractions',
+      'denominatorRestriction',
+      'doubleFraction',
+      'fractionBar',
+      'zeroNumerator',
+    ];
+    const mid = ['fractionDivision', 'multiplySame', 'reciprocalProduct'];
+    const hard = ['mediant', 'reducibleFractions', 'negativeSignPlacement'];
+    const hardest = ['equalFractions'];
 
-  const pool: string[] = [];
-  pool.push(...basic);
-  if (clamped >= 3) pool.push(...mid);
-  if (clamped >= 6) pool.push(...hard);
-  if (clamped >= 8) pool.push(...hardest);
+    const pool: string[] = [];
+    pool.push(...basic);
+    if (clamped >= 3) pool.push(...mid);
+    if (clamped >= 6) pool.push(...hard);
+    if (clamped >= 8) pool.push(...hardest);
 
-  const type = pick(rng, pool);
+    type = pick(rng, pool);
+  }
 
   switch (type) {
     case 'fractionTerms':
@@ -290,6 +295,147 @@ export function generateFractionTrivia(seed: number, complexity: number): Exerci
         data: { triviaType: 'fractionTerms' },
       };
   }
+}
+
+export function generateFractionTriviaFractionTerms(seed: number, complexity: number): Exercise {
+  const ex = generateFractionTrivia(seed, complexity, 'fractionTerms');
+  const origData = ex.data as FractionTriviaData;
+  return {
+    ...ex,
+    pattern: 'fraction-input',
+    data: { ...origData, promptKey: 'exercise.fractionTrivia.type.fractionTerms.prompt' },
+  };
+}
+
+export function generateFractionTriviaIntegerFractions(seed: number, complexity: number): Exercise {
+  const ex = generateFractionTrivia(seed, complexity, 'integerFractions');
+  const origData = ex.data as FractionTriviaData;
+  return {
+    ...ex,
+    pattern: 'multi-choice',
+    data: {
+      ...origData,
+      promptKey: 'exercise.fractionTrivia.type.integerFractions.prompt',
+      options: ['\\frac{0}{n}', '\\frac{1}{n}', '\\frac{n}{0}', '\\frac{n}{1}'].map((l) => ({ latex: l })),
+    },
+  };
+}
+
+export function generateFractionTriviaDenominatorRestriction(seed: number, complexity: number): Exercise {
+  const ex = generateFractionTrivia(seed, complexity, 'denominatorRestriction');
+  const origData = ex.data as FractionTriviaData;
+  return {
+    ...ex,
+    pattern: 'text-input',
+    data: { ...origData, promptKey: 'exercise.fractionTrivia.type.denominatorRestriction.prompt' },
+  };
+}
+
+export function generateFractionTriviaDoubleFraction(seed: number, complexity: number): Exercise {
+  const ex = generateFractionTrivia(seed, complexity, 'doubleFraction');
+  return { ...ex, pattern: 'custom' };
+}
+
+export function generateFractionTriviaFractionBar(seed: number, complexity: number): Exercise {
+  const ex = generateFractionTrivia(seed, complexity, 'fractionBar');
+  const origData = ex.data as FractionTriviaData;
+  return {
+    ...ex,
+    pattern: 'single-choice',
+    data: {
+      ...origData,
+      promptKey: 'exercise.fractionTrivia.type.fractionBar.prompt',
+      options: [0, 1, 2, 3].map((i) => ({ label: `exercise.fractionTrivia.option.fractionBar.${i}` })),
+    },
+  };
+}
+
+export function generateFractionTriviaZeroNumerator(seed: number, complexity: number): Exercise {
+  const ex = generateFractionTrivia(seed, complexity, 'zeroNumerator');
+  const origData = ex.data as FractionTriviaData;
+  return { ...ex, pattern: 'text-input', data: { ...origData, promptKey: undefined } };
+}
+
+export function generateFractionTriviaReciprocalProduct(seed: number, complexity: number): Exercise {
+  const ex = generateFractionTrivia(seed, complexity, 'reciprocalProduct');
+  const origData = ex.data as FractionTriviaData;
+  return { ...ex, pattern: 'text-input', data: { ...origData, promptKey: undefined } };
+}
+
+export function generateFractionTriviaMultiplySame(seed: number, complexity: number): Exercise {
+  const ex = generateFractionTrivia(seed, complexity, 'multiplySame');
+  const origData = ex.data as FractionTriviaData;
+  return {
+    ...ex,
+    pattern: 'single-choice',
+    data: {
+      ...origData,
+      promptKey: undefined,
+      options: [0, 1, 2, 3].map((i) => ({ label: `exercise.fractionTrivia.option.multiplySame.${i}` })),
+    },
+  };
+}
+
+export function generateFractionTriviaFractionDivision(seed: number, complexity: number): Exercise {
+  const ex = generateFractionTrivia(seed, complexity, 'fractionDivision');
+  const origData = ex.data as FractionTriviaData;
+  return { ...ex, pattern: 'fraction-input', data: { ...origData } };
+}
+
+export function generateFractionTriviaMediant(seed: number, complexity: number): Exercise {
+  const ex = generateFractionTrivia(seed, complexity, 'mediant');
+  const origData = ex.data as FractionTriviaData;
+  return {
+    ...ex,
+    pattern: 'multi-choice',
+    data: {
+      ...origData,
+      promptKey: undefined,
+      options: [0, 1, 2, 3].map((i) => ({ label: `exercise.fractionTrivia.option.mediant.${i}` })),
+    },
+  };
+}
+
+export function generateFractionTriviaReducibleFractions(seed: number, complexity: number): Exercise {
+  const ex = generateFractionTrivia(seed, complexity, 'reducibleFractions');
+  const origData = ex.data as FractionTriviaData;
+  return {
+    ...ex,
+    pattern: 'multi-choice',
+    data: {
+      ...origData,
+      promptKey: 'exercise.fractionTrivia.type.reducibleFractions.prompt',
+      options: (origData.triviaOptionsLatex ?? []).map((l) => ({ latex: l })),
+    },
+  };
+}
+
+export function generateFractionTriviaNegativeSignPlacement(seed: number, complexity: number): Exercise {
+  const ex = generateFractionTrivia(seed, complexity, 'negativeSignPlacement');
+  const origData = ex.data as FractionTriviaData;
+  return {
+    ...ex,
+    pattern: 'multi-choice',
+    data: {
+      ...origData,
+      promptKey: undefined,
+      options: (origData.triviaOptionsLatex ?? []).map((l) => ({ latex: l })),
+    },
+  };
+}
+
+export function generateFractionTriviaEqualFractions(seed: number, complexity: number): Exercise {
+  const ex = generateFractionTrivia(seed, complexity, 'equalFractions');
+  const origData = ex.data as FractionTriviaData;
+  return {
+    ...ex,
+    pattern: 'multi-choice',
+    data: {
+      ...origData,
+      promptKey: undefined,
+      options: (origData.triviaOptionsLatex ?? []).map((l) => ({ latex: l })),
+    },
+  };
 }
 
 export function validateFractionTrivia(answer: string, exercise: Exercise): boolean {

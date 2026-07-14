@@ -4,7 +4,7 @@
   import Math from '../Math.svelte';
   import ExerciseShell from '../ExerciseShell.svelte';
   import Feedback from '../Feedback.svelte';
-  import NumericInput from './NumericInput.svelte';
+  import NumericInput from '../NumericInput.svelte';
   import { normalizeFraction } from '../../math/fraction';
   import { useFractionInput, fractionLatex } from '../../fraction-input.svelte';
   import { reduceFrac } from '../../math/fraction';
@@ -94,6 +94,3 @@
     {/if}
   {/if}
 </ExerciseShell>
-
-<style>
-</style>

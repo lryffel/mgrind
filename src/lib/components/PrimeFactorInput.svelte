@@ -1,5 +1,5 @@
 <script lang="ts">
-  import Math from '../Math.svelte';
+  import Math from './Math.svelte';
   import NumericInput from './NumericInput.svelte';
 
   let {

@@ -4,6 +4,16 @@ export type InputContext = 'coefficient' | 'exponent' | 'summand' | 'numerator' 
 
 export type ExerciseFeedback = 'correct' | 'incorrect' | null;
 
+export type CardPattern =
+  | 'text-input'
+  | 'fraction-input'
+  | 'multi-field'
+  | 'batch-choice'
+  | 'single-choice'
+  | 'multi-choice'
+  | 'prime-factors'
+  | 'custom';
+
 export interface ExerciseProps {
   exercise: Exercise;
   onSubmit: (answer: string) => void;
@@ -11,18 +21,10 @@ export interface ExerciseProps {
   feedback: ExerciseFeedback;
 }
 
-export interface ExerciseData {
-  /** Properties shared across 2+ exercise types */
-  promptKey?: string;
-  fields?: { variablePart: string }[];
-  subType?: string;
-  varA?: string | null;
-  varB?: string;
-}
-
 export interface Exercise {
   prompt: string;
   answer: string;
+  pattern?: CardPattern;
   data?: unknown;
 }
 
@@ -38,7 +40,7 @@ export interface ExerciseType {
   maxComplexity: number;
   generate: (seed: number, complexity: number) => Exercise;
   validate: (answer: string, exercise: Exercise) => boolean;
-  component: Component<ExerciseProps>;
+  component?: Component<ExerciseProps>;
   prerequisites?: Prerequisite[];
   instructionComponent?: Component;
 }

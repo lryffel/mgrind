@@ -4,7 +4,7 @@
   import Math from '../Math.svelte';
   import ExerciseShell from '../ExerciseShell.svelte';
   import Feedback from '../Feedback.svelte';
-  import NumericInput from './NumericInput.svelte';
+  import NumericInput from '../NumericInput.svelte';
   import { formatFullFactoredLatex } from '../../exercises/factoringOutAndBinomial';
   import type { FactoringOutAndBinomialData } from '../../exercises/factoringOutAndBinomial';
   import { normalizeCoeff } from '../../validation';

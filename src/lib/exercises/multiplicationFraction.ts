@@ -55,6 +55,7 @@ export function generateMultiplicationFraction(seed: number, complexity: number)
 
   return {
     ...result,
+    pattern: 'fraction-input',
     data: {
       ...result.data,
       promptKey: PROMPT_KEY,

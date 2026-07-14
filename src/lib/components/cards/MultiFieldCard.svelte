@@ -30,7 +30,7 @@
   });
 
   let contexts = $derived(fields.map((f) => (f.variablePart === '' ? 'summand' : 'coefficient')));
-  let normValues = $derived(values.map((v, i) => normalizeCoeff(v, contexts[i])));
+  let normValues = $derived(values.map((v, i) => normalizeCoeff(v, contexts[i] as any)));
   let userLatex = $derived(formatCollectingAnswer(normValues, variableParts));
   let correctLatex = $derived(formatCollectingAnswer(exercise.answer.split(','), variableParts));
 </script>
