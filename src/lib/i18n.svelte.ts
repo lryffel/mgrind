@@ -346,9 +346,13 @@ const dict = {
     en: 'What are the terms for the top and bottom numbers in a fraction?',
     de: 'Wie heissen die obere und die untere Zahl eines Bruchs?',
   },
-  'exercise.fractionTrivia.type.integerFractions.prompt': {
-    en: 'Which of these fractions are always integers whenever n is an integer?',
-    de: 'Welche dieser Brüche sind für jede ganze Zahl n ganzzahlig?',
+  'exercise.fractionTrivia.type.integerFractions.promptBefore': {
+    en: 'Which of these fractions are always integers whenever ',
+    de: 'Welche dieser Brüche sind für jede ganze Zahl ',
+  },
+  'exercise.fractionTrivia.type.integerFractions.promptSuffix': {
+    en: ' is an integer?',
+    de: ' ganzzahlig?',
   },
   'exercise.fractionTrivia.type.mediant.promptBefore': {
     en: 'For two fractions ',

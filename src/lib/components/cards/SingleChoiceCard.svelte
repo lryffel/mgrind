@@ -117,7 +117,6 @@
     align-items: center;
     gap: 0.5rem;
     padding: 0.6rem 1.125rem;
-    border-radius: 0.5rem;
     border: 1px solid var(--c-border);
     background: transparent;
     color: var(--c-text);
@@ -127,6 +126,11 @@
     font-weight: 500;
     line-height: 1;
     transition: border-color 0.2s ease-in-out;
+  }
+
+  :global(.option-grid > *) {
+    border-radius: 0.5rem;
+    margin-left: 0;
   }
 
   .choice-radio:hover {

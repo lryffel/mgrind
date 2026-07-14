@@ -1,7 +1,7 @@
 <script lang="ts">
   import { _ } from '../../i18n.svelte';
   import type { ExerciseProps } from '../../types';
-  import Math from '../Math.svelte';
+  import MathSvelte from '../Math.svelte';
   import ExerciseShell from '../ExerciseShell.svelte';
   import Feedback from '../Feedback.svelte';
   import type { FactorsData } from '../../exercises/factors';
@@ -48,14 +48,13 @@
     return i === options.length - 1 || i % effectiveCols === effectiveCols - 1;
   }
 
-  function btnStyle(i: number) {
+  function btnStyle(i: number): string {
     const start = isStartOfRow(i);
     const end = isEndOfRow(i);
     const both = start && end;
-    return {
-      borderRadius: both ? '0.5rem' : start ? '0.5rem 0 0 0.5rem' : end ? '0 0.5rem 0.5rem 0' : '0',
-      borderRight: end ? '1px solid var(--c-border)' : 'none',
-    };
+    const radius = both ? '0.5rem' : start ? '0.5rem 0 0 0.5rem' : end ? '0 0.5rem 0.5rem 0' : '0';
+    const right = end ? '1px solid var(--c-border)' : 'none';
+    return `border-radius:${radius};border-right:${right}`;
   }
 
   function toggleIndex(idx: number) {
@@ -77,11 +76,17 @@
 <ExerciseShell {exercise} {feedback} submitAnswer={handleSubmit} {onNext}>
   <p class="prompt-label">{_(data.promptKey)}</p>
   {#if exercise.prompt}
-    <p class="prompt"><Math expression={exercise.prompt} display /></p>
+    <p class="prompt"><MathSvelte expression={exercise.prompt} display /></p>
   {/if}
 
   <!-- svelte-ignore a11y_no_noninteractive_tabindex -->
-  <div bind:this={containerEl} class="factor-grid" role="group" tabindex="0">
+  <div
+    bind:this={containerEl}
+    class="factor-grid"
+    role="group"
+    tabindex="0"
+    style="grid-template-columns: repeat({effectiveCols}, 1fr)"
+  >
     {#each options as option, i (i)}
       {#if feedback === null}
         <button
@@ -92,7 +97,7 @@
           role="checkbox"
           aria-checked={selected[i]}
         >
-          <Math expression={option.latex} />
+          <MathSvelte expression={option.latex} />
         </button>
       {:else}
         <span
@@ -101,7 +106,7 @@
           class:wrong-option={!correctIndices.includes(i) && selected[i]}
           style={btnStyle(i)}
         >
-          <Math expression={option.latex} />
+          <MathSvelte expression={option.latex} />
         </span>
       {/if}
     {/each}
@@ -116,16 +121,21 @@
 
 <style>
   .factor-grid {
-    display: flex;
-    flex-wrap: wrap;
+    display: grid;
     gap: 0.5rem 0;
     width: 100%;
     margin-top: 0.75rem;
   }
 
+  .factor-grid > :global(*) {
+    margin-left: 0 !important;
+  }
+
   .factor-btn {
-    flex: 1 0 auto;
-    min-width: 4rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.4rem;
     padding: 0.6rem 0.5rem;
     border: 1px solid var(--c-border);
     border-right: none;
@@ -137,12 +147,45 @@
     font-weight: 500;
     line-height: 1;
     text-align: center;
-    transition: border-color 0.2s ease-in-out;
+    transition:
+      border-color 0.2s ease-in-out,
+      background 0.2s ease-in-out;
+  }
+
+  .factor-btn::before {
+    content: '';
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.25rem;
+    height: 1.25rem;
+    border: 2px solid var(--c-border);
+    border-radius: 0.25rem;
+    flex-shrink: 0;
+    font-size: 0.85rem;
+    line-height: 1;
+    font-weight: 700;
+    transition:
+      border-color 0.2s ease-in-out,
+      background 0.2s ease-in-out;
+    color: var(--c-primary-inverse);
   }
 
   .factor-btn:hover {
     border-color: var(--c-primary);
     z-index: 1;
+  }
+
+  .factor-btn.selected {
+    border-color: var(--c-primary);
+    background: color-mix(in srgb, var(--c-primary) 15%, transparent);
+    z-index: 1;
+  }
+
+  .factor-btn.selected::before {
+    content: '\2713';
+    border-color: var(--c-primary);
+    background: var(--c-primary);
   }
 
   .factor-btn:focus-visible {
@@ -151,17 +194,7 @@
     z-index: 1;
   }
 
-  .factor-btn.selected {
-    border-color: var(--c-primary);
-    color: var(--c-text);
-    background: color-mix(in srgb, var(--c-primary) 15%, transparent);
-    z-index: 1;
-  }
-
   .factor-btn.feedback {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
     font-weight: 600;
   }
 

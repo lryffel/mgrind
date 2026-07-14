@@ -154,7 +154,6 @@ describe('generateFactorsExercise', () => {
     for (let seed = 0; seed < 100; seed++) {
       for (const c of COMPLEXITIES) {
         const ex = generateFactorsExercise(seed, c);
-        const factors = d(ex).factors.split(',').map(Number);
         const candidates = d(ex).options.map((o) => parseInt(o.latex));
         const indices = ex.answer.split(',').map(Number);
         const selected = indices.map((i) => candidates[i]);

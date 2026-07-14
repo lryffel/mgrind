@@ -263,7 +263,9 @@ export function generateFractionTriviaIntegerFractions(seed: number, complexity:
     pattern: 'multi-choice',
     data: {
       ...origData,
-      promptKey: 'exercise.fractionTrivia.type.integerFractions.prompt',
+      promptKey: 'exercise.fractionTrivia.type.integerFractions.promptBefore',
+      promptMath: 'n',
+      promptKeySuffix: 'exercise.fractionTrivia.type.integerFractions.promptSuffix',
       options: ['\\frac{0}{n}', '\\frac{1}{n}', '\\frac{n}{0}', '\\frac{n}{1}'].map((l) => ({ latex: l })),
     },
   };
@@ -326,8 +328,8 @@ export function generateFractionTriviaReciprocalProduct(seed: number, complexity
   const origData = ex.data as FractionTriviaData;
   const prompt =
     origData.triviaSubType === 'num'
-      ? `\\dfrac{${origData.triviaA ?? 'a'}}{${origData.triviaB ?? 'b'}} \\cdot \\dfrac{${origData.triviaB ?? 'b'}}{${origData.triviaA ?? 'a'}} = \\text{?}`
-      : '\\dfrac{a}{b} \\cdot \\dfrac{b}{a} = \\text{?}';
+      ? `\\dfrac{${origData.triviaA ?? 'a'}}{${origData.triviaB ?? 'b'}} \\cdot \\dfrac{${origData.triviaB ?? 'b'}}{${origData.triviaA ?? 'a'}}`
+      : '\\dfrac{a}{b} \\cdot \\dfrac{b}{a}';
   return { ...ex, prompt, pattern: 'text-input', data: { ...origData, promptKey: undefined } };
 }
 
@@ -355,7 +357,7 @@ export function generateFractionTriviaFractionDivision(seed: number, complexity:
   const a = origData.triviaA ?? 1;
   const b = origData.triviaB ?? 1;
   return {
-    prompt: `\\dfrac{1}{\\dfrac{${a}}{${b}}} = \\text{?}`,
+    prompt: `\\dfrac{1}{\\dfrac{${a}}{${b}}}`,
     answer: ex.answer,
     pattern: 'fraction-input',
     data: { ...origData, promptKey: 'exercise.fractionTrivia.type.fractionDivision.promptBefore' },
@@ -380,12 +382,14 @@ export function generateFractionTriviaNegativeSignPlacement(seed: number, comple
   const ex = generateFractionTrivia(seed, complexity, 'negativeSignPlacement');
   const origData = ex.data as FractionTriviaData;
   return {
-    prompt: 'Which of these fractions is equal to -\\dfrac{a}{b}?',
+    prompt: '',
     answer: ex.answer,
     pattern: 'multi-choice',
     data: {
       ...origData,
-      promptKey: undefined,
+      promptKey: 'exercise.fractionTrivia.type.negativeSignPlacement.promptBefore',
+      promptMath: `-\\dfrac{${origData.triviaA ?? 'a'}}{${origData.triviaB ?? 'b'}}`,
+      promptKeySuffix: 'exercise.fractionTrivia.type.negativeSignPlacement.promptSuffix',
       options: (origData.triviaOptionsLatex ?? []).map((l) => ({ latex: l })),
     },
   };
@@ -395,12 +399,14 @@ export function generateFractionTriviaEqualFractions(seed: number, complexity: n
   const ex = generateFractionTrivia(seed, complexity, 'equalFractions');
   const origData = ex.data as FractionTriviaData;
   return {
-    prompt: 'Which of these fractions equals \\dfrac{a}{b}?',
+    prompt: '',
     answer: ex.answer,
     pattern: 'multi-choice',
     data: {
       ...origData,
-      promptKey: undefined,
+      promptKey: 'exercise.fractionTrivia.type.equalFractions.promptBefore',
+      promptMath: `\\dfrac{${origData.triviaA ?? 'a'}}{${origData.triviaB ?? 'b'}}`,
+      promptKeySuffix: 'exercise.fractionTrivia.type.equalFractions.promptSuffix',
       options: (origData.triviaOptionsLatex ?? []).map((l) => ({ latex: l })),
     },
   };

@@ -1,7 +1,7 @@
 import type { Exercise } from '../types';
 import { mulberry32 } from '../prng';
 import { clampComplexity } from '../math/number';
-import { randInt, pick, shuffle } from '../math/rng';
+import { randInt, pick } from '../math/rng';
 
 export interface FactorsData {
   n: number;

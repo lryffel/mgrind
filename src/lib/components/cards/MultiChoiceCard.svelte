@@ -1,6 +1,5 @@
 <script lang="ts">
   import { _ } from '../../i18n.svelte';
-  import { state as langState } from '../../i18n.svelte';
   import type { ExerciseProps } from '../../types';
   import Math from '../Math.svelte';
   import ExerciseShell from '../ExerciseShell.svelte';
@@ -11,7 +10,9 @@
   let data = $derived(
     exercise.data as {
       promptKey?: string;
-      options: { label?: string; latex?: string; text?: string; textDe?: string }[];
+      promptMath?: string;
+      promptKeySuffix?: string;
+      options: { label?: string; latex?: string }[];
     },
   );
   let options = $derived(data.options ?? []);
@@ -46,11 +47,14 @@
 </script>
 
 <ExerciseShell {exercise} {feedback} submitAnswer={handleSubmit} {onNext}>
-  {#if promptKey}
+  {#if promptKey && data.promptMath}
+    <p class="prompt-label">{_(promptKey)}<Math expression={data.promptMath} />{_(data.promptKeySuffix ?? '')}</p>
+  {:else if promptKey}
     <p class="prompt-label">{_(promptKey)}</p>
-  {/if}
-  {#if exercise.prompt}
-    <p class="prompt"><Math expression={exercise.prompt} /></p>
+  {:else}
+    <p class="prompt">
+      <Math expression={exercise.prompt} />
+    </p>
   {/if}
 
   <div class="option-grid" role="group">
@@ -63,9 +67,7 @@
           role="checkbox"
           aria-checked={selected[i]}
         >
-          {#if option.text}
-            {langState.lang === 'de' && option.textDe ? option.textDe : option.text}
-          {:else if option.latex}
+          {#if option.latex}
             <Math expression={option.latex} />
           {:else}
             {option.label ? _(option.label) : ''}
@@ -77,9 +79,7 @@
           class:correct-option={correctIndices.includes(i) && selected[i]}
           class:wrong-option={!correctIndices.includes(i) && selected[i]}
         >
-          {#if option.text}
-            {langState.lang === 'de' && option.textDe ? option.textDe : option.text}
-          {:else if option.latex}
+          {#if option.latex}
             <Math expression={option.latex} />
           {:else}
             {option.label ? _(option.label) : ''}
@@ -94,30 +94,28 @@
   {:else if feedback === 'incorrect'}
     <Feedback
       {feedback}
-      textAnswer={correctIndices
-        .map((i) => {
-          const opt = options[i];
-          if (opt?.text) return langState.lang === 'de' && opt.textDe ? opt.textDe : opt.text;
-          if (opt?.label) return _(opt.label);
-          return opt?.latex ?? '';
-        })
-        .join(', ')}
+      textAnswer={correctIndices.map((i) => options[i]?.label ?? options[i]?.latex ?? '').join(', ')}
     />
   {/if}
 </ExerciseShell>
 
 <style>
   .option-grid {
-    display: flex;
-    flex-direction: column;
+    display: grid;
     gap: 0.5rem;
     margin-top: 0.75rem;
-    align-items: flex-start;
+    width: fit-content;
+  }
+
+  .option-grid > :global(*) {
+    border-radius: 0.5rem !important;
+    margin-left: 0 !important;
   }
 
   .choice-checkbox {
     display: inline-flex;
     align-items: center;
+    justify-content: flex-start;
     gap: 0.5rem;
     padding: 0.6rem 1.125rem;
     border-radius: 0.5rem;
@@ -176,6 +174,7 @@
   .option-feedback-row {
     display: inline-flex;
     align-items: center;
+    justify-content: flex-start;
     gap: 0.35rem;
     font-weight: 600;
   }
