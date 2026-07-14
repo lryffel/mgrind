@@ -110,15 +110,28 @@ function pickGenerator(clamped: number): GeneratorFn {
   return generators[0].fn;
 }
 
-function formatNumberForPrompt(value: number): string {
-  const s = String(value);
-  const dotIdx = s.indexOf('.');
+function formatNumberString(value: string): string {
+  const dotIdx = value.indexOf('.');
   if (dotIdx === -1) {
-    return s.replace(/\B(?=(\d{3})+(?!\d))/g, '\\,');
+    return value.replace(/\B(?=(\d{3})+(?!\d))/g, '\\,');
   }
-  const intPart = s.slice(0, dotIdx);
-  const decPart = s.slice(dotIdx);
+  const intPart = value.slice(0, dotIdx);
+  const decPart = value.slice(dotIdx);
   return intPart.replace(/\B(?=(\d{3})+(?!\d))/g, '\\,') + decPart;
+}
+
+function formatNumberForPrompt(value: number): string {
+  return formatNumberString(String(value));
+}
+
+export function generateRoundingSigfigsExercise(seed: number, complexity: number): Exercise {
+  const ex = generateRoundingSigfigs(seed, complexity);
+  const data = ex.data as RoundingSigfigsData;
+  ex.pattern = 'text-input';
+  (ex.data as Record<string, unknown>).promptKey = 'exercise.roundingSigfigs.prompt';
+  (ex.data as Record<string, unknown>).promptArgs = [data.sigfigsCount];
+  (ex.data as Record<string, unknown>).formatNumbers = true;
+  return ex;
 }
 
 export function generateRoundingSigfigs(seed: number, complexity: number): Exercise {

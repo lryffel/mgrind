@@ -167,16 +167,21 @@ function generateLaws(rng: () => number): Exercise {
   const distractors = shuffle(rng, law.distractors).slice(0, 3);
   const options = shuffle(rng, [law.correctLatex, ...distractors]);
   const correctIndex = options.indexOf(law.correctLatex);
-
   return {
     prompt: '',
     answer: String(correctIndex),
+    pattern: 'single-choice',
     data: {
       triviaType: 'laws',
       triviaOptionsLatex: options,
       correctIndices: [correctIndex],
       lawNameKey: law.nameKey,
       ...(law.operationKey ? { lawOperationKey: law.operationKey } : {}),
+      options: options.map((l) => ({ latex: l })),
+      promptKey: law.operationKey
+        ? 'exercise.termTransformationsTrivia.whichLaw'
+        : 'exercise.termTransformationsTrivia.whichLawNoOp',
+      promptArgKeys: law.operationKey ? [law.nameKey, law.operationKey] : [law.nameKey],
     },
   };
 }
@@ -191,12 +196,16 @@ function generatePowerLaws(rng: () => number, clamped: number): Exercise {
   return {
     prompt: '',
     answer: String(correctIndex),
+    pattern: 'single-choice',
     data: {
       triviaType: 'powerLaws',
       triviaOptionsLatex: options,
       correctIndices: [correctIndex],
       ordinalKey: law.ordinalKey,
       hintKey: law.hintKey,
+      options: options.map((l) => ({ latex: l })),
+      promptKey: 'exercise.termTransformationsTrivia.whatIsPowerLaw',
+      promptArgKeys: [law.ordinalKey, law.hintKey],
     },
   };
 }
@@ -225,10 +234,14 @@ function generateTrueFalse(rng: () => number, clamped: number): Exercise {
   return {
     prompt: '',
     answer,
+    pattern: 'batch-choice',
     data: {
       triviaType: 'trueFalse',
       statementsLatex,
       correctAnswers,
+      rows: statementsLatex.map((l) => ({ latex: l })),
+      buttons: ['yes', 'no'],
+      promptKey: 'exercise.termTransformationsTrivia.whichAreValid',
     },
   };
 }

@@ -1,5 +1,10 @@
 import { describe, it, expect } from 'vitest';
-import { generateRoundingSigfigs, roundToSigFigs, type RoundingSigfigsData } from './roundingSigfigs';
+import {
+  generateRoundingSigfigs,
+  generateRoundingSigfigsExercise,
+  roundToSigFigs,
+  type RoundingSigfigsData,
+} from './roundingSigfigs';
 import { expectDeterministic, expectSeedVariation, expectHasPromptAndAnswer } from '../test-utils';
 
 describe('roundToSigFigs', () => {
@@ -81,5 +86,37 @@ describe('generateRoundingSigfigs', () => {
     const low = generateRoundingSigfigs(42, 1);
     const high = generateRoundingSigfigs(42, 10);
     expect(low.answer).not.toBe(high.answer);
+  });
+});
+
+describe('generateRoundingSigfigsExercise', () => {
+  it('returns a valid exercise with prompt and answer', () => {
+    expectHasPromptAndAnswer(generateRoundingSigfigsExercise, 42, 5);
+  });
+
+  it('sets pattern to text-input', () => {
+    const ex = generateRoundingSigfigsExercise(42, 5);
+    expect(ex.pattern).toBe('text-input');
+  });
+
+  it('is deterministic for the same seed', () => {
+    expectDeterministic(generateRoundingSigfigsExercise, 42, 5);
+  });
+
+  it('produces different results for different seeds', () => {
+    expectSeedVariation(generateRoundingSigfigsExercise, 5);
+  });
+
+  it('sets promptKey and promptArgs', () => {
+    const ex = generateRoundingSigfigsExercise(42, 5);
+    const data = ex.data as any;
+    expect(data.promptKey).toBe('exercise.roundingSigfigs.prompt');
+    expect(data.promptArgs).toEqual([data.sigfigsCount]);
+  });
+
+  it('preserves the answer from base generator', () => {
+    const base = generateRoundingSigfigs(42, 5);
+    const wrapped = generateRoundingSigfigsExercise(42, 5);
+    expect(wrapped.answer).toBe(base.answer);
   });
 });

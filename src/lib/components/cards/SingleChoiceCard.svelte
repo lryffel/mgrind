@@ -11,11 +11,16 @@
   let data = $derived(
     exercise.data as {
       promptKey?: string;
+      promptArgs?: (string | number)[];
+      promptArgKeys?: string[];
       options: { label?: string; latex?: string; text?: string; textDe?: string }[];
     },
   );
   let options = $derived(data.options ?? []);
   let promptKey = $derived(data.promptKey);
+  let promptArgs = $derived(data.promptArgs ?? []);
+  let promptArgKeys = $derived(data.promptArgKeys ?? []);
+  let resolvedArgs = $derived(promptArgKeys.length > 0 ? promptArgKeys.map((k: string) => _(k)) : promptArgs);
   // eslint-disable-next-line svelte/prefer-writable-derived
   let selectedIndex = $state(-1);
   let correctIndices = $derived(exercise.answer.split(',').map(Number));
@@ -34,7 +39,7 @@
 
 <ExerciseShell {exercise} {feedback} submitAnswer={handleSubmit} {onNext}>
   {#if promptKey}
-    <p class="prompt-label">{_(promptKey)}</p>
+    <p class="prompt-label">{_(promptKey, ...resolvedArgs)}</p>
   {/if}
   {#if exercise.prompt}
     <p class="prompt"><Math expression={exercise.prompt} /></p>

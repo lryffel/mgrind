@@ -108,46 +108,15 @@ function getVariants(clamped: number): string[] {
 function generateD(rng: () => number, clamped: number): Exercise {
   const maxN = getMaxN(clamped);
   const maxC1 = getMaxC1(clamped);
-  const multipleOnly = isMultipleOnly(clamped);
-  let attempts = 0;
-  do {
-    const n1 = randInt(rng, 2, maxN);
-    let n2: number;
-    if (multipleOnly) {
-      const k = randInt(rng, 2, Math.max(2, Math.floor(maxN / n1)));
-      n2 = n1 * k;
-    } else {
-      do {
-        n2 = randInt(rng, 2, maxN);
-      } while (n2 === n1 || n2 % n1 === 0);
-    }
-    const c1 = randInt(rng, 1, maxC1);
-    const result = (c1 * n2) / n1;
-    const rounded = Math.round(result * 100) / 100;
-    if (result > 0 && Math.abs(result - rounded) < 1e-9) {
-      return {
-        prompt: 'percent-D',
-        answer: formatAnswer(rounded),
-
-        data: {
-          variant: 'D',
-          answerIsFraction: false,
-          p: 0,
-          G: 0,
-          W: 0,
-          n1,
-          n2,
-          c1,
-          t1: 0,
-          variablePart: '\\,\\text{CHF}',
-        } as PercentData,
-      };
-    }
-    attempts++;
-  } while (attempts < 200);
+  const n1 = randInt(rng, 2, maxN);
+  const maxK = Math.max(2, Math.floor(maxN / n1));
+  const k = randInt(rng, 2, maxK);
+  const n2 = n1 * k;
+  const c1 = randInt(rng, 1, maxC1);
+  const result = c1 * k;
   return {
-    prompt: 'percent-D',
-    answer: '1',
+    prompt: '',
+    answer: String(result),
 
     data: {
       variant: 'D',
@@ -155,9 +124,9 @@ function generateD(rng: () => number, clamped: number): Exercise {
       p: 0,
       G: 0,
       W: 0,
-      n1: 2,
-      n2: 2,
-      c1: 1,
+      n1,
+      n2,
+      c1,
       t1: 0,
       variablePart: '\\,\\text{CHF}',
     } as PercentData,
@@ -167,47 +136,15 @@ function generateD(rng: () => number, clamped: number): Exercise {
 function generateE(rng: () => number, clamped: number): Exercise {
   const maxN = getMaxN(clamped);
   const maxT1 = getMaxT1(clamped);
-  const multipleOnly = isMultipleOnly(clamped);
-  let attempts = 0;
-  do {
-    const n1 = randInt(rng, 2, maxN);
-    let n2: number;
-    if (multipleOnly) {
-      const k = randInt(rng, 2, Math.max(2, Math.floor(maxN / n1)));
-      n2 = n1 / k;
-      if (n2 < 2 || n2 !== Math.floor(n2)) continue;
-    } else {
-      do {
-        n2 = randInt(rng, 2, maxN);
-      } while (n2 === n1 || n1 % n2 === 0 || n2 % n1 === 0);
-    }
-    const t1 = randInt(rng, 2, maxT1);
-    const result = (t1 * n1) / n2;
-    const rounded = Math.round(result * 100) / 100;
-    if (result > 0 && Math.abs(result - rounded) < 1e-9) {
-      return {
-        prompt: 'percent-E',
-        answer: formatAnswer(rounded),
-
-        data: {
-          variant: 'E',
-          answerIsFraction: false,
-          p: 0,
-          G: 0,
-          W: 0,
-          n1,
-          n2,
-          c1: 0,
-          t1,
-          variablePart: '\\,\\text{h}',
-        } as PercentData,
-      };
-    }
-    attempts++;
-  } while (attempts < 200);
+  const n2 = randInt(rng, 2, maxN);
+  const maxK = Math.max(2, Math.floor(maxN / n2));
+  const k = randInt(rng, 2, maxK);
+  const n1 = n2 * k;
+  const t1 = randInt(rng, 2, maxT1);
+  const result = t1 * k;
   return {
-    prompt: 'percent-E',
-    answer: '1',
+    prompt: '',
+    answer: String(result),
 
     data: {
       variant: 'E',
@@ -215,10 +152,10 @@ function generateE(rng: () => number, clamped: number): Exercise {
       p: 0,
       G: 0,
       W: 0,
-      n1: 2,
-      n2: 2,
+      n1,
+      n2,
       c1: 0,
-      t1: 2,
+      t1,
       variablePart: '\\,\\text{h}',
     } as PercentData,
   };
@@ -303,6 +240,42 @@ function generateC(rng: () => number, clamped: number): Exercise {
       variablePart: '\\,\\%',
     } as PercentData,
   };
+}
+
+export function generatePercentExercise(seed: number, complexity: number): Exercise {
+  const ex = generatePercent(seed, complexity);
+  const data = ex.data as PercentData;
+  ex.pattern = 'text-input';
+  ex.prompt = '';
+  switch (data.variant) {
+    case 'A':
+      (ex.data as Record<string, unknown>).promptKey = 'exercise.percent.promptLabelA';
+      (ex.data as Record<string, unknown>).promptArgs = [data.p, data.G];
+      break;
+    case 'B':
+      (ex.data as Record<string, unknown>).promptKey = 'exercise.percent.promptLabelB';
+      (ex.data as Record<string, unknown>).promptArgs = [data.W, data.p];
+      break;
+    case 'C':
+      (ex.data as Record<string, unknown>).promptKey = 'exercise.percent.promptLabelC';
+      (ex.data as Record<string, unknown>).promptArgs = [data.W, data.G];
+      (ex.data as Record<string, unknown>).suffixLatex = '\\%';
+      (ex.data as Record<string, unknown>).correctLatex = `${ex.answer}\\%`;
+      break;
+    case 'D':
+      (ex.data as Record<string, unknown>).promptKey = 'exercise.percent.promptLabelD';
+      (ex.data as Record<string, unknown>).promptArgs = [data.n1, data.c1, data.n2];
+      (ex.data as Record<string, unknown>).prefixLatex = '\\text{CHF}\\,';
+      (ex.data as Record<string, unknown>).correctLatex = `\\text{CHF}\\,${ex.answer}`;
+      break;
+    case 'E':
+      (ex.data as Record<string, unknown>).promptKey = 'exercise.percent.promptLabelE';
+      (ex.data as Record<string, unknown>).promptArgs = [data.n1, data.t1, data.n2];
+      (ex.data as Record<string, unknown>).suffixLatex = '\\,\\text{h}';
+      (ex.data as Record<string, unknown>).correctLatex = `${ex.answer}\\,\\text{h}`;
+      break;
+  }
+  return ex;
 }
 
 export function validatePercent(answer: string, exercise: Exercise): boolean {

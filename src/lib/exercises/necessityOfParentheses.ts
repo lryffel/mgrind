@@ -197,6 +197,16 @@ export function generateNecessityOfParentheses(seed: number, complexity: number)
   };
 }
 
+export function generateNecessityOfParenthesesExercise(seed: number, complexity: number): Exercise {
+  const ex = generateNecessityOfParentheses(seed, complexity);
+  const data = ex.data as NecessityOfParenthesesData;
+  ex.pattern = 'batch-choice';
+  (ex.data as Record<string, unknown>).rows = data.questions.map((q) => ({ latex: q.latex }));
+  (ex.data as Record<string, unknown>).buttons = ['yes', 'no'];
+  (ex.data as Record<string, unknown>).promptKey = 'exercise.necessityOfParentheses.prompt';
+  return ex;
+}
+
 export function validateNecessityOfParentheses(answer: string, exercise: Exercise): boolean {
   const userParts = answer.split(',').map((s) => s.trim());
   const correctParts = exercise.answer.split(',').map((s) => s.trim());

@@ -363,6 +363,19 @@ export function generateLinearEquations(seed: number, complexity: number): Exerc
   return { prompt, answer, data: { variable } };
 }
 
+export function generateLinearEquationsExercise(seed: number, complexity: number): Exercise {
+  const ex = generateLinearEquations(seed, complexity);
+  const data = ex.data as LinearEquationsData;
+  const variable = data.variable;
+  ex.pattern = 'text-input';
+  (ex.data as Record<string, unknown>).promptKey = 'exercise.linearEquations.promptBefore';
+  (ex.data as Record<string, unknown>).promptMath = variable;
+  (ex.data as Record<string, unknown>).promptKeySuffix = 'exercise.linearEquations.promptAfter';
+  (ex.data as Record<string, unknown>).prefixLatex = `${variable} = `;
+  (ex.data as Record<string, unknown>).correctLatex = `${variable} = ${ex.answer}`;
+  return ex;
+}
+
 export function validateLinearEquations(answer: string, exercise: Exercise): boolean {
   const trimmed = answer.trim();
   if (!trimmed) return false;

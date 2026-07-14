@@ -11,13 +11,30 @@
   let userInput = $state('');
 
   let validationError = $derived(userInput.includes(',') ? _('error.decimalComma') : null);
-  let promptKey = $derived((exercise.data as any)?.promptKey);
-  let promptArgs = $derived((exercise.data as any)?.promptArgs ?? []);
-  let correctLatex = $derived(exercise.answer);
+  let data = $derived(exercise.data as any);
+  let promptKey = $derived(data?.promptKey);
+  let promptArgs = $derived(data?.promptArgs ?? []);
+  let promptMath = $derived(data?.promptMath);
+  let promptKeySuffix = $derived(data?.promptKeySuffix);
+  let prefixLatex = $derived(data?.prefixLatex);
+  let suffixLatex = $derived(data?.suffixLatex);
+  let correctLatex = $derived(data?.correctLatex ?? exercise.answer);
+  let formatNumbers = $derived(data?.formatNumbers ?? false);
+
+  function thinSpace(s: string): string {
+    const dotIdx = s.indexOf('.');
+    if (dotIdx === -1) return s.replace(/\B(?=(\d{3})+(?!\d))/g, '\\,');
+    return s.slice(0, dotIdx).replace(/\B(?=(\d{3})+(?!\d))/g, '\\,') + s.slice(dotIdx);
+  }
+
+  let displayUserInput = $derived(formatNumbers ? thinSpace(userInput) : userInput);
+  let displayCorrectLatex = $derived(formatNumbers ? thinSpace(correctLatex) : correctLatex);
 </script>
 
 <ExerciseShell {exercise} {feedback} submitAnswer={() => onSubmit(userInput.trim())} {onNext} {validationError}>
-  {#if promptKey}
+  {#if promptKey && promptMath}
+    <p class="prompt-label">{_(promptKey)}<Math expression={promptMath} />{_(promptKeySuffix ?? '')}</p>
+  {:else if promptKey}
     <p class="prompt-label">{_(promptKey, ...promptArgs)}</p>
   {/if}
   {#if feedback === null}
@@ -30,14 +47,18 @@
       </div>
     {:else if exercise.prompt}
       <p class="prompt">
-        <Math expression={exercise.prompt} />
+        <Math expression={exercise.prompt} display />
       </p>
       <div class="answer-row">
+        {#if prefixLatex}<Math expression={prefixLatex} />{/if}
         <NumericInput bind:value={userInput} />
+        {#if suffixLatex}<Math expression={suffixLatex} />{/if}
       </div>
     {:else}
       <div class="answer-row">
+        {#if prefixLatex}<Math expression={prefixLatex} />{/if}
         <NumericInput bind:value={userInput} />
+        {#if suffixLatex}<Math expression={suffixLatex} />{/if}
       </div>
     {/if}
   {:else}
@@ -48,12 +69,21 @@
         <span class="user-answer"><Math expression={userInput} /></span>
         <Math expression={parts[1] ?? ''} display />
       </div>
-    {:else if exercise.prompt}
-      <p class="prompt">
-        <Math expression={exercise.prompt} />
-      </p>
+    {:else}
+      {#if exercise.prompt}
+        <p class="prompt">
+          <Math expression={exercise.prompt} display />
+        </p>
+      {/if}
+      {#if prefixLatex || suffixLatex || userInput}
+        <div class="answer-row">
+          {#if prefixLatex}<Math expression={prefixLatex} />{/if}
+          {#if userInput}<span class="user-answer"><Math expression={displayUserInput} /></span>{/if}
+          {#if suffixLatex}<Math expression={suffixLatex} />{/if}
+        </div>
+      {/if}
     {/if}
-    <Feedback {feedback} {correctLatex} textAnswer={exercise.answer} />
+    <Feedback {feedback} correctLatex={displayCorrectLatex} textAnswer={exercise.answer} />
   {/if}
 </ExerciseShell>
 

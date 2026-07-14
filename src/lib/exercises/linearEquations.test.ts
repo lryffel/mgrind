@@ -1,6 +1,12 @@
 import { describe, it, expect } from 'vitest';
-import { generateLinearEquations, validateLinearEquations, type LinearEquationsData } from './linearEquations';
+import {
+  generateLinearEquations,
+  generateLinearEquationsExercise,
+  validateLinearEquations,
+  type LinearEquationsData,
+} from './linearEquations';
 import { initLang } from '../i18n.svelte';
+import { expectDeterministic, expectSeedVariation } from '../test-utils';
 
 initLang();
 
@@ -118,5 +124,55 @@ describe('linearEquations', () => {
       const ex = generateLinearEquations(42, 5);
       expect(validateLinearEquations(ex.answer, ex)).toBe(true);
     });
+  });
+});
+
+describe('generateLinearEquationsExercise', () => {
+  it('returns a valid exercise with prompt and answer', () => {
+    const ex = generateLinearEquationsExercise(42, 0);
+    expect(ex.prompt).toBeTruthy();
+    expect(ex.answer).toBeTruthy();
+  });
+
+  it('sets pattern to text-input', () => {
+    const ex = generateLinearEquationsExercise(42, 0);
+    expect(ex.pattern).toBe('text-input');
+  });
+
+  it('is deterministic for the same seed', () => {
+    expectDeterministic(generateLinearEquationsExercise, 100, 3);
+  });
+
+  it('produces different results for different seeds', () => {
+    expectSeedVariation(generateLinearEquationsExercise, 3);
+  });
+
+  it('sets promptKey, promptMath, and promptKeySuffix in data', () => {
+    const ex = generateLinearEquationsExercise(42, 0);
+    const data = ex.data as any;
+    expect(data.promptKey).toBe('exercise.linearEquations.promptBefore');
+    expect(data.promptMath).toMatch(/^[a-z]$/);
+    expect(data.promptKeySuffix).toBe('exercise.linearEquations.promptAfter');
+  });
+
+  it('sets prefixLatex in data', () => {
+    const ex = generateLinearEquationsExercise(42, 0);
+    const data = ex.data as any;
+    expect(data.prefixLatex).toMatch(/^[a-z] = $/);
+  });
+
+  it('sets correctLatex in data', () => {
+    const ex = generateLinearEquationsExercise(42, 0);
+    const data = ex.data as any;
+    expect(data.correctLatex).toMatch(/^[a-z] = /);
+  });
+
+  it('preserves the variable from base generator', () => {
+    const base = generateLinearEquations(42, 3);
+    const wrapped = generateLinearEquationsExercise(42, 3);
+    const baseData = base.data as LinearEquationsData;
+    const wrapData = wrapped.data as any;
+    expect(wrapData.variable).toBe(baseData.variable);
+    expect(wrapped.answer).toBe(base.answer);
   });
 });

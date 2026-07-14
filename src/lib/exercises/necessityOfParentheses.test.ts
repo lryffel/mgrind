@@ -1,6 +1,7 @@
 import { describe, it, expect } from 'vitest';
 import {
   generateNecessityOfParentheses,
+  generateNecessityOfParenthesesExercise,
   validateNecessityOfParentheses,
   type NecessityOfParenthesesData,
 } from './necessityOfParentheses';
@@ -137,5 +138,51 @@ describe('generateNecessityOfParentheses', () => {
       if (foundDot) break;
     }
     expect(foundDot).toBe(true);
+  });
+});
+
+describe('generateNecessityOfParenthesesExercise', () => {
+  it('returns a valid exercise with prompt and answer', () => {
+    expectHasPromptAndAnswer(generateNecessityOfParenthesesExercise, 42, 5);
+  });
+
+  it('sets pattern to batch-choice', () => {
+    const ex = generateNecessityOfParenthesesExercise(42, 5);
+    expect(ex.pattern).toBe('batch-choice');
+  });
+
+  it('is deterministic for the same seed', () => {
+    expectDeterministic(generateNecessityOfParenthesesExercise, 12345, 3);
+  });
+
+  it('produces different results for different seeds', () => {
+    expectSeedVariation(generateNecessityOfParenthesesExercise, 5);
+  });
+
+  it('sets data.rows from questions', () => {
+    const ex = generateNecessityOfParenthesesExercise(42, 5);
+    const data = ex.data as any;
+    expect(data.rows).toHaveLength(3);
+    for (const row of data.rows) {
+      expect(typeof row.latex).toBe('string');
+    }
+  });
+
+  it('sets data.buttons to yes/no', () => {
+    const ex = generateNecessityOfParenthesesExercise(42, 5);
+    const data = ex.data as any;
+    expect(data.buttons).toEqual(['yes', 'no']);
+  });
+
+  it('sets promptKey', () => {
+    const ex = generateNecessityOfParenthesesExercise(42, 5);
+    const data = ex.data as any;
+    expect(data.promptKey).toBe('exercise.necessityOfParentheses.prompt');
+  });
+
+  it('preserves the answer from base generator', () => {
+    const base = generateNecessityOfParentheses(42, 5);
+    const wrapped = generateNecessityOfParenthesesExercise(42, 5);
+    expect(wrapped.answer).toBe(base.answer);
   });
 });

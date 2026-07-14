@@ -117,14 +117,9 @@ Types with `pattern: 'custom'` have a component in `exercises/`:
 | `FactoringOut.svelte` | factoringOut |
 | `FactoringOutAndBinomial.svelte` | factoringOutAndBinomial |
 | `FactorEquations.svelte` | factorEquations |
-| `LinearEquationsExercise.svelte` | linearEquations |
-| `NecessityOfParentheses.svelte` | necessityOfParentheses |
 | `Pythagoras.svelte` | pythagoras |
 | `AreaExercise.svelte` | area |
 | `InteriorAngles.svelte` | interiorAngles |
-| `TermTransformationsTrivia.svelte` | termTransformationsTrivia |
-| `PercentExercise.svelte` | percent |
-| `RoundingSigfigsExercise.svelte` | roundingSigfigs |
 | `ScientificNotationExercise.svelte` | scientificNotation |
 
 ## Routing

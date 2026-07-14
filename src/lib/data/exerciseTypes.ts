@@ -25,8 +25,10 @@ import { generateFactoringOutAndBinomial, validateFactoringOutAndBinomial } from
 import FactoringOutAndBinomial from '../components/exercises/FactoringOutAndBinomial.svelte';
 import { generateFactorEquations, validateFactorEquations } from '../exercises/factorEquations';
 import FactorEquations from '../components/exercises/FactorEquations.svelte';
-import { generateNecessityOfParentheses, validateNecessityOfParentheses } from '../exercises/necessityOfParentheses';
-import NecessityOfParentheses from '../components/exercises/NecessityOfParentheses.svelte';
+import {
+  generateNecessityOfParenthesesExercise,
+  validateNecessityOfParentheses,
+} from '../exercises/necessityOfParentheses';
 import AdditionFractionInstructions from '../components/exerciseInstructions/AdditionFractionInstructions.svelte';
 import SquaresInstructions from '../components/exerciseInstructions/SquaresInstructions.svelte';
 import OrderOfOperationsInstructions from '../components/exerciseInstructions/OrderOfOperationsInstructions.svelte';
@@ -46,17 +48,15 @@ import LinearEquationsInstructions from '../components/exerciseInstructions/Line
 import FactorEquationsInstructions from '../components/exerciseInstructions/FactorEquationsInstructions.svelte';
 import { generateExpand, validateExpand } from '../exercises/expand';
 import { generateExpandAndCollect, validateExpandAndCollect } from '../exercises/expandAndCollect';
-import { generateLinearEquations, validateLinearEquations } from '../exercises/linearEquations';
-import LinearEquationsExercise from '../components/exercises/LinearEquationsExercise.svelte';
+import { generateLinearEquationsExercise, validateLinearEquations } from '../exercises/linearEquations';
 import { generateInteriorAngles } from '../exercises/interiorAngles';
 import { validateFractionTrivia, generateFractionTriviaExercise } from '../exercises/fractionTrivia';
 import { generatePythagoras, validatePythagoras } from '../exercises/pythagoras';
 import { generateArea, validateArea } from '../exercises/area';
-import { generatePercent, validatePercent } from '../exercises/percent';
+import { generatePercentExercise, validatePercent } from '../exercises/percent';
 import InteriorAngles from '../components/exercises/InteriorAngles.svelte';
 import Pythagoras from '../components/exercises/Pythagoras.svelte';
 import AreaExercise from '../components/exercises/AreaExercise.svelte';
-import PercentExercise from '../components/exercises/PercentExercise.svelte';
 import InteriorAnglesInstructions from '../components/exerciseInstructions/InteriorAnglesInstructions.svelte';
 import PythagorasInstructions from '../components/exerciseInstructions/PythagorasInstructions.svelte';
 import AreaInstructions from '../components/exerciseInstructions/AreaInstructions.svelte';
@@ -70,8 +70,7 @@ import { generateCompareFractions, validateCompareFractions } from '../exercises
 import CompareFractionsInstructions from '../components/exerciseInstructions/CompareFractionsInstructions.svelte';
 import { generateSigns, validateSigns } from '../exercises/signs';
 import SignsInstructions from '../components/exerciseInstructions/SignsInstructions.svelte';
-import { generateRoundingSigfigs } from '../exercises/roundingSigfigs';
-import RoundingSigfigsExercise from '../components/exercises/RoundingSigfigsExercise.svelte';
+import { generateRoundingSigfigsExercise } from '../exercises/roundingSigfigs';
 import RoundingSigfigsInstructions from '../components/exerciseInstructions/RoundingSigfigsInstructions.svelte';
 import { validateNumbersTrivia, generateNumbersTriviaExercise } from '../exercises/numbersTrivia';
 import { generateGcdLcm, validateGcdLcm } from '../exercises/gcdLcm';
@@ -81,7 +80,6 @@ import {
   generateTermTransformationsTrivia,
   validateTermTransformationsTrivia,
 } from '../exercises/termTransformationsTrivia';
-import TermTransformationsTrivia from '../components/exercises/TermTransformationsTrivia.svelte';
 
 function defineExerciseType(config: {
   id: string;
@@ -258,9 +256,8 @@ export const exerciseTypes: Record<string, ExerciseType> = {
     id: 'linearEquations',
     nameKey: 'exercise.linearEquations.name',
     descriptionKey: 'exercise.linearEquations.desc',
-    generate: generateLinearEquations,
+    generate: generateLinearEquationsExercise,
     validate: validateLinearEquations,
-    component: LinearEquationsExercise,
     instructionComponent: LinearEquationsInstructions,
   }),
   factorEquations: defineExerciseType({
@@ -281,9 +278,8 @@ export const exerciseTypes: Record<string, ExerciseType> = {
     id: 'necessityOfParentheses',
     nameKey: 'exercise.necessityOfParentheses.name',
     descriptionKey: 'exercise.necessityOfParentheses.desc',
-    generate: generateNecessityOfParentheses,
+    generate: generateNecessityOfParenthesesExercise,
     validate: validateNecessityOfParentheses,
-    component: NecessityOfParentheses,
   }),
   pythagoras: defineExerciseType({
     id: 'pythagoras',
@@ -318,9 +314,8 @@ export const exerciseTypes: Record<string, ExerciseType> = {
     id: 'percent',
     nameKey: 'exercise.percent.name',
     descriptionKey: 'exercise.percent.desc',
-    generate: generatePercent,
+    generate: generatePercentExercise,
     validate: validatePercent,
-    component: PercentExercise,
     prerequisites: [{ typeId: 'multiplication', complexity: 3 }],
   }),
   compareFractions: defineExerciseType({
@@ -353,8 +348,7 @@ export const exerciseTypes: Record<string, ExerciseType> = {
     id: 'roundingSigfigs',
     nameKey: 'exercise.roundingSigfigs.name',
     descriptionKey: 'exercise.roundingSigfigs.desc',
-    generate: generateRoundingSigfigs,
-    component: RoundingSigfigsExercise,
+    generate: generateRoundingSigfigsExercise,
     instructionComponent: RoundingSigfigsInstructions,
   }),
   gcdLcm: defineExerciseType({
@@ -372,7 +366,6 @@ export const exerciseTypes: Record<string, ExerciseType> = {
     descriptionKey: 'exercise.termTransformationsTrivia.desc',
     generate: generateTermTransformationsTrivia,
     validate: validateTermTransformationsTrivia,
-    component: TermTransformationsTrivia,
   }),
   numbersTrivia: defineExerciseType({
     id: 'numbersTrivia',

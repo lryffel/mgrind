@@ -231,6 +231,56 @@ describe('generateTermTransformationsTrivia', () => {
     }
   });
 
+  it('laws sets pattern to single-choice', () => {
+    for (let seed = 0; seed < 50; seed++) {
+      const ex = generateTermTransformationsTrivia(seed, 1);
+      if (d(ex).triviaType === 'laws') {
+        expect(ex.pattern).toBe('single-choice');
+      }
+    }
+  });
+
+  it('powerLaws sets pattern to single-choice', () => {
+    for (let seed = 0; seed < 50; seed++) {
+      const ex = generateTermTransformationsTrivia(seed, 5);
+      if (d(ex).triviaType === 'powerLaws') {
+        expect(ex.pattern).toBe('single-choice');
+      }
+    }
+  });
+
+  it('trueFalse sets pattern to batch-choice', () => {
+    for (let seed = 0; seed < 50; seed++) {
+      const ex = generateTermTransformationsTrivia(seed, 9);
+      if (d(ex).triviaType === 'trueFalse') {
+        expect(ex.pattern).toBe('batch-choice');
+      }
+    }
+  });
+
+  it('laws sets data.options matching triviaOptionsLatex', () => {
+    for (let seed = 0; seed < 20; seed++) {
+      const ex = generateTermTransformationsTrivia(seed, 1);
+      if (d(ex).triviaType === 'laws') {
+        const data = ex.data as any;
+        expect(data.options).toHaveLength(data.triviaOptionsLatex.length);
+        expect(data.options.map((o: any) => o.latex)).toEqual(data.triviaOptionsLatex);
+      }
+    }
+  });
+
+  it('trueFalse sets data.rows from statementsLatex', () => {
+    for (let seed = 0; seed < 20; seed++) {
+      const ex = generateTermTransformationsTrivia(seed, 9);
+      if (d(ex).triviaType === 'trueFalse') {
+        const data = ex.data as any;
+        expect(data.rows).toHaveLength(data.statementsLatex.length);
+        expect(data.rows.map((r: any) => r.latex)).toEqual(data.statementsLatex);
+        expect(data.buttons).toEqual(['yes', 'no']);
+      }
+    }
+  });
+
   it('trueFalse at complexity 10 includes sqrt statements', () => {
     const found = new Set<string>();
     for (let seed = 0; seed < 500; seed++) {

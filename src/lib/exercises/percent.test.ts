@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { generatePercent, validatePercent } from './percent';
+import { generatePercent, generatePercentExercise, validatePercent } from './percent';
 import { expectDeterministic, expectSeedVariation, expectHasPromptAndAnswer } from '../test-utils';
 import type { PercentData } from './percent';
 
@@ -122,9 +122,9 @@ describe('generatePercent', () => {
       const ex = generatePercent(seed, 5);
       const data = getData(ex);
       if (data.variant !== 'D') continue;
-      const raw = (data.c1 * data.n2) / data.n1;
-      const expected = Math.round(raw * 100) / 100;
-      expect(Math.abs(parseFloat(ex.answer) - expected)).toBeLessThan(1e-9);
+      const expected = (data.c1 * data.n2) / data.n1;
+      expect(Number.isInteger(expected)).toBe(true);
+      expect(parseFloat(ex.answer)).toBe(expected);
     }
   });
 
@@ -133,9 +133,9 @@ describe('generatePercent', () => {
       const ex = generatePercent(seed, 7);
       const data = getData(ex);
       if (data.variant !== 'E') continue;
-      const raw = (data.t1 * data.n1) / data.n2;
-      const expected = Math.round(raw * 100) / 100;
-      expect(Math.abs(parseFloat(ex.answer) - expected)).toBeLessThan(1e-9);
+      const expected = (data.t1 * data.n1) / data.n2;
+      expect(Number.isInteger(expected)).toBe(true);
+      expect(parseFloat(ex.answer)).toBe(expected);
     }
   });
 
@@ -230,12 +230,17 @@ describe('generatePercent', () => {
     }
   });
 
-  it('answers are terminating decimals (max 2 dp)', () => {
+  it('answers are integers for D and E, terminating decimals for A-C', () => {
     for (let seed = 0; seed < 500; seed++) {
       for (let c = 0; c <= 10; c++) {
         const ex = generatePercent(seed, c);
+        const data = getData(ex);
         const val = parseFloat(ex.answer);
-        expect(Math.abs(val - Math.round(val * 100) / 100)).toBeLessThan(1e-9);
+        if (data.variant === 'D' || data.variant === 'E') {
+          expect(Number.isInteger(val)).toBe(true);
+        } else {
+          expect(Math.abs(val - Math.round(val * 100) / 100)).toBeLessThan(1e-9);
+        }
       }
     }
   });
@@ -243,13 +248,13 @@ describe('generatePercent', () => {
   it('handles complexity beyond 10 by clamping', () => {
     const ex = generatePercent(42, 20);
     expect(ex.answer).toBeTruthy();
-    expect(ex.prompt).toBeTruthy();
+    expect(typeof ex.prompt).toBe('string');
   });
 
   it('handles complexity below 0 by clamping', () => {
     const ex = generatePercent(42, -5);
     expect(ex.answer).toBeTruthy();
-    expect(ex.prompt).toBeTruthy();
+    expect(typeof ex.prompt).toBe('string');
   });
 
   it('variant C has variablePart set to thin-space percent', () => {
@@ -324,30 +329,26 @@ describe('generatePercent', () => {
     }
   });
 
-  it('variant D at higher complexity: n2 is not a multiple of n1', () => {
-    let nonMultipleFound = false;
+  it('variant D always has n2 as a multiple of n1 (integer result)', () => {
     for (let seed = 0; seed < 200; seed++) {
-      for (let c = 2; c <= 10; c++) {
+      for (let c = 0; c <= 10; c++) {
         const ex = generatePercent(seed, c);
         const data = getData(ex);
         if (data.variant !== 'D') continue;
-        if (data.n2 % data.n1 !== 0) nonMultipleFound = true;
+        expect(data.n2 % data.n1).toBe(0);
       }
     }
-    expect(nonMultipleFound).toBe(true);
   });
 
-  it('variant E at higher complexity: neither n1 nor n2 divides the other', () => {
-    let nonDivisorFound = false;
+  it('variant E always has n1 as a multiple of n2 (integer result)', () => {
     for (let seed = 0; seed < 200; seed++) {
-      for (let c = 2; c <= 10; c++) {
+      for (let c = 0; c <= 10; c++) {
         const ex = generatePercent(seed, c);
         const data = getData(ex);
         if (data.variant !== 'E') continue;
-        if (data.n1 % data.n2 !== 0 && data.n2 % data.n1 !== 0) nonDivisorFound = true;
+        expect(data.n1 % data.n2).toBe(0);
       }
     }
-    expect(nonDivisorFound).toBe(true);
   });
 
   it('G never exceeds 400', () => {
@@ -357,6 +358,72 @@ describe('generatePercent', () => {
         const data = getData(ex);
         if (data.variant === 'D' || data.variant === 'E') continue;
         expect(data.G).toBeLessThanOrEqual(400);
+      }
+    }
+  });
+});
+
+describe('generatePercentExercise', () => {
+  it('returns a valid exercise with prompt and answer', () => {
+    expectHasPromptAndAnswer(generatePercentExercise, 42, 5);
+  });
+
+  it('sets pattern to text-input', () => {
+    const ex = generatePercentExercise(42, 5);
+    expect(ex.pattern).toBe('text-input');
+  });
+
+  it('is deterministic for the same seed', () => {
+    expectDeterministic(generatePercentExercise, 12345, 3);
+  });
+
+  it('produces different results for different seeds', () => {
+    expectSeedVariation(generatePercentExercise, 5);
+  });
+
+  it('sets promptKey and promptArgs based on variant', () => {
+    const ex = generatePercentExercise(42, 5);
+    const data = ex.data as any;
+    expect(data.promptKey).toBeTruthy();
+    expect(data.promptKey).toMatch(/^exercise\.percent\.promptLabel/);
+    expect(Array.isArray(data.promptArgs)).toBe(true);
+  });
+
+  it('preserves the answer from base generator', () => {
+    const base = generatePercent(42, 5);
+    const wrapped = generatePercentExercise(42, 5);
+    expect(wrapped.answer).toBe(base.answer);
+  });
+
+  it('variant C sets correctLatex with percent sign', () => {
+    for (let seed = 0; seed < 200; seed++) {
+      const ex = generatePercentExercise(seed, 5);
+      const data = ex.data as any;
+      if (data.variant === 'C') {
+        expect(data.correctLatex).toContain('\\%');
+        return;
+      }
+    }
+  });
+
+  it('variant D sets correctLatex with CHF', () => {
+    for (let seed = 0; seed < 200; seed++) {
+      const ex = generatePercentExercise(seed, 5);
+      const data = ex.data as any;
+      if (data.variant === 'D') {
+        expect(data.correctLatex).toContain('CHF');
+        return;
+      }
+    }
+  });
+
+  it('variant E sets correctLatex with h', () => {
+    for (let seed = 0; seed < 200; seed++) {
+      const ex = generatePercentExercise(seed, 8);
+      const data = ex.data as any;
+      if (data.variant === 'E') {
+        expect(data.correctLatex).toContain('\\text{h}');
+        return;
       }
     }
   });
