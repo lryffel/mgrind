@@ -1,22 +1,10 @@
-- Don't infer design decisions.
-- Always check whether you can use abstracted code. If you see an opportunity, ask whether you should abstract.
 - Write tests for everything you implement, unless the user agrees that it is unnecessary.
   - Shared test utilities in `src/lib/test-utils.ts`: `expectDeterministic`, `expectSeedVariation`, `expectHasPromptAndAnswer`
-- Try to fix linting errors instead of ignoring them.
+- Try to fix linting errors instead of ignoring them with magic comments.
 - After implementing a feature, fixing a bug or refactoring, check whether any skills, AGENTS.md or STRUCTURE.md need an update.
 
 - `STRUCTURE.md` describes the codebase architecture — read it first.
 
-- `npm run dev` — dev server
-- `npm run build` — production build
-- `npm run preview` — preview production build
-- `npm run check` — typecheck (svelte-check + tsc)
-- `npm run test` — vitest; tests co-located as `*.test.ts` beside sources
-- `npm run format` — prettier --write
-- `npm run format:check` — prettier --check
-- `npm run lint` — eslint
-- `npm run lint:fix` — eslint --fix
-- Pre-commit hooks (husky + lint-staged) auto-format with prettier. Use `git commit --no-verify` to skip if needed.
 - `src/test-setup.ts` mocks `localStorage` globally for tests
 
 - Svelte 5 runes: `$state`, `$derived`, `$effect`, `$props`, `mount`
