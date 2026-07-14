@@ -1,5 +1,10 @@
 import { describe, it, expect } from 'vitest';
-import { generateSubstitution, validateSubstitution, type SubstitutionData } from './substitution';
+import {
+  generateSubstitution,
+  generateSubstitutionExercise,
+  validateSubstitution,
+  type SubstitutionData,
+} from './substitution';
 import type { Exercise } from '../types';
 
 function d(ex: Exercise): SubstitutionData {
@@ -103,7 +108,10 @@ describe('generateSubstitution', () => {
         if (ex.answer.includes('/')) {
           const parts = ex.answer.split('/');
           expect(parts).toHaveLength(2);
+          const num = parseInt(parts[0], 10);
           const den = parseInt(parts[1], 10);
+          expect(isNaN(num)).toBe(false);
+          expect(isNaN(den)).toBe(false);
           expect(den).toBeGreaterThan(1);
           expect(den).toBeLessThanOrEqual(20);
         }
@@ -264,6 +272,93 @@ describe('two-variable substitution', () => {
       } else {
         expect(validateSubstitution('999', ex)).toBe(false);
       }
+    }
+  });
+});
+
+describe('generateSubstitutionExercise', () => {
+  it('returns an exercise with pattern set', () => {
+    for (let seed = 0; seed < 100; seed++) {
+      const ex = generateSubstitutionExercise(seed, seed % 10);
+      expect(ex.pattern).toMatch(/^text-input$|^fraction-input$/);
+    }
+  });
+
+  it('sets fraction-input pattern when answer contains / or ,', () => {
+    let found = false;
+    for (let seed = 0; seed < 500; seed++) {
+      const ex = generateSubstitutionExercise(seed, 9);
+      if (ex.answer.includes(',') || ex.answer.includes('/')) {
+        expect(ex.pattern).toBe('fraction-input');
+        found = true;
+      }
+    }
+    expect(found).toBe(true);
+  });
+
+  it('sets text-input pattern for integer answers', () => {
+    for (let seed = 0; seed < 200; seed++) {
+      const ex = generateSubstitutionExercise(seed, 1);
+      expect(ex.answer).not.toContain('/');
+      expect(ex.pattern).toBe('text-input');
+    }
+  });
+
+  it('sets promptKey and promptArgs for variable assignment', () => {
+    const ex = generateSubstitutionExercise(42, 3);
+    const data = ex.data as { promptKey: string; promptArgs: string[] };
+    expect(data.promptKey).toBe('exercise.substitution.prompt');
+    expect(data.promptArgs).toHaveLength(2);
+  });
+
+  it('uses promptTwo for two-var exercises', () => {
+    for (let seed = 0; seed < 200; seed++) {
+      const ex = generateSubstitutionExercise(seed, 7);
+      const data = ex.data as { promptKey: string; promptArgs: string[]; variable: string; varB?: string };
+      if (data.varB) {
+        expect(data.promptKey).toBe('exercise.substitution.promptTwo');
+        expect(data.promptArgs).toHaveLength(4);
+      }
+    }
+  });
+
+  it('fraction-input answer uses comma separator', () => {
+    for (let seed = 0; seed < 500; seed++) {
+      const ex = generateSubstitutionExercise(seed, 7);
+      if (ex.pattern === 'fraction-input') {
+        expect(ex.answer).toMatch(/^-?\d+,\d+$/);
+      }
+    }
+  });
+
+  it('fraction-input prompt does not contain trailing = ?', () => {
+    for (let seed = 0; seed < 500; seed++) {
+      const ex = generateSubstitutionExercise(seed, 9);
+      if (ex.pattern === 'fraction-input') {
+        expect(ex.prompt).not.toMatch(/=\s*\?$/);
+      }
+    }
+  });
+
+  it('text-input prompt ends with = ?', () => {
+    for (let seed = 0; seed < 500; seed++) {
+      const ex = generateSubstitutionExercise(seed, 2);
+      if (ex.pattern === 'text-input') {
+        expect(ex.prompt).toMatch(/=\s*\?$/);
+      }
+    }
+  });
+
+  it('deterministic for same seed and complexity', () => {
+    const a = generateSubstitutionExercise(12345, 5);
+    const b = generateSubstitutionExercise(12345, 5);
+    expect(a).toEqual(b);
+  });
+
+  it('validateSubstitution works on wrapper output', () => {
+    for (let seed = 0; seed < 50; seed++) {
+      const ex = generateSubstitutionExercise(seed, 5);
+      expect(validateSubstitution(ex.answer, ex)).toBe(true);
     }
   });
 });

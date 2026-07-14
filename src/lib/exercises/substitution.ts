@@ -125,7 +125,7 @@ function genAX2(input: GenInput): GenOutput {
     if (resultDen <= 20 && ansDen !== 0) {
       const answer = reduceFrac(ansNum, ansDen);
       return {
-        term: `${fracDisplay(coeffNum, coeffDen)}\\cdot ${v}^{2}`,
+        term: coeffLatex(coeffNum, coeffDen, `${v}^{2}`),
         answer: [answer[0], answer[1]].join('/').replace(/\/1$/, ''),
         subValue: fracDisplay(subNum, subDen),
         hasFractionAnswer: answer[1] > 1,
@@ -136,7 +136,7 @@ function genAX2(input: GenInput): GenOutput {
   const s = randInt(rng, 0, 5);
   const c = randInt(rng, 1, 9);
   return {
-    term: `${c} \\cdot ${v}^{2}`,
+    term: c === 1 ? `${v}^{2}` : `${c} \\cdot ${v}^{2}`,
     answer: String(c * s * s),
     subValue: String(s),
     hasFractionAnswer: false,
@@ -176,7 +176,7 @@ function genAMinusBX(input: GenInput): GenOutput {
     if (resultDen <= 20) {
       const answer = reduceFrac(ansNum, ansDen);
       return {
-        term: `${fracDisplay(aNum, aDen)} - ${fracDisplay(bNum, bDen)}\\cdot ${v}`,
+        term: `${fracDisplay(aNum, aDen)} - ${coeffLatex(bNum, bDen, v)}`,
         answer: [answer[0], answer[1]].join('/').replace(/\/1$/, ''),
         subValue: fracDisplay(subNum, subDen),
         hasFractionAnswer: answer[1] > 1,
@@ -188,7 +188,7 @@ function genAMinusBX(input: GenInput): GenOutput {
   const a = randInt(rng, s + 1, Math.min(s + 10, 20));
   const b = randInt(rng, 1, 5);
   return {
-    term: `${a} - ${b}\\cdot ${v}`,
+    term: b === 1 ? `${a} - ${v}` : `${a} - ${b}\\cdot ${v}`,
     answer: String(a - b * s),
     subValue: String(s),
     hasFractionAnswer: false,
@@ -799,14 +799,35 @@ export function generateSubstitution(seed: number, complexity: number): Exercise
   };
 }
 
+export function generateSubstitutionExercise(seed: number, complexity: number): Exercise {
+  const ex = generateSubstitution(seed, complexity);
+  const data = ex.data as SubstitutionData;
+
+  const isFraction = ex.answer.includes('/');
+  const promptKey = data.varB && data.valueB ? 'exercise.substitution.promptTwo' : 'exercise.substitution.prompt';
+  const promptArgs =
+    data.varB && data.valueB ? [data.variable, data.value, data.varB, data.valueB] : [data.variable, data.value];
+
+  if (isFraction) {
+    // FractionInputCard expects comma-separated num,den for correctLatex and getSubmitValue
+    const answer = ex.answer.replace('/', ',');
+    return { ...ex, pattern: 'fraction-input', prompt: data.term, answer, data: { ...data, promptKey, promptArgs } };
+  }
+  return { ...ex, pattern: 'text-input', prompt: `${data.term} = ?`, data: { ...data, promptKey, promptArgs } };
+}
+
+function normalizeFrac(s: string): string {
+  return s.replace(/,/g, '/');
+}
+
 export function validateSubstitution(answer: string, exercise: Exercise): boolean {
   const a = answer.trim();
   const expected = exercise.answer;
 
-  if (a === expected) return true;
+  if (a === expected || normalizeFrac(a) === normalizeFrac(expected)) return true;
 
-  const aParsed = parseFrac(a);
-  const eParsed = parseFrac(expected);
+  const aParsed = parseFrac(normalizeFrac(a));
+  const eParsed = parseFrac(normalizeFrac(expected));
 
   if (aParsed === null || eParsed === null) return false;
 

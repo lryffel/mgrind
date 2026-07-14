@@ -12,35 +12,35 @@
 
   let validationError = $derived(userInput.includes(',') ? _('error.decimalComma') : null);
   let promptKey = $derived((exercise.data as any)?.promptKey);
+  let promptArgs = $derived((exercise.data as any)?.promptArgs ?? []);
   let correctLatex = $derived(exercise.answer);
 </script>
 
 <ExerciseShell {exercise} {feedback} submitAnswer={() => onSubmit(userInput.trim())} {onNext} {validationError}>
+  {#if promptKey}
+    <p class="prompt-label">{_(promptKey, ...promptArgs)}</p>
+  {/if}
   {#if feedback === null}
-    {#if promptKey}
-      <p class="prompt-label">{_(promptKey)}</p>
-      <div class="answer-row">
-        <NumericInput bind:value={userInput} />
-      </div>
-    {:else if exercise.prompt.includes('?')}
+    {#if exercise.prompt.includes('?')}
       {@const parts = exercise.prompt.split('?')}
       <div class="prompt-row">
         <Math expression={parts[0]} display />
         <NumericInput bind:value={userInput} align="center" />
         <Math expression={parts[1] ?? ''} display />
       </div>
-    {:else}
+    {:else if exercise.prompt}
       <p class="prompt">
         <Math expression={exercise.prompt} />
       </p>
       <div class="answer-row">
         <NumericInput bind:value={userInput} />
       </div>
+    {:else}
+      <div class="answer-row">
+        <NumericInput bind:value={userInput} />
+      </div>
     {/if}
   {:else}
-    {#if promptKey}
-      <p class="prompt-label">{_(promptKey)}</p>
-    {/if}
     {#if exercise.prompt.includes('?')}
       {@const parts = exercise.prompt.split('?')}
       <div class="prompt-row">
@@ -48,7 +48,7 @@
         <span class="user-answer"><Math expression={userInput} /></span>
         <Math expression={parts[1] ?? ''} display />
       </div>
-    {:else}
+    {:else if exercise.prompt}
       <p class="prompt">
         <Math expression={exercise.prompt} />
       </p>

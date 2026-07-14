@@ -35,17 +35,13 @@ const dict = {
     en: 'Substitute a value into an expression',
     de: 'Setze einen Wert in einen Term ein',
   },
-  'exercise.substitution.promptBefore': {
-    en: 'Substitute ',
-    de: 'Setze ',
+  'exercise.substitution.prompt': {
+    en: 'Substitute {0} = {1}.',
+    de: 'Setze {0} = {1} ein.',
   },
-  'exercise.substitution.and': {
-    en: ' and ',
-    de: ' und ',
-  },
-  'exercise.substitution.promptAfter': {
-    en: '',
-    de: ' ein',
+  'exercise.substitution.promptTwo': {
+    en: 'Substitute {0} = {1} and {2} = {3}.',
+    de: 'Setze {0} = {1} und {2} = {3} ein.',
   },
   'exercise.collectingTerms.name': { en: 'Collecting terms', de: 'Terme zusammenfassen' },
   'exercise.collectingTerms.desc': {

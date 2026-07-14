@@ -23,6 +23,7 @@
   const op = $derived(data.op);
   const isBinary = $derived(data.op === '*');
   const promptKey = $derived(data.promptKey);
+  const promptArgs = $derived((exercise.data as any)?.promptArgs ?? []);
   const displayOp = $derived(op === '*' ? '\\cdot' : (op ?? ''));
 
   const correctNumDen = $derived(exercise.answer.split(','));
@@ -55,7 +56,7 @@
 >
   {#if feedback === null}
     {#if promptKey}
-      <p class="prompt-label">{_(promptKey)}</p>
+      <p class="prompt-label">{_(promptKey, ...promptArgs)}</p>
     {/if}
     <div class="fraction-prompt-row">
       <Math
@@ -69,7 +70,7 @@
     </div>
   {:else}
     {#if promptKey}
-      <p class="prompt-label">{_(promptKey)}</p>
+      <p class="prompt-label">{_(promptKey, ...promptArgs)}</p>
     {/if}
     <div class="fraction-prompt-row">
       <Math

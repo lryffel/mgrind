@@ -8,8 +8,7 @@ import { generateOrderOfOperations } from '../exercises/orderOfOperations';
 import { generateAdditionFraction } from '../exercises/additionFraction';
 import { generateSimplifyFraction } from '../exercises/simplifyFraction';
 import { generateMultiplicationFraction } from '../exercises/multiplicationFraction';
-import { generateSubstitution, validateSubstitution } from '../exercises/substitution';
-import SubstitutionExercise from '../components/exercises/SubstitutionExercise.svelte';
+import { generateSubstitutionExercise, validateSubstitution } from '../exercises/substitution';
 import { generateBinomialFormulas, validateBinomialFormulas } from '../exercises/binomialFormulas';
 import { generateCollectingTerms, validateCollectingTerms } from '../exercises/collectingTerms';
 import { generateScientificNotation } from '../exercises/scientificNotation';
@@ -177,9 +176,8 @@ export const exerciseTypes: Record<string, ExerciseType> = {
     id: 'substitution',
     nameKey: 'exercise.substitution.name',
     descriptionKey: 'exercise.substitution.desc',
-    generate: generateSubstitution,
+    generate: generateSubstitutionExercise,
     validate: validateSubstitution,
-    component: SubstitutionExercise,
     instructionComponent: SubstitutionInstructions,
   }),
   collectingTerms: defineExerciseType({
