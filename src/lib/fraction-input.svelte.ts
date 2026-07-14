@@ -29,7 +29,7 @@ export function useFractionInput(): FractionInput {
   });
 
   function getSubmitValue(separator = ','): string {
-    return `${_num || '0'}${separator}${!_den || _den === '0' ? '1' : _den}`;
+    return `${_num}${separator}${_den}`;
   }
 
   return {

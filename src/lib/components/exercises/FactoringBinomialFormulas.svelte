@@ -20,6 +20,7 @@
   let bVal = $state('');
 
   let validationError = $derived(aVal.includes(',') || bVal.includes(',') ? _('error.decimalComma') : null);
+  let disableSubmit = $derived(selectedFormula === null || (selectedFormula > 0 && (aVal === '' || bVal === '')));
 
   function normVal(s: string): string {
     return normalizeCoeff(s, 'coefficient');
@@ -58,7 +59,7 @@
   let textAnswer = $derived(correctLatex ? undefined : _('exercise.factoringBinomialFormulas.noFormulaFeedback'));
 </script>
 
-<ExerciseShell {exercise} {feedback} {submitAnswer} {onNext} {validationError}>
+<ExerciseShell {exercise} {feedback} {submitAnswer} {onNext} {validationError} {disableSubmit}>
   <p class="prompt-label">{_('exercise.factoringBinomialFormulas.prompt')}</p>
   {#if feedback === null}
     <select bind:value={selectedFormula} class="formula-select">

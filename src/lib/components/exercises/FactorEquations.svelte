@@ -18,6 +18,7 @@
   let perRootCorrect = $state<boolean[]>([]);
 
   let validationError = $derived(values.some((v) => v.includes(',')) ? _('error.decimalComma') : null);
+  let disableSubmit = $derived(values.some((v) => v === ''));
 
   $effect(() => {
     if (feedback === null) {
@@ -41,7 +42,7 @@
   }
 </script>
 
-<ExerciseShell {exercise} {feedback} submitAnswer={handleSubmit} {onNext} {validationError}>
+<ExerciseShell {exercise} {feedback} submitAnswer={handleSubmit} {onNext} {validationError} {disableSubmit}>
   <p class="prompt-label">{_('exercise.factorEquations.prompt')}</p>
   <div class="prompt-row">
     <Math expression={exercise.prompt} display />

@@ -20,6 +20,9 @@
   let validationError = $derived(
     coeffA.includes(',') || coeffs.some((c) => c.includes(',')) ? _('error.decimalComma') : null,
   );
+  let disableSubmit = $derived(
+    selectedIdx === null || (selectedIdx >= 0 && (coeffA === '' || coeffs.some((c) => c === ''))),
+  );
 
   let currentOption = $derived(selectedIdx !== null && selectedIdx >= 0 ? data.factorOptions[selectedIdx] : null);
 
@@ -73,7 +76,7 @@
   }
 </script>
 
-<ExerciseShell {exercise} {feedback} submitAnswer={handleSubmit} {onNext} {validationError}>
+<ExerciseShell {exercise} {feedback} submitAnswer={handleSubmit} {onNext} {validationError} {disableSubmit}>
   <p class="prompt-label">{_('exercise.factoringOut.prompt')}</p>
   {#if feedback === null}
     <label class="config-label">

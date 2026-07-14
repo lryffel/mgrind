@@ -16,6 +16,7 @@
   let values = $state<string[]>([]);
 
   let validationError = $derived(values.some((v) => v.includes(',')) ? _('error.decimalComma') : null);
+  let disableSubmit = $derived(values.some((v) => v === ''));
 
   $effect(() => {
     values = primes.map(() => '');
@@ -55,6 +56,7 @@
   submitAnswer={() => onSubmit(values.map((v) => Number(v) || 0).join(','))}
   {onNext}
   {validationError}
+  {disableSubmit}
 >
   {#if promptKey}
     <p class="prompt-label">{_(promptKey)}</p>

@@ -14,6 +14,7 @@
   let userInput = $state('');
 
   let validationError = $derived(userInput.includes(',') ? _('error.decimalComma') : null);
+  let disableSubmit = $derived(userInput.trim() === '');
 
   const data = $derived(exercise.data as unknown as PythagorasData);
   const vertices = $derived(data.triangleVertices);
@@ -124,7 +125,7 @@
   }
 </script>
 
-<ExerciseShell {exercise} {feedback} submitAnswer={handleSubmit} {onNext} {validationError}>
+<ExerciseShell {exercise} {feedback} submitAnswer={handleSubmit} {onNext} {validationError} {disableSubmit}>
   {#snippet submitExtra()}
     {#if feedback === null}
       <button class="cannot-compute-link" onclick={handleCannotCompute} title={cannotComputeShort}>
@@ -152,7 +153,7 @@
       {#each sides as s, i (i)}
         <div class="svg-overlay" style={pct(s.labelX, s.labelY)}>
           {#if s.isMissing && feedback === null}
-            <NumericInput bind:value={userInput} placeholder="?" />
+            <NumericInput bind:value={userInput} />
           {:else if s.isMissing && feedback !== null}
             {#if exercise.answer === 'cannot_compute'}
               <span class="user-answer">?</span>

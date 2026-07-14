@@ -12,6 +12,7 @@
   let userInput = $state('');
 
   let validationError = $derived(userInput.includes(',') ? _('error.decimalComma') : null);
+  let disableSubmit = $derived(userInput.trim() === '');
   let data = $derived(exercise.data as TextInputCardData);
   let promptKey = $derived(data?.promptKey);
   let promptArgs = $derived(data?.promptArgs ?? []);
@@ -32,7 +33,14 @@
   let displayCorrectLatex = $derived(formatNumbers ? thinSpace(correctLatex) : correctLatex);
 </script>
 
-<ExerciseShell {exercise} {feedback} submitAnswer={() => onSubmit(userInput.trim())} {onNext} {validationError}>
+<ExerciseShell
+  {exercise}
+  {feedback}
+  submitAnswer={() => onSubmit(userInput.trim())}
+  {onNext}
+  {validationError}
+  {disableSubmit}
+>
   {#if promptKey && promptMath}
     <p class="prompt-label">{_(promptKey)}<Math expression={promptMath} />{_(promptKeySuffix ?? '')}</p>
   {:else if promptKey}

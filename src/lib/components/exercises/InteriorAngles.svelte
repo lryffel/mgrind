@@ -13,6 +13,7 @@
   let userInput = $state('');
 
   let validationError = $derived(userInput.includes(',') ? _('error.decimalComma') : null);
+  let disableSubmit = $derived(userInput.trim() === '');
 
   const degreeLatex = '{}^\\circ';
   const correctLatex = $derived(exercise.answer + '{}^\\circ');
@@ -91,7 +92,14 @@
   }
 </script>
 
-<ExerciseShell {exercise} {feedback} submitAnswer={() => onSubmit(userInput.trim())} {onNext} {validationError}>
+<ExerciseShell
+  {exercise}
+  {feedback}
+  submitAnswer={() => onSubmit(userInput.trim())}
+  {onNext}
+  {validationError}
+  {disableSubmit}
+>
   <p class="prompt-label">{_('exercise.interiorAngles.prompt')}</p>
 
   <SvgContainer {vertices}>
@@ -121,7 +129,7 @@
         {@const lp = labelPos(angle, prev, next)}
         <div class="svg-overlay" style={pct(lp.x, lp.y)}>
           {#if angle.isMissing && feedback === null}
-            <NumericInput bind:value={userInput} placeholder="?" variablePart={degreeLatex} />
+            <NumericInput bind:value={userInput} variablePart={degreeLatex} />
           {:else if angle.isMissing && feedback !== null}
             <span class="user-answer"><KaTeX expression={userAnswerLatex(userInput)} /></span>
           {:else}

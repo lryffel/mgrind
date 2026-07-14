@@ -22,6 +22,14 @@
   let validationError = $derived(
     gcfCoeff.includes(',') || aVal.includes(',') || bVal.includes(',') ? _('error.decimalComma') : null,
   );
+  let gcfNeedsInput = $derived(selectedGcfIdx != null && selectedGcfIdx >= 0);
+  let formulaNeedsInput = $derived(selectedFormula != null && selectedFormula > 0);
+  let disableSubmit = $derived(
+    selectedGcfIdx === null ||
+      selectedFormula === null ||
+      (gcfNeedsInput && gcfCoeff === '') ||
+      (formulaNeedsInput && (aVal === '' || bVal === '')),
+  );
 
   $effect(() => {
     if (feedback === null) {
@@ -89,7 +97,7 @@
   }
 </script>
 
-<ExerciseShell {exercise} {feedback} submitAnswer={handleSubmit} {onNext} {validationError}>
+<ExerciseShell {exercise} {feedback} submitAnswer={handleSubmit} {onNext} {validationError} {disableSubmit}>
   <p class="prompt-label">{_('exercise.factoringOutAndBinomial.prompt')}</p>
   {#if feedback === null}
     <div class="answer-group" role="group">

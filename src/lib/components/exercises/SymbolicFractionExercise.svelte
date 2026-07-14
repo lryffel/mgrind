@@ -21,6 +21,9 @@
   let denValues = $state<string[]>([]);
   let pressedCannotSimplify = $state(false);
 
+  let disableSubmit = $derived(
+    numValues.some((v) => v === '') || (mode === 'fraction' && denValues.some((v) => v === '')),
+  );
   let validationError = $derived(
     [...numValues, ...denValues].some((v) => v.includes(',')) ? _('error.decimalComma') : null,
   );
@@ -100,7 +103,7 @@
   let cannotSimplifyLatex = $derived('\\text{?}');
 </script>
 
-<ExerciseShell {exercise} {feedback} {submitAnswer} {onNext} {validationError}>
+<ExerciseShell {exercise} {feedback} {submitAnswer} {onNext} {validationError} {disableSubmit}>
   {#snippet submitExtra()}
     {#if feedback === null}
       <button class="cannot-simplify-link" onclick={handleCannotSimplify}>{cannotSimplifyText}</button>

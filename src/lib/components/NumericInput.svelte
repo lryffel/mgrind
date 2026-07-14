@@ -41,18 +41,9 @@
     onkeydown?.(e);
   }
 
-  const DEFAULTS: Record<InputContext, string> = {
-    coefficient: '1',
-    exponent: '0',
-    summand: '0',
-    numerator: '0',
-    denominator: '1',
-    plain: '?',
-  };
-
-  let resolvedPlaceholder = $derived(placeholder ?? DEFAULTS[context]);
-  let resolvedNumPlaceholder = $derived(numPlaceholder ?? placeholder ?? DEFAULTS['numerator']);
-  let resolvedDenPlaceholder = $derived(denPlaceholder ?? placeholder ?? DEFAULTS['denominator']);
+  let resolvedPlaceholder = $derived(placeholder ?? '');
+  let resolvedNumPlaceholder = $derived(numPlaceholder ?? placeholder ?? '');
+  let resolvedDenPlaceholder = $derived(denPlaceholder ?? placeholder ?? '');
 </script>
 
 {#if fraction}

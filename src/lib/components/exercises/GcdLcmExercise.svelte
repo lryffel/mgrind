@@ -26,6 +26,11 @@
     }
   });
 
+  let disableSubmit = $derived(
+    subType === 'factorization'
+      ? gcdValues.some((v) => v === '') || lcmValues.some((v) => v === '')
+      : gcdInput === '' || lcmInput === '',
+  );
   let validationError = $derived(
     subType === 'factorization'
       ? gcdValues.some((v) => v.includes(',')) || lcmValues.some((v) => v.includes(','))
@@ -114,7 +119,7 @@
   let userLcmLatex = $derived(subType === 'factorization' ? formatUserExponents(lcmValues) : lcmInput || '0');
 </script>
 
-<ExerciseShell {exercise} {feedback} {submitAnswer} {onNext} {validationError}>
+<ExerciseShell {exercise} {feedback} {submitAnswer} {onNext} {validationError} {disableSubmit}>
   <p class="prompt-label">{_('exercise.gcdLcm.prompt')}</p>
   {#if subType === 'factorization'}
     <div class="factorization-display">

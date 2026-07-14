@@ -13,6 +13,7 @@
     submitAnswer,
     onNext,
     validationError = null,
+    disableSubmit = false,
     children,
     submitExtra,
   }: {
@@ -21,6 +22,7 @@
     submitAnswer: () => void;
     onNext: () => void;
     validationError?: string | null;
+    disableSubmit?: boolean;
     children: Snippet;
     submitExtra?: Snippet;
   } = $props();
@@ -32,8 +34,8 @@
 
   function handleKeydown(e: KeyboardEvent) {
     if (e.key === 'Enter') {
-      if (feedback === null && !validationError) submitAnswer();
-      else onNext();
+      if (feedback !== null) onNext();
+      else if (!validationError && !disableSubmit) submitAnswer();
     }
   }
 
@@ -101,7 +103,7 @@
       {@render submitExtra()}
     {/if}
     {#if feedback === null}
-      <button onclick={submitAnswer} disabled={!!validationError}>{_('answer.submit')}</button>
+      <button onclick={submitAnswer} disabled={!!validationError || disableSubmit}>{_('answer.submit')}</button>
     {:else}
       <button onclick={onNext}>{_('answer.next')}</button>
     {/if}

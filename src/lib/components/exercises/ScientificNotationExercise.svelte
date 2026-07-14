@@ -19,6 +19,7 @@
   const promptKey = $derived(data.promptKey ?? null);
   const promptParts = $derived(exercise.prompt.split('= ?'));
 
+  let disableSubmit = $derived(isMultiInput ? coeffInput === '' || expInput === '' : userInput === '');
   let validationError = $derived(
     isMultiInput
       ? coeffInput.includes(',') || expInput.includes(',')
@@ -46,7 +47,7 @@
   const textAnswer = $derived(isMultiInput ? undefined : exercise.answer);
 </script>
 
-<ExerciseShell {exercise} {feedback} submitAnswer={handleSubmit} {onNext} {validationError}>
+<ExerciseShell {exercise} {feedback} submitAnswer={handleSubmit} {onNext} {validationError} {disableSubmit}>
   {#if promptKey}
     <p class="prompt-label">{_(promptKey)}</p>
   {/if}

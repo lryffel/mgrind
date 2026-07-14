@@ -25,6 +25,7 @@
   let values = $state<string[]>([]);
 
   let validationError = $derived(values.some((v) => v.includes(',')) ? _('error.decimalComma') : null);
+  let disableSubmit = $derived(values.some((v) => v === ''));
 
   $effect(() => {
     values = fields.map(() => '');
@@ -36,7 +37,14 @@
   let correctLatex = $derived(formatCollectingAnswer(exercise.answer.split(','), variableParts));
 </script>
 
-<ExerciseShell {exercise} {feedback} submitAnswer={() => onSubmit(normValues.join(','))} {onNext} {validationError}>
+<ExerciseShell
+  {exercise}
+  {feedback}
+  submitAnswer={() => onSubmit(normValues.join(','))}
+  {onNext}
+  {validationError}
+  {disableSubmit}
+>
   {#if promptKey}
     <p class="prompt-label">{_(promptKey)}</p>
   {/if}

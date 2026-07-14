@@ -40,6 +40,8 @@
     return coeffLatex(n, d, '').replace('\\frac', '\\dfrac');
   });
 
+  let disableSubmit = $derived(frac.num === '' || frac.den === '');
+
   const rawNum = $derived(parseInt(frac.num || '0', 10));
   const rawDen = $derived(parseInt(frac.den || '1', 10));
   const reducedForm = $derived.by(() => reduceFrac(rawNum, rawDen));
@@ -55,6 +57,7 @@
   submitAnswer={() => onSubmit(frac.getSubmitValue())}
   {onNext}
   validationError={frac.validationError}
+  {disableSubmit}
 >
   {#if feedback === null}
     {#if promptKey}
@@ -68,7 +71,7 @@
         display
       />
       <Math expression="=" />
-      <NumericInput bind:num={frac.num} bind:den={frac.den} fraction numPlaceholder="0" denPlaceholder="1" />
+      <NumericInput bind:num={frac.num} bind:den={frac.den} fraction />
     </div>
   {:else}
     {#if promptKey}

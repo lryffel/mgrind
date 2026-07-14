@@ -13,6 +13,7 @@
 
   let userInputs = $state(['', '']);
   let validationError = $state(null);
+  let disableSubmit = $derived(userInputs.some((v) => v.trim() === ''));
 
   const data = $derived(exercise.data as unknown as AreaAndPerimeterData);
   const vertices = $derived(data.vertices);
@@ -270,7 +271,7 @@
   });
 </script>
 
-<ExerciseShell {exercise} {feedback} submitAnswer={handleSubmit} {onNext} {validationError}>
+<ExerciseShell {exercise} {feedback} submitAnswer={handleSubmit} {onNext} {validationError} {disableSubmit}>
   {#snippet submitExtra()}
     {#if !data.solvable && feedback === null}
       <button class="cannot-compute-link" onclick={handleCannotCompute} title={cannotComputeShort}>
@@ -436,7 +437,7 @@
           {#if data.fields?.[i]?.variablePart?.includes('pi')}
             <CoefficientField bind:value={userInputs[i]} variablePart="\pi" />
           {:else}
-            <NumericInput bind:value={userInputs[i]} placeholder="?" />
+            <NumericInput bind:value={userInputs[i]} />
           {/if}
         </span>
       {/each}
@@ -447,7 +448,7 @@
       {#if data.fields?.[0]?.variablePart?.includes('pi')}
         <CoefficientField bind:value={userInputs[0]} variablePart="\pi" />
       {:else}
-        <NumericInput bind:value={userInputs[0]} placeholder="?" />
+        <NumericInput bind:value={userInputs[0]} />
       {/if}
     </div>
   {/if}
