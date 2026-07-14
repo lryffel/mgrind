@@ -148,6 +148,128 @@ describe('interiorAngles', () => {
     expect(nonConvexCount).toBeGreaterThan(0);
   });
 
+  function labelPosOld(vx: number, vy: number) {
+    const cx = 150;
+    const cy = 140;
+    const dir = Math.atan2(vy - cy, vx - cx);
+    return { x: vx + 22 * Math.cos(dir), y: vy + 22 * Math.sin(dir) };
+  }
+
+  function labelPosNew(curr: InteriorAnglesAngle, prev: InteriorAnglesAngle, next: InteriorAnglesAngle) {
+    const cx = 150;
+    const cy = 140;
+    const dx1 = prev.vertexX - curr.vertexX;
+    const dy1 = prev.vertexY - curr.vertexY;
+    const dx2 = next.vertexX - curr.vertexX;
+    const dy2 = next.vertexY - curr.vertexY;
+
+    const len1 = Math.sqrt(dx1 * dx1 + dy1 * dy1);
+    const len2 = Math.sqrt(dx2 * dx2 + dy2 * dy2);
+    const ux1 = dx1 / len1;
+    const uy1 = dy1 / len1;
+    const ux2 = dx2 / len2;
+    const uy2 = dy2 / len2;
+
+    let bx = ux1 + ux2;
+    let by = uy1 + uy2;
+    const blen = Math.sqrt(bx * bx + by * by);
+
+    if (blen < 1e-10) {
+      const dir = Math.atan2(curr.vertexY - cy, curr.vertexX - cx);
+      return { x: curr.vertexX + 22 * Math.cos(dir), y: curr.vertexY + 22 * Math.sin(dir) };
+    }
+
+    bx /= blen;
+    by /= blen;
+
+    const cross = dx1 * dy2 - dy1 * dx2;
+    const dirX = cross < 0 ? bx : -bx;
+    const dirY = cross < 0 ? by : -by;
+
+    return { x: curr.vertexX + 22 * dirX, y: curr.vertexY + 22 * dirY };
+  }
+
+  function pointInPolygon(px: number, py: number, vertices: { x: number; y: number }[]): boolean {
+    let inside = false;
+    const n = vertices.length;
+    for (let i = 0, j = n - 1; i < n; j = i++) {
+      const xi = vertices[i].x,
+        yi = vertices[i].y;
+      const xj = vertices[j].x,
+        yj = vertices[j].y;
+      if (yi > py !== yj > py && px < ((xj - xi) * (py - yi)) / (yj - yi) + xi) {
+        inside = !inside;
+      }
+    }
+    return inside;
+  }
+
+  it('non-convex polygon labels are outside the polygon', () => {
+    for (let seed = 0; seed < 200; seed++) {
+      for (let comp = 0; comp <= 10; comp++) {
+        const ex = generateInteriorAngles(seed, comp);
+        const data = ex.data as InteriorAnglesData;
+        const verts = data.angles.map((a) => ({ x: a.vertexX, y: a.vertexY }));
+        if (!isConvex(verts)) {
+          for (let i = 0; i < data.sides; i++) {
+            const angle = data.angles[i];
+            const prev = data.angles[(i - 1 + data.sides) % data.sides];
+            const next = data.angles[(i + 1) % data.sides];
+            const lp = labelPosNew(angle, prev, next);
+            expect(pointInPolygon(lp.x, lp.y, verts)).toBe(false);
+          }
+        }
+      }
+    }
+  });
+
+  it('convex polygon labels are within 5px of old positions', () => {
+    for (let seed = 0; seed < 200; seed++) {
+      for (let comp = 0; comp <= 10; comp++) {
+        const ex = generateInteriorAngles(seed, comp);
+        const data = ex.data as InteriorAnglesData;
+        const verts = data.angles.map((a) => ({ x: a.vertexX, y: a.vertexY }));
+        if (isConvex(verts)) {
+          for (let i = 0; i < data.sides; i++) {
+            const angle = data.angles[i];
+            const prev = data.angles[(i - 1 + data.sides) % data.sides];
+            const next = data.angles[(i + 1) % data.sides];
+            const oldPos = labelPosOld(angle.vertexX, angle.vertexY);
+            const newPos = labelPosNew(angle, prev, next);
+            const dist = Math.hypot(oldPos.x - newPos.x, oldPos.y - newPos.y);
+            expect(dist).toBeLessThan(5);
+          }
+        }
+      }
+    }
+  });
+
+  it('reflex vertex label is on the exterior side', () => {
+    for (let seed = 0; seed < 200; seed++) {
+      for (let comp = 0; comp <= 10; comp++) {
+        const ex = generateInteriorAngles(seed, comp);
+        const data = ex.data as InteriorAnglesData;
+        const verts = data.angles.map((a) => ({ x: a.vertexX, y: a.vertexY }));
+        if (!isConvex(verts)) {
+          for (let i = 0; i < data.sides; i++) {
+            const angle = data.angles[i];
+            const prev = data.angles[(i - 1 + data.sides) % data.sides];
+            const next = data.angles[(i + 1) % data.sides];
+            const dx1 = prev.vertexX - angle.vertexX;
+            const dy1 = prev.vertexY - angle.vertexY;
+            const dx2 = next.vertexX - angle.vertexX;
+            const dy2 = next.vertexY - angle.vertexY;
+            const cross = dx1 * dy2 - dy1 * dx2;
+            if (cross > 0) {
+              const lp = labelPosNew(angle, prev, next);
+              expect(pointInPolygon(lp.x, lp.y, verts)).toBe(false);
+            }
+          }
+        }
+      }
+    }
+  });
+
   it('correctly maps sides from complexity', () => {
     for (let seed = 0; seed < 10; seed++) {
       const getData = (comp: number) => generateInteriorAngles(seed, comp).data as InteriorAnglesData;

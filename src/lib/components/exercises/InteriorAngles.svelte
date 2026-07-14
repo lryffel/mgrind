@@ -28,11 +28,41 @@
     return answer + '^\\circ';
   }
 
-  function labelPos(vx: number, vy: number) {
-    const dir = Math.atan2(vy - cy, vx - cx);
+  function labelPos(curr: InteriorAnglesAngle, prev: InteriorAnglesAngle, next: InteriorAnglesAngle) {
+    const dx1 = prev.vertexX - curr.vertexX;
+    const dy1 = prev.vertexY - curr.vertexY;
+    const dx2 = next.vertexX - curr.vertexX;
+    const dy2 = next.vertexY - curr.vertexY;
+
+    const len1 = Math.sqrt(dx1 * dx1 + dy1 * dy1);
+    const len2 = Math.sqrt(dx2 * dx2 + dy2 * dy2);
+    const ux1 = dx1 / len1;
+    const uy1 = dy1 / len1;
+    const ux2 = dx2 / len2;
+    const uy2 = dy2 / len2;
+
+    let bx = ux1 + ux2;
+    let by = uy1 + uy2;
+    const blen = Math.sqrt(bx * bx + by * by);
+
+    if (blen < 1e-10) {
+      const dir = Math.atan2(curr.vertexY - cy, curr.vertexX - cx);
+      return {
+        x: curr.vertexX + 22 * Math.cos(dir),
+        y: curr.vertexY + 22 * Math.sin(dir),
+      };
+    }
+
+    bx /= blen;
+    by /= blen;
+
+    const cross = dx1 * dy2 - dy1 * dx2;
+    const dirX = cross < 0 ? -bx : bx;
+    const dirY = cross < 0 ? -by : by;
+
     return {
-      x: vx + 22 * Math.cos(dir),
-      y: vy + 22 * Math.sin(dir),
+      x: curr.vertexX + 22 * dirX,
+      y: curr.vertexY + 22 * dirY,
     };
   }
 
@@ -86,7 +116,9 @@
 
     {#snippet overlays({ pct })}
       {#each data.angles as angle, i (i)}
-        {@const lp = labelPos(angle.vertexX, angle.vertexY)}
+        {@const prev = data.angles[(i - 1 + data.sides) % data.sides]}
+        {@const next = data.angles[(i + 1) % data.sides]}
+        {@const lp = labelPos(angle, prev, next)}
         <div class="svg-overlay" style={pct(lp.x, lp.y)}>
           {#if angle.isMissing && feedback === null}
             <NumericInput bind:value={userInput} placeholder="?" variablePart={degreeLatex} />
