@@ -495,6 +495,38 @@ const dict = {
     en: 'Simplify.',
     de: 'Kürze.',
   },
+  'exercise.symbolicFractionOperations.name': {
+    en: 'Symbolic fraction operations',
+    de: 'Symbolische Bruchoperationen',
+  },
+  'exercise.symbolicFractionOperations.desc': {
+    en: 'Operate on fractions with variables',
+    de: 'Mit Brüchen mit Variablen rechnen',
+  },
+  'exercise.symbolicFractionOperations.prompt': {
+    en: 'Simplify.',
+    de: 'Vereinfache.',
+  },
+  'exercise.symbolicFractionOperations.promptAdd': {
+    en: 'Add.',
+    de: 'Addiere.',
+  },
+  'exercise.symbolicFractionOperations.promptSub': {
+    en: 'Subtract.',
+    de: 'Subtrahiere.',
+  },
+  'exercise.symbolicFractionOperations.promptMul': {
+    en: 'Multiply.',
+    de: 'Multipliziere.',
+  },
+  'exercise.symbolicFractionOperations.promptDiv': {
+    en: 'Divide.',
+    de: 'Dividiere.',
+  },
+  'exercise.symbolicFractionOperations.promptCombine': {
+    en: 'Combine.',
+    de: 'Fasse zusammen.',
+  },
   'exercise.compareFractions.name': {
     en: 'Compare Fractions',
     de: 'Brüche vergleichen',

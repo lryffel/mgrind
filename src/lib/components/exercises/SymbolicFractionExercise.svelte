@@ -105,7 +105,7 @@
 
 <ExerciseShell {exercise} {feedback} {submitAnswer} {onNext} {validationError} {disableSubmit}>
   {#snippet submitExtra()}
-    {#if feedback === null}
+    {#if feedback === null && data.cannotSimplifyType}
       <button class="cannot-simplify-link" onclick={handleCannotSimplify}>{cannotSimplifyText}</button>
     {/if}
   {/snippet}

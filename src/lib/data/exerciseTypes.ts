@@ -84,6 +84,11 @@ import {
   generateTermTransformationsTrivia,
   validateTermTransformationsTrivia,
 } from '../exercises/termTransformationsTrivia';
+import {
+  generateSymbolicFractionOperations,
+  validateSymbolicFractionOperations,
+} from '../exercises/symbolicFractionOperations';
+import SymbolicFractionOperationsInstructions from '../components/exerciseInstructions/SymbolicFractionOperationsInstructions.svelte';
 
 function defineExerciseType(config: {
   id: string;
@@ -403,5 +408,14 @@ export const exerciseTypes: Record<string, ExerciseType> = {
     generate: generateUnitConversion,
     validate: validateUnitConversion,
     instructionComponent: UnitConversionInstructions,
+  }),
+  symbolicFractionOperations: defineExerciseType({
+    id: 'symbolicFractionOperations',
+    nameKey: 'exercise.symbolicFractionOperations.name',
+    descriptionKey: 'exercise.symbolicFractionOperations.desc',
+    generate: generateSymbolicFractionOperations,
+    validate: validateSymbolicFractionOperations,
+    component: SymbolicFractionExercise,
+    instructionComponent: SymbolicFractionOperationsInstructions,
   }),
 };
