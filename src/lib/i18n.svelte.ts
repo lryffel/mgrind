@@ -736,18 +736,41 @@ const dict = {
     en: 'This fraction cannot be simplified further. Click "Cannot simplify" instead.',
     de: 'Dieser Bruch lässt sich nicht weiter vereinfachen. Klicke stattdessen auf "Nicht vereinfachbar".',
   },
-  'exercise.area.name': { en: 'Areas', de: 'Flächen' },
-  'exercise.area.desc': {
-    en: 'Compute areas of geometric shapes',
-    de: 'Berechne Flächen von geometrischen Figuren',
+  'exercise.areaAndPerimeter.name': {
+    en: 'Area and Perimeter',
+    de: 'Fläche und Umfang',
   },
-  'exercise.area.prompt': {
+  'exercise.areaAndPerimeter.desc': {
+    en: 'Compute area and perimeter of shapes',
+    de: 'Berechne Flächeninhalt und Umfang von Figuren',
+  },
+  'exercise.areaAndPerimeter.prompt': {
+    en: 'Calculate the area and perimeter.',
+    de: 'Berechne den Flächeninhalt und den Umfang.',
+  },
+  'exercise.areaAndPerimeter.promptArea': {
     en: 'Calculate the area.',
     de: 'Berechne den Flächeninhalt.',
   },
-  'exercise.area.promptDim': {
-    en: 'Find the missing length.',
-    de: 'Finde die fehlende Länge.',
+  'exercise.areaAndPerimeter.promptPerim': {
+    en: 'Calculate the perimeter.',
+    de: 'Berechne den Umfang.',
+  },
+  'exercise.areaAndPerimeter.promptBoth': {
+    en: 'Calculate the area and perimeter.',
+    de: 'Berechne den Flächeninhalt und den Umfang.',
+  },
+  'exercise.areaAndPerimeter.cannotCompute': {
+    en: 'Not enough information',
+    de: 'Nicht genügend Angaben',
+  },
+  'exercise.areaAndPerimeter.cannotComputeShort': {
+    en: "Can't compute",
+    de: 'Nicht berechenbar',
+  },
+  'feedback.areaAndPerimeter.cannotCompute': {
+    en: 'Correct! There is not enough information to compute this.',
+    de: 'Richtig! Es gibt nicht genügend Angaben, um dies zu berechnen.',
   },
   'exercise.percent.name': { en: 'Percentages', de: 'Prozentrechnen' },
   'exercise.percent.desc': {

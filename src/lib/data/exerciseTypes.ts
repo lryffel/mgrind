@@ -52,14 +52,14 @@ import { generateLinearEquationsExercise, validateLinearEquations } from '../exe
 import { generateInteriorAngles } from '../exercises/interiorAngles';
 import { validateFractionTrivia, generateFractionTriviaExercise } from '../exercises/fractionTrivia';
 import { generatePythagoras, validatePythagoras } from '../exercises/pythagoras';
-import { generateArea, validateArea } from '../exercises/area';
 import { generatePercentExercise, validatePercent } from '../exercises/percent';
+import { generateAreaAndPerimeter, validateAreaAndPerimeter } from '../exercises/areaAndPerimeter';
 import InteriorAngles from '../components/exercises/InteriorAngles.svelte';
 import Pythagoras from '../components/exercises/Pythagoras.svelte';
-import AreaExercise from '../components/exercises/AreaExercise.svelte';
+import AreaAndPerimeterExercise from '../components/exercises/AreaAndPerimeterExercise.svelte';
 import InteriorAnglesInstructions from '../components/exerciseInstructions/InteriorAnglesInstructions.svelte';
 import PythagorasInstructions from '../components/exerciseInstructions/PythagorasInstructions.svelte';
-import AreaInstructions from '../components/exerciseInstructions/AreaInstructions.svelte';
+import AreaAndPerimeterInstructions from '../components/exerciseInstructions/AreaAndPerimeterInstructions.svelte';
 import { trimCompare, validateFractionAnswer, validateFractionReduced } from '../validation';
 import {
   generateSimplifySymbolicFraction,
@@ -302,15 +302,15 @@ export const exerciseTypes: Record<string, ExerciseType> = {
     component: InteriorAngles,
     instructionComponent: InteriorAnglesInstructions,
   }),
-  area: defineExerciseType({
-    id: 'area',
-    nameKey: 'exercise.area.name',
-    descriptionKey: 'exercise.area.desc',
+  areaAndPerimeter: defineExerciseType({
+    id: 'areaAndPerimeter',
+    nameKey: 'exercise.areaAndPerimeter.name',
+    descriptionKey: 'exercise.areaAndPerimeter.desc',
     maxComplexity: 10,
-    generate: generateArea,
-    validate: validateArea,
-    component: AreaExercise,
-    instructionComponent: AreaInstructions,
+    generate: generateAreaAndPerimeter,
+    validate: validateAreaAndPerimeter,
+    component: AreaAndPerimeterExercise,
+    instructionComponent: AreaAndPerimeterInstructions,
   }),
   percent: defineExerciseType({
     id: 'percent',
