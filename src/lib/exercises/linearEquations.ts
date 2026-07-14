@@ -1,4 +1,5 @@
 import type { Exercise } from '../types';
+import type { TextInputCardData } from '../components/cards/cardData';
 import { mulberry32 } from '../prng';
 import { clampComplexity } from '../math/number';
 import { randInt, pick } from '../math/rng';
@@ -365,14 +366,17 @@ export function generateLinearEquations(seed: number, complexity: number): Exerc
 
 export function generateLinearEquationsExercise(seed: number, complexity: number): Exercise {
   const ex = generateLinearEquations(seed, complexity);
-  const data = ex.data as LinearEquationsData;
-  const variable = data.variable;
+  const base = ex.data as LinearEquationsData;
+  const variable = base.variable;
   ex.pattern = 'text-input';
-  (ex.data as Record<string, unknown>).promptKey = 'exercise.linearEquations.promptBefore';
-  (ex.data as Record<string, unknown>).promptMath = variable;
-  (ex.data as Record<string, unknown>).promptKeySuffix = 'exercise.linearEquations.promptAfter';
-  (ex.data as Record<string, unknown>).prefixLatex = `${variable} = `;
-  (ex.data as Record<string, unknown>).correctLatex = `${variable} = ${ex.answer}`;
+  ex.data = {
+    ...base,
+    promptKey: 'exercise.linearEquations.promptBefore',
+    promptMath: variable,
+    promptKeySuffix: 'exercise.linearEquations.promptAfter',
+    prefixLatex: `${variable} = `,
+    correctLatex: `${variable} = ${ex.answer}`,
+  } as TextInputCardData & LinearEquationsData;
   return ex;
 }
 

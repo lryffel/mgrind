@@ -1,6 +1,7 @@
 <script lang="ts">
   import { _ } from '../../i18n.svelte';
   import type { ExerciseProps } from '../../types';
+  import type { PrimeFactorsCardData } from './cardData';
   import Math from '../Math.svelte';
   import ExerciseShell from '../ExerciseShell.svelte';
   import Feedback from '../Feedback.svelte';
@@ -8,7 +9,7 @@
 
   let { exercise, onSubmit, onNext, feedback }: ExerciseProps = $props();
 
-  let data = $derived(exercise.data as { promptKey?: string; primes: number[] });
+  let data = $derived(exercise.data as PrimeFactorsCardData);
   let primes = $derived(data.primes ?? []);
   let promptKey = $derived(data.promptKey);
   // eslint-disable-next-line svelte/prefer-writable-derived

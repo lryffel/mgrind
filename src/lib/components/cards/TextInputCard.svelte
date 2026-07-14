@@ -1,6 +1,7 @@
 <script lang="ts">
   import { _ } from '../../i18n.svelte';
   import type { ExerciseProps } from '../../types';
+  import type { TextInputCardData } from './cardData';
   import Math from '../Math.svelte';
   import ExerciseShell from '../ExerciseShell.svelte';
   import Feedback from '../Feedback.svelte';
@@ -11,7 +12,7 @@
   let userInput = $state('');
 
   let validationError = $derived(userInput.includes(',') ? _('error.decimalComma') : null);
-  let data = $derived(exercise.data as any);
+  let data = $derived(exercise.data as TextInputCardData);
   let promptKey = $derived(data?.promptKey);
   let promptArgs = $derived(data?.promptArgs ?? []);
   let promptMath = $derived(data?.promptMath);

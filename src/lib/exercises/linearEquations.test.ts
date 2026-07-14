@@ -5,6 +5,7 @@ import {
   validateLinearEquations,
   type LinearEquationsData,
 } from './linearEquations';
+import type { TextInputCardData } from '../components/cards/cardData';
 import { initLang } from '../i18n.svelte';
 import { expectDeterministic, expectSeedVariation } from '../test-utils';
 
@@ -149,7 +150,7 @@ describe('generateLinearEquationsExercise', () => {
 
   it('sets promptKey, promptMath, and promptKeySuffix in data', () => {
     const ex = generateLinearEquationsExercise(42, 0);
-    const data = ex.data as any;
+    const data = ex.data as TextInputCardData;
     expect(data.promptKey).toBe('exercise.linearEquations.promptBefore');
     expect(data.promptMath).toMatch(/^[a-z]$/);
     expect(data.promptKeySuffix).toBe('exercise.linearEquations.promptAfter');
@@ -157,13 +158,13 @@ describe('generateLinearEquationsExercise', () => {
 
   it('sets prefixLatex in data', () => {
     const ex = generateLinearEquationsExercise(42, 0);
-    const data = ex.data as any;
+    const data = ex.data as TextInputCardData;
     expect(data.prefixLatex).toMatch(/^[a-z] = $/);
   });
 
   it('sets correctLatex in data', () => {
     const ex = generateLinearEquationsExercise(42, 0);
-    const data = ex.data as any;
+    const data = ex.data as TextInputCardData;
     expect(data.correctLatex).toMatch(/^[a-z] = /);
   });
 
@@ -171,7 +172,7 @@ describe('generateLinearEquationsExercise', () => {
     const base = generateLinearEquations(42, 3);
     const wrapped = generateLinearEquationsExercise(42, 3);
     const baseData = base.data as LinearEquationsData;
-    const wrapData = wrapped.data as any;
+    const wrapData = wrapped.data as LinearEquationsData;
     expect(wrapData.variable).toBe(baseData.variable);
     expect(wrapped.answer).toBe(base.answer);
   });

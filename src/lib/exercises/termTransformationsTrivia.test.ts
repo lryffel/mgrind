@@ -4,6 +4,7 @@ import {
   validateTermTransformationsTrivia,
   type TermTransformationsTriviaData,
 } from './termTransformationsTrivia';
+import type { SingleChoiceCardData, BatchChoiceCardData } from '../components/cards/cardData';
 import { expectDeterministic, expectSeedVariation, expectHasPromptAndAnswer } from '../test-utils';
 
 function d(ex: { data?: unknown }): TermTransformationsTriviaData {
@@ -262,9 +263,9 @@ describe('generateTermTransformationsTrivia', () => {
     for (let seed = 0; seed < 20; seed++) {
       const ex = generateTermTransformationsTrivia(seed, 1);
       if (d(ex).triviaType === 'laws') {
-        const data = ex.data as any;
-        expect(data.options).toHaveLength(data.triviaOptionsLatex.length);
-        expect(data.options.map((o: any) => o.latex)).toEqual(data.triviaOptionsLatex);
+        const data = ex.data as SingleChoiceCardData;
+        expect(data.options).toHaveLength(d(ex).triviaOptionsLatex!.length);
+        expect(data.options.map((o) => o.latex)).toEqual(d(ex).triviaOptionsLatex);
       }
     }
   });
@@ -273,9 +274,9 @@ describe('generateTermTransformationsTrivia', () => {
     for (let seed = 0; seed < 20; seed++) {
       const ex = generateTermTransformationsTrivia(seed, 9);
       if (d(ex).triviaType === 'trueFalse') {
-        const data = ex.data as any;
-        expect(data.rows).toHaveLength(data.statementsLatex.length);
-        expect(data.rows.map((r: any) => r.latex)).toEqual(data.statementsLatex);
+        const data = ex.data as BatchChoiceCardData;
+        expect(data.rows).toHaveLength(d(ex).statementsLatex!.length);
+        expect(data.rows.map((r) => r.latex)).toEqual(d(ex).statementsLatex);
         expect(data.buttons).toEqual(['yes', 'no']);
       }
     }

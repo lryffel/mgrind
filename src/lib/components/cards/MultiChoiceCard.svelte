@@ -1,20 +1,14 @@
 <script lang="ts">
   import { _ } from '../../i18n.svelte';
   import type { ExerciseProps } from '../../types';
+  import type { MultiChoiceCardData } from './cardData';
   import Math from '../Math.svelte';
   import ExerciseShell from '../ExerciseShell.svelte';
   import Feedback from '../Feedback.svelte';
 
   let { exercise, onSubmit, onNext, feedback }: ExerciseProps = $props();
 
-  let data = $derived(
-    exercise.data as {
-      promptKey?: string;
-      promptMath?: string;
-      promptKeySuffix?: string;
-      options: { label?: string; latex?: string }[];
-    },
-  );
+  let data = $derived(exercise.data as MultiChoiceCardData);
   let options = $derived(data.options ?? []);
   let promptKey = $derived(data.promptKey);
   // eslint-disable-next-line svelte/prefer-writable-derived

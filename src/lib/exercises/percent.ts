@@ -1,4 +1,5 @@
 import type { Exercise } from '../types';
+import type { TextInputCardData } from '../components/cards/cardData';
 import { mulberry32 } from '../prng';
 import { pick, randInt } from '../math/rng';
 import { clampComplexity } from '../math/number';
@@ -39,15 +40,6 @@ function getMaxT1(clamped: number): number {
   if (clamped <= 5) return 20;
   if (clamped <= 7) return 30;
   return 50;
-}
-
-const MULTIPLE_ONLY: Record<number, boolean> = {
-  0: true,
-  1: true,
-};
-
-function isMultipleOnly(clamped: number): boolean {
-  return MULTIPLE_ONLY[clamped] ?? false;
 }
 
 function getPercentConfig(clamped: number): {
@@ -244,35 +236,50 @@ function generateC(rng: () => number, clamped: number): Exercise {
 
 export function generatePercentExercise(seed: number, complexity: number): Exercise {
   const ex = generatePercent(seed, complexity);
-  const data = ex.data as PercentData;
+  const base = ex.data as PercentData;
   ex.pattern = 'text-input';
   ex.prompt = '';
-  switch (data.variant) {
+  switch (base.variant) {
     case 'A':
-      (ex.data as Record<string, unknown>).promptKey = 'exercise.percent.promptLabelA';
-      (ex.data as Record<string, unknown>).promptArgs = [data.p, data.G];
+      ex.data = {
+        ...base,
+        promptKey: 'exercise.percent.promptLabelA',
+        promptArgs: [base.p, base.G],
+      } as TextInputCardData & PercentData;
       break;
     case 'B':
-      (ex.data as Record<string, unknown>).promptKey = 'exercise.percent.promptLabelB';
-      (ex.data as Record<string, unknown>).promptArgs = [data.W, data.p];
+      ex.data = {
+        ...base,
+        promptKey: 'exercise.percent.promptLabelB',
+        promptArgs: [base.W, base.p],
+      } as TextInputCardData & PercentData;
       break;
     case 'C':
-      (ex.data as Record<string, unknown>).promptKey = 'exercise.percent.promptLabelC';
-      (ex.data as Record<string, unknown>).promptArgs = [data.W, data.G];
-      (ex.data as Record<string, unknown>).suffixLatex = '\\%';
-      (ex.data as Record<string, unknown>).correctLatex = `${ex.answer}\\%`;
+      ex.data = {
+        ...base,
+        promptKey: 'exercise.percent.promptLabelC',
+        promptArgs: [base.W, base.G],
+        suffixLatex: '\\%',
+        correctLatex: `${ex.answer}\\%`,
+      } as TextInputCardData & PercentData;
       break;
     case 'D':
-      (ex.data as Record<string, unknown>).promptKey = 'exercise.percent.promptLabelD';
-      (ex.data as Record<string, unknown>).promptArgs = [data.n1, data.c1, data.n2];
-      (ex.data as Record<string, unknown>).prefixLatex = '\\text{CHF}\\,';
-      (ex.data as Record<string, unknown>).correctLatex = `\\text{CHF}\\,${ex.answer}`;
+      ex.data = {
+        ...base,
+        promptKey: 'exercise.percent.promptLabelD',
+        promptArgs: [base.n1, base.c1, base.n2],
+        prefixLatex: '\\text{CHF}\\,',
+        correctLatex: `\\text{CHF}\\,${ex.answer}`,
+      } as TextInputCardData & PercentData;
       break;
     case 'E':
-      (ex.data as Record<string, unknown>).promptKey = 'exercise.percent.promptLabelE';
-      (ex.data as Record<string, unknown>).promptArgs = [data.n1, data.t1, data.n2];
-      (ex.data as Record<string, unknown>).suffixLatex = '\\,\\text{h}';
-      (ex.data as Record<string, unknown>).correctLatex = `${ex.answer}\\,\\text{h}`;
+      ex.data = {
+        ...base,
+        promptKey: 'exercise.percent.promptLabelE',
+        promptArgs: [base.n1, base.t1, base.n2],
+        suffixLatex: '\\,\\text{h}',
+        correctLatex: `${ex.answer}\\,\\text{h}`,
+      } as TextInputCardData & PercentData;
       break;
   }
   return ex;

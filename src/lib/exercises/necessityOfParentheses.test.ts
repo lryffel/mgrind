@@ -5,6 +5,7 @@ import {
   validateNecessityOfParentheses,
   type NecessityOfParenthesesData,
 } from './necessityOfParentheses';
+import type { BatchChoiceCardData } from '../components/cards/cardData';
 import { expectDeterministic, expectSeedVariation, expectHasPromptAndAnswer } from '../test-utils';
 
 function d(ex: { data?: unknown }): NecessityOfParenthesesData {
@@ -161,7 +162,7 @@ describe('generateNecessityOfParenthesesExercise', () => {
 
   it('sets data.rows from questions', () => {
     const ex = generateNecessityOfParenthesesExercise(42, 5);
-    const data = ex.data as any;
+    const data = ex.data as BatchChoiceCardData;
     expect(data.rows).toHaveLength(3);
     for (const row of data.rows) {
       expect(typeof row.latex).toBe('string');
@@ -170,13 +171,13 @@ describe('generateNecessityOfParenthesesExercise', () => {
 
   it('sets data.buttons to yes/no', () => {
     const ex = generateNecessityOfParenthesesExercise(42, 5);
-    const data = ex.data as any;
+    const data = ex.data as BatchChoiceCardData;
     expect(data.buttons).toEqual(['yes', 'no']);
   });
 
   it('sets promptKey', () => {
     const ex = generateNecessityOfParenthesesExercise(42, 5);
-    const data = ex.data as any;
+    const data = ex.data as BatchChoiceCardData;
     expect(data.promptKey).toBe('exercise.necessityOfParentheses.prompt');
   });
 

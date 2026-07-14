@@ -1,4 +1,5 @@
 import type { Exercise } from '../types';
+import type { BatchChoiceCardData } from '../components/cards/cardData';
 import { mulberry32 } from '../prng';
 import { clampComplexity } from '../math/number';
 import { pick, pickDistinct, randInt } from '../math/rng';
@@ -199,11 +200,14 @@ export function generateNecessityOfParentheses(seed: number, complexity: number)
 
 export function generateNecessityOfParenthesesExercise(seed: number, complexity: number): Exercise {
   const ex = generateNecessityOfParentheses(seed, complexity);
-  const data = ex.data as NecessityOfParenthesesData;
+  const base = ex.data as NecessityOfParenthesesData;
   ex.pattern = 'batch-choice';
-  (ex.data as Record<string, unknown>).rows = data.questions.map((q) => ({ latex: q.latex }));
-  (ex.data as Record<string, unknown>).buttons = ['yes', 'no'];
-  (ex.data as Record<string, unknown>).promptKey = 'exercise.necessityOfParentheses.prompt';
+  ex.data = {
+    ...base,
+    rows: base.questions.map((q) => ({ latex: q.latex })),
+    buttons: ['yes', 'no'],
+    promptKey: 'exercise.necessityOfParentheses.prompt',
+  } as BatchChoiceCardData & NecessityOfParenthesesData;
   return ex;
 }
 

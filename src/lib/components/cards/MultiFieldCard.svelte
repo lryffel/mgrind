@@ -7,6 +7,7 @@
   import CoefficientField from '../CoefficientField.svelte';
   import { formatCollectingAnswer } from '../../exercises/collectingTerms';
   import { normalizeCoeff } from '../../validation';
+  import type { InputContext } from '../../types';
   import type { BinomialFormulasData } from '../../exercises/binomialFormulas';
   import type { CollectingTermsData } from '../../exercises/collectingTerms';
   import type { ExpandData } from '../../exercises/expand';
@@ -30,7 +31,7 @@
   });
 
   let contexts = $derived(fields.map((f) => (f.variablePart === '' ? 'summand' : 'coefficient')));
-  let normValues = $derived(values.map((v, i) => normalizeCoeff(v, contexts[i] as any)));
+  let normValues = $derived(values.map((v, i) => normalizeCoeff(v, contexts[i] as InputContext)));
   let userLatex = $derived(formatCollectingAnswer(normValues, variableParts));
   let correctLatex = $derived(formatCollectingAnswer(exercise.answer.split(','), variableParts));
 </script>

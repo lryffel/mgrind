@@ -2,7 +2,6 @@ import type { Exercise } from '../types';
 import { mulberry32 } from '../prng';
 import { clampComplexity } from '../math/number';
 import { pick, randInt, shuffle } from '../math/rng';
-import { _ } from '../i18n.svelte';
 
 export type NumberSet = 'natural' | 'integer' | 'rational';
 

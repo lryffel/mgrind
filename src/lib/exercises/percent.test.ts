@@ -1,5 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import { generatePercent, generatePercentExercise, validatePercent } from './percent';
+import type { TextInputCardData } from '../components/cards/cardData';
 import { expectDeterministic, expectSeedVariation, expectHasPromptAndAnswer } from '../test-utils';
 import type { PercentData } from './percent';
 
@@ -383,7 +384,7 @@ describe('generatePercentExercise', () => {
 
   it('sets promptKey and promptArgs based on variant', () => {
     const ex = generatePercentExercise(42, 5);
-    const data = ex.data as any;
+    const data = ex.data as TextInputCardData;
     expect(data.promptKey).toBeTruthy();
     expect(data.promptKey).toMatch(/^exercise\.percent\.promptLabel/);
     expect(Array.isArray(data.promptArgs)).toBe(true);
@@ -398,8 +399,8 @@ describe('generatePercentExercise', () => {
   it('variant C sets correctLatex with percent sign', () => {
     for (let seed = 0; seed < 200; seed++) {
       const ex = generatePercentExercise(seed, 5);
-      const data = ex.data as any;
-      if (data.variant === 'C') {
+      const data = ex.data as TextInputCardData;
+      if (getData(ex).variant === 'C') {
         expect(data.correctLatex).toContain('\\%');
         return;
       }
@@ -409,8 +410,8 @@ describe('generatePercentExercise', () => {
   it('variant D sets correctLatex with CHF', () => {
     for (let seed = 0; seed < 200; seed++) {
       const ex = generatePercentExercise(seed, 5);
-      const data = ex.data as any;
-      if (data.variant === 'D') {
+      const data = ex.data as TextInputCardData;
+      if (getData(ex).variant === 'D') {
         expect(data.correctLatex).toContain('CHF');
         return;
       }
@@ -420,8 +421,8 @@ describe('generatePercentExercise', () => {
   it('variant E sets correctLatex with h', () => {
     for (let seed = 0; seed < 200; seed++) {
       const ex = generatePercentExercise(seed, 8);
-      const data = ex.data as any;
-      if (data.variant === 'E') {
+      const data = ex.data as TextInputCardData;
+      if (getData(ex).variant === 'E') {
         expect(data.correctLatex).toContain('\\text{h}');
         return;
       }

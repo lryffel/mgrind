@@ -1,15 +1,14 @@
 <script lang="ts">
   import { _ } from '../../i18n.svelte';
   import type { ExerciseProps } from '../../types';
+  import type { BatchChoiceCardData } from './cardData';
   import Math from '../Math.svelte';
   import ExerciseShell from '../ExerciseShell.svelte';
   import Feedback from '../Feedback.svelte';
 
   let { exercise, onSubmit, onNext, feedback }: ExerciseProps = $props();
 
-  let data = $derived(
-    exercise.data as { promptKey?: string; rows: { latex: string; latex2?: string }[]; buttons: string[] },
-  );
+  let data = $derived(exercise.data as BatchChoiceCardData);
   let rows = $derived(data.rows ?? []);
   let buttons = $derived(data.buttons ?? []);
   let promptKey = $derived(data.promptKey);

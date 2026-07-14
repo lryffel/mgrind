@@ -5,6 +5,7 @@ import {
   roundToSigFigs,
   type RoundingSigfigsData,
 } from './roundingSigfigs';
+import type { TextInputCardData } from '../components/cards/cardData';
 import { expectDeterministic, expectSeedVariation, expectHasPromptAndAnswer } from '../test-utils';
 
 describe('roundToSigFigs', () => {
@@ -109,7 +110,7 @@ describe('generateRoundingSigfigsExercise', () => {
 
   it('sets promptKey and promptArgs', () => {
     const ex = generateRoundingSigfigsExercise(42, 5);
-    const data = ex.data as any;
+    const data = ex.data as TextInputCardData & RoundingSigfigsData;
     expect(data.promptKey).toBe('exercise.roundingSigfigs.prompt');
     expect(data.promptArgs).toEqual([data.sigfigsCount]);
   });

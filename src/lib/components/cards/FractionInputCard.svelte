@@ -23,7 +23,9 @@
   const op = $derived(data.op);
   const isBinary = $derived(data.op === '*');
   const promptKey = $derived(data.promptKey);
-  const promptArgs = $derived((exercise.data as any)?.promptArgs ?? []);
+  const promptArgs = $derived(
+    (exercise.data as MultiplicationFractionData & { promptArgs?: (string | number)[] })?.promptArgs ?? [],
+  );
   const displayOp = $derived(op === '*' ? '\\cdot' : (op ?? ''));
 
   const correctNumDen = $derived(exercise.answer.split(','));

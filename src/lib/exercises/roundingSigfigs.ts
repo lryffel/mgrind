@@ -1,4 +1,5 @@
 import type { Exercise } from '../types';
+import type { TextInputCardData } from '../components/cards/cardData';
 import { mulberry32 } from '../prng';
 import { randInt } from '../math/rng';
 import { clampComplexity } from '../math/number';
@@ -126,11 +127,14 @@ function formatNumberForPrompt(value: number): string {
 
 export function generateRoundingSigfigsExercise(seed: number, complexity: number): Exercise {
   const ex = generateRoundingSigfigs(seed, complexity);
-  const data = ex.data as RoundingSigfigsData;
+  const base = ex.data as RoundingSigfigsData;
   ex.pattern = 'text-input';
-  (ex.data as Record<string, unknown>).promptKey = 'exercise.roundingSigfigs.prompt';
-  (ex.data as Record<string, unknown>).promptArgs = [data.sigfigsCount];
-  (ex.data as Record<string, unknown>).formatNumbers = true;
+  ex.data = {
+    ...base,
+    promptKey: 'exercise.roundingSigfigs.prompt',
+    promptArgs: [base.sigfigsCount],
+    formatNumbers: true,
+  } as TextInputCardData & RoundingSigfigsData;
   return ex;
 }
 
