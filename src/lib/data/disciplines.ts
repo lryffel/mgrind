@@ -19,6 +19,7 @@ export const disciplines: Discipline[] = [
       'signs',
       'roundingSigfigs',
       'numbersTrivia',
+      'percent',
     ],
   },
   {

@@ -59,9 +59,11 @@ import { generateInteriorAngles } from '../exercises/interiorAngles';
 import { generateFractionTrivia, validateFractionTrivia } from '../exercises/fractionTrivia';
 import { generatePythagoras, validatePythagoras } from '../exercises/pythagoras';
 import { generateArea, validateArea } from '../exercises/area';
+import { generatePercent, validatePercent } from '../exercises/percent';
 import InteriorAngles from '../components/exercises/InteriorAngles.svelte';
 import Pythagoras from '../components/exercises/Pythagoras.svelte';
 import AreaExercise from '../components/exercises/AreaExercise.svelte';
+import PercentExercise from '../components/exercises/PercentExercise.svelte';
 import FractionTrivia from '../components/exercises/FractionTrivia.svelte';
 import InteriorAnglesInstructions from '../components/exerciseInstructions/InteriorAnglesInstructions.svelte';
 import PythagorasInstructions from '../components/exerciseInstructions/PythagorasInstructions.svelte';
@@ -331,6 +333,15 @@ export const exerciseTypes: Record<string, ExerciseType> = {
     validate: validateArea,
     component: AreaExercise,
     instructionComponent: AreaInstructions,
+  }),
+  percent: defineExerciseType({
+    id: 'percent',
+    nameKey: 'exercise.percent.name',
+    descriptionKey: 'exercise.percent.desc',
+    generate: generatePercent,
+    validate: validatePercent,
+    component: PercentExercise,
+    prerequisites: [{ typeId: 'multiplication', complexity: 3 }],
   }),
   fractionTrivia: defineExerciseType({
     id: 'fractionTrivia',
