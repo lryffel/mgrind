@@ -155,6 +155,19 @@ describe('pythagoras', () => {
     }
   });
 
+  it('rejects cannot_compute for right triangles', () => {
+    for (let seed = 0; seed < 100; seed++) {
+      for (let comp = 0; comp < 6; comp++) {
+        const ex = generatePythagoras(seed, comp);
+        const data = d(ex);
+        if (!data.isRight) continue;
+
+        expect(validatePythagoras('cannot_compute', ex)).toBe(false);
+        expect(validatePythagoras(ex.answer, ex)).toBe(true);
+      }
+    }
+  });
+
   it('non-right triangles have no right angle vertex', () => {
     for (let seed = 0; seed < 500; seed++) {
       for (let comp = 6; comp < 10; comp++) {

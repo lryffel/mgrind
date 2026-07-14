@@ -254,6 +254,10 @@ const dict = {
     en: 'Correct! Since no right angle is shown, the Pythagorean theorem cannot be applied.',
     de: 'Richtig! Da kein rechter Winkel eingezeichnet ist, kann der Satz des Pythagoras nicht angewendet werden.',
   },
+  'feedback.pythagoras.distractorTrap': {
+    en: 'There is a right angle, so the Pythagorean theorem can be applied. Try calculating the missing side.',
+    de: 'Es gibt einen rechten Winkel, also kann der Satz des Pythagoras angewendet werden. Versuche die fehlende Seite zu berechnen.',
+  },
   'exercise.pythagoras.cannotComputeShort': {
     en: "Doesn't work",
     de: 'Geht nicht',

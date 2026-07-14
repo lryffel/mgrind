@@ -17,8 +17,6 @@
 
   const data = $derived(exercise.data as unknown as PythagorasData);
   const vertices = $derived(data.triangleVertices);
-  const isNonRight = $derived(!data.isRight);
-
   const cx = $derived((vertices[0].x + vertices[1].x + vertices[2].x) / 3);
   const cy = $derived((vertices[0].y + vertices[1].y + vertices[2].y) / 3);
 
@@ -128,7 +126,7 @@
 
 <ExerciseShell {exercise} {feedback} submitAnswer={handleSubmit} {onNext} {validationError}>
   {#snippet submitExtra()}
-    {#if isNonRight && feedback === null}
+    {#if feedback === null}
       <button class="cannot-compute-link" onclick={handleCannotCompute} title={cannotComputeShort}>
         {cannotComputeShort}
       </button>
