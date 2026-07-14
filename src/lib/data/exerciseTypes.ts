@@ -73,6 +73,8 @@ import SignsInstructions from '../components/exerciseInstructions/SignsInstructi
 import { generateRoundingSigfigsExercise } from '../exercises/roundingSigfigs';
 import RoundingSigfigsInstructions from '../components/exerciseInstructions/RoundingSigfigsInstructions.svelte';
 import { validateNumbersTrivia, generateNumbersTriviaExercise } from '../exercises/numbersTrivia';
+import { generateFactorsExercise, validateFactors } from '../exercises/factors';
+import FactorsExercise from '../components/exercises/FactorsExercise.svelte';
 import { generateGcdLcm, validateGcdLcm } from '../exercises/gcdLcm';
 import GcdLcmExercise from '../components/exercises/GcdLcmExercise.svelte';
 import GcdLcmInstructions from '../components/exerciseInstructions/GcdLcmInstructions.svelte';
@@ -373,6 +375,16 @@ export const exerciseTypes: Record<string, ExerciseType> = {
     descriptionKey: 'exercise.numbersTrivia.desc',
     generate: generateNumbersTriviaExercise,
     validate: validateNumbersTrivia,
+  }),
+
+  factors: defineExerciseType({
+    id: 'factors',
+    nameKey: 'exercise.factors.name',
+    descriptionKey: 'exercise.factors.desc',
+    maxComplexity: 10,
+    generate: generateFactorsExercise,
+    validate: validateFactors,
+    component: FactorsExercise,
   }),
 
   fractionTrivia: defineExerciseType({

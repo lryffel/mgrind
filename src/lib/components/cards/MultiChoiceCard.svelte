@@ -11,6 +11,7 @@
   let data = $derived(
     exercise.data as {
       promptKey?: string;
+      layout?: 'grid';
       options: { label?: string; latex?: string; text?: string; textDe?: string }[];
     },
   );
@@ -53,7 +54,7 @@
     <p class="prompt"><Math expression={exercise.prompt} /></p>
   {/if}
 
-  <div class="option-grid" role="group">
+  <div class="option-grid" class:grid={data.layout === 'grid'} role="group">
     {#each options as option, i (i)}
       {#if feedback === null}
         <button
@@ -110,9 +111,20 @@
   .option-grid {
     display: flex;
     flex-direction: column;
-    gap: 0.5rem;
     margin-top: 0.75rem;
     align-items: flex-start;
+  }
+
+  .option-grid.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(4rem, 1fr));
+    width: 100%;
+  }
+
+  .option-grid.grid :global(.choice-checkbox) {
+    width: 100%;
+    justify-content: center;
+    min-width: 4rem;
   }
 
   .choice-checkbox {
