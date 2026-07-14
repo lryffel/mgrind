@@ -789,6 +789,12 @@ const dict = {
     en: '{0} workers need {1} h. How long for {2} workers?',
     de: '{0} Arbeitende brauchen {1} h. Wie lange brauchen {2} Arbeitende?',
   },
+  'exercise.unitConversion.name': { en: 'Unit Conversion', de: 'Einheiten umrechnen' },
+  'exercise.unitConversion.desc': {
+    en: 'Convert quantities between units',
+    de: 'Rechne Grössen zwischen Einheiten um',
+  },
+  'exercise.unitConversion.prompt': { en: 'Convert.', de: 'Rechne um.' },
 } satisfies Record<string, Record<Lang, string>>;
 
 export const state = $state({ lang: 'en' as Lang });

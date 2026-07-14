@@ -72,8 +72,10 @@ import { generateSigns, validateSigns } from '../exercises/signs';
 import SignsInstructions from '../components/exerciseInstructions/SignsInstructions.svelte';
 import { generateRoundingSigfigsExercise } from '../exercises/roundingSigfigs';
 import RoundingSigfigsInstructions from '../components/exerciseInstructions/RoundingSigfigsInstructions.svelte';
+import UnitConversionInstructions from '../components/exerciseInstructions/UnitConversionInstructions.svelte';
 import { validateNumbersTrivia, generateNumbersTriviaExercise } from '../exercises/numbersTrivia';
 import { generateFactorsExercise, validateFactors } from '../exercises/factors';
+import { generateUnitConversion, validateUnitConversion } from '../exercises/unitConversion';
 import FactorsExercise from '../components/exercises/FactorsExercise.svelte';
 import { generateGcdLcm, validateGcdLcm } from '../exercises/gcdLcm';
 import GcdLcmExercise from '../components/exercises/GcdLcmExercise.svelte';
@@ -393,5 +395,13 @@ export const exerciseTypes: Record<string, ExerciseType> = {
     descriptionKey: 'exercise.fractionTrivia.desc',
     generate: generateFractionTriviaExercise,
     validate: validateFractionTrivia,
+  }),
+  unitConversion: defineExerciseType({
+    id: 'unitConversion',
+    nameKey: 'exercise.unitConversion.name',
+    descriptionKey: 'exercise.unitConversion.desc',
+    generate: generateUnitConversion,
+    validate: validateUnitConversion,
+    instructionComponent: UnitConversionInstructions,
   }),
 };
