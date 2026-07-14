@@ -46,24 +46,21 @@ Generate a number `n` and present the user with checkboxes (one per candidate) t
 
 - Prompt renders `n = {n}` in display-mode LaTeX.
 - Instruction via i18n: "Select all factors of n." / "Wähle alle Teiler von n."
-- Candidates rendered as checkbox-style toggle buttons (like `TriviaCheckboxGroup.svelte` uses `role="checkbox"` with `aria-checked` and `::before` pseudo-element checkmark). Each button shows the integer value via `<Math>`.
-- **Buttons arranged in a CSS grid** (`grid-template-columns: repeat(auto-fill, minmax(4rem, 1fr))`) so they wrap without scrolling and stay compact.
+- Candidates rendered as checkbox-style toggle buttons via `MultiChoiceCard.svelte` (uses `role="checkbox"` with `aria-checked` and `::before` pseudo-element checkmark). Each button shows the integer value via `<Math>`.
+- Layout uses the `MultiChoiceCard` column layout by default. If a CSS grid layout is desired (`grid-template-columns: repeat(auto-fill, minmax(4rem, 1fr))`), extend `MultiChoiceCard` with a `grid` option based on `exercise.data.layout`.
 - No submit gating — submit always enabled, even with 0 selections.
-- Selected buttons use `--c-cyan` tint (primary). Unselected use outline/border style matching `button.outline` from `design.css`.
 
 ### Validation
 
-- On submit, serialize selected candidates as a comma-separated string of sorted values, e.g. `"1,2,3,6,12"`.
-- `validate(answer, exercise)` performs set-equality comparison against `exercise.data.factors` (also stored as a comma-separated string).
+- On submit, the `MultiChoiceCard` serialises selected indices as a comma-separated string of sorted indices, e.g. `"0,2,5"`.
+- `validate(answer, exercise)` deserialises indices, maps to candidate values, and performs set-equality comparison against `exercise.data.factors` (stored as a comma-separated value string).
 - Exact set match required — no partial credit.
 
 ### Feedback
 
-- Correct: show success message via `<Feedback>`. All selected factors coloured with `--c-correct`.
-- Incorrect: show the user's selection and the correct factors as comma-separated strings through `<Feedback>`.
-  - User-answer: incorrect colour (red).
-  - Correct answer: "Correct factors: {list}".
-- No per-button colouring post-submit; the simple text comparison is sufficient.
+- Correct: show success message via `<Feedback>`.
+- Incorrect: `MultiChoiceCard` renders the user's selection and the correct options via built-in feedback (correct-option/wrong-option colouring).
+- The correct answer shown in `<Feedback>` lists the factor values via `textAnswer`.
 
 ### Data representation
 
@@ -71,20 +68,30 @@ Generate a number `n` and present the user with checkboxes (one per candidate) t
 // exercise.data fields:
 {
   n: number,
-  factors: string,    // comma-separated sorted string, e.g. "1,2,3,4,6,12"
-  candidates: number[], // the shuffled pool (factors ∪ distractors)
-  promptKey: 'exercise.factors.title'
+  factors: string,       // comma-separated sorted values, e.g. "1,2,3,4,6,12"
+  promptKey: 'exercise.factors.title',
+  options: { latex: string }[],  // candidates, each as { latex: "3" }
 }
-// exercise.answer: same comma-separated string as factors
+// exercise.answer: comma-separated string of correct option *indices*,
+//                  e.g. "0,3,5" (matching MultiChoiceCard's serialisation)
 ```
 
-### Component
+### Pattern
 
-Use the existing `TriviaCheckboxGroup.svelte` pattern:
+Use `pattern: 'multi-choice'`. No custom component needed — `CardRegistry.svelte` routes `multi-choice` to `MultiChoiceCard.svelte`.
 
-- `TriviaCheckboxGroup` accepts `options: { latex?: string }[]` (each showing a candidate number), `selected: boolean[]`, `correctIndices: number[]`, `feedback`, `ontoggle`.
-- Create `FactorSelectExercise.svelte` that wraps `TriviaCheckboxGroup`, reads `exercise.data`, holds `$state` for selection, serializes answer on submit.
-- Registration via `defineExerciseType()` in `exerciseTypes.ts`.
+Registration via `defineExerciseType()` in `exerciseTypes.ts`:
+
+```ts
+factors: defineExerciseType({
+  id: 'factors',
+  nameKey: 'exercise.factors.name',
+  descriptionKey: 'exercise.factors.desc',
+  maxComplexity: 10,
+  generate: generateFactorsExercise,
+  validate: validateFactors,
+}),
+```
 
 ### i18n
 

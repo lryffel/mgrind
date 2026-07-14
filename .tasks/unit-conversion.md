@@ -40,10 +40,16 @@ Pick category, source and target units (indices from category's ordered unit lis
 |     9 | time         |     2 (s↔h ×3600)     | integer             | ≤3               |
 |    10 | mixed        |          1–3          | ≤3 decimals         | ≤4, may be small |
 
-### UI / Component
+### Pattern
+
+Use `pattern: 'text-input'`. No custom component needed — `CardRegistry.svelte` routes `text-input` to `TextInputCard.svelte`, which already renders a `NumericInput` after the prompt.
+
+### Data representation
 
 - Prompt rendered as a single LaTeX expression: `3.5\ \mathrm{m} = ?\ \mathrm{cm}` with the `?` via `\boxed{?}` or just a placeholder. Use `\mathrm{}` for units.
-- `TextInputExercise.svelte` — the exercise already renders a single `NumericInput` after the prompt. Works directly.
+- Data shape: `{ promptKey: 'exercise.unitConversion.prompt', unitFrom: string, unitTo: string }`. The `TextInputCard` renders `promptKey` as the prompt label.
+- `exercise.prompt`: the LaTeX conversion expression.
+- `exercise.answer`: numeric string (e.g. `"350"`).
 
 ### Validation
 
@@ -52,18 +58,6 @@ Custom `validateUnitConversion(answer, exercise)`:
 - Parse as float (accept `.` and `,` decimal separator).
 - Compare absolute difference to correct value with tolerance `1e-9`.
 - Reject NaN, Infinity, empty.
-
-### Data representation
-
-```ts
-{
-  unitFrom: string,     // e.g. "m"
-  unitTo: string,       // e.g. "cm"
-  promptKey: 'exercise.unitConversion.prompt'
-}
-// exercise.answer = numeric string (e.g. "350")
-// exercise.prompt = LaTeX expression e.g. "3.5\\mathrm{m}=?\\mathrm{cm}"
-```
 
 ### i18n
 
