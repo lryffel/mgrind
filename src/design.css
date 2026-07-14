@@ -548,8 +548,16 @@ html.modal-is-open {
   border-radius: var(--radius) 0 0 var(--radius);
 }
 
+[role='group'] > *:first-child {
+  border-radius: var(--radius) 0 0 var(--radius);
+}
+
 [role='group'] > *:last-child {
   border-radius: 0 var(--radius) var(--radius) 0;
+}
+
+[role='group'] > *:not(:first-child):not(:last-child) {
+  border-radius: 0;
 }
 
 [role='group'] > *:not(:first-child) {

@@ -272,6 +272,80 @@ const dict = {
     en: 'Test your knowledge about fractions',
     de: 'Teste dein Wissen über Brüche',
   },
+  'exercise.fractionTrivia.fractionTerms.name': { en: 'Fraction Terms', de: 'Fachbegriffe Brüche' },
+  'exercise.fractionTrivia.fractionTerms.desc': {
+    en: 'Name the parts of a fraction',
+    de: 'Teile eines Bruchs benennen',
+  },
+  'exercise.fractionTrivia.integerFractions.name': { en: 'Integer Fractions', de: 'Ganze Brüche' },
+  'exercise.fractionTrivia.integerFractions.desc': {
+    en: 'Identify fractions that are always integers',
+    de: 'Brüche erkennen, die immer ganzzahlig sind',
+  },
+  'exercise.fractionTrivia.denominatorRestriction.name': { en: 'Denominator Restriction', de: 'Nenner Einschränkung' },
+  'exercise.fractionTrivia.denominatorRestriction.desc': {
+    en: 'What number can never be in the denominator?',
+    de: 'Welche Zahl darf nie im Nenner stehen?',
+  },
+  'exercise.fractionTrivia.doubleFraction.name': {
+    en: 'Halve / Double a Fraction',
+    de: 'Bruch halbieren / verdoppeln',
+  },
+  'exercise.fractionTrivia.doubleFraction.desc': {
+    en: 'How to halve or double a fraction',
+    de: 'Wie man einen Bruch halbiert oder verdoppelt',
+  },
+  'exercise.fractionTrivia.fractionBar.name': { en: 'Fraction Bar', de: 'Bruchstrich' },
+  'exercise.fractionTrivia.fractionBar.desc': {
+    en: 'What does the fraction bar mean?',
+    de: 'Was bedeutet der Bruchstrich?',
+  },
+  'exercise.fractionTrivia.zeroNumerator.name': { en: 'Zero Numerator', de: 'Zähler Null' },
+  'exercise.fractionTrivia.zeroNumerator.desc': {
+    en: 'What happens when the numerator is zero?',
+    de: 'Was passiert, wenn der Zähler null ist?',
+  },
+  'exercise.fractionTrivia.reciprocalProduct.name': { en: 'Reciprocal Product', de: 'Kehrwertprodukt' },
+  'exercise.fractionTrivia.reciprocalProduct.desc': {
+    en: 'What is a fraction times its reciprocal?',
+    de: 'Was ist ein Bruch mal seinem Kehrwert?',
+  },
+  'exercise.fractionTrivia.multiplySame.name': {
+    en: 'Multiply Numerator & Denominator',
+    de: 'Zähler & Nenner multiplizieren',
+  },
+  'exercise.fractionTrivia.multiplySame.desc': {
+    en: 'Effect of multiplying numerator and denominator by the same number',
+    de: 'Wirkung von Zähler- und Nennermultiplikation mit derselben Zahl',
+  },
+  'exercise.fractionTrivia.fractionDivision.name': { en: 'Fraction Division', de: 'Bruchdivision' },
+  'exercise.fractionTrivia.fractionDivision.desc': {
+    en: 'How to divide fractions',
+    de: 'Wie man Brüche dividiert',
+  },
+  'exercise.fractionTrivia.mediant.name': { en: 'Mediant', de: 'Mediante' },
+  'exercise.fractionTrivia.mediant.desc': {
+    en: 'What is the mediant of two fractions?',
+    de: 'Was ist die Mediante zweier Brüche?',
+  },
+  'exercise.fractionTrivia.reducibleFractions.name': { en: 'Reducible Fractions', de: 'Kürzbare Brüche' },
+  'exercise.fractionTrivia.reducibleFractions.desc': {
+    en: 'Which fractions can be reduced?',
+    de: 'Welche Brüche sind kürzbar?',
+  },
+  'exercise.fractionTrivia.negativeSignPlacement.name': {
+    en: 'Negative Sign Placement',
+    de: 'Minuszeichen Platzierung',
+  },
+  'exercise.fractionTrivia.negativeSignPlacement.desc': {
+    en: 'Where can the minus sign be placed?',
+    de: 'Wo kann das Minuszeichen stehen?',
+  },
+  'exercise.fractionTrivia.equalFractions.name': { en: 'Equal Fractions', de: 'Gleiche Brüche' },
+  'exercise.fractionTrivia.equalFractions.desc': {
+    en: 'Which of these fractions are equal?',
+    de: 'Welche dieser Brüche sind gleich?',
+  },
   'exercise.fractionTrivia.type.fractionTerms.prompt': {
     en: 'What are the terms for the top and bottom numbers in a fraction?',
     de: 'Wie heissen die obere und die untere Zahl eines Bruchs?',
@@ -516,6 +590,36 @@ const dict = {
   'exercise.numbersTrivia.desc': {
     en: 'Test your knowledge of number concepts',
     de: 'Teste dein Wissen über Zahlen',
+  },
+  'exercise.numbersTrivia.primeDivisors.name': { en: 'Prime Divisors', de: 'Primteiler' },
+  'exercise.numbersTrivia.primeDivisors.desc': {
+    en: 'How many divisors does a prime have?',
+    de: 'Wie viele Teiler hat eine Primzahl?',
+  },
+  'exercise.numbersTrivia.trueFalse.name': { en: 'True or False', de: 'Wahr oder Falsch' },
+  'exercise.numbersTrivia.trueFalse.desc': {
+    en: 'Decide if statements about numbers are true or false',
+    de: 'Entscheide, ob Aussagen über Zahlen wahr oder falsch sind',
+  },
+  'exercise.numbersTrivia.divisibilityRules.name': { en: 'Divisibility Rules', de: 'Teilbarkeitsregeln' },
+  'exercise.numbersTrivia.divisibilityRules.desc': {
+    en: 'Identify the correct divisibility rule',
+    de: 'Erkenne die richtige Teilbarkeitsregel',
+  },
+  'exercise.numbersTrivia.isNatural.name': { en: 'Natural Numbers', de: 'Natürliche Zahlen' },
+  'exercise.numbersTrivia.isNatural.desc': {
+    en: 'Which numbers are natural?',
+    de: 'Welche Zahlen sind natürlich?',
+  },
+  'exercise.numbersTrivia.isInteger.name': { en: 'Integers', de: 'Ganze Zahlen' },
+  'exercise.numbersTrivia.isInteger.desc': {
+    en: 'Which numbers are integers?',
+    de: 'Welche Zahlen sind ganz?',
+  },
+  'exercise.numbersTrivia.isRational.name': { en: 'Rational Numbers', de: 'Rationale Zahlen' },
+  'exercise.numbersTrivia.isRational.desc': {
+    en: 'Which numbers are rational?',
+    de: 'Welche Zahlen sind rational?',
   },
   'exercise.numbersTrivia.type.smallestNatural.prompt': {
     en: 'What is the smallest natural number?',

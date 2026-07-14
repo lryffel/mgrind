@@ -128,7 +128,7 @@ function generateD(rng: () => number, clamped: number): Exercise {
       return {
         prompt: 'percent-D',
         answer: formatAnswer(rounded),
-        pattern: 'text-input',
+
         data: {
           variant: 'D',
           answerIsFraction: false,
@@ -148,7 +148,7 @@ function generateD(rng: () => number, clamped: number): Exercise {
   return {
     prompt: 'percent-D',
     answer: '1',
-    pattern: 'text-input',
+
     data: {
       variant: 'D',
       answerIsFraction: false,
@@ -188,7 +188,7 @@ function generateE(rng: () => number, clamped: number): Exercise {
       return {
         prompt: 'percent-E',
         answer: formatAnswer(rounded),
-        pattern: 'text-input',
+
         data: {
           variant: 'E',
           answerIsFraction: false,
@@ -208,7 +208,7 @@ function generateE(rng: () => number, clamped: number): Exercise {
   return {
     prompt: 'percent-E',
     answer: '1',
-    pattern: 'text-input',
+
     data: {
       variant: 'E',
       answerIsFraction: false,
@@ -249,7 +249,7 @@ function generateA(rng: () => number, clamped: number): Exercise {
   return {
     prompt: 'percent-A',
     answer: formatAnswer(W),
-    pattern: 'text-input',
+
     data: {
       variant: 'A',
       answerIsFraction: false,
@@ -269,7 +269,7 @@ function generateB(rng: () => number, clamped: number): Exercise {
   return {
     prompt: 'percent-B',
     answer: formatAnswer(G),
-    pattern: 'text-input',
+
     data: {
       variant: 'B',
       answerIsFraction: false,
@@ -289,7 +289,7 @@ function generateC(rng: () => number, clamped: number): Exercise {
   return {
     prompt: 'percent-C',
     answer: formatAnswer(p),
-    pattern: 'text-input',
+
     data: {
       variant: 'C',
       answerIsFraction: false,

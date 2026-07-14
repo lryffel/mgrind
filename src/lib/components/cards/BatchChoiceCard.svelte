@@ -39,6 +39,29 @@
         }))
       : [],
   );
+
+  function btnLabel(btn: string): string {
+    if (btn === 'yes') return _('answer.yes');
+    if (btn === 'no') return _('answer.no');
+    if (btn === '<') return '<';
+    if (btn === '>') return '>';
+    if (btn === '=') return '=';
+    return _(btn);
+  }
+
+  function btnMath(btn: string): string | null {
+    if (btn === '+') return '+';
+    if (btn === '-') return '-';
+    return null;
+  }
+
+  function feedbackLabel(ans: string): string {
+    if (ans === '+') return '+';
+    if (ans === '-') return '\u2212';
+    if (ans === 'yes') return _('answer.yes');
+    if (ans === 'no') return _('answer.no');
+    return ans;
+  }
 </script>
 
 <ExerciseShell {exercise} {feedback} submitAnswer={handleSubmit} {onNext}>
@@ -46,46 +69,34 @@
     <p class="prompt-label">{_(promptKey)}</p>
   {/if}
 
-  <div class="choice-grid" class:double={isDouble}>
+  <div class="questions-grid" class:double={isDouble}>
     {#each rows as row, i (i)}
-      {#if isDouble}
-        <span class="choice-math">
-          <Math expression={row.latex} />
-        </span>
-      {/if}
+      <span class="question-math">
+        <Math expression={row.latex} />
+      </span>
       {#if feedback === null}
-        <div class="button-group" role="radiogroup" aria-label="{promptKey ?? ''} {i + 1}">
+        <div class="button-group" role="group">
           {#each buttons as btn, j (j)}
-            <button
-              class="choice-btn"
-              class:selected={answers[i] === btn}
-              onclick={() => (answers[i] = btn)}
-              role="radio"
-              aria-checked={answers[i] === btn}
-            >
-              {#if btn === '+' || btn === '-'}
-                <Math expression={btn === '+' ? '+' : '-'} />
+            <button class={answers[i] === btn ? '' : 'outline'} onclick={() => (answers[i] = btn)}>
+              {#if btnMath(btn) !== null}
+                <Math expression={btnMath(btn)!} />
               {:else}
-                {btn}
+                {btnLabel(btn)}
               {/if}
             </button>
           {/each}
         </div>
+      {:else if correctAnswers[i].correct}
+        <span class="feedback-indicator correct">
+          &check; {feedbackLabel(correctAnswers[i].correctAnswer)}
+        </span>
       {:else}
-        <span
-          class="choice-result"
-          class:correct={correctAnswers[i].correct}
-          class:incorrect={!correctAnswers[i].correct}
-        >
-          {#if answers[i] === '+' || answers[i] === '-'}
-            <Math expression={answers[i] === '+' ? '+' : '-'} />
-          {:else}
-            {answers[i]}
-          {/if}
+        <span class="feedback-indicator incorrect">
+          &times; {feedbackLabel(correctAnswers[i].correctAnswer)}
         </span>
       {/if}
       {#if isDouble}
-        <span class="choice-math">
+        <span class="question-math">
           <Math expression={row.latex2!} />
         </span>
       {/if}
@@ -95,83 +106,44 @@
   {#if feedback === 'correct'}
     <Feedback {feedback} />
   {:else if feedback === 'incorrect'}
-    <Feedback {feedback} textAnswer={exercise.answer.split(',').join(', ')} />
+    <Feedback {feedback} textAnswer={exercise.answer.split(',').map(feedbackLabel).join(', ')} />
   {/if}
 </ExerciseShell>
 
 <style>
-  .choice-grid {
+  .questions-grid {
     display: grid;
     align-items: center;
     gap: 0.75rem 1rem;
     margin-top: 0.75rem;
   }
 
-  .choice-grid:not(.double) {
+  .questions-grid:not(.double) {
     grid-template-columns: auto 1fr;
   }
 
-  .choice-grid.double {
+  .questions-grid.double {
     grid-template-columns: auto auto auto;
   }
 
-  .choice-math {
+  .question-math {
     white-space: nowrap;
-    justify-self: center;
+    justify-self: start;
   }
 
   .button-group {
     display: flex;
-    gap: 0.25rem;
   }
 
-  .button-group :global(.choice-btn) {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 2.5rem;
-    height: 2.5rem;
-    border-radius: 0.375rem;
-    border: 1px solid var(--c-border);
-    background: transparent;
-    color: var(--c-text);
-    cursor: pointer;
-    font-family: inherit;
-    font-size: 1.1rem;
+  .feedback-indicator {
     font-weight: 600;
-    line-height: 1;
-    transition:
-      border-color 0.2s ease-in-out,
-      background 0.2s ease-in-out;
   }
 
-  .button-group :global(.choice-btn:hover) {
-    border-color: var(--c-primary);
-  }
-
-  .button-group :global(.choice-btn.selected) {
-    border-color: var(--c-primary);
-    background: var(--c-primary);
-    color: var(--c-primary-inverse);
-  }
-
-  .button-group :global(.choice-btn:focus-visible) {
-    outline: 2px solid var(--c-primary);
-    outline-offset: 2px;
-  }
-
-  .choice-result {
-    font-size: 1.25rem;
-    font-weight: 700;
-    min-width: 2.5rem;
-    text-align: center;
-  }
-
-  .choice-result.correct {
+  .feedback-indicator.correct {
     color: var(--c-correct);
   }
 
-  .choice-result.incorrect {
+  .feedback-indicator.incorrect {
     color: var(--c-incorrect);
   }
 </style>

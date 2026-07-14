@@ -35,7 +35,7 @@ function generateSciToDec(rng: () => number): Exercise {
   return {
     prompt: `${mantissaStr} \\cdot 10^{${exponent}} = ?`,
     answer: valueStr,
-    pattern: 'text-input',
+
     data: { subType: 'sciToDec', promptKey: 'exercise.scientificNotation.prompt.sciToDec' },
   };
 }
@@ -49,7 +49,7 @@ function generateDecToSci(rng: () => number): Exercise {
   return {
     prompt: `${valueStr} = ?`,
     answer: `${mantissaStr},${exponent}`,
-    pattern: 'text-input',
+
     data: { subType: 'decToSci', promptKey: 'exercise.scientificNotation.prompt.decToSci' },
   };
 }
@@ -104,7 +104,7 @@ function generateMultiply(rng: () => number): Exercise {
   return {
     prompt: `(${aStr} \\cdot 10^{${exp1}}) \\cdot (${cStr} \\cdot 10^{${exp2}}) = ?`,
     answer: `${coeff},${exp}`,
-    pattern: 'text-input',
+
     data: { subType: 'multiply', promptKey: 'exercise.scientificNotation.prompt.multiply' },
   };
 }
@@ -144,7 +144,7 @@ function generateAdd(rng: () => number): Exercise {
   return {
     prompt: `(${aStr} \\cdot 10^{${exp1}}) + (${cStr} \\cdot 10^{${exp2}}) = ?`,
     answer: `${coeff},${exp}`,
-    pattern: 'text-input',
+
     data: { subType: 'add', promptKey: 'exercise.scientificNotation.prompt.add' },
   };
 }

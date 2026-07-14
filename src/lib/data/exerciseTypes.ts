@@ -14,6 +14,7 @@ import { generateBinomialFormulas, validateBinomialFormulas } from '../exercises
 import { generateCollectingTerms, validateCollectingTerms } from '../exercises/collectingTerms';
 import { generateScientificNotation } from '../exercises/scientificNotation';
 import ScientificNotationExercise from '../components/exercises/ScientificNotationExercise.svelte';
+import SymbolicFractionExercise from '../components/exercises/SymbolicFractionExercise.svelte';
 import {
   generateFactoringBinomialFormulas,
   validateFactoringBinomialFormulas,
@@ -49,22 +50,7 @@ import { generateExpandAndCollect, validateExpandAndCollect } from '../exercises
 import { generateLinearEquations, validateLinearEquations } from '../exercises/linearEquations';
 import LinearEquationsExercise from '../components/exercises/LinearEquationsExercise.svelte';
 import { generateInteriorAngles } from '../exercises/interiorAngles';
-import {
-  validateFractionTrivia,
-  generateFractionTriviaFractionTerms,
-  generateFractionTriviaIntegerFractions,
-  generateFractionTriviaDenominatorRestriction,
-  generateFractionTriviaDoubleFraction,
-  generateFractionTriviaFractionBar,
-  generateFractionTriviaZeroNumerator,
-  generateFractionTriviaReciprocalProduct,
-  generateFractionTriviaMultiplySame,
-  generateFractionTriviaFractionDivision,
-  generateFractionTriviaMediant,
-  generateFractionTriviaReducibleFractions,
-  generateFractionTriviaNegativeSignPlacement,
-  generateFractionTriviaEqualFractions,
-} from '../exercises/fractionTrivia';
+import { validateFractionTrivia, generateFractionTriviaExercise } from '../exercises/fractionTrivia';
 import { generatePythagoras, validatePythagoras } from '../exercises/pythagoras';
 import { generateArea, validateArea } from '../exercises/area';
 import { generatePercent, validatePercent } from '../exercises/percent';
@@ -88,15 +74,7 @@ import SignsInstructions from '../components/exerciseInstructions/SignsInstructi
 import { generateRoundingSigfigs } from '../exercises/roundingSigfigs';
 import RoundingSigfigsExercise from '../components/exercises/RoundingSigfigsExercise.svelte';
 import RoundingSigfigsInstructions from '../components/exerciseInstructions/RoundingSigfigsInstructions.svelte';
-import {
-  validateNumbersTrivia,
-  generateNumbersTriviaPrimeDivisors,
-  generateNumbersTriviaTrueFalse,
-  generateNumbersTriviaDivisibilityRules,
-  generateNumbersTriviaIsNatural,
-  generateNumbersTriviaIsInteger,
-  generateNumbersTriviaIsRational,
-} from '../exercises/numbersTrivia';
+import { validateNumbersTrivia, generateNumbersTriviaExercise } from '../exercises/numbersTrivia';
 import { generateGcdLcm, validateGcdLcm } from '../exercises/gcdLcm';
 import GcdLcmExercise from '../components/exercises/GcdLcmExercise.svelte';
 import GcdLcmInstructions from '../components/exerciseInstructions/GcdLcmInstructions.svelte';
@@ -370,6 +348,7 @@ export const exerciseTypes: Record<string, ExerciseType> = {
     descriptionKey: 'exercise.simplifySymbolicFraction.desc',
     generate: generateSimplifySymbolicFraction,
     validate: validateSimplifySymbolicFraction,
+    component: SymbolicFractionExercise,
     instructionComponent: SimplifySymbolicFractionInstructions,
   }),
   roundingSigfigs: defineExerciseType({
@@ -397,137 +376,19 @@ export const exerciseTypes: Record<string, ExerciseType> = {
     validate: validateTermTransformationsTrivia,
     component: TermTransformationsTrivia,
   }),
-  numbersTriviaPrimeDivisors: defineExerciseType({
-    id: 'numbersTriviaPrimeDivisors',
+  numbersTrivia: defineExerciseType({
+    id: 'numbersTrivia',
     nameKey: 'exercise.numbersTrivia.name',
     descriptionKey: 'exercise.numbersTrivia.desc',
-    generate: generateNumbersTriviaPrimeDivisors,
+    generate: generateNumbersTriviaExercise,
     validate: validateNumbersTrivia,
   }),
-  numbersTriviaTrueFalse: defineExerciseType({
-    id: 'numbersTriviaTrueFalse',
-    nameKey: 'exercise.numbersTrivia.name',
-    descriptionKey: 'exercise.numbersTrivia.desc',
-    generate: generateNumbersTriviaTrueFalse,
-    validate: validateNumbersTrivia,
-  }),
-  numbersTriviaDivisibilityRules: defineExerciseType({
-    id: 'numbersTriviaDivisibilityRules',
-    nameKey: 'exercise.numbersTrivia.name',
-    descriptionKey: 'exercise.numbersTrivia.desc',
-    generate: generateNumbersTriviaDivisibilityRules,
-    validate: validateNumbersTrivia,
-  }),
-  numbersTriviaIsNatural: defineExerciseType({
-    id: 'numbersTriviaIsNatural',
-    nameKey: 'exercise.numbersTrivia.name',
-    descriptionKey: 'exercise.numbersTrivia.desc',
-    generate: generateNumbersTriviaIsNatural,
-    validate: validateNumbersTrivia,
-  }),
-  numbersTriviaIsInteger: defineExerciseType({
-    id: 'numbersTriviaIsInteger',
-    nameKey: 'exercise.numbersTrivia.name',
-    descriptionKey: 'exercise.numbersTrivia.desc',
-    generate: generateNumbersTriviaIsInteger,
-    validate: validateNumbersTrivia,
-  }),
-  numbersTriviaIsRational: defineExerciseType({
-    id: 'numbersTriviaIsRational',
-    nameKey: 'exercise.numbersTrivia.name',
-    descriptionKey: 'exercise.numbersTrivia.desc',
-    generate: generateNumbersTriviaIsRational,
-    validate: validateNumbersTrivia,
-  }),
-  fractionTriviaFractionTerms: defineExerciseType({
-    id: 'fractionTriviaFractionTerms',
+
+  fractionTrivia: defineExerciseType({
+    id: 'fractionTrivia',
     nameKey: 'exercise.fractionTrivia.name',
     descriptionKey: 'exercise.fractionTrivia.desc',
-    generate: generateFractionTriviaFractionTerms,
-    validate: validateFractionTrivia,
-  }),
-  fractionTriviaIntegerFractions: defineExerciseType({
-    id: 'fractionTriviaIntegerFractions',
-    nameKey: 'exercise.fractionTrivia.name',
-    descriptionKey: 'exercise.fractionTrivia.desc',
-    generate: generateFractionTriviaIntegerFractions,
-    validate: validateFractionTrivia,
-  }),
-  fractionTriviaDenominatorRestriction: defineExerciseType({
-    id: 'fractionTriviaDenominatorRestriction',
-    nameKey: 'exercise.fractionTrivia.name',
-    descriptionKey: 'exercise.fractionTrivia.desc',
-    generate: generateFractionTriviaDenominatorRestriction,
-    validate: validateFractionTrivia,
-  }),
-  fractionTriviaDoubleFraction: defineExerciseType({
-    id: 'fractionTriviaDoubleFraction',
-    nameKey: 'exercise.fractionTrivia.name',
-    descriptionKey: 'exercise.fractionTrivia.desc',
-    generate: generateFractionTriviaDoubleFraction,
-    validate: validateFractionTrivia,
-  }),
-  fractionTriviaFractionBar: defineExerciseType({
-    id: 'fractionTriviaFractionBar',
-    nameKey: 'exercise.fractionTrivia.name',
-    descriptionKey: 'exercise.fractionTrivia.desc',
-    generate: generateFractionTriviaFractionBar,
-    validate: validateFractionTrivia,
-  }),
-  fractionTriviaZeroNumerator: defineExerciseType({
-    id: 'fractionTriviaZeroNumerator',
-    nameKey: 'exercise.fractionTrivia.name',
-    descriptionKey: 'exercise.fractionTrivia.desc',
-    generate: generateFractionTriviaZeroNumerator,
-    validate: validateFractionTrivia,
-  }),
-  fractionTriviaReciprocalProduct: defineExerciseType({
-    id: 'fractionTriviaReciprocalProduct',
-    nameKey: 'exercise.fractionTrivia.name',
-    descriptionKey: 'exercise.fractionTrivia.desc',
-    generate: generateFractionTriviaReciprocalProduct,
-    validate: validateFractionTrivia,
-  }),
-  fractionTriviaMultiplySame: defineExerciseType({
-    id: 'fractionTriviaMultiplySame',
-    nameKey: 'exercise.fractionTrivia.name',
-    descriptionKey: 'exercise.fractionTrivia.desc',
-    generate: generateFractionTriviaMultiplySame,
-    validate: validateFractionTrivia,
-  }),
-  fractionTriviaFractionDivision: defineExerciseType({
-    id: 'fractionTriviaFractionDivision',
-    nameKey: 'exercise.fractionTrivia.name',
-    descriptionKey: 'exercise.fractionTrivia.desc',
-    generate: generateFractionTriviaFractionDivision,
-    validate: validateFractionTrivia,
-  }),
-  fractionTriviaMediant: defineExerciseType({
-    id: 'fractionTriviaMediant',
-    nameKey: 'exercise.fractionTrivia.name',
-    descriptionKey: 'exercise.fractionTrivia.desc',
-    generate: generateFractionTriviaMediant,
-    validate: validateFractionTrivia,
-  }),
-  fractionTriviaReducibleFractions: defineExerciseType({
-    id: 'fractionTriviaReducibleFractions',
-    nameKey: 'exercise.fractionTrivia.name',
-    descriptionKey: 'exercise.fractionTrivia.desc',
-    generate: generateFractionTriviaReducibleFractions,
-    validate: validateFractionTrivia,
-  }),
-  fractionTriviaNegativeSignPlacement: defineExerciseType({
-    id: 'fractionTriviaNegativeSignPlacement',
-    nameKey: 'exercise.fractionTrivia.name',
-    descriptionKey: 'exercise.fractionTrivia.desc',
-    generate: generateFractionTriviaNegativeSignPlacement,
-    validate: validateFractionTrivia,
-  }),
-  fractionTriviaEqualFractions: defineExerciseType({
-    id: 'fractionTriviaEqualFractions',
-    nameKey: 'exercise.fractionTrivia.name',
-    descriptionKey: 'exercise.fractionTrivia.desc',
-    generate: generateFractionTriviaEqualFractions,
+    generate: generateFractionTriviaExercise,
     validate: validateFractionTrivia,
   }),
 };

@@ -7,14 +7,12 @@ function d(ex: { data?: unknown }): FractionTriviaData {
 }
 
 const ALL_TYPES = [
-  'fractionTerms',
   'integerFractions',
   'denominatorRestriction',
   'doubleFraction',
   'fractionBar',
   'fractionDivision',
   'multiplySame',
-  'mediant',
   'equalFractions',
   'reducibleFractions',
   'zeroNumerator',
@@ -22,14 +20,7 @@ const ALL_TYPES = [
   'negativeSignPlacement',
 ];
 
-const BASIC_TYPES = [
-  'fractionTerms',
-  'integerFractions',
-  'denominatorRestriction',
-  'doubleFraction',
-  'fractionBar',
-  'zeroNumerator',
-];
+const BASIC_TYPES = ['integerFractions', 'denominatorRestriction', 'doubleFraction', 'fractionBar', 'zeroNumerator'];
 
 describe('generateFractionTrivia', () => {
   it('returns a valid exercise with prompt and answer', () => {
@@ -68,13 +59,13 @@ describe('generateFractionTrivia', () => {
     expect(found.has('multiplySame')).toBe(true);
   });
 
-  it('at complexity 6-7, includes mediant', () => {
+  it('at complexity 6-7, includes reducibleFractions', () => {
     const found = new Set<string>();
     for (let seed = 0; seed < 500; seed++) {
       const ex = generateFractionTrivia(seed, 6);
       found.add(d(ex).triviaType!);
     }
-    expect(found.has('mediant')).toBe(true);
+    expect(found.has('reducibleFractions')).toBe(true);
   });
 
   it('at complexity 8-9, includes equalFractions', () => {
@@ -84,23 +75,6 @@ describe('generateFractionTrivia', () => {
       found.add(d(ex).triviaType!);
     }
     expect(found.has('equalFractions')).toBe(true);
-  });
-
-  it('mediant generates all 4 variants across seeds', () => {
-    const allIndices = new Set<number>();
-    for (let seed = 0; seed < 1000; seed++) {
-      const ex = generateFractionTrivia(seed, 7);
-      if (d(ex).triviaType === 'mediant') {
-        ex.answer
-          .split(',')
-          .map(Number)
-          .forEach((i) => allIndices.add(i));
-      }
-    }
-    expect(allIndices.has(0)).toBe(true);
-    expect(allIndices.has(1)).toBe(true);
-    expect(allIndices.has(2)).toBe(true);
-    expect(allIndices.has(3)).toBe(true);
   });
 
   it('fractionDivision generates coprime a and b', () => {
@@ -334,57 +308,6 @@ describe('validateFractionTrivia', () => {
     }
   });
 
-  describe('fractionTerms', () => {
-    it('accepts English answer', () => {
-      const ex = generateFractionTrivia(42, 0);
-      ex.data = { triviaType: 'fractionTerms' };
-      ex.answer = 'numerator,denominator';
-      expect(validateFractionTrivia('numerator,denominator', ex)).toBe(true);
-    });
-
-    it('accepts German answer', () => {
-      const ex = generateFractionTrivia(42, 0);
-      ex.data = { triviaType: 'fractionTerms' };
-      ex.answer = 'numerator,denominator';
-      expect(validateFractionTrivia('zähler,nenner', ex)).toBe(true);
-    });
-
-    it('accepts German answer without umlaut', () => {
-      const ex = generateFractionTrivia(42, 0);
-      ex.data = { triviaType: 'fractionTerms' };
-      ex.answer = 'numerator,denominator';
-      expect(validateFractionTrivia('zahler,nenner', ex)).toBe(true);
-    });
-
-    it('rejects swapped answer', () => {
-      const ex = generateFractionTrivia(42, 0);
-      ex.data = { triviaType: 'fractionTerms' };
-      ex.answer = 'numerator,denominator';
-      expect(validateFractionTrivia('denominator,numerator', ex)).toBe(false);
-    });
-
-    it('accepts with extra whitespace', () => {
-      const ex = generateFractionTrivia(42, 0);
-      ex.data = { triviaType: 'fractionTerms' };
-      ex.answer = 'numerator,denominator';
-      expect(validateFractionTrivia('  Numerator ,  Denominator  ', ex)).toBe(true);
-    });
-
-    it('rejects single word', () => {
-      const ex = generateFractionTrivia(42, 0);
-      ex.data = { triviaType: 'fractionTerms' };
-      ex.answer = 'numerator,denominator';
-      expect(validateFractionTrivia('numerator', ex)).toBe(false);
-    });
-
-    it('rejects empty string', () => {
-      const ex = generateFractionTrivia(42, 0);
-      ex.data = { triviaType: 'fractionTerms' };
-      ex.answer = 'numerator,denominator';
-      expect(validateFractionTrivia('', ex)).toBe(false);
-    });
-  });
-
   describe('integerFractions', () => {
     it('correct answer is 0,3', () => {
       for (let seed = 0; seed < 50; seed++) {
@@ -496,53 +419,6 @@ describe('validateFractionTrivia', () => {
         if (d(ex).triviaType === 'reducibleFractions') {
           expect(validateFractionTrivia(ex.answer, ex)).toBe(true);
         }
-      }
-    });
-  });
-
-  describe('mediant', () => {
-    it('correct answer contains valid indices (0-3)', () => {
-      for (let seed = 0; seed < 100; seed++) {
-        const ex = generateFractionTrivia(seed, 7);
-        if (d(ex).triviaType === 'mediant') {
-          const indices = ex.answer.split(',').map(Number);
-          for (const idx of indices) {
-            expect(idx).toBeGreaterThanOrEqual(0);
-            expect(idx).toBeLessThanOrEqual(3);
-          }
-        }
-      }
-    });
-
-    it('average variant has both 2 and 3 as correct', () => {
-      let found = false;
-      for (let seed = 0; seed < 1000; seed++) {
-        const ex = generateFractionTrivia(seed, 7);
-        if (d(ex).triviaType === 'mediant' && ex.answer === '2,3') {
-          found = true;
-          break;
-        }
-      }
-      expect(found).toBe(true);
-    });
-
-    it('rejects partially correct selection', () => {
-      const ex = generateFractionTrivia(42, 7);
-      if (d(ex).triviaType === 'mediant') {
-        const indices = ex.answer.split(',').map(Number);
-        if (indices.length > 1) {
-          const partial = String(indices[0]);
-          expect(validateFractionTrivia(partial, ex)).toBe(false);
-        }
-      }
-    });
-
-    it('rejects wrong index', () => {
-      const ex = generateFractionTrivia(42, 7);
-      if (d(ex).triviaType === 'mediant' && ex.answer !== '2,3') {
-        const indices = ex.answer.split(',').map(Number);
-        const wrong = String((indices[0] + 1) % 4);
-        expect(validateFractionTrivia(wrong, ex)).toBe(false);
       }
     });
   });

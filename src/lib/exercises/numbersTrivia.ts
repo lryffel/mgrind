@@ -2,6 +2,7 @@ import type { Exercise } from '../types';
 import { mulberry32 } from '../prng';
 import { clampComplexity } from '../math/number';
 import { pick, randInt, shuffle } from '../math/rng';
+import { state as langState } from '../i18n.svelte';
 
 export type NumberSet = 'natural' | 'integer' | 'rational';
 
@@ -349,8 +350,13 @@ export function generateNumbersTriviaPrimeDivisors(seed: number, complexity: num
 export function generateNumbersTriviaTrueFalse(seed: number, complexity: number): Exercise {
   const ex = generateNumbersTrivia(seed, complexity, 'trueFalse');
   const origData = ex.data as NumbersTriviaData;
+  const stmtIndex = origData.statementIndex ?? -1;
+  const stmt =
+    stmtIndex >= 0 && stmtIndex < NUMBERS_TRIVIA_TRUE_FALSE.length ? NUMBERS_TRIVIA_TRUE_FALSE[stmtIndex] : null;
+  const promptText = stmt ? (langState.lang === 'de' ? stmt.de : stmt.en) : '';
   return {
-    ...ex,
+    prompt: promptText,
+    answer: ex.answer,
     pattern: 'single-choice',
     data: { ...origData, promptKey: undefined, options: [{ label: 'common.true' }, { label: 'common.false' }] },
   };
@@ -359,8 +365,10 @@ export function generateNumbersTriviaTrueFalse(seed: number, complexity: number)
 export function generateNumbersTriviaDivisibilityRules(seed: number, complexity: number): Exercise {
   const ex = generateNumbersTrivia(seed, complexity, 'divisibilityRules');
   const origData = ex.data as NumbersTriviaData;
+  const n = origData.numberA ?? 0;
   return {
-    ...ex,
+    prompt: `Which rule checks divisibility by ${n}?`,
+    answer: ex.answer,
     pattern: 'single-choice',
     data: {
       ...origData,
@@ -413,6 +421,22 @@ export function generateNumbersTriviaIsRational(seed: number, complexity: number
       buttons: ['yes', 'no'],
     },
   };
+}
+
+export function generateNumbersTriviaExercise(seed: number, complexity: number): Exercise {
+  const base = generateNumbersTrivia(seed, complexity);
+  const data = base.data as NumbersTriviaData;
+  const generators: Record<string, (seed: number, complexity: number) => Exercise> = {
+    primeDivisors: generateNumbersTriviaPrimeDivisors,
+    trueFalse: generateNumbersTriviaTrueFalse,
+    divisibilityRules: generateNumbersTriviaDivisibilityRules,
+    isNatural: generateNumbersTriviaIsNatural,
+    isInteger: generateNumbersTriviaIsInteger,
+    isRational: generateNumbersTriviaIsRational,
+  };
+  const gen = generators[data.subType ?? ''];
+  if (gen) return gen(seed, complexity);
+  return base;
 }
 
 export function validateNumbersTrivia(answer: string, exercise: Exercise): boolean {

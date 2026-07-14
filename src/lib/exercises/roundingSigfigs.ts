@@ -130,7 +130,6 @@ export function generateRoundingSigfigs(seed: number, complexity: number): Exerc
   return {
     prompt: formatNumberForPrompt(value),
     answer,
-    pattern: 'text-input',
     data: { sigfigsCount: n },
   };
 }

@@ -1,5 +1,6 @@
 <script lang="ts">
   import { _ } from '../../i18n.svelte';
+  import { state as langState } from '../../i18n.svelte';
   import type { ExerciseProps } from '../../types';
   import Math from '../Math.svelte';
   import ExerciseShell from '../ExerciseShell.svelte';
@@ -7,7 +8,12 @@
 
   let { exercise, onSubmit, onNext, feedback }: ExerciseProps = $props();
 
-  let data = $derived(exercise.data as { promptKey?: string; options: { label?: string; latex?: string }[] });
+  let data = $derived(
+    exercise.data as {
+      promptKey?: string;
+      options: { label?: string; latex?: string; text?: string; textDe?: string }[];
+    },
+  );
   let options = $derived(data.options ?? []);
   let promptKey = $derived(data.promptKey);
   // eslint-disable-next-line svelte/prefer-writable-derived
@@ -29,10 +35,9 @@
 <ExerciseShell {exercise} {feedback} submitAnswer={handleSubmit} {onNext}>
   {#if promptKey}
     <p class="prompt-label">{_(promptKey)}</p>
-  {:else}
-    <p class="prompt">
-      <Math expression={exercise.prompt} />
-    </p>
+  {/if}
+  {#if exercise.prompt}
+    <p class="prompt"><Math expression={exercise.prompt} /></p>
   {/if}
 
   <div class="option-grid" role="radiogroup" aria-label={exercise.prompt || (promptKey ?? '')}>
@@ -45,10 +50,12 @@
           role="radio"
           aria-checked={selectedIndex === i}
         >
-          {#if option.latex}
+          {#if option.text}
+            {langState.lang === 'de' && option.textDe ? option.textDe : option.text}
+          {:else if option.latex}
             <Math expression={option.latex} />
           {:else}
-            {option.label}
+            {option.label ? _(option.label) : ''}
           {/if}
         </button>
       {:else}
@@ -57,10 +64,12 @@
           class:correct-option={correctIndices.includes(i) && selectedIndex === i}
           class:wrong-option={!correctIndices.includes(i) && selectedIndex === i}
         >
-          {#if option.latex}
+          {#if option.text}
+            {langState.lang === 'de' && option.textDe ? option.textDe : option.text}
+          {:else if option.latex}
             <Math expression={option.latex} />
           {:else}
-            {option.label}
+            {option.label ? _(option.label) : ''}
           {/if}
         </span>
       {/if}
@@ -72,7 +81,14 @@
   {:else if feedback === 'incorrect'}
     <Feedback
       {feedback}
-      textAnswer={correctIndices.map((i) => options[i]?.label ?? options[i]?.latex ?? '').join(', ')}
+      textAnswer={correctIndices
+        .map((i) => {
+          const opt = options[i];
+          if (opt?.text) return langState.lang === 'de' && opt.textDe ? opt.textDe : opt.text;
+          if (opt?.label) return _(opt.label);
+          return opt?.latex ?? '';
+        })
+        .join(', ')}
     />
   {/if}
 </ExerciseShell>
