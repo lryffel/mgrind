@@ -252,41 +252,41 @@ describe('prompt term order', () => {
 describe('formatFactoredLatex', () => {
   it('formats (a+b)² — a has no variable, b has variable', () => {
     const result = formatFactoredLatex(1, 2, 1, 3, 1, null, 'x');
-    expect(result).toBe('(3x + 2)^{2}');
+    expect(result).toBe('\\left(3x + 2\\right)^{2}');
   });
 
   it('formats (a-b)² — a has no variable, b has variable', () => {
     const result = formatFactoredLatex(2, 5, 1, 2, 1, null, 'y');
-    expect(result).toBe('(2y - 5)^{2}');
+    expect(result).toBe('\\left(2y - 5\\right)^{2}');
   });
 
   it('formats (a+b)(a-b) — a has no variable, b has variable', () => {
     const result = formatFactoredLatex(3, 3, 1, 4, 1, null, 'z');
-    expect(result).toBe('(3 + 4z)(3 - 4z)');
+    expect(result).toBe('\\left(3 + 4z\\right)\\left(3 - 4z\\right)');
   });
 
   it('formats (a+b)(a-b) with two variables', () => {
     const result = formatFactoredLatex(3, 2, 1, 3, 1, 'a', 'b');
-    expect(result).toBe('(2a + 3b)(2a - 3b)');
+    expect(result).toBe('\\left(2a + 3b\\right)\\left(2a - 3b\\right)');
   });
 
   it('formats (a+b)² with fractional coefficients', () => {
     const result = formatFactoredLatex(1, 1, 2, 3, 4, 'x', 'x');
-    expect(result).toBe('(\\frac{1}{2}x + \\frac{3}{4}x)^{2}');
+    expect(result).toBe('\\left(\\frac{1}{2}x + \\frac{3}{4}x\\right)^{2}');
   });
 
   it('omits coefficient 1 when variable is present', () => {
     const result = formatFactoredLatex(3, 1, 1, 5, 1, 'a', 'b');
-    expect(result).toBe('(a + 5b)(a - 5b)');
+    expect(result).toBe('\\left(a + 5b\\right)\\left(a - 5b\\right)');
   });
 
   it('shows coefficient 1 when variable is absent', () => {
     const result = formatFactoredLatex(3, 1, 1, 5, 1, null, 'k');
-    expect(result).toBe('(1 + 5k)(1 - 5k)');
+    expect(result).toBe('\\left(1 + 5k\\right)\\left(1 - 5k\\right)');
   });
 
   it('handles two-variable formulas', () => {
     const result = formatFactoredLatex(1, 1, 1, 2, 1, 'a', 'b');
-    expect(result).toBe('(a + 2b)^{2}');
+    expect(result).toBe('\\left(a + 2b\\right)^{2}');
   });
 });

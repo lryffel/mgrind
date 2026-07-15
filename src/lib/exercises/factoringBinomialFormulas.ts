@@ -24,12 +24,12 @@ export function formatFactoredLatex(
   const bStr = coeffLatex(bNum, bDen, cmd(varB));
 
   if (!varA) {
-    if (formulaType === 1) return `(${bStr} + ${aStr})^{2}`;
-    if (formulaType === 2) return `(${bStr} - ${aStr})^{2}`;
+    if (formulaType === 1) return `\\left(${bStr} + ${aStr}\\right)^{2}`;
+    if (formulaType === 2) return `\\left(${bStr} - ${aStr}\\right)^{2}`;
   }
-  if (formulaType === 1) return `(${aStr} + ${bStr})^{2}`;
-  if (formulaType === 2) return `(${aStr} - ${bStr})^{2}`;
-  return `(${aStr} + ${bStr})(${aStr} - ${bStr})`;
+  if (formulaType === 1) return `\\left(${aStr} + ${bStr}\\right)^{2}`;
+  if (formulaType === 2) return `\\left(${aStr} - ${bStr}\\right)^{2}`;
+  return `\\left(${aStr} + ${bStr}\\right)\\left(${aStr} - ${bStr}\\right)`;
 }
 
 function buildPrompt(

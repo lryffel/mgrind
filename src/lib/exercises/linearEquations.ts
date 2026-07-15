@@ -351,7 +351,7 @@ export function generateLinearEquations(seed: number, complexity: number): Exerc
           ? ` + \\frac{${pNum}}{${pDen}}`
           : ` - \\frac{${Math.abs(pNum)}}{${pDen}}`;
     const rhsLatex = coeffLatex(rhsNum, rhsDen, '');
-    equationLatex = `${coeffLatexStr}(${variable}${pLatex}) = ${rhsLatex}`;
+    equationLatex = `${coeffLatexStr}\\left(${variable}${pLatex}\\right) = ${rhsLatex}`;
   } else {
     equationLatex = `${formatSum(leftTerms, variable)} = ${formatSum(rightTerms, variable)}`;
   }

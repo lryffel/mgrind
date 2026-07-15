@@ -307,42 +307,42 @@ describe('validateFactoringOutAndBinomial', () => {
 describe('formatFullFactoredLatex', () => {
   it('formats gcf * (a + b*varB)² with coefficient GCF', () => {
     const result = formatFullFactoredLatex(1, 3, '', 2, 1, 3, 1, null, 'x');
-    expect(result).toBe('3\\,(3x + 2)^{2}');
+    expect(result).toBe('3\\,\\left(3x + 2\\right)^{2}');
   });
 
   it('formats gcf * (a - b*varB)² with coefficient GCF', () => {
     const result = formatFullFactoredLatex(2, 4, '', 1, 1, 2, 1, null, 'y');
-    expect(result).toBe('4\\,(2y - 1)^{2}');
+    expect(result).toBe('4\\,\\left(2y - 1\\right)^{2}');
   });
 
   it('formats gcf * (a+b*varB)(a-b*varB) with coefficient GCF', () => {
     const result = formatFullFactoredLatex(3, 2, '', 1, 1, 3, 1, null, 'z');
-    expect(result).toBe('2\\,(1 + 3z)(1 - 3z)');
+    expect(result).toBe('2\\,\\left(1 + 3z\\right)\\left(1 - 3z\\right)');
   });
 
   it('formats with GCF variable part', () => {
     const result = formatFullFactoredLatex(1, 2, 'x', 3, 1, 4, 1, null, 'y');
-    expect(result).toBe('2\\,x\\,(4y + 3)^{2}');
+    expect(result).toBe('2\\,x\\,\\left(4y + 3\\right)^{2}');
   });
 
   it('formats with two variables', () => {
     const result = formatFullFactoredLatex(1, 3, 'x', 2, 1, 5, 1, 'a', 'b');
-    expect(result).toBe('3\\,x\\,(2a + 5b)^{2}');
+    expect(result).toBe('3\\,x\\,\\left(2a + 5b\\right)^{2}');
   });
 
   it('omits coefficient 1 when GCF variable is present', () => {
     const result = formatFullFactoredLatex(1, 1, 'x', 2, 1, 3, 1, null, 'y');
-    expect(result).toBe('x\\,(3y + 2)^{2}');
+    expect(result).toBe('x\\,\\left(3y + 2\\right)^{2}');
   });
 
   it('handles formula 3 with two variables', () => {
     const result = formatFullFactoredLatex(3, 2, 'x', 1, 1, 3, 1, 'a', 'b');
-    expect(result).toBe('2\\,x\\,(a + 3b)(a - 3b)');
+    expect(result).toBe('2\\,x\\,\\left(a + 3b\\right)\\left(a - 3b\\right)');
   });
 
   it('handles two-variable formulas', () => {
     const result = formatFullFactoredLatex(1, 3, '', 1, 1, 2, 1, 'a', 'b');
-    expect(result).toBe('3\\,(a + 2b)^{2}');
+    expect(result).toBe('3\\,\\left(a + 2b\\right)^{2}');
   });
 });
 
