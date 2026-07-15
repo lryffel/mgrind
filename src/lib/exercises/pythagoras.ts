@@ -1,4 +1,5 @@
 import type { Exercise } from '../types';
+import type { DictKey } from '../i18n.svelte';
 import { mulberry32 } from '../prng';
 import { gcd, clampComplexity } from '../math/number';
 import { reduceFrac, fracEqual } from '../math/fraction';
@@ -21,7 +22,7 @@ export interface PythagorasData {
   sideCDen: number;
   missingSide: string;
   answerLatex: string;
-  promptKey: string;
+  promptKey: DictKey;
 }
 
 export function validatePythagoras(answer: string, exercise: Exercise): boolean {

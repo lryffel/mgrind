@@ -833,10 +833,12 @@ const dict = {
   'exercise.unitConversion.prompt': { en: 'Convert.', de: 'Rechne um.' },
 } satisfies Record<string, Record<Lang, string>>;
 
+export type DictKey = keyof typeof dict;
+
 export const state = $state({ lang: 'en' as Lang });
 
-export function _(key: string, ...args: (string | number)[]): string {
-  let text = (dict as Record<string, Record<Lang, string>>)[key]?.[state.lang] ?? key;
+export function _(key: DictKey, ...args: (string | number)[]): string {
+  let text = dict[key]?.[state.lang] ?? (key as string);
   for (let i = 0; i < args.length; i++) {
     text = text.replace(`{${i}}`, String(args[i]));
   }

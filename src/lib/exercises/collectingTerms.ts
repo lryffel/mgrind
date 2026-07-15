@@ -1,4 +1,5 @@
 import type { Exercise } from '../types';
+import type { DictKey } from '../i18n.svelte';
 import { mulberry32 } from '../prng';
 import { clampComplexity } from '../math/number';
 import { reduceFrac, parseFrac } from '../math/fraction';
@@ -6,7 +7,7 @@ import { randInt, pick, pickDistinct, shuffle } from '../math/rng';
 
 export interface CollectingTermsData {
   fields: { variablePart: string }[];
-  promptKey: string;
+  promptKey: DictKey;
 }
 
 interface Monomial {

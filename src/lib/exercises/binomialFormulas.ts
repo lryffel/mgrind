@@ -1,4 +1,5 @@
 import type { Exercise } from '../types';
+import type { DictKey } from '../i18n.svelte';
 import { mulberry32 } from '../prng';
 import { randInt, pick, randCoeff } from '../math/rng';
 import { clampComplexity } from '../math/number';
@@ -6,7 +7,7 @@ import { reduceFrac, fracEqual } from '../math/fraction';
 
 export interface BinomialFormulasData {
   fields: { variablePart: string }[];
-  promptKey: string;
+  promptKey: DictKey;
 }
 
 function mulCoeff(a: [number, number], b: [number, number]): [number, number] {

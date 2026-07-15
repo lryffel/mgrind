@@ -42,7 +42,9 @@
   {disableSubmit}
 >
   {#if promptKey && promptMath}
-    <p class="prompt-label">{_(promptKey)}<Math expression={promptMath} />{_(promptKeySuffix ?? '')}</p>
+    <p class="prompt-label">
+      {_(promptKey)}<Math expression={promptMath} />{promptKeySuffix ? _(promptKeySuffix) : ''}
+    </p>
   {:else if promptKey}
     <p class="prompt-label">{_(promptKey, ...promptArgs)}</p>
   {/if}

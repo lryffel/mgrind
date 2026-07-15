@@ -1,4 +1,5 @@
 import type { Exercise } from '../types';
+import type { DictKey } from '../i18n.svelte';
 import { mulberry32 } from '../prng';
 import { clampComplexity } from '../math/number';
 import { randInt, pick } from '../math/rng';
@@ -10,7 +11,7 @@ export interface SymbolicFractionData {
   fields?: { variablePart: string }[];
   denominatorFields?: { variablePart: string }[];
   cannotSimplifyType?: string;
-  promptKey?: string;
+  promptKey?: DictKey;
 }
 
 const VAR_PAIRS: [string, string][] = [

@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeEach } from 'vitest';
-import { _, setLang, initLang, state } from './i18n.svelte';
+import { _, setLang, initLang, state, type DictKey } from './i18n.svelte';
 
 beforeEach(() => {
   state.lang = 'en';
@@ -7,8 +7,9 @@ beforeEach(() => {
 });
 
 describe('i18n', () => {
-  it('returns the key if no translation is found', () => {
-    expect(_('nonexistent.key')).toBe('nonexistent.key');
+  it('returns the key as a defensive fallback when a dict key is missing at runtime', () => {
+    const missing = 'nonexistent.key' as DictKey;
+    expect(_(missing)).toBe('nonexistent.key');
   });
 
   it('returns English text by default', () => {

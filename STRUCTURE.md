@@ -17,6 +17,8 @@ Plain Vite + Svelte 5 (not SvelteKit). Two-screen SPA routed by a `$state` varia
 `Exercise`, `CardPattern`, `ExerciseType`, `Discipline`, `Lang`, `Prerequisite`.
 Also typed `ExerciseProps`, `ExerciseFeedback`.
 
+`ExerciseType.nameKey`/`descriptionKey` and `Discipline.nameKey` are typed `DictKey` (exported from `src/lib/i18n.svelte.ts`), so registry references to the i18n dict are compile-checked.
+
 `CardPattern` is a closed union type:
 
 ```
@@ -25,7 +27,7 @@ Also typed `ExerciseProps`, `ExerciseFeedback`.
 
 Generators set `exercise.pattern` to select which generic card template renders the exercise. `'custom'` types need a component in `src/lib/components/exercises/`.
 
-`Exercise.data` is typed `unknown` — consumers cast to the per-type interface.
+`Exercise.data` is typed `unknown` — consumers cast to the per-type interface. Per-type data interfaces that hold i18n keys (e.g. `promptKey`, option `label`s) type those fields as `DictKey`, so the literal key strings generators assign are compile-checked. Anything that still routes through `unknown` at runtime (custom data plumbing) is covered by the registry convention tests in `src/lib/data/registry.test.ts`.
 
 ## Shared utilities
 
@@ -40,10 +42,11 @@ Generators set `exercise.pattern` to select which generic card template renders 
 
 ## Domain data
 
-| File                            | Role                                                           |
-| ------------------------------- | -------------------------------------------------------------- |
-| `src/lib/data/disciplines.ts`   | `Discipline[]` — each has `id`, `nameKey`, `exerciseTypeIds[]` |
-| `src/lib/data/exerciseTypes.ts` | `Record<string, ExerciseType>` — registry; add new types here  |
+| File                            | Role                                                                                                                                                                                                                                                                    |
+| ------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `src/lib/data/disciplines.ts`   | `Discipline[]` — each has `id`, `nameKey`, `exerciseTypeIds[]`                                                                                                                                                                                                          |
+| `src/lib/data/exerciseTypes.ts` | `Record<string, ExerciseType>` — registry; add new types here                                                                                                                                                                                                           |
+| `src/lib/data/registry.test.ts` | Convention tests: every discipline/prerequisite references a registered type, every registered type is in a discipline, and every derived `nameKey`/`descriptionKey`/discipline `nameKey` plus every i18n key referenced via `exercise.data` resolves in the i18n dict. |
 
 ## Exercise generators (`src/lib/exercises/`)
 

@@ -1,5 +1,6 @@
 import type { Component } from 'svelte';
 import type { Exercise, ExerciseType, ExerciseProps, Prerequisite } from '../types';
+import type { DictKey } from '../i18n.svelte';
 import { generateMultiplication } from '../exercises/multiplication';
 import { generateDivision } from '../exercises/division';
 import { generatePrimeFactorisation } from '../exercises/primeFactorisation';
@@ -92,8 +93,6 @@ import SymbolicFractionOperationsInstructions from '../components/exerciseInstru
 
 function defineExerciseType(config: {
   id: string;
-  nameKey: string;
-  descriptionKey: string;
   generate: (seed: number, complexity: number) => Exercise;
   validate?: (answer: string, exercise: Exercise) => boolean;
   component?: Component<ExerciseProps>;
@@ -103,8 +102,8 @@ function defineExerciseType(config: {
 }): ExerciseType {
   return {
     id: config.id,
-    nameKey: config.nameKey,
-    descriptionKey: config.descriptionKey,
+    nameKey: `exercise.${config.id}.name` as DictKey,
+    descriptionKey: `exercise.${config.id}.desc` as DictKey,
     maxComplexity: config.maxComplexity ?? 10,
     generate: config.generate,
     validate: config.validate ?? trimCompare,
@@ -117,34 +116,24 @@ function defineExerciseType(config: {
 export const exerciseTypes: Record<string, ExerciseType> = {
   multiplication: defineExerciseType({
     id: 'multiplication',
-    nameKey: 'exercise.multiplication.name',
-    descriptionKey: 'exercise.multiplication.desc',
     generate: generateMultiplication,
   }),
   division: defineExerciseType({
     id: 'division',
-    nameKey: 'exercise.division.name',
-    descriptionKey: 'exercise.division.desc',
     generate: generateDivision,
   }),
   squares: defineExerciseType({
     id: 'squares',
-    nameKey: 'exercise.squares.name',
-    descriptionKey: 'exercise.squares.desc',
     generate: generateSquares,
     instructionComponent: SquaresInstructions,
   }),
   orderOfOperations: defineExerciseType({
     id: 'orderOfOperations',
-    nameKey: 'exercise.orderOfOperations.name',
-    descriptionKey: 'exercise.orderOfOperations.desc',
     generate: generateOrderOfOperations,
     instructionComponent: OrderOfOperationsInstructions,
   }),
   primeFactorisation: defineExerciseType({
     id: 'primeFactorisation',
-    nameKey: 'exercise.primeFactorisation.name',
-    descriptionKey: 'exercise.primeFactorisation.desc',
     generate: generatePrimeFactorisation,
     prerequisites: [
       { typeId: 'multiplication', complexity: 7 },
@@ -154,16 +143,12 @@ export const exerciseTypes: Record<string, ExerciseType> = {
   }),
   simplifyFraction: defineExerciseType({
     id: 'simplifyFraction',
-    nameKey: 'exercise.simplifyFraction.name',
-    descriptionKey: 'exercise.simplifyFraction.desc',
     generate: generateSimplifyFraction,
     validate: validateFractionReduced,
     instructionComponent: SimplifyFractionInstructions,
   }),
   additionFraction: defineExerciseType({
     id: 'additionFraction',
-    nameKey: 'exercise.additionFraction.name',
-    descriptionKey: 'exercise.additionFraction.desc',
     generate: generateAdditionFraction,
     validate: validateFractionAnswer,
     prerequisites: [{ typeId: 'simplifyFraction', complexity: 5 }],
@@ -171,8 +156,6 @@ export const exerciseTypes: Record<string, ExerciseType> = {
   }),
   multiplicationFraction: defineExerciseType({
     id: 'multiplicationFraction',
-    nameKey: 'exercise.multiplicationFraction.name',
-    descriptionKey: 'exercise.multiplicationFraction.desc',
     generate: generateMultiplicationFraction,
     validate: validateFractionAnswer,
     prerequisites: [{ typeId: 'simplifyFraction', complexity: 5 }],
@@ -180,40 +163,30 @@ export const exerciseTypes: Record<string, ExerciseType> = {
   }),
   substitution: defineExerciseType({
     id: 'substitution',
-    nameKey: 'exercise.substitution.name',
-    descriptionKey: 'exercise.substitution.desc',
     generate: generateSubstitutionExercise,
     validate: validateSubstitution,
     instructionComponent: SubstitutionInstructions,
   }),
   collectingTerms: defineExerciseType({
     id: 'collectingTerms',
-    nameKey: 'exercise.collectingTerms.name',
-    descriptionKey: 'exercise.collectingTerms.desc',
     generate: generateCollectingTerms,
     validate: validateCollectingTerms,
     instructionComponent: CollectingTermsInstructions,
   }),
   binomialFormulas: defineExerciseType({
     id: 'binomialFormulas',
-    nameKey: 'exercise.binomialFormulas.name',
-    descriptionKey: 'exercise.binomialFormulas.desc',
     generate: generateBinomialFormulas,
     validate: validateBinomialFormulas,
     instructionComponent: BinomialFormulasInstructions,
   }),
   scientificNotation: defineExerciseType({
     id: 'scientificNotation',
-    nameKey: 'exercise.scientificNotation.name',
-    descriptionKey: 'exercise.scientificNotation.desc',
     generate: generateScientificNotation,
     component: ScientificNotationExercise,
     instructionComponent: ScientificNotationInstructions,
   }),
   factoringBinomialFormulas: defineExerciseType({
     id: 'factoringBinomialFormulas',
-    nameKey: 'exercise.factoringBinomialFormulas.name',
-    descriptionKey: 'exercise.factoringBinomialFormulas.desc',
     generate: generateFactoringBinomialFormulas,
     validate: validateFactoringBinomialFormulas,
     component: FactoringBinomialFormulas,
@@ -222,8 +195,6 @@ export const exerciseTypes: Record<string, ExerciseType> = {
   }),
   factoringOut: defineExerciseType({
     id: 'factoringOut',
-    nameKey: 'exercise.factoringOut.name',
-    descriptionKey: 'exercise.factoringOut.desc',
     generate: generateFactoringOut,
     validate: validateFactoringOut,
     component: FactoringOut,
@@ -231,8 +202,6 @@ export const exerciseTypes: Record<string, ExerciseType> = {
   }),
   factoringOutAndBinomial: defineExerciseType({
     id: 'factoringOutAndBinomial',
-    nameKey: 'exercise.factoringOutAndBinomial.name',
-    descriptionKey: 'exercise.factoringOutAndBinomial.desc',
     generate: generateFactoringOutAndBinomial,
     validate: validateFactoringOutAndBinomial,
     component: FactoringOutAndBinomial,
@@ -244,8 +213,6 @@ export const exerciseTypes: Record<string, ExerciseType> = {
   }),
   expand: defineExerciseType({
     id: 'expand',
-    nameKey: 'exercise.expand.name',
-    descriptionKey: 'exercise.expand.desc',
     generate: generateExpand,
     validate: validateExpand,
     prerequisites: [{ typeId: 'collectingTerms', complexity: 3 }],
@@ -253,8 +220,6 @@ export const exerciseTypes: Record<string, ExerciseType> = {
   }),
   expandAndCollect: defineExerciseType({
     id: 'expandAndCollect',
-    nameKey: 'exercise.expandAndCollect.name',
-    descriptionKey: 'exercise.expandAndCollect.desc',
     generate: generateExpandAndCollect,
     validate: validateExpandAndCollect,
     prerequisites: [{ typeId: 'expand', complexity: 3 }],
@@ -262,16 +227,12 @@ export const exerciseTypes: Record<string, ExerciseType> = {
   }),
   linearEquations: defineExerciseType({
     id: 'linearEquations',
-    nameKey: 'exercise.linearEquations.name',
-    descriptionKey: 'exercise.linearEquations.desc',
     generate: generateLinearEquationsExercise,
     validate: validateLinearEquations,
     instructionComponent: LinearEquationsInstructions,
   }),
   factorEquations: defineExerciseType({
     id: 'factorEquations',
-    nameKey: 'exercise.factorEquations.name',
-    descriptionKey: 'exercise.factorEquations.desc',
     generate: generateFactorEquations,
     validate: validateFactorEquations,
     component: FactorEquations,
@@ -284,15 +245,11 @@ export const exerciseTypes: Record<string, ExerciseType> = {
   }),
   necessityOfParentheses: defineExerciseType({
     id: 'necessityOfParentheses',
-    nameKey: 'exercise.necessityOfParentheses.name',
-    descriptionKey: 'exercise.necessityOfParentheses.desc',
     generate: generateNecessityOfParenthesesExercise,
     validate: validateNecessityOfParentheses,
   }),
   pythagoras: defineExerciseType({
     id: 'pythagoras',
-    nameKey: 'exercise.pythagoras.name',
-    descriptionKey: 'exercise.pythagoras.desc',
     generate: generatePythagoras,
     validate: validatePythagoras,
     component: Pythagoras,
@@ -301,8 +258,6 @@ export const exerciseTypes: Record<string, ExerciseType> = {
   }),
   interiorAngles: defineExerciseType({
     id: 'interiorAngles',
-    nameKey: 'exercise.interiorAngles.name',
-    descriptionKey: 'exercise.interiorAngles.desc',
     maxComplexity: 10,
     generate: generateInteriorAngles,
     component: InteriorAngles,
@@ -310,8 +265,6 @@ export const exerciseTypes: Record<string, ExerciseType> = {
   }),
   areaAndPerimeter: defineExerciseType({
     id: 'areaAndPerimeter',
-    nameKey: 'exercise.areaAndPerimeter.name',
-    descriptionKey: 'exercise.areaAndPerimeter.desc',
     maxComplexity: 10,
     generate: generateAreaAndPerimeter,
     validate: validateAreaAndPerimeter,
@@ -320,16 +273,12 @@ export const exerciseTypes: Record<string, ExerciseType> = {
   }),
   percent: defineExerciseType({
     id: 'percent',
-    nameKey: 'exercise.percent.name',
-    descriptionKey: 'exercise.percent.desc',
     generate: generatePercentExercise,
     validate: validatePercent,
     prerequisites: [{ typeId: 'multiplication', complexity: 3 }],
   }),
   compareFractions: defineExerciseType({
     id: 'compareFractions',
-    nameKey: 'exercise.compareFractions.name',
-    descriptionKey: 'exercise.compareFractions.desc',
     generate: generateCompareFractions,
     validate: validateCompareFractions,
     instructionComponent: CompareFractionsInstructions,
@@ -337,16 +286,12 @@ export const exerciseTypes: Record<string, ExerciseType> = {
   }),
   signs: defineExerciseType({
     id: 'signs',
-    nameKey: 'exercise.signs.name',
-    descriptionKey: 'exercise.signs.desc',
     generate: generateSigns,
     validate: validateSigns,
     instructionComponent: SignsInstructions,
   }),
   simplifySymbolicFraction: defineExerciseType({
     id: 'simplifySymbolicFraction',
-    nameKey: 'exercise.simplifySymbolicFraction.name',
-    descriptionKey: 'exercise.simplifySymbolicFraction.desc',
     generate: generateSimplifySymbolicFraction,
     validate: validateSimplifySymbolicFraction,
     component: SymbolicFractionExercise,
@@ -355,15 +300,11 @@ export const exerciseTypes: Record<string, ExerciseType> = {
   }),
   roundingSigfigs: defineExerciseType({
     id: 'roundingSigfigs',
-    nameKey: 'exercise.roundingSigfigs.name',
-    descriptionKey: 'exercise.roundingSigfigs.desc',
     generate: generateRoundingSigfigsExercise,
     instructionComponent: RoundingSigfigsInstructions,
   }),
   gcdLcm: defineExerciseType({
     id: 'gcdLcm',
-    nameKey: 'exercise.gcdLcm.name',
-    descriptionKey: 'exercise.gcdLcm.desc',
     generate: generateGcdLcm,
     validate: validateGcdLcm,
     component: GcdLcmExercise,
@@ -371,23 +312,17 @@ export const exerciseTypes: Record<string, ExerciseType> = {
   }),
   termTransformationsTrivia: defineExerciseType({
     id: 'termTransformationsTrivia',
-    nameKey: 'exercise.termTransformationsTrivia.name',
-    descriptionKey: 'exercise.termTransformationsTrivia.desc',
     generate: generateTermTransformationsTrivia,
     validate: validateTermTransformationsTrivia,
   }),
   numbersTrivia: defineExerciseType({
     id: 'numbersTrivia',
-    nameKey: 'exercise.numbersTrivia.name',
-    descriptionKey: 'exercise.numbersTrivia.desc',
     generate: generateNumbersTriviaExercise,
     validate: validateNumbersTrivia,
   }),
 
   factors: defineExerciseType({
     id: 'factors',
-    nameKey: 'exercise.factors.name',
-    descriptionKey: 'exercise.factors.desc',
     maxComplexity: 10,
     generate: generateFactorsExercise,
     validate: validateFactors,
@@ -396,23 +331,17 @@ export const exerciseTypes: Record<string, ExerciseType> = {
 
   fractionTrivia: defineExerciseType({
     id: 'fractionTrivia',
-    nameKey: 'exercise.fractionTrivia.name',
-    descriptionKey: 'exercise.fractionTrivia.desc',
     generate: generateFractionTriviaExercise,
     validate: validateFractionTrivia,
   }),
   unitConversion: defineExerciseType({
     id: 'unitConversion',
-    nameKey: 'exercise.unitConversion.name',
-    descriptionKey: 'exercise.unitConversion.desc',
     generate: generateUnitConversion,
     validate: validateUnitConversion,
     instructionComponent: UnitConversionInstructions,
   }),
   symbolicFractionOperations: defineExerciseType({
     id: 'symbolicFractionOperations',
-    nameKey: 'exercise.symbolicFractionOperations.name',
-    descriptionKey: 'exercise.symbolicFractionOperations.desc',
     generate: generateSymbolicFractionOperations,
     validate: validateSymbolicFractionOperations,
     component: SymbolicFractionExercise,

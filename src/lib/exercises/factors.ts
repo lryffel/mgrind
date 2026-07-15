@@ -1,4 +1,5 @@
 import type { Exercise } from '../types';
+import type { DictKey } from '../i18n.svelte';
 import { mulberry32 } from '../prng';
 import { clampComplexity } from '../math/number';
 import { randInt, pick } from '../math/rng';
@@ -6,7 +7,7 @@ import { randInt, pick } from '../math/rng';
 export interface FactorsData {
   n: number;
   factors: string;
-  promptKey: string;
+  promptKey: DictKey;
   options: { latex: string }[];
 }
 

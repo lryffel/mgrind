@@ -1,4 +1,5 @@
 import type { Exercise } from '../types';
+import type { DictKey } from '../i18n.svelte';
 import { mulberry32 } from '../prng';
 import { clampComplexity } from '../math/number';
 import { randInt, pick } from '../math/rng';
@@ -7,7 +8,7 @@ import { expandProduct, collectTerms, type Term } from './termAlgebra';
 
 export interface ExpandData {
   fields: { variablePart: string }[];
-  promptKey: string;
+  promptKey: DictKey;
 }
 
 const VAR_SETS = [['x'], ['x', 'y'], ['a'], ['a', 'b'], ['m'], ['m', 'n']];

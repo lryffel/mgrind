@@ -1,4 +1,5 @@
 import type { Exercise } from '../types';
+import type { DictKey } from '../i18n.svelte';
 import { mulberry32 } from '../prng';
 import { clampComplexity } from '../math/number';
 import { reduceFrac, fracEqual } from '../math/fraction';
@@ -19,7 +20,7 @@ export interface AreaAndPerimeterData {
   fields?: { variablePart: string }[];
   tipLevel: 1 | 2 | 3;
   vertices: { x: number; y: number }[];
-  promptKey: string;
+  promptKey: DictKey;
 }
 
 interface Dim {
@@ -218,7 +219,7 @@ export function generateAreaAndPerimeter(seed: number, complexity: number): Exer
   let given: { label: string; value: string; unit: string }[];
   let dims: { num: number; den: number; label: string }[];
   let tipLevel: 1 | 2 | 3;
-  let promptKey: string;
+  let promptKey: DictKey;
 
   const maxVal = clamped <= 1 ? 10 : 20;
 

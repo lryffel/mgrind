@@ -1,5 +1,6 @@
 <script lang="ts">
   import { _ } from '../i18n.svelte';
+  import type { DictKey } from '../i18n.svelte';
   import Modal from './Modal.svelte';
 
   let {
@@ -9,8 +10,8 @@
     onConfirm,
     onCancel,
   }: {
-    messageKey: string;
-    confirmKey: string;
+    messageKey: DictKey;
+    confirmKey: DictKey;
     show: boolean;
     onConfirm: () => void;
     onCancel: () => void;

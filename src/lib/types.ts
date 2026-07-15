@@ -1,4 +1,5 @@
 import type { Component } from 'svelte';
+import type { DictKey } from './i18n.svelte';
 
 export type InputContext = 'coefficient' | 'exponent' | 'summand' | 'numerator' | 'denominator' | 'plain';
 
@@ -35,8 +36,8 @@ export interface Prerequisite {
 
 export interface ExerciseType {
   id: string;
-  nameKey: string;
-  descriptionKey: string;
+  nameKey: DictKey;
+  descriptionKey: DictKey;
   maxComplexity: number;
   generate: (seed: number, complexity: number) => Exercise;
   validate: (answer: string, exercise: Exercise) => boolean;
@@ -47,7 +48,7 @@ export interface ExerciseType {
 
 export interface Discipline {
   id: string;
-  nameKey: string;
+  nameKey: DictKey;
   exerciseTypeIds: string[];
 }
 

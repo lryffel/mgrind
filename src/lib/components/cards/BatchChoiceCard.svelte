@@ -1,5 +1,6 @@
 <script lang="ts">
   import { _ } from '../../i18n.svelte';
+  import type { DictKey } from '../../i18n.svelte';
   import type { ExerciseProps } from '../../types';
   import type { BatchChoiceCardData } from './cardData';
   import Math from '../Math.svelte';
@@ -45,7 +46,7 @@
     if (btn === '<') return '<';
     if (btn === '>') return '>';
     if (btn === '=') return '=';
-    return _(btn);
+    return _(btn as DictKey);
   }
 
   function btnMath(btn: string): string | null {

@@ -1,4 +1,5 @@
 import type { Exercise } from '../types';
+import type { DictKey } from '../i18n.svelte';
 import { mulberry32 } from '../prng';
 import { clampComplexity, gcd } from '../math/number';
 import { pick, randInt } from '../math/rng';
@@ -14,7 +15,7 @@ export interface CompareFractionsComparison {
 export interface CompareFractionsData {
   rows: { latex: string; latex2: string }[];
   buttons: string[];
-  promptKey: string;
+  promptKey: DictKey;
 }
 
 function getOperator(num1: number, den1: number, num2: number, den2: number): string {

@@ -9,15 +9,17 @@
 
 - Svelte 5 runes: `$state`, `$derived`, `$effect`, `$props`, `mount`
 - i18n: `_('key')` from `src/lib/i18n.svelte.ts`; lang persisted in localStorage
+  - `_('key')` is strictly typed: `key` must be a `DictKey` (i.e. `keyof typeof dict`, exported from the same module). Literal misspellings at call sites are compile errors.
   - All user-visible strings (including `aria-label`) must use `_('key')`
   - To add a new key, add an entry to `dict` in `i18n.svelte.ts` with `en` and `de` values
+  - When storing i18n keys in a generator data interface field that is later passed to `_()` (e.g. `promptKey`, option `label`, `promptArgKeys`), type the field as `DictKey` so the literal assignment is compile-checked. `_()` keeps a defensive runtime fallback to the key string for the few unavoidable casts.
 - Progress: `src/lib/progress.svelte.ts`; persisted in localStorage
 - Exercise types: `{ generate(seed, complexity): Exercise, validate(answer, exercise): boolean }`
-  - Register in `src/lib/data/exerciseTypes.ts` using `defineExerciseType()`
+  - Register in `src/lib/data/exerciseTypes.ts` using `defineExerciseType()` — pass `id`, `generate`, and optional fields; `nameKey`/`descriptionKey` are **derived** from `id` (`exercise.<id>.name` / `.desc`), do NOT pass them by hand.
   - Generators clamp complexity: `clampComplexity(complexity, max)` from `src/lib/math/number.ts`
   - Multi-field validation: `validateMultiField` from `src/lib/validation.ts`
   - Use `mulberry32(seed)` as the single RNG — no inline `Math.random()`
-  - Each type defines and exports its own data interface (e.g. `MultiplicationFractionData`) in its generator module. `Exercise.data` is `unknown` — consumers must cast.
+  - Each type defines and exports its own data interface (e.g. `MultiplicationFractionData`) in its generator module. `Exercise.data` is `unknown` — consumers must cast. Type any field holding an i18n key as `DictKey` (imported from `src/lib/i18n.svelte.ts`); the registry convention tests in `src/lib/data/registry.test.ts` catch any missed cross-references (orphan types, dangling discipline/prereq refs, missing i18n keys) at test time.
 - Exercise card patterns: `CardPattern` type in `src/lib/types.ts`. Generators set `exercise.pattern` to select a generic card template from `src/lib/components/cards/`. Patterns: `text-input`, `fraction-input`, `multi-field`, `batch-choice`, `single-choice`, `multi-choice`, `prime-factors`, `custom`. Patterned types need zero component code. `'custom'` types need a component in `src/lib/components/exercises/`.
 - `src/lib/components/cards/` contains 7 generic card templates: `CardRegistry.svelte` routes by `exercise.pattern`. `NumericInput.svelte` and `PrimeFactorInput.svelte` live in `src/lib/components/` (shared between cards and custom components).
 - Disciplines: array in `src/lib/data/disciplines.ts`

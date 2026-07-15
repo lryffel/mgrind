@@ -42,7 +42,9 @@
 
 <ExerciseShell {exercise} {feedback} submitAnswer={handleSubmit} {onNext}>
   {#if promptKey && data.promptMath}
-    <p class="prompt-label">{_(promptKey)}<Math expression={data.promptMath} />{_(data.promptKeySuffix ?? '')}</p>
+    <p class="prompt-label">
+      {_(promptKey)}<Math expression={data.promptMath} />{data.promptKeySuffix ? _(data.promptKeySuffix) : ''}
+    </p>
   {:else if promptKey}
     <p class="prompt-label">{_(promptKey)}</p>
   {:else}

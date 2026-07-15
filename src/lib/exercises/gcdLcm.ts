@@ -1,11 +1,12 @@
 import type { Exercise } from '../types';
+import type { DictKey } from '../i18n.svelte';
 import { mulberry32 } from '../prng';
 import { clampComplexity, gcd } from '../math/number';
 import { randInt, pickDistinct } from '../math/rng';
 
 export interface GcdLcmData {
   subType: string;
-  promptKey?: string;
+  promptKey?: DictKey;
   primes?: number[];
   a?: number;
   b?: number;

@@ -1,10 +1,11 @@
 import type { Exercise } from '../types';
+import type { DictKey } from '../i18n.svelte';
 import { mulberry32 } from '../prng';
 import { gcd, clampComplexity } from '../math/number';
 import { promptFraction } from '../math/latex';
 
 export interface AdditionFractionData {
-  promptKey: string;
+  promptKey: DictKey;
 }
 
 const DENOMS = [2, 3, 4, 5, 6, 8, 10, 12];

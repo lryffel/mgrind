@@ -14,7 +14,7 @@
   let promptKey = $derived(data.promptKey);
   let promptArgs = $derived(data.promptArgs ?? []);
   let promptArgKeys = $derived(data.promptArgKeys ?? []);
-  let resolvedArgs = $derived(promptArgKeys.length > 0 ? promptArgKeys.map((k: string) => _(k)) : promptArgs);
+  let resolvedArgs = $derived(promptArgKeys.length > 0 ? promptArgKeys.map((k) => _(k)) : promptArgs);
   // eslint-disable-next-line svelte/prefer-writable-derived
   let selectedIndex = $state(-1);
   let correctIndices = $derived(exercise.answer.split(',').map(Number));

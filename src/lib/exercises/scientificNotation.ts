@@ -1,11 +1,12 @@
 import type { Exercise } from '../types';
+import type { DictKey } from '../i18n.svelte';
 import { mulberry32 } from '../prng';
 import { randInt } from '../math/rng';
 import { clampComplexity } from '../math/number';
 
 export interface ScientificNotationData {
   subType: string;
-  promptKey: string;
+  promptKey: DictKey;
 }
 
 function formatDecimal(tenths: number, exponent: number): string {

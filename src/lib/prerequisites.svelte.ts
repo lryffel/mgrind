@@ -1,9 +1,10 @@
 import type { Prerequisite } from './types';
+import type { DictKey } from './i18n.svelte';
 import { exerciseTypes } from './data/exerciseTypes';
 import { getComplexity, setComplexity } from './progress.svelte';
 
 export interface UnmetPrerequisite extends Prerequisite {
-  nameKey: string;
+  nameKey: DictKey;
   current: number;
 }
 

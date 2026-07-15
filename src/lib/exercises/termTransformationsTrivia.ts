@@ -1,4 +1,5 @@
 import type { Exercise } from '../types';
+import type { DictKey } from '../i18n.svelte';
 import { mulberry32 } from '../prng';
 import { clampComplexity } from '../math/number';
 import { pick, shuffle } from '../math/rng';
@@ -7,17 +8,17 @@ export interface TermTransformationsTriviaData {
   triviaType?: string;
   triviaOptionsLatex?: string[];
   correctIndices?: number[];
-  lawNameKey?: string;
-  lawOperationKey?: string;
-  ordinalKey?: string;
-  hintKey?: string;
+  lawNameKey?: DictKey;
+  lawOperationKey?: DictKey;
+  ordinalKey?: DictKey;
+  hintKey?: DictKey;
   statementsLatex?: string[];
   correctAnswers?: boolean[];
 }
 
 interface LawDef {
-  nameKey: string;
-  operationKey?: string;
+  nameKey: DictKey;
+  operationKey?: DictKey;
   correctLatex: string;
   distractors: string[];
 }
@@ -77,8 +78,8 @@ const LAWS: LawDef[] = [
 ];
 
 interface PowerLawDef {
-  ordinalKey: string;
-  hintKey: string;
+  ordinalKey: DictKey;
+  hintKey: DictKey;
   correctLatex: string;
   distractors: string[];
 }

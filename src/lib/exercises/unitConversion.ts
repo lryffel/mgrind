@@ -1,4 +1,5 @@
 import type { Exercise } from '../types';
+import type { DictKey } from '../i18n.svelte';
 import { mulberry32 } from '../prng';
 import { clampComplexity } from '../math/number';
 import { pick, randInt } from '../math/rng';
@@ -15,7 +16,7 @@ const CATEGORIES: Record<string, { units: string[]; baseFactors: number[] }> = {
 const METRIC_CATEGORIES: UnitCategory[] = ['length', 'mass', 'volume'];
 
 export interface UnitConversionData {
-  promptKey: 'exercise.unitConversion.prompt';
+  promptKey: DictKey;
   unitFrom: string;
   unitTo: string;
 }

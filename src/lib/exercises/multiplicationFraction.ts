@@ -1,4 +1,5 @@
 import type { Exercise } from '../types';
+import type { DictKey } from '../i18n.svelte';
 import { mulberry32 } from '../prng';
 import { gcd, clampComplexity, randomCoprimePair } from '../math/number';
 import { promptFraction } from '../math/latex';
@@ -8,7 +9,8 @@ export interface MultiplicationFractionData {
   num2: number;
   den2: number;
   op: string;
-  promptKey: string;
+  promptKey: DictKey;
+  promptArgs?: (string | number)[];
   subType: string;
 }
 

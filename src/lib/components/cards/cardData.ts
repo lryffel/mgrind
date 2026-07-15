@@ -1,8 +1,10 @@
+import type { DictKey } from '../../i18n.svelte';
+
 export interface TextInputCardData {
-  promptKey?: string;
+  promptKey?: DictKey;
   promptArgs?: (string | number)[];
   promptMath?: string;
-  promptKeySuffix?: string;
+  promptKeySuffix?: DictKey;
   prefixLatex?: string;
   suffixLatex?: string;
   correctLatex?: string;
@@ -10,29 +12,29 @@ export interface TextInputCardData {
 }
 
 export interface BatchChoiceCardData {
-  promptKey?: string;
+  promptKey?: DictKey;
   rows: { latex: string; latex2?: string }[];
   buttons: string[];
 }
 
 export interface SingleChoiceCardData {
-  promptKey?: string;
+  promptKey?: DictKey;
   promptArgs?: (string | number)[];
-  promptArgKeys?: string[];
+  promptArgKeys?: DictKey[];
   promptText?: string;
   hideCorrectFeedback?: boolean;
-  options: { label?: string; latex?: string; text?: string; textDe?: string }[];
+  options: { label?: DictKey; latex?: string; text?: string; textDe?: string }[];
 }
 
 export interface MultiChoiceCardData {
-  promptKey?: string;
+  promptKey?: DictKey;
   promptMath?: string;
-  promptKeySuffix?: string;
+  promptKeySuffix?: DictKey;
   layout?: 'grid';
-  options: { label?: string; latex?: string }[];
+  options: { label?: DictKey; latex?: string }[];
 }
 
 export interface PrimeFactorsCardData {
-  promptKey?: string;
+  promptKey?: DictKey;
   primes: number[];
 }

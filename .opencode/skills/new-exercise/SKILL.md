@@ -30,18 +30,18 @@ export function generateMultiplication(seed: number, complexity: number): Exerci
 
 ### Pattern → data contract → no component needed
 
-If the type fits a pattern, `data` must match the expected shape:
+If the type fits a pattern, `data` must match the shape declared in `src/lib/components/cards/cardData.ts`. Every field that ends up rendered via `_()` (prompt keys, option labels, prompt-argument keys) is typed `DictKey` — assign literal i18n key strings and the compiler checks them.
 
-| Pattern          | `data` shape                                                                                                                                             | No component needed     |
-| ---------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------- |
-| `text-input`     | `{ promptKey?: string; promptArgs?: (string \| number)[]; promptArgKeys?: string[]; prefixLatex?: string; correctLatex?: string; placeholder?: string }` | Yes                     |
-| `fraction-input` | `{ promptKey?: string; promptArgs?: (string \| number)[] }` (plus `num1,den1,num2,den2,op` for binary operations)                                        | Yes                     |
-| `multi-field`    | `{ promptKey?: string; fields: { variablePart: string }[] }`                                                                                             | Yes                     |
-| `batch-choice`   | `{ promptKey?: string; rows: { latex: string; latex2?: string }[]; buttons: string[] }`                                                                  | Yes                     |
-| `single-choice`  | `{ promptKey?: string; promptArgs?: (string \| number)[]; promptArgKeys?: string[]; options: { label?: string; latex?: string }[] }`                     | Yes                     |
-| `multi-choice`   | `{ promptKey?: string; options: { label?: string; latex?: string }[] }`                                                                                  | Yes                     |
-| `prime-factors`  | `{ promptKey?: string; primes: number[] }`                                                                                                               | Yes                     |
-| `custom`         | Any shape (your component handles it)                                                                                                                    | No (component required) |
+| Pattern          | `data` shape (from `cardData.ts`)                                                        | No component needed     |
+| ---------------- | ---------------------------------------------------------------------------------------- | ----------------------- |
+| `text-input`     | `TextInputCardData`                                                                      | Yes                     |
+| `fraction-input` | `MultiplicationFractionData` (or compatible)                                             | Yes                     |
+| `multi-field`    | `BinomialFormulasData \| CollectingTermsData \| ExpandData \| ExpandAndCollectData`      | Yes                     |
+| `batch-choice`   | `BatchChoiceCardData`                                                                    | Yes                     |
+| `single-choice`  | `SingleChoiceCardData` (options may use `label` for i18n keys, or `latex`/`text`)        | Yes                     |
+| `multi-choice`   | `MultiChoiceCardData`                                                                    | Yes                     |
+| `prime-factors`  | `PrimeFactorsCardData`                                                                   | Yes                     |
+| `custom`         | Any shape; declare your own `<Name>Data` interface (typing i18n-key fields as `DictKey`) | No (component required) |
 
 ### Default complexity max
 
@@ -151,6 +151,8 @@ To show a prompt label in the card, set `data.promptKey: 'exercise.<id>.prompt'`
 
 ## 5. Register — `src/lib/data/exerciseTypes.ts`
 
+`nameKey`/`descriptionKey` are **derived automatically** from `id` as `exercise.<id>.name` / `exercise.<id>.desc` — do not pass them. Just provide `id` and the rest:
+
 ```ts
 import { generate<Name>, validate<Name> } from '../exercises/<name>';
 // import <Name>Component from '../components/exercises/<Name>.svelte'; // only for custom types
@@ -158,8 +160,6 @@ import { generate<Name>, validate<Name> } from '../exercises/<name>';
 // ... in exerciseTypes:
 <id>: defineExerciseType({
   id: '<id>',
-  nameKey: 'exercise.<id>.name',
-  descriptionKey: 'exercise.<id>.desc',
   generate: generate<Name>,
   // validate — defaults to trimCompare
   // component — omit for patterned types; include for 'custom' types
@@ -169,7 +169,7 @@ import { generate<Name>, validate<Name> } from '../exercises/<name>';
 }),
 ```
 
-`defineExerciseType` provides sensible defaults — only specify what differs from defaults. If the type uses a pattern (defined in the generator), omit `component`. If the type is `'custom'`, include the component.
+The convention test in `src/lib/data/registry.test.ts` will fail if `exercise.<id>.name`/`.desc` are missing from the i18n dict, or if the type is not added to a discipline (next step).
 
 ## 6. Discipline — `src/lib/data/disciplines.ts`
 
@@ -182,3 +182,5 @@ npm run check
 npm run lint
 npm run test
 ```
+
+`npm run test` includes the registry convention tests in `src/lib/data/registry.test.ts`, which generate sample exercises across seeds/complexities and verify every i18n key referenced through `exercise.data` resolves in the dict — so a typo in a `promptKey`/`option.label` is caught at test time even though `Exercise.data` is typed `unknown`.
