@@ -39,6 +39,9 @@
 - `src/lib/katex.ts` wraps `katex.renderToString` — imported by `Math.svelte`
 - `src/lib/instructionContext.svelte.ts` is a global singleton holding the current instruction component for the help modal
 
+- End-to-end tests use Playwright: `e2e/*.spec.ts`; run via `npm run test:e2e` (first build with `npm run build`)
+- `test:e2e:ui` opens the Playwright UI mode
+
 ## Naming conventions
 
 - Exercise generators: `camelCase.ts` in `src/lib/exercises/`
