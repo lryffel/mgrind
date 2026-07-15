@@ -42,5 +42,8 @@ export class ExerciseSession {
     this.currentSeed = Date.now();
     this.exercise = this.currentType.generate(this.currentSeed, getComplexity(this.currentType.id));
     this.feedback = null;
+    if (typeof window !== 'undefined') {
+      (window as any).__e2e_exercise = this.exercise;
+    }
   }
 }

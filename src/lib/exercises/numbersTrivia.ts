@@ -302,7 +302,7 @@ export function generateNumbersTriviaTrueFalse(seed: number, complexity: number)
     data: {
       ...origData,
       promptKey: stmt?.key,
-      hideCorrectFeedback: true,
+      correctFeedbackMessageKey: 'feedback.numbersTrivia.trueFalse.correct',
       options: [{ label: 'common.true' }, { label: 'common.false' }],
     },
   };

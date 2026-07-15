@@ -11,7 +11,13 @@
 
   let { exercise, onSubmit, onNext, feedback }: ExerciseProps = $props();
 
-  let userInputs = $state(['', '']);
+  let userInputs = $state<string[]>([]);
+  $effect(() => {
+    const len = (exercise.data as unknown as { asks?: unknown[] })?.asks?.length ?? 2;
+    if (userInputs.length !== len) {
+      userInputs = Array(len).fill('');
+    }
+  });
   let validationError = $state(null);
   let disableSubmit = $derived(userInputs.some((v) => v.trim() === ''));
 

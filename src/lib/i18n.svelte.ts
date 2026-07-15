@@ -103,6 +103,7 @@ const dict = {
   'answer.submit': { en: 'Submit', de: 'Bestätigen' },
   'answer.next': { en: 'Next', de: 'Weiter' },
   'feedback.correct': { en: 'Correct!', de: 'Richtig!' },
+  'feedback.numbersTrivia.trueFalse.correct': { en: 'Exactly!', de: 'Genau!' },
   'feedback.correct.primeFactorisation': {
     en: 'Correct! The prime factorisation is ',
     de: 'Richtig! Die Primfaktorzerlegung ist ',

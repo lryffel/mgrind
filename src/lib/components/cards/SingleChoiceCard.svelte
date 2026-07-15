@@ -15,6 +15,7 @@
   let promptArgs = $derived(data.promptArgs ?? []);
   let promptArgKeys = $derived(data.promptArgKeys ?? []);
   let resolvedArgs = $derived(promptArgKeys.length > 0 ? promptArgKeys.map((k) => _(k)) : promptArgs);
+  let correctMessage = $derived(data.correctFeedbackMessageKey ? _(data.correctFeedbackMessageKey) : undefined);
   // eslint-disable-next-line svelte/prefer-writable-derived
   let selectedIndex = $state(-1);
   let correctIndices = $derived(exercise.answer.split(',').map(Number));
@@ -78,8 +79,8 @@
     {/each}
   </div>
 
-  {#if feedback === 'correct' && !data.hideCorrectFeedback}
-    <Feedback {feedback} />
+  {#if feedback === 'correct'}
+    <Feedback {feedback} {correctMessage} />
   {:else if feedback === 'incorrect'}
     <Feedback
       {feedback}

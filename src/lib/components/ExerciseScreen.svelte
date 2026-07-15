@@ -33,6 +33,12 @@
     }
     instructionContext.currentInstructionComponent = session?.currentType?.instructionComponent;
   });
+
+  $effect(() => {
+    if (typeof window !== 'undefined') {
+      (window as any).__e2e_exercise = session?.exercise;
+    }
+  });
 </script>
 
 <nav>

@@ -22,7 +22,7 @@ export interface SingleChoiceCardData {
   promptArgs?: (string | number)[];
   promptArgKeys?: DictKey[];
   promptText?: string;
-  hideCorrectFeedback?: boolean;
+  correctFeedbackMessageKey?: DictKey;
   options: { label?: DictKey; latex?: string; text?: string; textDe?: string }[];
 }
 
