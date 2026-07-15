@@ -41,6 +41,7 @@
 
 - End-to-end tests use Playwright: `e2e/*.spec.ts`; run via `npm run test:e2e` (first build with `npm run build`)
 - `test:e2e:ui` opens the Playwright UI mode
+- `e2e/exercise-render.spec.ts` generates one test per exercise type at runtime via the disciplines data file
 
 ## Naming conventions
 
