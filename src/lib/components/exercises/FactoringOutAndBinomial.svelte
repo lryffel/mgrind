@@ -83,7 +83,7 @@
   });
 
   function handleSubmit() {
-    if (data.isTrap) {
+    if (selectedGcfIdx === -1 && selectedFormula === 0) {
       onSubmit('-1');
       return;
     }
