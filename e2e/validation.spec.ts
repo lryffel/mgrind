@@ -1,4 +1,5 @@
 import { test, expect } from '@playwright/test';
+import { navigateToType } from './helpers';
 
 test.beforeEach(async ({ page }) => {
   await page.addInitScript(() => {
@@ -9,13 +10,7 @@ test.beforeEach(async ({ page }) => {
 });
 
 test('entering a comma in a numeric input shows validation error and disables submit', async ({ page }) => {
-  const card = page.locator('article.discipline-card').first();
-  await card.locator('.gear-button').click();
-
-  const firstTypeRow = card.locator('.type-row').first();
-  await firstTypeRow.click();
-
-  await expect(page.locator('article.exercise-card')).toBeVisible({ timeout: 3000 });
+  await navigateToType(page, 0, 0, { enableAnyway: true });
 
   const input = page.locator('article.exercise-card input').first();
   await input.fill('3,14');
@@ -25,13 +20,7 @@ test('entering a comma in a numeric input shows validation error and disables su
 });
 
 test('removing the comma clears the validation error and re-enables submit', async ({ page }) => {
-  const card = page.locator('article.discipline-card').first();
-  await card.locator('.gear-button').click();
-
-  const firstTypeRow = card.locator('.type-row').first();
-  await firstTypeRow.click();
-
-  await expect(page.locator('article.exercise-card')).toBeVisible({ timeout: 3000 });
+  await navigateToType(page, 0, 0, { enableAnyway: true });
 
   const input = page.locator('article.exercise-card input').first();
   await input.fill('3,14');

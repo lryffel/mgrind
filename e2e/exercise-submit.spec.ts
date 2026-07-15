@@ -1,5 +1,6 @@
 import { test, expect } from '@playwright/test';
 import { disciplines } from '../src/lib/data/disciplines';
+import { navigateToType, getExerciseInfo } from './helpers';
 
 const SEED_COUNTS: Record<string, number> = {
   multiplication: 5,
@@ -69,23 +70,7 @@ for (const [typeId, loc] of typeLocations) {
   const seeds = generateSeeds(loc.idx, loc.seedCount);
 
   test(`"${typeId}" — correct answer (${loc.seedCount} seed${loc.seedCount > 1 ? 's' : ''})`, async ({ page }) => {
-    const card = page.locator('article.discipline-card').nth(loc.di);
-    await card.locator('.gear-button').click();
-    await expect(card.locator('.type-list')).toBeVisible();
-
-    const typeRow = card.locator('.type-row').nth(loc.ti);
-    await typeRow.click();
-
-    const dialog = page.locator('dialog[open]');
-    const exerciseCard = page.locator('article.exercise-card');
-
-    if (!(await exerciseCard.isVisible())) {
-      await expect(dialog).toBeVisible({ timeout: 3000 });
-      await dialog.locator('button', { hasText: 'Enable anyway' }).click();
-      await expect(dialog).not.toBeVisible();
-      await typeRow.click();
-      await expect(exerciseCard).toBeVisible({ timeout: 3000 });
-    }
+    await navigateToType(page, loc.di, loc.ti, { enableAnyway: true });
 
     for (let s = 0; s < seeds.length; s++) {
       if (s > 0) {
@@ -114,17 +99,355 @@ for (const [typeId, loc] of typeLocations) {
       if (info.pattern && info.pattern !== 'custom') {
         await fillAnswer(page, info);
         await page.locator('button', { hasText: 'Submit' }).click();
-        await expect(page.locator('p.feedback.correct')).toBeVisible({ timeout: 5000 });
+        await expect(page.locator('p.feedback.correct')).toBeVisible({
+          timeout: 5000,
+        });
       } else {
         const submitted = await fillCustomAnswer(page, typeId);
         if (!submitted) {
           await page.locator('button', { hasText: 'Submit' }).click();
         }
-        await expect(page.locator('p.feedback.correct')).toBeVisible({ timeout: 8000 });
+        await expect(page.locator('p.feedback.correct')).toBeVisible({
+          timeout: 8000,
+        });
       }
     }
   });
 }
+
+test.describe('incorrect answers', () => {
+  test('text-input pattern', async ({ page }) => {
+    await navigateToType(page, 0, 0, { enableAnyway: true });
+    const info = await getExerciseInfo(page);
+
+    const wrongAnswer = info.answer === '0' ? '1' : '0';
+    await page.locator('article.exercise-card input.coeff-input').fill(wrongAnswer);
+    await page.locator('button', { hasText: 'Submit' }).click();
+    await expect(page.locator('p.feedback.incorrect')).toBeVisible({
+      timeout: 5000,
+    });
+    await expect(page.locator('button', { hasText: 'Next' })).toBeVisible();
+  });
+
+  test('fraction-input pattern', async ({ page }) => {
+    await navigateToType(page, 0, 12, { enableAnyway: true });
+    const card = page.locator('article.exercise-card');
+
+    const inputs = card.locator('.fraction-input input.coeff-input');
+    await inputs.nth(0).fill('1');
+    await inputs.nth(1).fill('1');
+    await page.locator('button', { hasText: 'Submit' }).click();
+    await expect(page.locator('p.feedback.incorrect')).toBeVisible({
+      timeout: 5000,
+    });
+    await expect(page.locator('button', { hasText: 'Next' })).toBeVisible();
+  });
+
+  test('multi-field pattern', async ({ page }) => {
+    await navigateToType(page, 2, 2, { enableAnyway: true });
+
+    const inputs = page.locator('article.exercise-card .coeff-field input.coeff-input');
+    const count = await inputs.count();
+    for (let i = 0; i < count; i++) {
+      await inputs.nth(i).fill('0');
+    }
+    await page.locator('button', { hasText: 'Submit' }).click();
+    await expect(page.locator('p.feedback.incorrect')).toBeVisible({
+      timeout: 5000,
+    });
+    await expect(page.locator('button', { hasText: 'Next' })).toBeVisible();
+  });
+
+  test('batch-choice pattern', async ({ page }) => {
+    await navigateToType(page, 0, 3, { enableAnyway: true });
+    const info = await getExerciseInfo(page);
+    const correctAnswers = info.answer.split(',');
+    const buttons = (info.data?.buttons as string[]) ?? [];
+
+    const card = page.locator('article.exercise-card');
+    for (let i = 0; i < correctAnswers.length; i++) {
+      const wrongBtn = buttons.find((b) => b !== correctAnswers[i]) ?? buttons[0];
+      const btnIdx = buttons.indexOf(wrongBtn);
+      await card.locator('.button-group').nth(i).locator('button').nth(btnIdx).click();
+    }
+    await page.locator('button', { hasText: 'Submit' }).click();
+    await expect(page.locator('p.feedback.incorrect')).toBeVisible({
+      timeout: 5000,
+    });
+    await expect(page.locator('button', { hasText: 'Next' })).toBeVisible();
+  });
+
+  test('prime-factors pattern', async ({ page }) => {
+    await navigateToType(page, 0, 9, { enableAnyway: true });
+    const inputs = page.locator('article.exercise-card sup input.coeff-input');
+    const count = await inputs.count();
+    for (let i = 0; i < count; i++) {
+      await inputs.nth(i).fill('0');
+    }
+    await page.locator('button', { hasText: 'Submit' }).click();
+    await expect(page.locator('p.feedback.incorrect')).toBeVisible({
+      timeout: 5000,
+    });
+    await expect(page.locator('button', { hasText: 'Next' })).toBeVisible();
+  });
+
+  test('custom pattern (pythagoras)', async ({ page }) => {
+    await navigateToType(page, 4, 1, { enableAnyway: true });
+    const info = await getExerciseInfo(page);
+
+    if (info.answer === 'cannot_compute') {
+      await page.locator('article.exercise-card input.coeff-input').fill('0');
+    } else {
+      await page.locator('article.exercise-card div.svg-overlay input.coeff-input').fill('0');
+    }
+    await page.locator('button', { hasText: 'Submit' }).click();
+    await expect(page.locator('p.feedback.incorrect')).toBeVisible({
+      timeout: 8000,
+    });
+    await expect(page.locator('button', { hasText: 'Next' })).toBeVisible();
+  });
+
+  test('custom pattern (interiorAngles)', async ({ page }) => {
+    await navigateToType(page, 4, 0, { enableAnyway: true });
+    await page.locator('article.exercise-card div.svg-overlay input.coeff-input').fill('0');
+    await page.locator('button', { hasText: 'Submit' }).click();
+    await expect(page.locator('p.feedback.incorrect')).toBeVisible({
+      timeout: 8000,
+    });
+    await expect(page.locator('button', { hasText: 'Next' })).toBeVisible();
+  });
+
+  test('custom pattern (areaAndPerimeter)', async ({ page }) => {
+    await navigateToType(page, 4, 2, { enableAnyway: true });
+    const info = await getExerciseInfo(page);
+
+    if (info.answer === 'cannot_compute') {
+      await page.locator('article.exercise-card input.coeff-input').first().fill('0');
+    } else {
+      const inputs = page.locator('article.exercise-card input.coeff-input');
+      const count = await inputs.count();
+      for (let i = 0; i < count; i++) {
+        await inputs.nth(i).fill('0');
+      }
+    }
+    await page.locator('button', { hasText: 'Submit' }).click();
+    await expect(page.locator('p.feedback.incorrect')).toBeVisible({
+      timeout: 8000,
+    });
+    await expect(page.locator('button', { hasText: 'Next' })).toBeVisible();
+  });
+
+  test('custom pattern (scientificNotation)', async ({ page }) => {
+    await navigateToType(page, 0, 5, { enableAnyway: true });
+    const info = await getExerciseInfo(page);
+
+    if (info.answer.includes(',')) {
+      const inputs = page.locator('article.exercise-card input.coeff-input');
+      await inputs.nth(0).fill('0');
+      if ((await inputs.count()) > 1) {
+        await inputs.nth(1).fill('0');
+      }
+    } else {
+      await page.locator('article.exercise-card input.coeff-input').first().fill('0');
+    }
+    await page.locator('button', { hasText: 'Submit' }).click();
+    await expect(page.locator('p.feedback.incorrect')).toBeVisible({
+      timeout: 8000,
+    });
+    await expect(page.locator('button', { hasText: 'Next' })).toBeVisible();
+  });
+
+  test('custom pattern (factorEquations)', async ({ page }) => {
+    await navigateToType(page, 3, 1, { enableAnyway: true });
+    const inputs = page.locator('article.exercise-card div.solution-inputs input.coeff-input');
+    const count = await inputs.count();
+    for (let i = 0; i < count; i++) {
+      await inputs.nth(i).fill('0');
+    }
+    await page.locator('button', { hasText: 'Submit' }).click();
+    await expect(page.locator('p.feedback.incorrect')).toBeVisible({
+      timeout: 8000,
+    });
+    await expect(page.locator('button', { hasText: 'Next' })).toBeVisible();
+  });
+
+  test('custom pattern (factors)', async ({ page }) => {
+    await navigateToType(page, 0, 11, { enableAnyway: true });
+    const info = await getExerciseInfo(page);
+    const card = page.locator('article.exercise-card');
+
+    const correctIndices = info.answer.split(',').map(Number);
+    const allBtns = card.locator('button.factor-btn[role="checkbox"]');
+    const btnCount = await allBtns.count();
+    let wrongIdx = 0;
+    while (correctIndices.includes(wrongIdx) && wrongIdx < btnCount) wrongIdx++;
+    if (wrongIdx < btnCount) {
+      await allBtns.nth(wrongIdx).click();
+    }
+    await page.locator('button', { hasText: 'Submit' }).click();
+    await expect(page.locator('p.feedback.incorrect')).toBeVisible({
+      timeout: 8000,
+    });
+    await expect(page.locator('button', { hasText: 'Next' })).toBeVisible();
+  });
+
+  test('custom pattern (factoringOut)', async ({ page }) => {
+    await navigateToType(page, 2, 5, { enableAnyway: true });
+    const info = await getExerciseInfo(page);
+    const card = page.locator('article.exercise-card');
+
+    if (info.answer === '-1') {
+      await card.locator('select.factor-select').selectOption('0');
+      const inputs = card.locator('span.continuation input.coeff-input');
+      await inputs.first().waitFor({ state: 'visible', timeout: 3000 });
+      const count = await inputs.count();
+      for (let i = 0; i < count; i++) {
+        await inputs.nth(i).fill('0');
+      }
+    } else {
+      await card.locator('select.factor-select').selectOption('-1');
+    }
+    await page.locator('button', { hasText: 'Submit' }).click();
+    await expect(page.locator('p.feedback.incorrect')).toBeVisible({
+      timeout: 8000,
+    });
+    await expect(page.locator('button', { hasText: 'Next' })).toBeVisible();
+  });
+
+  test('custom pattern (factoringBinomialFormulas)', async ({ page }) => {
+    await navigateToType(page, 2, 6, { enableAnyway: true });
+    const info = await getExerciseInfo(page);
+    const card = page.locator('article.exercise-card');
+
+    if (info.answer === '0') {
+      await card.locator('select.formula-select').selectOption('1');
+      const inputs = card.locator('span.continuation input.coeff-input');
+      await inputs.first().waitFor({ state: 'visible', timeout: 3000 });
+      const count = await inputs.count();
+      for (let i = 0; i < count; i++) {
+        await inputs.nth(i).fill('0');
+      }
+    } else {
+      await card.locator('select.formula-select').selectOption('0');
+    }
+    await page.locator('button', { hasText: 'Submit' }).click();
+    await expect(page.locator('p.feedback.incorrect')).toBeVisible({
+      timeout: 8000,
+    });
+    await expect(page.locator('button', { hasText: 'Next' })).toBeVisible();
+  });
+
+  test('custom pattern (factoringOutAndBinomial)', async ({ page }) => {
+    await navigateToType(page, 2, 7, { enableAnyway: true });
+    const info = await getExerciseInfo(page);
+    const card = page.locator('article.exercise-card');
+
+    if (info.answer === '-1') {
+      await card.locator('select.factor-select').selectOption('-1');
+      await card.locator('select.formula-select').selectOption('1');
+      const binInputs = card.locator('span.binomial-body input.coeff-input');
+      await binInputs.first().waitFor({ state: 'visible', timeout: 3000 });
+      await binInputs.nth(0).fill('0');
+      await binInputs.nth(1).fill('0');
+    } else {
+      const parts = info.answer.split(',');
+      const correctFormulaType = parseInt(parts[0], 10);
+      const wrongFormulaType = correctFormulaType === 1 ? 2 : 1;
+      const correctGcfIdx = parseInt(parts[2], 10);
+
+      await card.locator('select.factor-select').selectOption(String(correctGcfIdx));
+      await card.locator('select.formula-select').selectOption(String(wrongFormulaType));
+
+      const gcfInputs = card.locator('span.continuation input.coeff-input');
+      await gcfInputs.first().waitFor({ state: 'visible', timeout: 3000 });
+      const gcfCount = await gcfInputs.count();
+      for (let i = 0; i < gcfCount; i++) {
+        await gcfInputs.nth(i).fill('0');
+      }
+      const binInputs = card.locator('span.binomial-body input.coeff-input');
+      await binInputs.first().waitFor({ state: 'visible', timeout: 3000 });
+      const binCount = await binInputs.count();
+      for (let i = 0; i < binCount; i++) {
+        await binInputs.nth(i).fill('0');
+      }
+    }
+
+    await page.locator('button', { hasText: 'Submit' }).click();
+    await expect(page.locator('p.feedback.incorrect')).toBeVisible({
+      timeout: 8000,
+    });
+    await expect(page.locator('button', { hasText: 'Next' })).toBeVisible();
+  });
+
+  test('custom pattern (simplifySymbolicFraction)', async ({ page }) => {
+    await navigateToType(page, 1, 4, { enableAnyway: true });
+    const card = page.locator('article.exercise-card');
+
+    const numeratorInputs = card.locator(
+      'span.frac-row:first-of-type span.coeff-field input.coeff-input, span.continuation span.coeff-field input.coeff-input',
+    );
+    const numCount = await numeratorInputs.count();
+    for (let i = 0; i < numCount; i++) {
+      await numeratorInputs.nth(i).fill('0');
+    }
+    const denInputs = card.locator('span.frac-row:last-of-type span.coeff-field input.coeff-input');
+    const denCount = await denInputs.count();
+    for (let i = 0; i < denCount; i++) {
+      await denInputs.nth(i).fill('0');
+    }
+    await page.locator('button', { hasText: 'Submit' }).click();
+    await expect(page.locator('p.feedback.incorrect')).toBeVisible({
+      timeout: 8000,
+    });
+    await expect(page.locator('button', { hasText: 'Next' })).toBeVisible();
+  });
+
+  test('custom pattern (symbolicFractionOperations)', async ({ page }) => {
+    await navigateToType(page, 1, 5, { enableAnyway: true });
+    const card = page.locator('article.exercise-card');
+
+    const numeratorInputs = card.locator(
+      'span.frac-row:first-of-type span.coeff-field input.coeff-input, span.continuation span.coeff-field input.coeff-input',
+    );
+    const numCount = await numeratorInputs.count();
+    for (let i = 0; i < numCount; i++) {
+      await numeratorInputs.nth(i).fill('0');
+    }
+    const denInputs = card.locator('span.frac-row:last-of-type span.coeff-field input.coeff-input');
+    const denCount = await denInputs.count();
+    for (let i = 0; i < denCount; i++) {
+      await denInputs.nth(i).fill('0');
+    }
+    await page.locator('button', { hasText: 'Submit' }).click();
+    await expect(page.locator('p.feedback.incorrect')).toBeVisible({
+      timeout: 8000,
+    });
+    await expect(page.locator('button', { hasText: 'Next' })).toBeVisible();
+  });
+
+  test('custom pattern (gcdLcm)', async ({ page }) => {
+    await navigateToType(page, 0, 10, { enableAnyway: true });
+    const info = await getExerciseInfo(page);
+    const card = page.locator('article.exercise-card');
+
+    if (info.dataSubType === 'factorization' || info.dataSubType === undefined) {
+      const inputs = card.locator('.input-row span.prime-term sup input.coeff-input');
+      const count = await inputs.count();
+      for (let i = 0; i < count; i++) {
+        await inputs.nth(i).fill('0');
+      }
+    } else {
+      const inputs = card.locator('.input-row input.coeff-input');
+      await inputs.nth(0).fill('0');
+      await inputs.nth(1).fill('0');
+    }
+    await page.locator('button', { hasText: 'Submit' }).click();
+    await expect(page.locator('p.feedback.incorrect')).toBeVisible({
+      timeout: 8000,
+    });
+    await expect(page.locator('button', { hasText: 'Next' })).toBeVisible();
+  });
+});
 
 async function fillAnswer(
   page: import('@playwright/test').Page,
