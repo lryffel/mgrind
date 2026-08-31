@@ -50,8 +50,6 @@
   <span class="fraction-input">
     <input
       type="text"
-      inputmode="numeric"
-      pattern="[0-9]*"
       class="coeff-input"
       style="text-align: {align}"
       bind:value={num}
@@ -62,8 +60,6 @@
     <span class="fraction-bar"></span>
     <input
       type="text"
-      inputmode="numeric"
-      pattern="[0-9]*"
       class="coeff-input"
       style="text-align: {align}"
       bind:value={den}
@@ -77,8 +73,6 @@
     <sup>
       <input
         type="text"
-        inputmode="numeric"
-        pattern="[0-9]*"
         class="coeff-input"
         style="text-align: {align}"
         bind:value
@@ -91,8 +85,6 @@
     <span class="term">
       <input
         type="text"
-        inputmode="numeric"
-        pattern="[0-9]*"
         class="coeff-input"
         style="text-align: {align}"
         bind:value
